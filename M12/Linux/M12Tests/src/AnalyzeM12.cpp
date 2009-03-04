@@ -1,0 +1,1 @@
+../../../PlatformIndependent/M12Permutation/AnalyzeM12.cpp

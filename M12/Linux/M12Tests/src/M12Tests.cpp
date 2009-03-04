@@ -1,0 +1,1 @@
+../../../PlatformIndependent/M12Permutation/M12Tests.cpp
