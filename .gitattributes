@@ -1,0 +1,2 @@
+PlatformIndependent/M24/Perms.bin.golden filter=lfs diff=lfs merge=lfs -text
+M24/PlatformIndependent/Perms.bin.golden filter=lfs diff=lfs merge=lfs -text
