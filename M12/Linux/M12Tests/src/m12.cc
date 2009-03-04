@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M12Permutation/m12.cc
+../../../PlatformIndependent/Permutation/m12.cc
