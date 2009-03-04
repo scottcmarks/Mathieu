@@ -10,7 +10,7 @@
  */
 
 #import "m12.h"
-typedef M12Permutation Permutation;
-typedef M12PermutationWithHistory PermutationWithHistory;
+typedef M12Permutation MPermutation;
+typedef M12PermutationWithHistory MPermutationWithHistory;
 
 #endif /* !defined(__MATHIEU_H_INCLUDED__) */
