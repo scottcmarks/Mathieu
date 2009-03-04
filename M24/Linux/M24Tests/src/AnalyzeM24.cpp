@@ -1,0 +1,1 @@
+../../../PlatformIndependent/M24Permutation/AnalyzeM24.cpp

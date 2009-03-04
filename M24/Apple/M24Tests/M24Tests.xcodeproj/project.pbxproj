@@ -1,0 +1,288 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8CED34BC0EBE6B9900504621 /* test_m24.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6444B80EBCD90A00C7B291 /* test_m24.cpp */; };
+		8CED34BD0EBE6B9F00504621 /* m24.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8C6444C90EBCD9A800C7B291 /* m24.cc */; };
+		8CED34C90EBE6F9700504621 /* permutation_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8C64449F0EBCD83000C7B291 /* permutation_test.cc */; };
+		8CED35F70EBE7CAD00504621 /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8CED35F50EBE7CAD00504621 /* view.cc */; };
+		8CF7981F0EC105CF006DAD91 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7981D0EC105CF006DAD91 /* rand_utils.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8C64449F0EBCD83000C7B291 /* permutation_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = permutation_test.cc; path = ../permutation_test.cc; sourceTree = SOURCE_ROOT; };
+		8C6444B80EBCD90A00C7B291 /* test_m24.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = test_m24.cpp; path = ../test_m24/src/test_m24.cpp; sourceTree = SOURCE_ROOT; tabWidth = 2; usesTabs = 0; };
+		8C6444C90EBCD9A800C7B291 /* m24.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = m24.cc; path = ../m24.cc; sourceTree = SOURCE_ROOT; };
+		8C6444CB0EBCD9BA00C7B291 /* m24.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; name = m24.h; path = ../m24.h; sourceTree = SOURCE_ROOT; tabWidth = 2; usesTabs = 0; };
+		8C6444D80EBCDDCC00C7B291 /* permutation */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = permutation; path = ../permutation; sourceTree = SOURCE_ROOT; };
+		8CED34B50EBE6B7800504621 /* M24Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = M24Tests; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CED34C50EBE6F8800504621 /* PermutationTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PermutationTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CED35F50EBE7CAD00504621 /* view.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = view.cc; path = ../view.cc; sourceTree = SOURCE_ROOT; };
+		8CED360B0EBE7D5A00504621 /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = view.h; path = ../view.h; sourceTree = SOURCE_ROOT; };
+		8CF7981D0EC105CF006DAD91 /* rand_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rand_utils.c; path = ../../../../Toolbox/trunk/rand_utils.c; sourceTree = SOURCE_ROOT; };
+		8CF7981E0EC105CF006DAD91 /* rand_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rand_utils.h; path = ../../../../Toolbox/trunk/rand_utils.h; sourceTree = SOURCE_ROOT; };
+		C6859E8B029090EE04C91782 /* M24Tests.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = M24Tests.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8CED34B30EBE6B7800504621 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8CED34C30EBE6F8800504621 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* M24Tests */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = M24Tests;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				8CF7981D0EC105CF006DAD91 /* rand_utils.c */,
+				8CF7981E0EC105CF006DAD91 /* rand_utils.h */,
+				8CED360B0EBE7D5A00504621 /* view.h */,
+				8CED35F50EBE7CAD00504621 /* view.cc */,
+				8C6444D80EBCDDCC00C7B291 /* permutation */,
+				8C6444CB0EBCD9BA00C7B291 /* m24.h */,
+				8C6444B80EBCD90A00C7B291 /* test_m24.cpp */,
+				8C6444C90EBCD9A800C7B291 /* m24.cc */,
+				8C64449F0EBCD83000C7B291 /* permutation_test.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CED34B50EBE6B7800504621 /* M24Tests */,
+				8CED34C50EBE6F8800504621 /* PermutationTests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* M24Tests.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8CED34B40EBE6B7800504621 /* M24Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CED34BB0EBE6B9600504621 /* Build configuration list for PBXNativeTarget "M24Tests" */;
+			buildPhases = (
+				8CED34B20EBE6B7800504621 /* Sources */,
+				8CED34B30EBE6B7800504621 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = M24Tests;
+			productName = M24Tests;
+			productReference = 8CED34B50EBE6B7800504621 /* M24Tests */;
+			productType = "com.apple.product-type.tool";
+		};
+		8CED34C40EBE6F8800504621 /* PermutationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CED34CC0EBE6FCF00504621 /* Build configuration list for PBXNativeTarget "PermutationTests" */;
+			buildPhases = (
+				8CED34C20EBE6F8800504621 /* Sources */,
+				8CED34C30EBE6F8800504621 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PermutationTests;
+			productName = PermutationTests;
+			productReference = 8CED34C50EBE6F8800504621 /* PermutationTests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "M24Tests" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* M24Tests */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8CED34B40EBE6B7800504621 /* M24Tests */,
+				8CED34C40EBE6F8800504621 /* PermutationTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8CED34B20EBE6B7800504621 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CED34BC0EBE6B9900504621 /* test_m24.cpp in Sources */,
+				8CED34BD0EBE6B9F00504621 /* m24.cc in Sources */,
+				8CED35F70EBE7CAD00504621 /* view.cc in Sources */,
+				8CF7981F0EC105CF006DAD91 /* rand_utils.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8CED34C20EBE6F8800504621 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CED34C90EBE6F9700504621 /* permutation_test.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+		8CED34B70EBE6B7800504621 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = M24Tests;
+			};
+			name = Debug;
+		};
+		8CED34B80EBE6B7800504621 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = M24Tests;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		8CED34C70EBE6F8800504621 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = PermutationTests;
+			};
+			name = Debug;
+		};
+		8CED34C80EBE6F8800504621 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = PermutationTests;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "M24Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CED34BB0EBE6B9600504621 /* Build configuration list for PBXNativeTarget "M24Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CED34B70EBE6B7800504621 /* Debug */,
+				8CED34B80EBE6B7800504621 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CED34CC0EBE6FCF00504621 /* Build configuration list for PBXNativeTarget "PermutationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CED34C70EBE6F8800504621 /* Debug */,
+				8CED34C80EBE6F8800504621 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

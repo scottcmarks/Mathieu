@@ -1,0 +1,56 @@
+//
+//  HelpView.mm
+//  SporadicM24
+//
+//  Created by Jackie Marks on 12/15/08.
+//  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
+//
+
+#import "HelpView.h"
+#import "SporadicM24AppDelegate.h"
+#import "Constants.h"
+
+@implementation HelpView
+
+@synthesize backButton;
+
+//- ( SporadicM24AppDelegate * ) appDelegate{ return ( SporadicM24AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+
+- ( void ) showInitialHelpScreen
+{
+    NSURL * indexURL = [NSURL URLWithString: @"index.html" relativeToURL: baseURL];
+    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:indexURL ] ];    
+}
+
+- ( void ) showErrorScreen: ( NSError *)error
+{
+    NSURL * errorURL = [NSURL URLWithString: @"error.html" relativeToURL: baseURL];
+    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];    
+}
+
+- (void) awakeFromNib{
+    NSBundle *main = [NSBundle mainBundle];
+    NSString *path = [ main bundlePath];
+    baseURL = [ [ NSURL fileURLWithPath: path isDirectory:YES ] retain ];
+    [ self showInitialHelpScreen ] ;
+}
+
+-(void) reportError: (NSError *)error
+{
+	// report the error 
+    [ self showErrorScreen: error ];
+}
+
+-(void) updateBackButton
+{
+    backButton.enabled = helpWebView.canGoBack;
+}
+
+- (void)dealloc {
+    [ baseURL release ];
+    [super dealloc];
+}
+
+
+@end
+
