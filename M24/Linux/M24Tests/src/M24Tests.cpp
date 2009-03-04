@@ -1,0 +1,1 @@
+../../../PlatformIndependent/M24Permutation/M24Tests.cpp
