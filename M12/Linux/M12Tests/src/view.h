@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M12View/view.h
+../../../../PlatformIndependent/View/view.h
