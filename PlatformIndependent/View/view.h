@@ -1,17 +1,17 @@
 /*
  *  view.h
- *  SporadicM12
+ *  Mathieu
  *
- *  Created by Jackie Marks on 10/19/08.
- *  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
+ *  Created by Scott Marks on 03/04/09.
+ *  Copyright 2009 Magnolia Heights Research and Development.. All rights reserved.
  *
  */
 
-#include "m12.h"
+#include "mathieu.h"
 #include "point.h"
 #include <string>
-typedef M12PermutationWithHistory::HistoryElement HistoryElement;
-typedef M12PermutationWithHistory::History History;
+typedef PermutationWithHistory::HistoryElement HistoryElement;
+typedef PermutationWithHistory::History History;
 
 // Unicode constants for superscript -1
 const wchar_t superscriptMinus = 0x207B;
