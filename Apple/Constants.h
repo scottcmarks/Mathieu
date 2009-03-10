@@ -50,12 +50,6 @@
 #define kEraseAccelerationThreshold		3.0
 
 
-// These are fiddly program parameters.
-#define M12BallRadius         15.0
-#define ballFontSize          16.0
-#define tagFontSize           12.0
-#define historyFontSize       13.0
-
 // Apple user interface recommendation
 #define TOUCH_SPOT_SIZE       44.0
 
