@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M24Permutation/m24.h
+../../../PlatformIndependent/Permutation/m24.h

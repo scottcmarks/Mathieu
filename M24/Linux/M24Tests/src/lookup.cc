@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M24Permutation/lookup.cc
+../../../PlatformIndependent/Permutation/lookup.cc
