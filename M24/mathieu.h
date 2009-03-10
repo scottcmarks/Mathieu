@@ -10,7 +10,7 @@
  */
 
 #import "m24.h"
-typedef M24Permutation Permutation;
-typedef M24PermutationWithHistory PermutationWithHistory;
+typedef M24Permutation MPermutation;
+typedef M24PermutationWithHistory MPermutationWithHistory;
 
 #endif /* !defined(__MATHIEU_H_INCLUDED__) */
