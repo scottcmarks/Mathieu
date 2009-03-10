@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* SporadicM24AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* SporadicM24AppDelegate.mm */; };
-		1D60589B0D05DD56006BFB54 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -19,6 +18,7 @@
 		8C25F6B00F204994002DE5C4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C25F6AF0F204994002DE5C4 /* CoreFoundation.framework */; };
 		8C338C0A0F01FFC30086B860 /* SporadicM24Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C338C090F01FFC30086B860 /* SporadicM24Icon_Prerendered.png */; };
 		8C48E6FC0F3BEB1B00790098 /* applause.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8C48E6FB0F3BEB1B00790098 /* applause.caf */; };
+		8C722FA00F66B7AB00C29079 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C722F9F0F66B7AB00C29079 /* main.mm */; };
 		8C89C2080F141AEA004147B4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C89C2070F141AEA004147B4 /* QuartzCore.framework */; };
 		8CA13DF90F61B2260009DFA9 /* permutation in Resources */ = {isa = PBXBuildFile; fileRef = 8CA13DF50F61B2260009DFA9 /* permutation */; };
 		8CA13F450F61B3250009DFA9 /* buttons.html in Resources */ = {isa = PBXBuildFile; fileRef = 8CA13E9F0F61B3250009DFA9 /* buttons.html */; };
@@ -89,7 +89,6 @@
 		1D6058910D05DD3D006BFB54 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		29B97316FDCFA39411CA2CEA /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* SporadicM24_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicM24_Prefix.pch; sourceTree = "<group>"; };
 		8C14A0C90EFC501600EB1BEF /* PreferencesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferencesView.h; path = Classes/PreferencesView.h; sourceTree = "<group>"; };
 		8C14A0CA0EFC501600EB1BEF /* PreferencesView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PreferencesView.mm; path = Classes/PreferencesView.mm; sourceTree = "<group>"; };
@@ -99,9 +98,11 @@
 		8C1D2C900F24760E00C49C07 /* OKCancelAlertView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OKCancelAlertView.mm; sourceTree = "<group>"; };
 		8C21B30D0F21B69A00FD4AE8 /* success.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.caf; sourceTree = "<group>"; };
 		8C25F6AF0F204994002DE5C4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		8C28828F0EFB8D9400AFB4C9 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		8C338C090F01FFC30086B860 /* SporadicM24Icon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM24Icon_Prerendered.png; sourceTree = "<group>"; };
 		8C48E6FB0F3BEB1B00790098 /* applause.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = applause.caf; sourceTree = "<group>"; };
+		8C4D1FCA0F66D7830034CE4D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		8C4D1FD20F66E01B0034CE4D /* M24Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M24Constants.h; sourceTree = SOURCE_ROOT; };
+		8C722F9F0F66B7AB00C29079 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		8C89C2070F141AEA004147B4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8CA13DF50F61B2260009DFA9 /* permutation */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = permutation; sourceTree = "<group>"; };
 		8CA13E8D0F61B3250009DFA9 /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
@@ -258,6 +259,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8C722F9E0F66B7AB00C29079 /* Apple */ = {
+			isa = PBXGroup;
+			children = (
+				8C4D1FD20F66E01B0034CE4D /* M24Constants.h */,
+				8C4D1FCA0F66D7830034CE4D /* Constants.h */,
+				8C722F9F0F66B7AB00C29079 /* main.mm */,
+			);
+			name = Apple;
+			path = ../../Apple;
+			sourceTree = SOURCE_ROOT;
+		};
 		8CA13DF40F61B2260009DFA9 /* Permutation */ = {
 			isa = PBXGroup;
 			children = (
@@ -338,6 +350,7 @@
 		8CB4AFF40F66477E009E968A /* Mathieu */ = {
 			isa = PBXGroup;
 			children = (
+				8C722F9E0F66B7AB00C29079 /* Apple */,
 				8CB4AFE90F66474E009E968A /* PlatformIndependent */,
 				8CA13E010F61B3250009DFA9 /* M24 */,
 			);
@@ -465,7 +478,7 @@
 		8CCFC46C0EF6AB8B001BE605 /* Apple */ = {
 			isa = PBXGroup;
 			children = (
-				8CCFC6650EF75AC6001BE605 /* Application Main */,
+				32CA4F630368D1EE00C91783 /* SporadicM24_Prefix.pch */,
 				8CCFC6690EF75B01001BE605 /* Application Controllers */,
 				080E96DDFE201D6D7F000001 /* SporadicM24 Side */,
 				8CCFC6640EF75A7B001BE605 /* Preferences Side */,
@@ -525,16 +538,6 @@
 				8C14A0CC0EFC501600EB1BEF /* PreferencesViewController.mm */,
 			);
 			name = "Preferences Side";
-			sourceTree = "<group>";
-		};
-		8CCFC6650EF75AC6001BE605 /* Application Main */ = {
-			isa = PBXGroup;
-			children = (
-				32CA4F630368D1EE00C91783 /* SporadicM24_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.mm */,
-				8C28828F0EFB8D9400AFB4C9 /* Constants.h */,
-			);
-			name = "Application Main";
 			sourceTree = "<group>";
 		};
 		8CCFC6690EF75B01001BE605 /* Application Controllers */ = {
@@ -658,7 +661,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D60589B0D05DD56006BFB54 /* main.mm in Sources */,
 				1D3623260D0F684500981E51 /* SporadicM24AppDelegate.mm in Sources */,
 				8CE277690EA505860013E8FA /* SporadicM24ViewController.mm in Sources */,
 				8CEF9B910EAE49BC007B9E56 /* BallView.mm in Sources */,
@@ -678,6 +680,7 @@
 				8CB4B0560F6647B0009E968A /* SoundEffect.m in Sources */,
 				8CB4B0620F6647B0009E968A /* point.cc in Sources */,
 				8CB4B0630F6647B0009E968A /* rand_utils.c in Sources */,
+				8C722FA00F66B7AB00C29079 /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
