@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M24Permutation/m24.cc
+../../../PlatformIndependent/Permutation/m24.cc

@@ -7,6 +7,6 @@
 
 bool parse_permutation_number( std::string s, Rank & n_permutation, const Rank nPermutations );
 
-bool parse_permutation_items( const std::vector< std::string > & items, Permutation::PermArray & permutation );
+bool parse_permutation_items( const std::vector< std::string > & items, MPermutation::PermArray & permutation );
 
 #endif /* !defined( __PARSE_PERMUTATIONS_H_INCLUDED__ ) */
