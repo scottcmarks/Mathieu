@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M24View/view.cc
+../../../../PlatformIndependent/View/view.cc

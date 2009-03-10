@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M24View/view.h
+../../../../PlatformIndependent/View/view.h
