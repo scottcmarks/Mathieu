@@ -84,7 +84,6 @@
 		8C21B30D0F21B69A00FD4AE8 /* success.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.caf; sourceTree = "<group>"; };
 		8C25F6AF0F204994002DE5C4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		8C25F7280F204E85002DE5C4 /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iPhoneUtilities.h; path = Apple/iPhoneUtilities.h; sourceTree = "<group>"; };
-		8C28828F0EFB8D9400AFB4C9 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		8C338C090F01FFC30086B860 /* SporadicM12Icon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Icon_Prerendered.png; sourceTree = "<group>"; };
 		8C48E6FB0F3BEB1B00790098 /* applause.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = applause.caf; sourceTree = "<group>"; };
 		8C722F6D0F66B3D400C29079 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -133,6 +132,8 @@
 		8CCFC6710EF75D26001BE605 /* SporadicM12View.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SporadicM12View.mm; sourceTree = "<group>"; };
 		8CCFC7130EF76843001BE605 /* SporadicM12View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SporadicM12View.xib; sourceTree = "<group>"; };
 		8CCFC7F90EF77F72001BE605 /* Sporadic_Games_Logo.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = Sporadic_Games_Logo.png; sourceTree = "<group>"; };
+		8CD1E9AB0F66E7BB00122B2D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		8CD1E9AC0F66E7D300122B2D /* M12Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = M12Constants.h; path = Apple/M12Constants.h; sourceTree = "<group>"; };
 		8CD1FA540F1686DE00A589B7 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		8CD1FA920F16AAE800A589B7 /* DualActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DualActionButton.h; path = Apple/Buttons/Classes/DualActionButton.h; sourceTree = "<group>"; };
 		8CD1FA930F16AAE800A589B7 /* DualActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DualActionButton.m; path = Apple/Buttons/Classes/DualActionButton.m; sourceTree = "<group>"; };
@@ -231,6 +232,7 @@
 		8C722F6C0F66B3D400C29079 /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				8CD1E9AB0F66E7BB00122B2D /* Constants.h */,
 				8C722F6D0F66B3D400C29079 /* main.mm */,
 			);
 			name = Apple;
@@ -293,6 +295,7 @@
 		8CB4B2C70F664DD1009E968A /* M12 */ = {
 			isa = PBXGroup;
 			children = (
+				8CD1E9AC0F66E7D300122B2D /* M12Constants.h */,
 				8CCFC46C0EF6AB8B001BE605 /* Apple */,
 				8CB4B3760F664DD1009E968A /* mathieu.h */,
 				8CB4B3850F664DD1009E968A /* PlatformIndependent */,
@@ -438,7 +441,6 @@
 			isa = PBXGroup;
 			children = (
 				32CA4F630368D1EE00C91783 /* SporadicM12_Prefix.pch */,
-				8C28828F0EFB8D9400AFB4C9 /* Constants.h */,
 			);
 			name = "Application Main";
 			sourceTree = "<group>";
