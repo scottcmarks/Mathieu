@@ -57,15 +57,10 @@
 		8CB4B0520F6647B0009E968A /* SimpleDarkButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CB4B0140F6647B0009E968A /* SimpleDarkButtonHighlighted.png */; };
 		8CB4B0530F6647B0009E968A /* SimpleDarkButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CB4B0150F6647B0009E968A /* SimpleDarkButtonNormal.png */; };
 		8CB4B0560F6647B0009E968A /* SoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4B0200F6647B0009E968A /* SoundEffect.m */; };
-		8CB4B0580F6647B0009E968A /* map_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4B0270F6647B0009E968A /* map_file.c */; };
-		8CB4B0590F6647B0009E968A /* getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4B0290F6647B0009E968A /* getopt.c */; };
-		8CB4B05A0F6647B0009E968A /* getopt.man in Resources */ = {isa = PBXBuildFile; fileRef = 8CB4B02B0F6647B0009E968A /* getopt.man */; };
-		8CB4B05B0F6647B0009E968A /* comb_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4B02D0F6647B0009E968A /* comb_util.c */; };
 		8CB4B05C0F6647B0009E968A /* spor_iphone_compressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CB4B0300F6647B0009E968A /* spor_iphone_compressed.png */; };
 		8CB4B05D0F6647B0009E968A /* SporadicGamesLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CB4B0310F6647B0009E968A /* SporadicGamesLogo.png */; };
 		8CB4B0620F6647B0009E968A /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4B0380F6647B0009E968A /* point.cc */; };
 		8CB4B0630F6647B0009E968A /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CB4B03A0F6647B0009E968A /* rand_utils.c */; };
-		8CB4B0640F6647B0009E968A /* split in Resources */ = {isa = PBXBuildFile; fileRef = 8CB4B03C0F6647B0009E968A /* split */; };
 		8CCFB4DB0F45220100C78F94 /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8CCFB4D90F45220100C78F94 /* ComboButton.mm */; };
 		8CCFB4DD0F45221500C78F94 /* ComboButtonDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFB4DC0F45221500C78F94 /* ComboButtonDisabled.png */; };
 		8CCFB4F30F4523E700C78F94 /* combo.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCFB4F10F4523E700C78F94 /* combo.caf */; };
@@ -155,20 +150,12 @@
 		8CB4B01C0F6647B0009E968A /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneUtilities.h; sourceTree = "<group>"; };
 		8CB4B01F0F6647B0009E968A /* SoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffect.h; sourceTree = "<group>"; };
 		8CB4B0200F6647B0009E968A /* SoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffect.m; sourceTree = "<group>"; };
-		8CB4B0270F6647B0009E968A /* map_file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = map_file.c; sourceTree = "<group>"; };
-		8CB4B0290F6647B0009E968A /* getopt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getopt.c; sourceTree = "<group>"; };
-		8CB4B02A0F6647B0009E968A /* getopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getopt.h; sourceTree = "<group>"; };
-		8CB4B02B0F6647B0009E968A /* getopt.man */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = getopt.man; sourceTree = "<group>"; };
-		8CB4B02D0F6647B0009E968A /* comb_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = comb_util.c; sourceTree = "<group>"; };
-		8CB4B02E0F6647B0009E968A /* comb_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comb_util.h; sourceTree = "<group>"; };
 		8CB4B0300F6647B0009E968A /* spor_iphone_compressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spor_iphone_compressed.png; sourceTree = "<group>"; };
 		8CB4B0310F6647B0009E968A /* SporadicGamesLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicGamesLogo.png; sourceTree = "<group>"; };
-		8CB4B0320F6647B0009E968A /* map_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = map_file.h; sourceTree = "<group>"; };
 		8CB4B0380F6647B0009E968A /* point.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = point.cc; sourceTree = "<group>"; };
 		8CB4B0390F6647B0009E968A /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
 		8CB4B03A0F6647B0009E968A /* rand_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rand_utils.c; sourceTree = "<group>"; };
 		8CB4B03B0F6647B0009E968A /* rand_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rand_utils.h; sourceTree = "<group>"; };
-		8CB4B03C0F6647B0009E968A /* split */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = split; sourceTree = "<group>"; };
 		8CB4B03D0F6647B0009E968A /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		8CCFB4D80F45220100C78F94 /* ComboButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboButton.h; sourceTree = "<group>"; };
 		8CCFB4D90F45220100C78F94 /* ComboButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboButton.mm; sourceTree = "<group>"; };
@@ -250,8 +237,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				8CB4AFF50F6647B0009E968A /* Toolbox */,
 				8CB4AFF40F66477E009E968A /* Mathieu */,
+				8CB4AFF50F6647B0009E968A /* Toolbox */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -361,8 +348,6 @@
 			isa = PBXGroup;
 			children = (
 				8CB4AFF60F6647B0009E968A /* Apple */,
-				8CB4B0260F6647B0009E968A /* Linux */,
-				8CB4B0280F6647B0009E968A /* Microsoft */,
 				8CB4B02C0F6647B0009E968A /* PlatformIndependent */,
 			);
 			name = Toolbox;
@@ -454,37 +439,15 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		8CB4B0260F6647B0009E968A /* Linux */ = {
-			isa = PBXGroup;
-			children = (
-				8CB4B0270F6647B0009E968A /* map_file.c */,
-			);
-			path = Linux;
-			sourceTree = "<group>";
-		};
-		8CB4B0280F6647B0009E968A /* Microsoft */ = {
-			isa = PBXGroup;
-			children = (
-				8CB4B0290F6647B0009E968A /* getopt.c */,
-				8CB4B02A0F6647B0009E968A /* getopt.h */,
-				8CB4B02B0F6647B0009E968A /* getopt.man */,
-			);
-			path = Microsoft;
-			sourceTree = "<group>";
-		};
 		8CB4B02C0F6647B0009E968A /* PlatformIndependent */ = {
 			isa = PBXGroup;
 			children = (
 				8CA13DF40F61B2260009DFA9 /* Permutation */,
-				8CB4B02D0F6647B0009E968A /* comb_util.c */,
-				8CB4B02E0F6647B0009E968A /* comb_util.h */,
 				8CB4B02F0F6647B0009E968A /* Images */,
-				8CB4B0320F6647B0009E968A /* map_file.h */,
 				8CB4B0380F6647B0009E968A /* point.cc */,
 				8CB4B0390F6647B0009E968A /* point.h */,
 				8CB4B03A0F6647B0009E968A /* rand_utils.c */,
 				8CB4B03B0F6647B0009E968A /* rand_utils.h */,
-				8CB4B03C0F6647B0009E968A /* split */,
 				8CB4B03D0F6647B0009E968A /* Utilities.h */,
 			);
 			path = PlatformIndependent;
@@ -683,10 +646,8 @@
 				8CB4B0510F6647B0009E968A /* SimpleButtonRoundHighlighted.png in Resources */,
 				8CB4B0520F6647B0009E968A /* SimpleDarkButtonHighlighted.png in Resources */,
 				8CB4B0530F6647B0009E968A /* SimpleDarkButtonNormal.png in Resources */,
-				8CB4B05A0F6647B0009E968A /* getopt.man in Resources */,
 				8CB4B05C0F6647B0009E968A /* spor_iphone_compressed.png in Resources */,
 				8CB4B05D0F6647B0009E968A /* SporadicGamesLogo.png in Resources */,
-				8CB4B0640F6647B0009E968A /* split in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,9 +676,6 @@
 				8CB4B03E0F6647B0009E968A /* DualActionButton.m in Sources */,
 				8CB4B03F0F6647B0009E968A /* SimpleButton.m in Sources */,
 				8CB4B0560F6647B0009E968A /* SoundEffect.m in Sources */,
-				8CB4B0580F6647B0009E968A /* map_file.c in Sources */,
-				8CB4B0590F6647B0009E968A /* getopt.c in Sources */,
-				8CB4B05B0F6647B0009E968A /* comb_util.c in Sources */,
 				8CB4B0620F6647B0009E968A /* point.cc in Sources */,
 				8CB4B0630F6647B0009E968A /* rand_utils.c in Sources */,
 			);
