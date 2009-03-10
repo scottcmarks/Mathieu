@@ -9,10 +9,10 @@
  *
  */
 
-#include "permutation"
 #include <vector>
 #include <map>
 #include <ostream>
+#include "permutation"
 
 // The next defines are used as template porameters and are
 // also necessary to make the macro forAllBalls work correctly.

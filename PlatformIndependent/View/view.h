@@ -10,8 +10,8 @@
 #include "mathieu.h"
 #include "point.h"
 #include <string>
-typedef PermutationWithHistory::HistoryElement HistoryElement;
-typedef PermutationWithHistory::History History;
+typedef MPermutationWithHistory::HistoryElement HistoryElement;
+typedef MPermutationWithHistory::History History;
 
 // Unicode constants for superscript -1
 const wchar_t superscriptMinus = 0x207B;
