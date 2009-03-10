@@ -10,6 +10,8 @@
  */
 
 #import "m12.h"
+#import "Constants.h"
+#import "M12Constants.h"
 typedef M12Permutation MPermutation;
 typedef M12PermutationWithHistory MPermutationWithHistory;
 
