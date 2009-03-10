@@ -1,1 +1,1 @@
-../../../PlatformIndependent/M24Permutation/M24Tests.cpp
+../../../PlatformIndependent/Permutation/M24Tests.cpp
