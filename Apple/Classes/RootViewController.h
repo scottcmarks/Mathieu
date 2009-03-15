@@ -8,20 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@class SporadicM12ViewController;
+@class SporadicMViewController;
 @class PreferencesViewController;
 @class GameModel;
 
 @interface RootViewController : UIViewController  <UIAccelerometerDelegate>
 {
-    SporadicM12ViewController *mainViewController;
+    SporadicMViewController *mainViewController;
     PreferencesViewController *preferencesViewController;
 	UIAccelerationValue	myAccelerometer[3];
     CFTimeInterval		lastShakeTime;
     bool                nowHandlingShake;
 }
 
-@property (nonatomic, retain) SporadicM12ViewController *mainViewController;
+@property (nonatomic, retain) SporadicMViewController *mainViewController;
 @property (nonatomic, retain) PreferencesViewController *preferencesViewController;
 @property (nonatomic        ) bool nowHandlingShake;
 

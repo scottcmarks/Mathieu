@@ -1,6 +1,6 @@
 //
-//  SporadicM12ViewController.h
-//  SporadicM12
+//  SporadicMViewController.h
+//  SporadicM
 //
 //  Created by Jackie Marks on 10/14/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "GameModel.h"
-#import "SporadicM12View.h"
+#import "SporadicMView.h"
 #import "ComboButtonTargetProtocol.h"
 
 @class RootViewController;
 
-@interface SporadicM12ViewController : UIViewController < UITextFieldDelegate, 
+@interface SporadicMViewController : UIViewController < UITextFieldDelegate, 
                                                           UIAlertViewDelegate,
                                                           ComboButtonTarget > 
 {
@@ -23,7 +23,7 @@
 
 @property ( nonatomic, assign   ) RootViewController * rootViewController;
 
-// Handlers for events from the SporadicM12View
+// Handlers for events from the SporadicMView
 - (IBAction) toggleView     : (id)sender;
 - (IBAction) toggleInverted : (id)sender;
 - (IBAction) right          : (id)sender;

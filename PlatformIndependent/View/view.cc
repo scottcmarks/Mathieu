@@ -24,13 +24,13 @@ void CalculateBallCoordinates( const point & circleCenter,
                                point ballCoordinates[ nBalls ],
                                point tagCoordinates[ nBalls ] )
 {
-    ballCoordinates[ 0 ] = circleCenter - point(                0, 1.25 * circleRadius );
+    ballCoordinates[ 0 ] = circleCenter - point(                0, circleRadius + 2.25 * ballRadius );
     #if defined( TOP_TAG_ON_THE_LEFT )
-        tagCoordinates[ 0 ]  = circleCenter - point( +1.5 * ballRadius, 1.25 * circleRadius );
+        tagCoordinates[ 0 ]  = circleCenter - point( +1.5 * ballRadius, circleRadius + 2.25 * ballRadius );
     #elif defined( TOP_TAG_ON_THE_RIGHT )
-        tagCoordinates[ 0 ]  = circleCenter - point( -1.5 * ballRadius, 1.25 * circleRadius );
+        tagCoordinates[ 0 ]  = circleCenter - point( -1.5 * ballRadius, circleRadius + 2.25 * ballRadius );
     #else /* TOP_TAG_ON_THE_TOP */
-        tagCoordinates[ 0 ]  = circleCenter - point(                 0, 1.25 * circleRadius + 1.5 * ballRadius) ;
+        tagCoordinates[ 0 ]  = circleCenter - point(                 0, circleRadius + 2.25 * ballRadius + 1.5 * ballRadius) ;
     #endif
     for (Index i = 1; i < nBalls; i++)
     {

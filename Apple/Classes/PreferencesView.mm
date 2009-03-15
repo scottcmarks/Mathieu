@@ -7,12 +7,14 @@
 //
 
 #import "PreferencesView.h"
-#import "SporadicM12AppDelegate.h"
-#import "Constants.h"
+#import "mathieu.h"
+#import "SporadicMAppDelegate.h"
 
 @implementation PreferencesView
 
-- ( SporadicM12AppDelegate * ) appDelegate{ return ( SporadicM12AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+
+@synthesize navigationBar;
 
 @synthesize soundEffectsSwitch;
 
@@ -76,6 +78,7 @@ const CGFloat helpFontSize = 11.0;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
     updatingSwitch.on          = self.appDelegate.useSpinMessages ;
+	navigationBar.title        = appName;
 }
 
 

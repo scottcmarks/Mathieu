@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RootViewController.h"
-#import "PreferencesView.h"
-#import "HelpViewController.h"
+@class RootViewController;
+@class PreferencesView;
+@class HelpViewController;
 
 @interface PreferencesViewController : UIViewController {
              RootViewController * rootViewController ;

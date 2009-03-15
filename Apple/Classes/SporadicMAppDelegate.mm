@@ -1,6 +1,6 @@
 //
-//  SporadicM12AppDelegate.m
-//  SporadicM12
+//  SporadicMAppDelegate.m
+//  SporadicM
 //
 //  Created by Jackie Marks on 10/14/08.
 //  Copyright Magnolia Heights Research and Development. 2008. All rights reserved.
@@ -8,19 +8,19 @@
 
 #include "rand_utils.h"    
 #import "RootViewController.h"
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMAppDelegate.h"
 #import "GameModel.h"
 #import "iPhoneUtilities.h"
 
 
-static NSString *SporadicM12AnimationSpeedKey = @"SporadicM12AnimationSpeedKey" ;
-static NSString *SporadicM12SoundEffectsKey   = @"SporadicM12SoundEffectsKey"   ;
-static NSString *SporadicM12ConfirmKey        = @"SporadicM12ConfirmKey"        ;
-static NSString *SporadicM12InvertKey         = @"SporadicM12InvertKey"         ;
-static NSString *SporadicM12SpinMessagesKey   = @"SporadicM12SpinMessagesKey"   ;
-static NSString *SporadicM12GameModelKey      = @"SporadicM12GameModelKey"      ;
+static NSString *SporadicMAnimationSpeedKey = @"SporadicMAnimationSpeedKey" ;
+static NSString *SporadicMSoundEffectsKey   = @"SporadicMSoundEffectsKey"   ;
+static NSString *SporadicMConfirmKey        = @"SporadicMConfirmKey"        ;
+static NSString *SporadicMInvertKey         = @"SporadicMInvertKey"         ;
+static NSString *SporadicMSpinMessagesKey   = @"SporadicMSpinMessagesKey"   ;
+static NSString *SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
 
-@implementation SporadicM12AppDelegate
+@implementation SporadicMAppDelegate
 
 @synthesize window;
 @synthesize rootViewController;
@@ -34,7 +34,7 @@ static NSString *SporadicM12GameModelKey      = @"SporadicM12GameModelKey"      
 // +initialize is invoked before the class receives any other messages, so it
 // is a good place to set up application defaults
 + (void)initialize {
-    if ( self == [SporadicM12AppDelegate class]) {
+    if ( self == [SporadicMAppDelegate class]) {
         
         __timestamp__;
         
@@ -45,11 +45,11 @@ static NSString *SporadicM12GameModelKey      = @"SporadicM12GameModelKey"      
         [ [ NSUserDefaults standardUserDefaults ]  
               registerDefaults: [ NSDictionary 
                                       dictionaryWithObjectsAndKeys: 
-                                      [ NSNumber numberWithFloat: 2.0 ] , SporadicM12AnimationSpeedKey ,
-                                      [ NSNumber numberWithBool:true  ] , SporadicM12SoundEffectsKey   ,
-                                      [ NSNumber numberWithBool:true  ] , SporadicM12ConfirmKey        ,
-                                      [ NSNumber numberWithBool:false ] , SporadicM12InvertKey         ,
-                                      [ NSNumber numberWithBool:false ] , SporadicM12SpinMessagesKey   ,
+                                      [ NSNumber numberWithFloat: 2.0 ] , SporadicMAnimationSpeedKey ,
+                                      [ NSNumber numberWithBool:true  ] , SporadicMSoundEffectsKey   ,
+                                      [ NSNumber numberWithBool:true  ] , SporadicMConfirmKey        ,
+                                      [ NSNumber numberWithBool:false ] , SporadicMInvertKey         ,
+                                      [ NSNumber numberWithBool:false ] , SporadicMSpinMessagesKey   ,
                                       // no default gameModel -- nil will map to new game
                                       nil // sentinel for brain-dead C varargs 
                                  ] 
@@ -67,15 +67,15 @@ static NSString *SporadicM12GameModelKey      = @"SporadicM12GameModelKey"      
     
    // Restore application settings
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
-    self.animationSpeed  = [ defaults floatForKey:SporadicM12AnimationSpeedKey ];
-    self.soundEffects    = [ defaults boolForKey: SporadicM12SoundEffectsKey   ];
-    self.confirm         = [ defaults boolForKey: SporadicM12ConfirmKey        ];
-    self.invert          = [ defaults boolForKey: SporadicM12InvertKey         ];
-    self.useSpinMessages = [ defaults boolForKey: SporadicM12SpinMessagesKey   ];
+    self.animationSpeed  = [ defaults floatForKey:SporadicMAnimationSpeedKey ];
+    self.soundEffects    = [ defaults boolForKey: SporadicMSoundEffectsKey   ];
+    self.confirm         = [ defaults boolForKey: SporadicMConfirmKey        ];
+    self.invert          = [ defaults boolForKey: SporadicMInvertKey         ];
+    self.useSpinMessages = [ defaults boolForKey: SporadicMSpinMessagesKey   ];
 
     __timestamp__;
     
-    self.gameModel       = [ GameModel createFromData:[ defaults dataForKey:SporadicM12GameModelKey ] ];
+    self.gameModel       = [ GameModel createFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
     
     __timestamp__;
     
@@ -96,12 +96,12 @@ static NSString *SporadicM12GameModelKey      = @"SporadicM12GameModelKey"      
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Store user's time signature preference, so that it is used the next time the app is launched
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
-    [ defaults setFloat:  self.animationSpeed       forKey:SporadicM12AnimationSpeedKey ];
-    [ defaults setBool:   self.soundEffects         forKey:SporadicM12SoundEffectsKey   ];
-    [ defaults setBool:   self.confirm              forKey:SporadicM12ConfirmKey        ];
-    [ defaults setBool:   self.invert               forKey:SporadicM12InvertKey         ];
-    [ defaults setBool:   self.useSpinMessages      forKey:SporadicM12SpinMessagesKey   ];
-    [ defaults setObject: [ self.gameModel asData ] forKey:SporadicM12GameModelKey      ];
+    [ defaults setFloat:  self.animationSpeed       forKey:SporadicMAnimationSpeedKey ];
+    [ defaults setBool:   self.soundEffects         forKey:SporadicMSoundEffectsKey   ];
+    [ defaults setBool:   self.confirm              forKey:SporadicMConfirmKey        ];
+    [ defaults setBool:   self.invert               forKey:SporadicMInvertKey         ];
+    [ defaults setBool:   self.useSpinMessages      forKey:SporadicMSpinMessagesKey   ];
+    [ defaults setObject: [ self.gameModel asData ] forKey:SporadicMGameModelKey      ];
 }
 
 

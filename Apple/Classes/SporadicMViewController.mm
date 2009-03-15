@@ -1,28 +1,28 @@
 //
-//  SporadicM12ViewController.m
-//  SporadicM12
+//  SporadicMViewController.m
+//  SporadicM
 //
 //  Created by Jackie Marks on 10/14/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
 //
 
 #import <UIKit/UIFont.h>
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMAppDelegate.h"
 #import "RootViewController.h"
-#import "SporadicM12ViewController.h"
-#import "SporadicM12View.h"
+#import "SporadicMViewController.h"
+#import "SporadicMView.h"
 #import "view.h"
 #import "ballView.h"
 #import "OKCancelAlertView.h"
 #import "Constants.h"
 
-@implementation SporadicM12ViewController
+@implementation SporadicMViewController
 
 @synthesize rootViewController;
 
-- ( SporadicM12AppDelegate * ) appDelegate{ return ( SporadicM12AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
-- ( SporadicM12View *) spview { return (SporadicM12View *) self.view ; }
+- ( SporadicMView *) spview { return (SporadicMView *) self.view ; }
 - ( bool ) confirm { return self.appDelegate.confirm; }
 - ( bool ) invert  { return self.appDelegate.invert; }
 - ( void ) setInvert:(bool)inverted { [ self.spview setInvertibleButtonsInverted: ( self.appDelegate.invert = inverted ) ]; }
@@ -32,13 +32,7 @@
 // Implement viewDidLoad to do additional setup after loading the view.
 - (void)viewDidLoad {
     [ super viewDidLoad ];
-    haveNotedSuccess = false;
-}
-
-- ( void )loadview
-{
-    [ super loadView ];
-    haveNotedSuccess = false;
+    haveNotedSuccess = [ self.gameModel isSolving ] && [ self.gameModel isIdentity ];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -58,7 +52,7 @@
 
 
 
-// Handlers for events from the SporadicM12View
+// Handlers for events from the SporadicMView
 
 
 - (IBAction)toggleView:(id)sender {
@@ -238,7 +232,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 -(void) confirmHome 
 {
     [ OKCancelAlertView OKCancelAlertWithTitle: @"Home!"
-                                       message: @"This will reset M12 to the home position.\n" 
+                                       message: @"This will reset " appName @" to the home position.\n" 
                                                 @"Press OK if you want to do this."
                                         target: self
                                 cancelSelector: NULL
@@ -282,7 +276,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 -(void) confirmShake{
     [ OKCancelAlertView OKCancelAlertWithTitle: @"Shake!"
-                                       message: @"This will create a new M12 puzzle.\n" 
+                                       message: @"This will create a new " appName @" puzzle.\n" 
                                                 @"Press OK if you want to do this."
                                         target: self
                                 cancelSelector: @selector( noShake )

@@ -14,12 +14,13 @@
 #include <ostream>
 #include "permutation"
 
-// The next defines are used as template porameters and are
+// The next defines are used as template parameters and are
 // also necessary to make the macro forAllBalls work correctly.
 typedef signed char tiny_int;
 typedef long long int big_int;
 
 #define nBalls 24
+
 // #define Index tiny_int
 #define Index tiny_int
 #define Rank big_int
@@ -69,6 +70,8 @@ after_the_multiply:
     --f[ j ];
     }
   };
+  static M24Permutation swapPermutation;
+  static M24Permutation rightPermutation;
 };
 
 class M24PermutationWithHistory: public M24Permutation {

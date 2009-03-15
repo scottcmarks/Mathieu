@@ -1,25 +1,24 @@
 //
-//  SporadicM12View.h
-//  SporadicM12
+//  SporadicMView.h
+//  SporadicM
 //
 //  Created by Jackie Marks on 12/15/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "BallView.h"
-#import "SoundEffect.h"
 #import "GameModel.h"
-// #import "TransitionView.h"
-#import "ComboButton.h"
 
+@class BallView;
+@class SoundEffect;
+@class ComboButton;
+@class SporadicMViewController;
+@class DualActionButton;
 
-@class SporadicM12ViewController;
-
-@interface SporadicM12View : UIView // TransitionView 
+@interface SporadicMView : UIView // TransitionView 
 {
 
-    SporadicM12ViewController * controller;
+    SporadicMViewController * controller;
     UIToolbar * toolbar;
     UITextView *history;
     
@@ -56,7 +55,7 @@
 
 @property ( nonatomic, assign   ) IBOutlet UIToolbar * toolbar;
 @property ( nonatomic, assign   ) IBOutlet UITextView *history;
-@property ( nonatomic, assign   ) IBOutlet SporadicM12ViewController * controller;
+@property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
 
 @property ( nonatomic, retain   ) SoundEffect *tickSound;
 @property ( nonatomic, retain   ) SoundEffect *tockSound;
