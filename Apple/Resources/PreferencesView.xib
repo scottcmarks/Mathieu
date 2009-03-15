@@ -2,13 +2,12 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">544</int>
-		<string key="IBDocument.SystemVersion">9G55</string>
+		<string key="IBDocument.SystemVersion">9G2110</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
 		<string key="IBDocument.AppKitVersion">949.43</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -32,7 +31,7 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 			</object>
 			<object class="IBUIView" id="191373211">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,7 +46,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUINavigationItem" id="363299050">
 								<reference key="IBUINavigationBar" ref="68036707"/>
-								<string key="IBUITitle">M12</string>
+								<string key="IBUITitle">M</string>
 								<object class="IBUIBarButtonItem" key="IBUIBackBarButtonItem" id="73104455">
 									<string key="IBUITitle">Done</string>
 									<int key="IBUIStyle">1</int>
@@ -227,7 +226,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
-				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC43NTI5NDExOSAwLjc1Mjk0MTE5IDAuODg2Mjc0NTIAA</bytes>
@@ -353,6 +351,14 @@
 						<int key="IBEventType">13</int>
 					</object>
 					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">navigationBar</string>
+						<reference key="source" ref="191373211"/>
+						<reference key="destination" ref="363299050"/>
+					</object>
+					<int key="connectionID">71</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -520,7 +526,7 @@
 					<string>PreferencesViewController</string>
 					<string>UIResponder</string>
 					<string>PreferencesView</string>
-					<string>{{970, 335}, {320, 460}}</string>
+					<string>{{435, 214}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -560,7 +566,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">70</int>
+			<int key="maxID">71</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -575,6 +581,7 @@
 							<string>animationSpeedSlider</string>
 							<string>confirmHelp</string>
 							<string>confirmSwitch</string>
+							<string>navigationBar</string>
 							<string>soundEffectsSwitch</string>
 							<string>updatingHelp</string>
 							<string>updatingSwitch</string>
@@ -584,6 +591,7 @@
 							<string>UISlider</string>
 							<string>UILabel</string>
 							<string>UISwitch</string>
+							<string>UINavigationItem</string>
 							<string>UISwitch</string>
 							<string>UILabel</string>
 							<string>UISwitch</string>
@@ -646,7 +654,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../SporadicM12.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../Mathieu.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 	</data>
 </archive>

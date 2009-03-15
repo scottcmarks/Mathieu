@@ -1,14 +1,14 @@
 //
 //  RootViewController.mm
-//  Top-level view controller in the SporadicM12 application
+//  Top-level view controller in the SporadicM application
 //
 //  Created by Jackie Marks on 12/15/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
 //
 
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMAppDelegate.h"
 #import "RootViewController.h"
-#import "SporadicM12ViewController.h"
+#import "SporadicMViewController.h"
 #import "PreferencesViewController.h"
 #import "Constants.h"
 
@@ -20,24 +20,22 @@
 
 // TODO:  Factor out common code.
 // This might require invention of a common superclass for PV controller and mainview controller.
-// If so, I'm thinking to change what is now call SporadicM12View* to MainView* and use the names
-// SporadicM12View* for the common superclass.  Slightly too much C12H22O11 for $0.10 at the moment.
+// If so, I'm thinking to change what is now call SporadicMView* to MainView* and use the names
+// SporadicMView* for the common superclass.  Slightly too much C12H22O11 for $0.10 at the moment.
 // Also, code might fork as MVC persistent state acquires things the PVC doesn't know about.
 
 - (void)loadPreferencesViewController {
     PreferencesViewController *viewController = [[PreferencesViewController alloc] initWithNibName:@"PreferencesView" bundle:nil];
     self.preferencesViewController = viewController;
     viewController.rootViewController = self;
-    [ viewController loadView ];
     [viewController release];
 }
 
 
 - (void)loadMainViewController {
-    SporadicM12ViewController *viewController = [[SporadicM12ViewController alloc] initWithNibName:@"SporadicM12View" bundle:nil];
+    SporadicMViewController *viewController = [[SporadicMViewController alloc] initWithNibName:@"SporadicMView" bundle:nil];
     self.mainViewController = viewController;
     viewController.rootViewController = self;
-    [ viewController loadView ];
     [viewController release];
 }
 

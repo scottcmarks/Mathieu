@@ -1,6 +1,6 @@
 //
 //  GameModel.m
-//  SporadicM12
+//  SporadicM
 //
 //  Created by Jackie Marks on 10/22/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
@@ -18,17 +18,17 @@ using namespace std;
 #import "iPhoneUtilities.h"
 @implementation GameModel
 
--( M12PermutationWithHistory *) serializePermutationFrom: ( istream & ) is
+-( MPermutationWithHistory *) serializePermutationFrom: ( istream & ) is
 {
     unsigned char flag;
     is.read( ( char * )& flag, sizeof( flag ) );
     if ( 0 == flag )
         return NULL;
     assert ( 1 == flag );
-    return new M12PermutationWithHistory( is );
+    return new MPermutationWithHistory( is );
 }
 
--( ostream & ) serializePermutation:( M12PermutationWithHistory *)p to:( ostream & ) os
+-( ostream & ) serializePermutation:( MPermutationWithHistory *)p to:( ostream & ) os
 {
     unsigned char flag = p ? 1 : 0;
     os.write( ( char * )& flag, sizeof( flag ) );
@@ -39,7 +39,7 @@ using namespace std;
 
 -(id)init{
 	if ( self = [super init] ) {
-        currentPermutation = new M12PermutationWithHistory;
+        currentPermutation = new MPermutationWithHistory;
         startingPermutation = NULL;
 	}
 	return self;
@@ -131,21 +131,21 @@ using namespace std;
 
 
 // Allow permutation operations without history changes
-static inline M12Permutation & as( M12PermutationWithHistory & p) { return (* ( M12Permutation * ) & p ) ; }
+static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPermutation * ) & p ) ; }
 
 -(void) revert
 {
-    M12PermutationWithHistory::History saveHistory = currentPermutation -> getHistory( );
+    MPermutationWithHistory::History saveHistory = currentPermutation -> getHistory( );
 	*currentPermutation = *startingPermutation;  // copy
     for( HistoryElement c = 'A'; c <= lastComboButton ; c++ )
         if ( saveHistory.macro_is_defined( c ) )
         {
-            M12PermutationWithHistory comboDef = saveHistory.macro_definition( c );
+            MPermutationWithHistory comboDef = saveHistory.macro_definition( c );
             currentPermutation -> set_macro( c , comboDef ) ;
         }
 }
 
--(void) setStartingPermutation: ( M12PermutationWithHistory *)p
+-(void) setStartingPermutation: ( MPermutationWithHistory *)p
 {
     if ( startingPermutation )
         delete startingPermutation;
@@ -171,7 +171,7 @@ static inline M12Permutation & as( M12PermutationWithHistory & p) { return (* ( 
 
 -(void) random{
 	(*currentPermutation).random( );
-    [ self setStartingPermutation: new M12PermutationWithHistory( *currentPermutation ) ]; 
+    [ self setStartingPermutation: new MPermutationWithHistory( *currentPermutation ) ]; 
 }
 
 -(bool) undo: (bool)move move: ( HistoryElement & ) e
@@ -198,7 +198,7 @@ static inline M12Permutation & as( M12PermutationWithHistory & p) { return (* ( 
 
 -(void) setCombo:(HistoryElement)c
 {
-    M12PermutationWithHistory comboDef( * currentPermutation );
+    MPermutationWithHistory comboDef( * currentPermutation );
     if ( startingPermutation )
         as( comboDef ) = as( * startingPermutation ).inverse( ) * as( comboDef ); 
     (*currentPermutation).set_macro( c, comboDef );

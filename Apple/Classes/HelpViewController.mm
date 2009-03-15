@@ -6,20 +6,21 @@
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
 //
 
+#import "mathieu.h"
 #import "HelpViewController.h"
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMAppDelegate.h"
 
 @implementation HelpViewController
 @synthesize rootViewController;
 @synthesize helpView;
 
-- ( SporadicM12AppDelegate * ) appDelegate{ return ( SporadicM12AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // this will appear as the title in the navigation bar
-        self.title = NSLocalizedString(@"SporadicM12", @"");
+        self.title = NSLocalizedString(appName, @"");
     }
     return self;
 }

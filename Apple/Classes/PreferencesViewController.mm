@@ -7,7 +7,10 @@
 //
 
 #import "PreferencesViewController.h"
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMAppDelegate.h"
+#import "RootViewController.h"
+#import "PreferencesView.h"
+#import "HelpViewController.h"
 
 @implementation PreferencesViewController
 
@@ -15,35 +18,14 @@
 @synthesize preferencesView;
 @synthesize helpViewController;
 
-- ( SporadicM12AppDelegate * ) appDelegate{ return ( SporadicM12AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // this will appear as the title in the navigation bar
-        self.title = NSLocalizedString(@"M12 Preferences", @"");
-    }
-    return self;
-}
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-//  Never called because we are loaded from a Nib, not by the alloc/init dance
-//  - ( void ) viewDidLoad {
-//  [ super viewDidLoad ];
-//  }
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
-//  - (void)didReceiveMemoryWarning {
-//      [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-//      // Release anything that's not essential, such as cached data shadow?
-//  }
-
 
 - (void)dealloc {
     self.rootViewController = nil;

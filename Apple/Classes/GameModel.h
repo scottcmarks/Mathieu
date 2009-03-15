@@ -1,20 +1,20 @@
 //
 //  GameModel.h
-//  SporadicM12
+//  SporadicM
 //
 //  Created by Jackie Marks on 10/22/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "m12.h"
+#import "mathieu.h"
 
-typedef M12PermutationWithHistory::PermArray PermArray;
-typedef M12PermutationWithHistory::HistoryElement HistoryElement;
+typedef MPermutationWithHistory::PermArray PermArray;
+typedef MPermutationWithHistory::HistoryElement HistoryElement;
 @interface GameModel : NSObject {
 @private
-    M12PermutationWithHistory *currentPermutation;
-    M12PermutationWithHistory *startingPermutation;
+    MPermutationWithHistory *currentPermutation;
+    MPermutationWithHistory *startingPermutation;
 }
 
 -(id) init;

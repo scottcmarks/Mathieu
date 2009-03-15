@@ -1,6 +1,6 @@
 //
-//  SporadicM12View.mm
-//  SporadicM12
+//  SporadicMView.mm
+//  SporadicM
 //
 //  Created by Jackie Marks on 12/15/08.
 //  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
@@ -9,14 +9,17 @@
 #import "view.h"
 #import "Constants.h"
 #import "Utilities.h"
-#import "SporadicM12View.h"
-#import "SporadicM12ViewController.h"
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMView.h"
+#import "SporadicMViewController.h"
+#import "SporadicMAppDelegate.h"
+#import "BallView.h"
+#import "SoundEffect.h"
+#import "ComboButton.h"
 
-const point circleCenter( 160.0, 196.0 );   // TODO: set using characteristics of the view
-const CGFloat circleRadius = 130.0 ;
+static point circleCenter;
+static CGFloat circleRadius;
 
-@implementation SporadicM12View
+@implementation SporadicMView
 
 @synthesize toolbar;
 @synthesize history;
@@ -36,7 +39,7 @@ const CGFloat circleRadius = 130.0 ;
 
 @synthesize historyTextCache;
 
-- ( SporadicM12AppDelegate * ) appDelegate{ return ( SporadicM12AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 - ( bool ) invert { return self.appDelegate.invert; }
 - ( bool ) useSpinMessages { return self.appDelegate.useSpinMessages; }
@@ -131,13 +134,16 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     self.successSound  = [ [ SoundEffect alloc ] initWithResource:@"success"   ofType:@"caf" ];
     self.applauseSound = [ [ SoundEffect alloc ] initWithResource:@"applause"  ofType:@"caf" ];
 
-    history.font = [UIFont systemFontOfSize:historyFontSize ];
+	history.font = [UIFont systemFontOfSize:historyFontSize ];
     self.historyTextCache = @"";
+	const CGFloat frameHalfWidth = self.frame.size.width/2;
+	circleRadius = frameHalfWidth - 2*MBallRadius ;
+	circleCenter = point( frameHalfWidth, frameHalfWidth + 1.5*MBallRadius + tagFontSize );
 
     point ballCoordinates[ nBalls ];
     point tagCoordinates [ nBalls ];
-    CalculateBallCoordinates( circleCenter, circleRadius, M12BallRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
-    CGRect frame = CGRectMake ( 0.0, 0.0, M12BallRadius*2, M12BallRadius*2 );
+    CalculateBallCoordinates( circleCenter, circleRadius, MBallRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
+    CGRect frame = CGRectMake ( 0.0, 0.0, MBallRadius*2, MBallRadius*2 );
 
     // Do all the geometry
     forAllBalls(i)
@@ -197,9 +203,9 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
              CGPoint center; CGFloat width; UIButton * * variable; } dualActionButtons[ ] = {
                  { @"Shake", @selector(shake:)    , @"Restart", @selector(restart:)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
                  { @"Home" , @selector(home:)     , nil       , NULL                 , { 268,  34 }, largeActionButtonWidth , NULL         },
-                 { @"Left" , @selector(left:)     , nil       , NULL                 , { 100, 190 }, mediumActionButtonWidth, NULL         },
-                 { @"Swap" , @selector(swap:)     , nil       , NULL                 , { 160, 190 }, mediumActionButtonWidth, NULL         },
-                 { @"Right", @selector(right:)    , nil       , NULL                 , { 220, 190 }, mediumActionButtonWidth, NULL         },
+                 { @"Left" , @selector(left:)     , nil       , NULL                 , { 130, 220 }, mediumActionButtonWidth, NULL         },
+                 { @"Swap" , @selector(swap:)     , nil       , NULL                 , { 160, 175 }, mediumActionButtonWidth, NULL         },
+                 { @"Right", @selector(right:)    , nil       , NULL                 , { 190, 220 }, mediumActionButtonWidth, NULL         },
                  { @"Undo" , @selector(undoStep:) , @"Undo!"  , @selector(undoMove:) , { 289, 360 }, mediumActionButtonWidth, &undoButton  },
     };
     forArray( i, dualActionButtons )
