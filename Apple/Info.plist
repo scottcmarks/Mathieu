@@ -5,17 +5,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>${TARGET_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>SporadicM24Icon_Prerendered.png</string>
+	<string>${TARGET_NAME}Icon_Prerendered.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.magnoliaheights.${PRODUCT_NAME:identifier}</string>
+	<string>com.magnoliaheights.${TARGET_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>${TARGET_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
@@ -30,7 +30,5 @@
 	<string>Copyright 2009 Magnolia Heights Research and Development</string>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
-	<key>UIPrerenderedIcon</key>
-	<true/>
 </dict>
 </plist>

@@ -29,12 +29,12 @@ M24Permutation::M24Permutation( const M24Permutation::PermArray p )
   : super( p ) 
   { };
 
-//                                                    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
+//                                       0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
 //
-static const M24Permutation::PermArray swap_perm = {  1,  0, 23,  4,  3, 22, 11,  8,  7, 10,  9,  6, 21, 14, 13, 20, 17, 16, 19, 18, 15, 12,  5,  2 };
-static const M24Permutation swapPermutation( swap_perm );
-static const M24Permutation::PermArray right_perm= {  0, 23,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 };
-static const M24Permutation rightPermutation( right_perm );
+M24Permutation::PermArray swap_perm = {  1,  0, 23,  4,  3, 22, 11,  8,  7, 10,  9,  6, 21, 14, 13, 20, 17, 16, 19, 18, 15, 12,  5,  2 };
+M24Permutation M24Permutation::swapPermutation( swap_perm );
+M24Permutation::PermArray right_perm= {  0, 23,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 };
+M24Permutation M24Permutation::rightPermutation( right_perm );
 
 M24Permutation & M24Permutation::left( Index count ) {
   for ( Index i = 0 ; i < count ; i ++ ) *this /= rightPermutation ;

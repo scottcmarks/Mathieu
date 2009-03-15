@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface PreferencesView : UIView {
     UISlider * animationSpeedSlider;
     UISwitch * soundEffectsSwitch;
@@ -16,6 +15,7 @@
     UILabel  * confirmHelp;
     UISwitch * updatingSwitch;
     UILabel  * updatingHelp;
+	UINavigationItem * navigationBar;
 }
 @property( nonatomic, retain) IBOutlet UISlider * animationSpeedSlider;
 @property( nonatomic, retain) IBOutlet UISwitch * soundEffectsSwitch;
@@ -23,6 +23,7 @@
 @property( nonatomic, retain) IBOutlet UILabel  * confirmHelp;
 @property( nonatomic, retain) IBOutlet UISwitch * updatingSwitch;
 @property( nonatomic, retain) IBOutlet UILabel  * updatingHelp;
+@property( nonatomic, retain) IBOutlet UINavigationItem * navigationBar;
 
 @property /* dynamic */           CGFloat animationSpeed;
 @property /* dynamic */           bool soundEffects;

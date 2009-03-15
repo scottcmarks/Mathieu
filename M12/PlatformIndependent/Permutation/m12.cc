@@ -1,5 +1,5 @@
  /*
- *  m12.c
+ *  m12.cc
  *  SporadicM12
  *
  *  Created by Jackie Marks on 10/15/08.

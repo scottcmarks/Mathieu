@@ -7,7 +7,7 @@
 //
 
 #import "HelpView.h"
-#import "SporadicM12AppDelegate.h"
+#import "SporadicMAppDelegate.h"
 #import "Constants.h"
 
 @implementation HelpView
@@ -15,7 +15,7 @@
 //@synthesize helpWebView;
 @synthesize backButton;
 
-//- ( SporadicM12AppDelegate * ) appDelegate{ return ( SporadicM12AppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+//- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 
 - ( void ) showInitialHelpScreen
 {
