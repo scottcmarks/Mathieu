@@ -14,10 +14,6 @@
 	float B;
 }
 
-@property float R;
-@property float G;
-@property float B;
-
 - (id)initWithFrame:(CGRect)frame ballNumber: (int)i;
 
 

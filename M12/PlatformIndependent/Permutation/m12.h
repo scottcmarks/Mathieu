@@ -14,12 +14,13 @@
 #include <map>
 #include <ostream>
 
-// The next defines are used as template porameters and are
+// The next defines are used as template parameters and are
 // also necessary to make the macro forAllBalls work correctly.
 typedef signed char tiny_int;
 typedef long int big_int;
 
 #define nBalls 12
+
 // #define Index tiny_int
 #define Index tiny_int
 #define Rank big_int

@@ -1,6 +1,6 @@
 //
-//  SporadicM12AppDelegate.h
-//  SporadicM12
+//  SporadicMAppDelegate.h
+//  Mathieu
 //
 //  Created by Jackie Marks on 10/14/08.
 //  Copyright Magnolia Heights Research and Development. 2008. All rights reserved.
@@ -11,7 +11,7 @@
 @class RootViewController;
 @class GameModel;
 
-@interface SporadicM12AppDelegate : NSObject <UIApplicationDelegate> {
+@interface SporadicMAppDelegate : NSObject <UIApplicationDelegate> {
     IBOutlet UIWindow *window;
 	RootViewController *rootViewController;
     CGFloat animationSpeed;
