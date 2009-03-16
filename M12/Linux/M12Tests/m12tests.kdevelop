@@ -21,7 +21,7 @@
   <kdevautoproject>
     <general>
       <activetarget>src/AnalyzeM12</activetarget>
-      <useconfiguration>optimized</useconfiguration>
+      <useconfiguration>default</useconfiguration>
     </general>
     <run>
       <mainprogram/>
@@ -63,7 +63,7 @@
         <envvars/>
         <configargs/>
         <topsourcedir/>
-        <cppflags/>
+        <cppflags>-D MATHIEU_GROUP_PERMUTATION_SIZE=12</cppflags>
         <ldflags/>
         <ccompilerbinary/>
         <cxxcompilerbinary/>
@@ -78,7 +78,33 @@
         <cxxcompiler>kdevgppoptions</cxxcompiler>
         <f77compiler>kdevg77options</f77compiler>
         <cxxflags>-O0 -g3</cxxflags>
+        <envvars/>
+        <topsourcedir/>
+        <cppflags>-D MATHIEU_GROUP_PERMUTATION_SIZE=12</cppflags>
+        <ldflags/>
+        <ccompilerbinary/>
+        <cxxcompilerbinary/>
+        <f77compilerbinary/>
+        <cflags/>
+        <f77flags/>
       </debug>
+      <default>
+        <envvars/>
+        <configargs/>
+        <builddir/>
+        <topsourcedir/>
+        <cppflags>-D MATHIEU_GROUP_PERMUTATION_SIZE=12</cppflags>
+        <ldflags/>
+        <ccompiler>kdevgccoptions</ccompiler>
+        <cxxcompiler>kdevgppoptions</cxxcompiler>
+        <f77compiler>kdevg77options</f77compiler>
+        <ccompilerbinary/>
+        <cxxcompilerbinary/>
+        <f77compilerbinary/>
+        <cflags/>
+        <cxxflags/>
+        <f77flags/>
+      </default>
     </configurations>
     <make>
       <envvars>
