@@ -1,7 +1,14 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="0" />
+ <DocsAndViews NumberOfDocuments="2" >
+  <Doc0 NumberOfViews="1" URL="file:///home/markss/iPhoneSandbox/Mathieu/PlatformIndependent/View/view.h" >
+   <View0 Encoding="" line="9" Type="Source" />
+  </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:///home/markss/iPhoneSandbox/Mathieu/PlatformIndependent/mathieu.h" >
+   <View0 Encoding="" line="8" Type="Source" />
+  </Doc1>
+ </DocsAndViews>
  <pluginList>
   <kdevdebugger>
    <breakpointList/>
