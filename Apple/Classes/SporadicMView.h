@@ -25,8 +25,8 @@
     BallView *ballViews[ nBalls ];
     UILabel *ballLabels[ nBalls ];
     CGPoint ballCenters[ nBalls ];
-    SoundEffect *tickSound;
-    SoundEffect *tockSound;
+    SoundEffect *rightSound;
+    SoundEffect *leftSound;
     SoundEffect *swapSound;
     SoundEffect *homeSound;
     SoundEffect *shakeSound;
@@ -57,8 +57,8 @@
 @property ( nonatomic, assign   ) IBOutlet UITextView *history;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
 
-@property ( nonatomic, retain   ) SoundEffect *tickSound;
-@property ( nonatomic, retain   ) SoundEffect *tockSound;
+@property ( nonatomic, retain   ) SoundEffect *rightSound;
+@property ( nonatomic, retain   ) SoundEffect *leftSound;
 @property ( nonatomic, retain   ) SoundEffect *swapSound;
 @property ( nonatomic, retain   ) SoundEffect *homeSound;
 @property ( nonatomic, retain   ) SoundEffect *shakeSound;
