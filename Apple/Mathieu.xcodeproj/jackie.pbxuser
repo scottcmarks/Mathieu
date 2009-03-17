@@ -7,9 +7,9 @@
 		);
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = 8C1B87950F68448D00F359D6 /* SporadicM12 */;
-		activeSDKPreference = iphonesimulator2.2.1;
+		activeSDKPreference = iphoneos2.2.1;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* SporadicM12 */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* SporadicM12 */,
@@ -105,8 +105,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 258999608;
-			PBXWorkspaceStateSaveDate = 258999608;
+			PBXPerProjectTemplateStateSaveDate = 259008721;
+			PBXWorkspaceStateSaveDate = 259008721;
 		};
 		perUserProjectItems = {
 			8C094E520F682CA6004D4599 = 8C094E520F682CA6004D4599 /* PBXBookmark */;
@@ -239,7 +239,6 @@
 			8C97FF7F0F70029F00AFA4BB = 8C97FF7F0F70029F00AFA4BB /* PBXBookmark */;
 			8C97FF810F70029F00AFA4BB = 8C97FF810F70029F00AFA4BB /* PBXBookmark */;
 			8C97FF830F70029F00AFA4BB = 8C97FF830F70029F00AFA4BB /* PBXBookmark */;
-			8C97FF850F70029F00AFA4BB = 8C97FF850F70029F00AFA4BB /* PBXBookmark */;
 			8C97FF860F70029F00AFA4BB = 8C97FF860F70029F00AFA4BB /* PBXBookmark */;
 			8C97FF880F70029F00AFA4BB = 8C97FF880F70029F00AFA4BB /* PBXBookmark */;
 			8C97FF8A0F70029F00AFA4BB = 8C97FF8A0F70029F00AFA4BB /* PBXBookmark */;
@@ -256,17 +255,13 @@
 			8C97FFA00F70029F00AFA4BB = 8C97FFA00F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFA20F70029F00AFA4BB = 8C97FFA20F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFA40F70029F00AFA4BB = 8C97FFA40F70029F00AFA4BB /* PBXBookmark */;
-			8C97FFA60F70029F00AFA4BB = 8C97FFA60F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFA80F70029F00AFA4BB = 8C97FFA80F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFAA0F70029F00AFA4BB = 8C97FFAA0F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFAC0F70029F00AFA4BB = 8C97FFAC0F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFAE0F70029F00AFA4BB = 8C97FFAE0F70029F00AFA4BB /* PBXBookmark */;
-			8C97FFB00F70029F00AFA4BB = 8C97FFB00F70029F00AFA4BB /* PBXBookmark */;
-			8C97FFB20F70029F00AFA4BB = 8C97FFB20F70029F00AFA4BB /* PBXBookmark */;
-			8C97FFB40F70029F00AFA4BB = 8C97FFB40F70029F00AFA4BB /* PBXBookmark */;
 			8C97FFB60F70029F00AFA4BB = 8C97FFB60F70029F00AFA4BB /* PBXBookmark */;
-			8C97FFB80F70029F00AFA4BB = 8C97FFB80F70029F00AFA4BB /* PBXDocBookmark */;
-			8C97FFC10F70053D00AFA4BB /* PBXBookmark */ = 8C97FFC10F70053D00AFA4BB /* PBXBookmark */;
+			8C97FFCC0F70130D00AFA4BB = 8C97FFCC0F70130D00AFA4BB /* PBXBookmark */;
+			8C97FFD40F7028E500AFA4BB /* PBXBookmark */ = 8C97FFD40F7028E500AFA4BB /* PBXBookmark */;
 			8CF38BF20F67B48900B9D6FF = 8CF38BF20F67B48900B9D6FF /* PBXTextBookmark */;
 			8CFA020B0F69825800B63278 = 8CFA020B0F69825800B63278 /* PBXTextBookmark */;
 		};
@@ -1602,12 +1597,6 @@
 		vrLen = 932;
 		vrLoc = 6576;
 	};
-	8C97FF270F6ECE5100AFA4BB /* puzzle_penultimate_position.png */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = image.png;
-		path = puzzle_penultimate_position.png;
-		sourceTree = "<group>";
-	};
 	8C97FF5D0F70029F00AFA4BB /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = 8C97FF5E0F70029F00AFA4BB /* A.png */;
@@ -1828,10 +1817,6 @@
 		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/alt_button_clicked.png;
 		sourceTree = "<absolute>";
 	};
-	8C97FF850F70029F00AFA4BB /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 8C97FF270F6ECE5100AFA4BB /* puzzle_penultimate_position.png */;
-	};
 	8C97FF860F70029F00AFA4BB /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = 8C97FF870F70029F00AFA4BB /* home_position.png */;
@@ -2008,17 +1993,6 @@
 		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/home_confirm.png;
 		sourceTree = "<absolute>";
 	};
-	8C97FFA60F70029F00AFA4BB /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 8C97FFA70F70029F00AFA4BB /* home_position.png */;
-	};
-	8C97FFA70F70029F00AFA4BB /* home_position.png */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = image.png;
-		name = home_position.png;
-		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/home_position.png;
-		sourceTree = "<absolute>";
-	};
 	8C97FFA80F70029F00AFA4BB /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = 8C97FFA90F70029F00AFA4BB /* info_button_pressed.png */;
@@ -2063,39 +2037,6 @@
 		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/swap_position.png;
 		sourceTree = "<absolute>";
 	};
-	8C97FFB00F70029F00AFA4BB /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 8C97FFB10F70029F00AFA4BB /* alt_button.png */;
-	};
-	8C97FFB10F70029F00AFA4BB /* alt_button.png */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = image.png;
-		name = alt_button.png;
-		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/alt_button.png;
-		sourceTree = "<absolute>";
-	};
-	8C97FFB20F70029F00AFA4BB /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 8C97FFB30F70029F00AFA4BB /* alt_button_active.png */;
-	};
-	8C97FFB30F70029F00AFA4BB /* alt_button_active.png */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = image.png;
-		name = alt_button_active.png;
-		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/alt_button_active.png;
-		sourceTree = "<absolute>";
-	};
-	8C97FFB40F70029F00AFA4BB /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 8C97FFB50F70029F00AFA4BB /* alt_button_clicked.png */;
-	};
-	8C97FFB50F70029F00AFA4BB /* alt_button_clicked.png */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = image.png;
-		name = alt_button_clicked.png;
-		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/alt_button_clicked.png;
-		sourceTree = "<absolute>";
-	};
 	8C97FFB60F70029F00AFA4BB /* PBXBookmark */ = {
 		isa = PBXBookmark;
 		fRef = 8C97FFB70F70029F00AFA4BB /* puzzle_penultimate_position.png */;
@@ -2107,16 +2048,20 @@
 		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/puzzle_penultimate_position.png;
 		sourceTree = "<absolute>";
 	};
-	8C97FFB80F70029F00AFA4BB /* PBXDocBookmark */ = {
-		isa = PBXDocBookmark;
-		anchor = "(null)";
-		fRef = 8C1B88A40F68452900F359D6 /* index.html */;
-		glyphRangeLength = 0;
-		glyphRangeLocation = 0;
-	};
-	8C97FFC10F70053D00AFA4BB /* PBXBookmark */ = {
+	8C97FFCC0F70130D00AFA4BB /* PBXBookmark */ = {
 		isa = PBXBookmark;
-		fRef = 8C97FFB70F70029F00AFA4BB /* puzzle_penultimate_position.png */;
+		fRef = 8C97FFCD0F70130D00AFA4BB /* puzzle_penultimate_position.png */;
+	};
+	8C97FFCD0F70130D00AFA4BB /* puzzle_penultimate_position.png */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = image.png;
+		name = puzzle_penultimate_position.png;
+		path = /Users/jackie/Documents/Mathieu/M12/PlatformIndependent/Documentation/html/Images/puzzle_penultimate_position.png;
+		sourceTree = "<absolute>";
+	};
+	8C97FFD40F7028E500AFA4BB /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 8C97FFCD0F70130D00AFA4BB /* puzzle_penultimate_position.png */;
 	};
 	8CF386F70F67B03900B9D6FF /* Source Control */ = {
 		isa = PBXSourceControlManager;
