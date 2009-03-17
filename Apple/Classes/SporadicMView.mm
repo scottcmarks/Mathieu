@@ -24,8 +24,8 @@ static CGFloat circleRadius;
 @synthesize toolbar;
 @synthesize history;
 @synthesize controller;
-@synthesize tickSound;
-@synthesize tockSound;
+@synthesize rightSound;
+@synthesize leftSound;
 @synthesize swapSound;
 @synthesize homeSound;
 @synthesize shakeSound;
@@ -122,8 +122,8 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 - (void) awakeFromNib
 {
 
-    self.tickSound     = [ [ SoundEffect alloc ] initWithResource:@"tick"      ofType:@"caf" ];
-    self.tockSound     = [ [ SoundEffect alloc ] initWithResource:@"tock"      ofType:@"caf" ];
+    self.rightSound     = [ [ SoundEffect alloc ] initWithResource:@"right"      ofType:@"caf" ];
+    self.leftSound     = [ [ SoundEffect alloc ] initWithResource:@"left"      ofType:@"caf" ];
     self.swapSound     = [ [ SoundEffect alloc ] initWithResource:@"swap"      ofType:@"caf" ];
     self.homeSound     = [ [ SoundEffect alloc ] initWithResource:@"home"      ofType:@"caf" ];
     self.shakeSound    = [ [ SoundEffect alloc ] initWithResource:@"shake"     ofType:@"caf" ];
@@ -590,8 +590,8 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
         [ ballViews[ i ] release ];
         ballViews[ i ] = nil;
     }
-    [ tickSound     release ] ;
-    [ tockSound     release ] ;
+    [ rightSound     release ] ;
+    [ leftSound     release ] ;
     [ swapSound     release ] ;
     [ homeSound     release ] ;
     [ shakeSound    release ] ;
@@ -605,8 +605,8 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 }
 
 
--( void ) playRightSound    { if ( self.soundEffects ) [ tickSound     play ]; }
--( void ) playLeftSound     { if ( self.soundEffects ) [ tockSound     play ]; }
+-( void ) playRightSound    { if ( self.soundEffects ) [ rightSound     play ]; }
+-( void ) playLeftSound     { if ( self.soundEffects ) [ leftSound     play ]; }
 -( void ) playSwapSound     { if ( self.soundEffects ) [ swapSound     play ]; }
 -( void ) playHomeSound     { if ( self.soundEffects ) [ homeSound     play ]; }
 -( void ) playShakeSound    { if ( self.soundEffects ) [ shakeSound    play ]; }
