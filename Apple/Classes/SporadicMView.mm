@@ -35,7 +35,7 @@ static CGFloat circleRadius;
 @synthesize successSound;
 @synthesize applauseSound;
 
-@synthesize animateBallPops;
+//  @synthesize animateBallPops;
 
 @synthesize historyTextCache;
 
@@ -302,13 +302,11 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 
 
-
+/***
 
 - (void) animatePopBall:(Index)nBall first:(bool) first {
-    /*
-     Create animation for the grow, which uses a delegate method to
-     start an animation for the shrink operation.
-     */
+    // Create animation for the grow, which uses a delegate method to
+    // start an animation for the shrink operation.
     [UIView beginAnimations:nil context:(void *)( first ? +nBall : -nBall )];
     [UIView setAnimationDuration: GROW_ANIMATION_DURATION_SECONDS];
     [UIView setAnimationDelegate: self ];
@@ -334,7 +332,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     [UIView commitAnimations];
 }
 
-
+***/
 
 -(void) animateButton:( DualActionButton *)button 
           normalTitle:( NSString * )normalTitle
@@ -510,7 +508,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     firstWedgeTouched = previousWedgeTouched = lastWedgeTouched = wedgeAtTouch;
     firstThetaTouched = thetaAtTouch;
     [ self.gameModel copyInto: spinStartingPosition ];
-    if ( self.animateBallPops ) [ self animatePopBall:wedgeAtTouch first:YES ];
+    //  if ( self.animateBallPops ) [ self animatePopBall:wedgeAtTouch first:YES ];
 }
 
 
