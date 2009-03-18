@@ -36,7 +36,7 @@
     SoundEffect *successSound;
     SoundEffect *applauseSound;
     
-    bool animateBallPops;
+    //  bool animateBallPops;
     int firstWedgeTouched;
     bool swapGestureStarted ;
     int previousWedgeTouched;
@@ -67,7 +67,7 @@
 @property ( nonatomic, retain   ) SoundEffect *comboSetSound;
 @property ( nonatomic, retain   ) SoundEffect *successSound;
 @property ( nonatomic, retain   ) SoundEffect *applauseSound;
-@property ( nonatomic           ) bool animateBallPops;
+//  @property ( nonatomic           ) bool animateBallPops;
 
 @property ( nonatomic, retain   ) NSString * historyTextCache;
 
@@ -76,7 +76,7 @@
 -( bool ) findWedgeAtTouch:( UITouch * )touch tolerant: ( bool ) tolerant 
                                                asWedge: ( Index & ) wedge
                                               andTheta: ( double & ) theta;
--( void ) animatePopBall:( Index )nBall first:( bool ) first;
+//  -( void ) animatePopBall:( Index )nBall first:( bool ) first;
 -( void ) showCurrentPermutationAtDuration: ( CGFloat ) duration;
 -( void ) setInvertibleButtonsInverted:( bool )inverted;
 -( void ) setComboButton:( HistoryElement )c enabled:( const bool )enabled;
