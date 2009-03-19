@@ -20,8 +20,8 @@
   </general>
   <kdevautoproject>
     <general>
-      <activetarget>src/AnalyzeM12</activetarget>
-      <useconfiguration>default</useconfiguration>
+      <activetarget>src/PrintPermutations</activetarget>
+      <useconfiguration>optimized</useconfiguration>
     </general>
     <run>
       <mainprogram/>
