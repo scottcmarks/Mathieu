@@ -486,8 +486,8 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     return nWedgesSpun;
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch * touch = [ touches anyObject ];
+- (void)startedTouching: (UITouch *)touch
+{
     Index wedgeAtTouch = 0 ;
     double thetaAtTouch = 0.0 ;
     if ( [ self touch:touch onBall: 0 ] )
@@ -499,12 +499,12 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     if (! [ self findWedgeAtTouch:touch tolerant:NO
                           asWedge: wedgeAtTouch andTheta: thetaAtTouch ] )
         return ;
-
+    
     if ( ! ( 1 <= wedgeAtTouch && wedgeAtTouch < nBalls ) )
         return;
-
+    
     // Here we might consider whether ball 0 was touched, indicating a desire to swap.
-
+    
     firstWedgeTouched = previousWedgeTouched = lastWedgeTouched = wedgeAtTouch;
     firstThetaTouched = thetaAtTouch;
     [ self.gameModel copyInto: spinStartingPosition ];
@@ -512,19 +512,8 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 }
 
 
-
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *) event {
-    if ( swapGestureStarted )
-    {
-        UITouch * touch = [ touches anyObject ];
-        if ( [ self innerWedgeOneContainsTouch:touch ] )
-            [ self.controller swap: self ];
-        swapGestureStarted = false;
-        return;
-    }
-    if ( firstWedgeTouched == -1 ) return;
-    [ self touchesMoved:touches withEvent: event ];
+- (void)  finishedTouching 
+{
     if ( self.useSpinMessages )
         [ self.controller spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
     else
@@ -535,23 +524,15 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     firstWedgeTouched = -1 ;
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *) event {
-    if ( swapGestureStarted )
-        return ;
-    if ( firstWedgeTouched == - 1 )
-    {
-        [ self touchesBegan:touches withEvent:event ] ;
-        return;
-    }
-
-    UITouch * touch = [ touches anyObject ];
+- (bool) recordTouch:(UITouch *)touch
+{
     Index wedgeAtTouch;
     double thetaAtTouch;
     if ( ! [ self findWedgeAtTouch:touch tolerant:YES
                            asWedge: wedgeAtTouch andTheta: thetaAtTouch ] )
     {
-        [ self touchesEnded:touches withEvent:event ];
-        return;
+        [ self finishedTouching ] ;
+        return false;
     }
     lastWedgeTouched = wedgeAtTouch;
     lastThetaTouched = thetaAtTouch ;
@@ -562,21 +543,54 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
          ballLabel is currently who-knows-where.
          But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.
          It started at ballCenters[ i ].
-
+         
          */
         CGPoint oldBallCenter = ballCenters[ i ];
         point spun = point( polar( point( oldBallCenter.x, oldBallCenter.y) 
-                                   - circleCenter ).rotate( lastThetaTouched - firstThetaTouched ) ) 
-                     + circleCenter;
+                                  - circleCenter ).rotate( lastThetaTouched - firstThetaTouched ) ) 
+        + circleCenter;
         ballLabel.center = CGPointMake( spun.x, spun.y );
     }
-
+    
     if ( self.useSpinMessages )
         [ self.controller spinInProgress: [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ] ];
     else
         [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ];
     previousWedgeTouched = lastWedgeTouched ;
+    return true;
 }
+
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self startedTouching: [ touches anyObject ] ];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *) event {
+    if ( swapGestureStarted )
+        return ;
+    UITouch * touch = [ touches anyObject ];
+    if ( firstWedgeTouched == - 1 )
+    {
+        [ self startedTouching: touch ];
+        return;
+    }
+    [ self recordTouch: touch ];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *) event {
+    UITouch * touch = [ touches anyObject ];
+    if ( swapGestureStarted )
+    {
+        if ( [ self innerWedgeOneContainsTouch:touch ] )
+            [ self.controller swap: self ];
+        swapGestureStarted = false;
+        return;
+    }
+    if ( firstWedgeTouched == -1 ) return;
+    if ( [ self recordTouch: touch ] )
+        [ self finishedTouching ];
+}
+
 
 
 - (void)dealloc {
