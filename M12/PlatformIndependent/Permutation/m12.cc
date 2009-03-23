@@ -505,6 +505,8 @@ History& History::expand_macro( const HistoryElement c )
   for ( const_iterator hp = pre_expansion_history.begin( ); hp != pre_expansion_history.end( ); hp++ )
     if ( *hp == c )
       *this *= macros[ c ].history;
+    else if ( *hp == -c )
+      *this /= macros[ c ].history;
     else
       *this *= *hp;
   return *this;

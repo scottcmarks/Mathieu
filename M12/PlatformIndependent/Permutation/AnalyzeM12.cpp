@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
     // Using each of those as a basis together with "right"
     //   Generate permutations up to depth 2
     //   Print any permutations that leave 4 or more cyclically contiguous balls fixed
-    max_depth = 2;
+    max_depth = 7; // 2;
     for ( perm_vector::const_iterator p = swaps.begin( ); p < swaps.end( ); p ++ )
     {
       M12Permutation::swapPermutation = *p;

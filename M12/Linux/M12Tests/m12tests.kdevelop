@@ -20,14 +20,14 @@
   </general>
   <kdevautoproject>
     <general>
-      <activetarget>src/PrintPermutations</activetarget>
+      <activetarget>src/AnalyzeM12</activetarget>
       <useconfiguration>optimized</useconfiguration>
     </general>
     <run>
       <mainprogram/>
       <terminal>true</terminal>
       <runarguments>
-        <AnalyzeM12/>
+        <AnalyzeM12></AnalyzeM12>
         <LookupTests/>
         <PrintPermutations/>
         <lookup>-v -p '0  1  2  3  4 13 18 14  5  7 21 11 22  8  9  6 10 12 15 20 23 16 17 19'</lookup>
@@ -39,7 +39,7 @@
         <lookup>-p 1,23,4,3,22,11,8,7,10,9,6,21,14,13,20,17,16,19,18,15,12,5,2,0</lookup>
       </debugarguments>
       <cwd>
-        <AnalyzeM12>/home/markss/iPhoneSandbox/SporadicM12/Linux/M12Tests/debug/src</AnalyzeM12>
+        <AnalyzeM12>/home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/optimized/src</AnalyzeM12>
         <LookupTests>/home/dpairs/iPhoneSandbox/SporadicM12/Linux/M12Tests/debug/./src</LookupTests>
         <PrintPermutations>/home/dpairs/iPhoneSandbox/SporadicM12/Linux/M12Tests/debug/./src</PrintPermutations>
         <lookup>/home/dpairs/iPhoneSandbox/SporadicM12/Linux/M12Tests/debug/./src</lookup>
