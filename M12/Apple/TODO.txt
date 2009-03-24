@@ -1,4 +1,4 @@
-home_confirm.png seems to be home_position.png
+* home_confirm.png seems to be home_position.png
 
 Still using M24:
 alt_button_clicked.png
@@ -18,6 +18,10 @@ AAA.png
 M12/Apple/Resources/Images/SporadicM12Icon_Prerendered.png
 should this icon have the numbers on it?  try both ways  use #defines for generating icon source
 
-fix setting C to C-inv
+* fix setting C to C-inv
 
 * factor Touches Moved/Ended to avoid inf recursion
+
+Factor SporadicM12 and SporadicM12 Lite
+
+Multiple swaps in SporadicM12
