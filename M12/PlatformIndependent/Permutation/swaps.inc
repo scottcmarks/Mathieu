@@ -1,4 +1,4 @@
-struct { Index best; PermArray swap; } swaps[ ]=
+M12Permutation::swap_table_entry M12Permutation::swaps[ ] =
 {
   {  6, { 1,  0,  3,  2,  7,  8, 10,  4,  5, 11,  6,  9 } },
   {  4, { 1,  0,  3,  2,  8, 10,  9, 11,  4,  6,  5,  7 } },
