@@ -32,7 +32,7 @@ public:
   M12Permutation( );
   M12Permutation( const M12Permutation& other );
   M12Permutation( const super& other );
-  M12Permutation( const PermArray p );
+  M12Permutation( const PermArray & p );
   M12Permutation & reset( );
   M12Permutation & left ( Index count = 1 );
   M12Permutation & right( Index count = 1 );
@@ -97,7 +97,7 @@ public:
   M12PermutationWithHistory( );
   M12PermutationWithHistory( const M12PermutationWithHistory& other );
   M12PermutationWithHistory( const super& other );
-  M12PermutationWithHistory( const PermArray p );
+  M12PermutationWithHistory( const PermArray & p );
   M12PermutationWithHistory( std::istream & serialization );
   std::ostream & serialize( std::ostream & serialization );
   M12PermutationWithHistory & reset( );

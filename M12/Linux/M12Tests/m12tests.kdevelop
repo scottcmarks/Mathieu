@@ -27,7 +27,7 @@
       <mainprogram/>
       <terminal>true</terminal>
       <runarguments>
-        <AnalyzeM12></AnalyzeM12>
+        <AnalyzeM12/>
         <LookupTests/>
         <PrintPermutations/>
         <lookup>-v -p '0  1  2  3  4 13 18 14  5  7 21 11 22  8  9  6 10 12 15 20 23 16 17 19'</lookup>
