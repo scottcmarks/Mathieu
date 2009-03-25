@@ -29,6 +29,9 @@ typedef long int big_int;
 class M12Permutation: public Permutation< nBalls, Index, Rank > {
 public:
   typedef Permutation< nBalls, Index, Rank > super;
+  static const int nSwaps=341;
+  typedef struct{ Index best; const PermArray swap; } swap_table_entry;
+  static swap_table_entry swaps[ nSwaps ];
   M12Permutation( );
   M12Permutation( const M12Permutation& other );
   M12Permutation( const super& other );

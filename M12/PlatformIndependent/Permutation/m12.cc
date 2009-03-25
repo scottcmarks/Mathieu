@@ -53,6 +53,8 @@ M12Permutation M12Permutation::rightPermutation( right_perm );
 //  M12Permutation::PermArray swap_perm = { 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0 } ;
 //  M12Permutation::PermArray right_perm= {  0, 11,  1, 10,  2,  9,  3,  8,  4,  7,  5,  6 };
 
+#include "swaps.inc"
+
 M12Permutation & M12Permutation::left( Index count ) {
   for ( Index i = 0 ; i < count ; i ++ ) *this /= rightPermutation ;
   return *this;
