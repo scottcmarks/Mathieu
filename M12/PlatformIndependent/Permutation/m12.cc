@@ -25,7 +25,7 @@ M12Permutation::M12Permutation( const super & other )
   : super( other )
   { };
 
-M12Permutation::M12Permutation( const M12Permutation::PermArray p )
+M12Permutation::M12Permutation( const M12Permutation::PermArray & p )
   : super( p )
   { };
 
@@ -115,7 +115,7 @@ M12PermutationWithHistory::M12PermutationWithHistory( const super & other )
   : super( other )
   { };
 
-M12PermutationWithHistory::M12PermutationWithHistory( const M12PermutationWithHistory::PermArray p )
+M12PermutationWithHistory::M12PermutationWithHistory( const M12PermutationWithHistory::PermArray &p )
 : super( p )
 { };
 
