@@ -74,13 +74,13 @@
                              cache:YES];
 }
 
-- (void)toggleView:(UIViewController *)currentController {	
+- (void)toggleView 
+{	
     // This method is called when the info or Done button is pressed.
     // It flips the displayed view from the main view to the flipside view and vice-versa.
     
-	if (preferencesViewController == nil) {
+	if (preferencesViewController == nil)
 		[self loadPreferencesViewController];
-	}
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: 1.0 ];	

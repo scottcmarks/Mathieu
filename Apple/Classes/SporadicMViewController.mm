@@ -55,8 +55,9 @@
 // Handlers for events from the SporadicMView
 
 
-- (IBAction)toggleView:(id)sender {
-    [rootViewController toggleView:self];
+- (IBAction)toggleView:(id)sender 
+{
+    [ rootViewController toggleView ];
 }
 
 - (IBAction)toggleInverted:(id)sender{
