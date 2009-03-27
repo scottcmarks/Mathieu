@@ -25,7 +25,7 @@
 @property (nonatomic, retain) PreferencesViewController *preferencesViewController;
 @property (nonatomic        ) bool nowHandlingShake;
 
-- (void)toggleView:(UIViewController *)currentController;
+- (void)toggleView;
 - (void) flipFrom:( UIViewController * )oldViewController to:( UIViewController * )newViewController;
 - (void) setAnimationTransition:(UIViewAnimationTransition)transition;
 
