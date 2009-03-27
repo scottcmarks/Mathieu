@@ -45,8 +45,9 @@
     [super dealloc];
 }
 
-- (IBAction)dismissHelp:(id)sender {
-    [ self.rootViewController toggleView:sender];
+- (IBAction)dismissHelp:(id)sender 
+{
+    [ self.rootViewController toggleView ];
 }
 
 #pragma mark UIWebView delegate methods

@@ -41,8 +41,9 @@
     [viewController release];
 }
 
-- (IBAction)toggleView:(id)sender {
-    [self.rootViewController toggleView:self];
+- (IBAction)toggleView:(id)sender 
+{
+    [ self.rootViewController toggleView ];
 }
 
 
