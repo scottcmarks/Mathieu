@@ -3,7 +3,7 @@
 //  SporadicM12
 //
 //  Created by Jackie Marks on 12/15/08.
-//  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
+//  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "PreferencesView.h"
@@ -18,12 +18,6 @@
 
 @synthesize soundEffectsSwitch;
 
-@dynamic soundEffects;
-- ( void )setSoundEffects:(bool)sounds {
-    self.appDelegate.soundEffects = soundEffectsSwitch.on = sounds;
-}
-- ( bool ) soundEffects { return soundEffectsSwitch.on; }
-
 @synthesize animationSpeedSlider;
 @dynamic animationSpeed;
 - (void)setAnimationSpeed:(CGFloat)speed {
@@ -37,19 +31,9 @@
 
 @synthesize confirmSwitch;
 @synthesize confirmHelp;
-@dynamic confirm;
-- ( void )setConfirm:(bool)conf {
-    self.appDelegate.confirm = confirmSwitch.on = conf;
-}
-- ( bool ) confirm { return confirmSwitch.on; }
 
 @synthesize updatingSwitch;
 @synthesize updatingHelp;
-@dynamic updating;
-- ( void )setUpdating:(bool)upd {
-    self.appDelegate.useSpinMessages = updatingSwitch.on = upd;
-}
-- ( bool ) updating { return updatingSwitch.on; }
 
 
 - (id)initWithFrame:(CGRect)frame {

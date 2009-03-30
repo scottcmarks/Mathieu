@@ -3,7 +3,7 @@
 //  SporadicM12
 //
 //  Created by Jackie Marks on 12/15/08.
-//  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
+//  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -26,8 +26,5 @@
 @property( nonatomic, retain) IBOutlet UINavigationItem * navigationBar;
 
 @property /* dynamic */           CGFloat animationSpeed;
-@property /* dynamic */           bool soundEffects;
-@property /* dynamic */           bool confirm;
-@property /* dynamic */           bool updating;
 
 @end
