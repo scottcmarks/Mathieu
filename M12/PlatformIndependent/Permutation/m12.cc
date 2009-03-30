@@ -29,31 +29,28 @@ M12Permutation::M12Permutation( const M12Permutation::PermArray & p )
   : super( p )
   { };
 
-// Below are the generators of M12, "swap" and "right"
-// swap is a permutation composed of (nBalls/2) 2-cycles
-// right is a permutation composed of (0) with a (nBalls-1)-cycle.
-//
-//                                       0   1   2   3   4   5   6   7   8   9  10  11
-//
-//  M12Permutation::PermArray swap_perm = {  1,  0,  5,  8, 11,  2, 10,  9,  3,  7,  6,  4 } ;  // 72080  6 12:   4  1  2  3  5  9 10  8  6  0  7 11 SLSL5SR3
-//  M12Permutation::PermArray swap_perm = {  1,  0, 11,  4,  3, 10,  7,  6,  9,  8,  5,  2 } ;  // nothing particularly good
-//  M12Permutation::PermArray swap_perm = {  1,  0, 11,  6,  8,  9,  3, 10,  4,  5,  7,  2 } ;  //  Falls into PSL(2,11)
-//  M12Permutation::PermArray swap_perm = {  1,  0, 11,  9,  7,  6,  5,  4, 10,  3,  8,  2 } ;  //  80003  8 10:   8  1  2  3  7 10  4  9  5  6  0 11 SL2SLSL2SL
-//  M12Permutation::PermArray swap_perm = {  1,  0, 11, 10,  5,  4,  8,  9,  6,  7,  3,  2 } ;  // nothing particularly good
-M12Permutation::PermArray swap_perm = {  1,  0,  3,  2,  8, 10,  9, 11,  4,  6,  5,  7 } ;  //  26872  4 10:   4  7  3  0  2  1  5  6  8  9 10 11 SR4SR4
-//  M12Permutation::PermArray swap_perm = {  1,  0,  9,  4,  3,  6,  5,  8,  7,  2, 11, 10 } ;  //  17920  4  6:   4  9  0  1 10  5  6  7  8 11  2  3 SL2SR2
-
-M12Permutation M12Permutation::swapPermutation( swap_perm );
-
-M12Permutation::PermArray right_perm= {  0, 11,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10 };
-M12Permutation M12Permutation::rightPermutation( right_perm );
 
 //  Below are the original SciAm M12 generators.
 //  swap was called "Inverse", and right was called "Merge"
 //  M12Permutation::PermArray swap_perm = { 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0 } ;
 //  M12Permutation::PermArray right_perm= {  0, 11,  1, 10,  2,  9,  3,  8,  4,  7,  5,  6 };
 
+// Below are the generators of M12, "swap" and "right"
+// swap is a permutation composed of (nBalls/2) 2-cycles
+// right is a permutation composed of (0) with a (nBalls-1)-cycle.
+//
+
+// Include all 341 permutations that are six 2-cycles and still generate the whole group
 #include "swaps.inc"
+
+// Use the second one as it makes a simple 4-preserving move
+#define INITIAL_SWAP_PERMUTATION_INDEX 1
+
+M12Permutation::PermArray const & swap_perm = M12Permutation::swaps[ INITIAL_SWAP_PERMUTATION_INDEX ].swap; 
+M12Permutation M12Permutation::swapPermutation( swap_perm );
+
+M12Permutation::PermArray right_perm= {  0, 11,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10 };
+M12Permutation M12Permutation::rightPermutation( right_perm );
 
 M12Permutation & M12Permutation::left( Index count ) {
   for ( Index i = 0 ; i < count ; i ++ ) *this /= rightPermutation ;
