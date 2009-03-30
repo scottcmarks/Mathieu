@@ -270,6 +270,8 @@
 		8C8D27DA0F696F5A006E1D0B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C97FF540F70018400AFA4BB /* left.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = left.caf; sourceTree = "<group>"; };
 		8C97FF550F70018400AFA4BB /* right.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = right.caf; sourceTree = "<group>"; };
+		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
+		D2655A850F8028300006A1FF /* swaps.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; name = swaps.inc; path = ../M12/PlatformIndependent/Permutation/swaps.inc; sourceTree = SOURCE_ROOT; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Lite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F466DD0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12LiteIcon_Prerendered.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -346,6 +348,7 @@
 		8C1B87BD0F68452900F359D6 /* Mathieu */ = {
 			isa = PBXGroup;
 			children = (
+				D2655A770F801A2B0006A1FF /* TODO.txt */,
 				8C1B87BE0F68452900F359D6 /* Apple */,
 				8C1B881C0F68452900F359D6 /* M12 */,
 				8C1B88BA0F68452900F359D6 /* M24 */,
@@ -554,6 +557,7 @@
 		8C1B899C0F68452A00F359D6 /* PlatformIndependent */ = {
 			isa = PBXGroup;
 			children = (
+				D2655A850F8028300006A1FF /* swaps.inc */,
 				8C5CC23C0F6AE3CA004B58DE /* mathieu.h */,
 				8C1B899F0F68452A00F359D6 /* View */,
 			);
@@ -1041,6 +1045,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1052,6 +1057,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = SporadicM12;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 			};
 			name = Debug;
 		};
@@ -1059,6 +1065,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1068,6 +1075,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = SporadicM12;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 			};
 			name = Release;
 		};
@@ -1110,7 +1118,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "21786647-75E6-4329-874F-07D1792F82C8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../Toolbox/**";
 			};
@@ -1125,7 +1133,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "21786647-75E6-4329-874F-07D1792F82C8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../Toolbox/**";
 			};
