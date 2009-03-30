@@ -18,7 +18,6 @@
     bool soundEffects;
     bool confirm;
     bool invert;
-    bool useSpinMessages;
     GameModel * gameModel;
     
 }
@@ -29,7 +28,6 @@
 @property (nonatomic         ) bool soundEffects;
 @property (nonatomic         ) bool confirm;
 @property (nonatomic         ) bool invert;
-@property (nonatomic         ) bool useSpinMessages;
 @property (nonatomic, retain ) GameModel * gameModel;
 
 @end

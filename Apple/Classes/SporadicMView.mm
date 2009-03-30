@@ -34,6 +34,7 @@ static CGFloat circleRadius;
 @synthesize comboSetSound;
 @synthesize successSound;
 @synthesize applauseSound;
+@synthesize historyTextUpdatingTimer;
 
 //  @synthesize animateBallPops;
 
@@ -42,7 +43,6 @@ static CGFloat circleRadius;
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 - ( bool ) invert { return self.appDelegate.invert; }
-- ( bool ) useSpinMessages { return self.appDelegate.useSpinMessages; }
 - (CGFloat ) animationSpeed { return self.appDelegate.animationSpeed ; }
 - (GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
@@ -67,6 +67,10 @@ static CGFloat circleRadius;
     //    
 }
 
+- ( void ) historyUpdatingTimerFired: (NSTimer *) theTimer
+{
+    [ self updateHistoryText ];
+}
 
 - ( DualActionButton * ) createActionButtonAt: ( CGPoint    ) center
                                         width: ( CGFloat    ) width
@@ -297,7 +301,14 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
     // Let's see it
     [ self showCurrentPermutationAtDuration: INSTANTANEOUS ];
-
+    
+    // Start history text updating timer
+    self.historyTextUpdatingTimer = [ NSTimer timerWithTimeInterval:(NSTimeInterval)0.2 
+                                                             target:self 
+                                                           selector:@selector(historyUpdatingTimerFired:) 
+                                                           userInfo:nil 
+                                                            repeats:YES ];
+    [ [ NSRunLoop currentRunLoop ] addTimer:self.historyTextUpdatingTimer forMode: NSDefaultRunLoopMode];
 }
 
 
@@ -514,13 +525,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 
 - (void)  finishedTouching 
 {
-    if ( self.useSpinMessages )
-        [ self.controller spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
-    else
-    {
-        [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ;
-        [ self.controller spinFinished: wedgeDifference( lastWedgeTouched, firstWedgeTouched ) ];
-    }
+    [ self.controller spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
     firstWedgeTouched = -1 ;
 }
 
@@ -552,10 +557,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
         ballLabel.center = CGPointMake( spun.x, spun.y );
     }
     
-    if ( self.useSpinMessages )
-        [ self.controller spinInProgress: [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ] ];
-    else
-        [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ];
+    [ self.controller spinInProgress: [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ] ];
     previousWedgeTouched = lastWedgeTouched ;
     return true;
 }
@@ -613,6 +615,8 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     [ successSound  release ] ;
     [ applauseSound release ] ;
     [ history release       ] ;
+    [ historyTextUpdatingTimer invalidate ];
+    [ historyTextUpdatingTimer release ];
     [ super dealloc         ] ;
 }
 

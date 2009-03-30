@@ -115,7 +115,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
     else
         [ self.gameModel setCombo: comboName ];
     [ self.spview setComboButton:comboName enabled: [ self.gameModel hasDefinedCombo:comboName ] ];
-    [ self.spview updateHistoryText ];
+//      [ self.spview updateHistoryText ];
 }
 
 -(void) confirmSetCombo: ( NSNumber * ) comboNameAsObject
@@ -196,7 +196,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 -(void) spinInProgress: (int) wedges{
     [ self.gameModel spin: wedges ];
-    [ self.spview updateHistoryText ];
+//      [ self.spview updateHistoryText ];
 }
 
 - (void) spinFinished: (int)wedges{
