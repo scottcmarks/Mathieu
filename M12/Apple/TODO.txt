@@ -25,3 +25,7 @@ should this icon have the numbers on it?  try both ways  use #defines for genera
 Factor SporadicM12 and SporadicM12 Lite
 
 Multiple swaps in SporadicM12
+
+Linux tests still work?  And need new tests for cycles( )
+
+Cancelled or not, Restart should reset Alt
