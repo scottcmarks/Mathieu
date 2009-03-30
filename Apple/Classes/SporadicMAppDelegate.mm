@@ -28,7 +28,6 @@ static NSString *SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
 @synthesize soundEffects;
 @synthesize confirm;
 @synthesize invert;
-@synthesize useSpinMessages;
 @synthesize gameModel;
 
 // +initialize is invoked before the class receives any other messages, so it
@@ -71,7 +70,6 @@ static NSString *SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
     self.soundEffects    = [ defaults boolForKey: SporadicMSoundEffectsKey   ];
     self.confirm         = [ defaults boolForKey: SporadicMConfirmKey        ];
     self.invert          = [ defaults boolForKey: SporadicMInvertKey         ];
-    self.useSpinMessages = [ defaults boolForKey: SporadicMSpinMessagesKey   ];
 
     __timestamp__;
     
@@ -100,7 +98,6 @@ static NSString *SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
     [ defaults setBool:   self.soundEffects         forKey:SporadicMSoundEffectsKey   ];
     [ defaults setBool:   self.confirm              forKey:SporadicMConfirmKey        ];
     [ defaults setBool:   self.invert               forKey:SporadicMInvertKey         ];
-    [ defaults setBool:   self.useSpinMessages      forKey:SporadicMSpinMessagesKey   ];
     [ defaults setObject: [ self.gameModel asData ] forKey:SporadicMGameModelKey      ];
 }
 

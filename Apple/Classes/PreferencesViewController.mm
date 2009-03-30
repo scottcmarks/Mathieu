@@ -72,9 +72,6 @@
     self.appDelegate.confirm = preferencesView.confirmSwitch.on ;
 }
 
-- (IBAction)updatingSwitchChanged:(id)sender {
-    self.appDelegate.useSpinMessages = preferencesView.updatingSwitch.on ;
-}
 
 
 @end
