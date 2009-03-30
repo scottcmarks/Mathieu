@@ -32,9 +32,6 @@
 @synthesize confirmSwitch;
 @synthesize confirmHelp;
 
-@synthesize updatingSwitch;
-@synthesize updatingHelp;
-
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -51,17 +48,10 @@ const CGFloat helpFontSize = 11.0;
                         "Restart and Home.  Confirm\n"
                         "combo set or erase of a\n"
                         "previously-set combo.";
-    updatingHelp.font = [UIFont systemFontOfSize:helpFontSize ];
-    // TODO: I18n
-    updatingHelp.text = @"Update the history text while\n"
-                         "spinning the ball ring.  This\n"
-                         "makes it easier to position\n"
-                         "but with much rougher spinning.";
     
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
-    updatingSwitch.on          = self.appDelegate.useSpinMessages ;
 	navigationBar.title        = appName;
 }
 
