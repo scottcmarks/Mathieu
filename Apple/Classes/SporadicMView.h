@@ -36,6 +36,8 @@
     SoundEffect *successSound;
     SoundEffect *applauseSound;
     
+    NSTimer * historyTextUpdatingTimer;
+    
     //  bool animateBallPops;
     int firstWedgeTouched;
     bool swapGestureStarted ;
@@ -67,6 +69,9 @@
 @property ( nonatomic, retain   ) SoundEffect *comboSetSound;
 @property ( nonatomic, retain   ) SoundEffect *successSound;
 @property ( nonatomic, retain   ) SoundEffect *applauseSound;
+
+@property ( nonatomic, retain   ) NSTimer * historyTextUpdatingTimer;
+
 //  @property ( nonatomic           ) bool animateBallPops;
 
 @property ( nonatomic, retain   ) NSString * historyTextCache;

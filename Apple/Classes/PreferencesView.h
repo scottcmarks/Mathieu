@@ -13,16 +13,12 @@
     UISwitch * soundEffectsSwitch;
     UISwitch * confirmSwitch;
     UILabel  * confirmHelp;
-    UISwitch * updatingSwitch;
-    UILabel  * updatingHelp;
 	UINavigationItem * navigationBar;
 }
 @property( nonatomic, retain) IBOutlet UISlider * animationSpeedSlider;
 @property( nonatomic, retain) IBOutlet UISwitch * soundEffectsSwitch;
 @property( nonatomic, retain) IBOutlet UISwitch * confirmSwitch;
 @property( nonatomic, retain) IBOutlet UILabel  * confirmHelp;
-@property( nonatomic, retain) IBOutlet UISwitch * updatingSwitch;
-@property( nonatomic, retain) IBOutlet UILabel  * updatingHelp;
 @property( nonatomic, retain) IBOutlet UINavigationItem * navigationBar;
 
 @property /* dynamic */           CGFloat animationSpeed;
