@@ -3,7 +3,7 @@
  *  SporadicM12
  *
  *  Created by Jackie Marks on 10/19/08.
- *  Copyright 2008 Magnolia Heights Research and Development.. All rights reserved.
+ *  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
  *
  */
 #include "view.h"
@@ -124,10 +124,30 @@ static wostream & insert_macro_inverted( wostream & os, HistoryElement e ){
 }
 
 
-wstring wstr( const History & h ){
+wstring wstr( const History & h )
+{
     wstringstream rss(wstringstream::in | wstringstream::out);
     h.insert( as(wostream,rss), insert_left, insert_swap, insert_right, insert_macro, insert_macro_inverted );
     wstring rsstr;
     rss >> rsstr;
     return rsstr;
 }
+
+string cycles_str( const MPermutation & p )
+{
+    stringstream rss(stringstream::in | stringstream::out);
+    p.insert_as_cycles( as(ostream,rss) );
+    string rsstr;
+    rss >> rsstr;
+    return rsstr;
+}
+
+wstring cycles_wstr( const MPermutation & p )
+{
+    wstringstream rss(wstringstream::in | wstringstream::out);
+    p.insert_as_cycles( as(wostream,rss) );
+    wstring rsstr;
+    rss >> rsstr;
+    return rsstr;
+}
+
