@@ -8,9 +8,11 @@
 
 #import "PreferencesViewController.h"
 #import "SporadicMAppDelegate.h"
+#import "GameModel.h"
 #import "RootViewController.h"
 #import "PreferencesView.h"
 #import "HelpViewController.h"
+#import "SwapPermutationsView.h"
 #import "SwapPermutationsViewController.h"
 
 @implementation PreferencesViewController
@@ -48,7 +50,7 @@
     self.swapPermutationsViewController = viewController;
     viewController.rootViewController = rootViewController;
     viewController.preferencesViewController = self;
-    [viewController release];
+    [ viewController release ];
 }
 
 - (IBAction)toggleView:(id)sender 

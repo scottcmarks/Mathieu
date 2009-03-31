@@ -166,6 +166,15 @@ using namespace std;
     return [ self cyclesForPermutation:MPermutation( MPermutation::swaps[ nSwap ].swap ) ];
 }
 
+-( int ) nSwaps  { return n_array_elements( MPermutation::swaps ); }
+
+- ( int ) difficultyOfSwap: ( int )nSwap
+{
+    if ( ! ( 0 <= nSwap && nSwap < self.nSwaps ) )
+        return 666;
+    return MPermutation::swaps[ nSwap ].best;
+}
+
 // Allow permutation operations without history changes
 static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPermutation * ) & p ) ; }
 
