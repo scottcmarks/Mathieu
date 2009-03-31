@@ -109,6 +109,15 @@
 		8CFA01E90F697D6D00B63278 /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B8A0B0F68455A00F359D6 /* point.cc */; };
 		8CFA01EE0F69813C00B63278 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B87D00F68452900F359D6 /* PreferencesViewController.mm */; };
 		8CFA01EF0F69813D00B63278 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B87D00F68452900F359D6 /* PreferencesViewController.mm */; };
+		D202951E0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */; };
+		D202951F0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */; };
+		D20295200F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */; };
+		D20295260F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */; };
+		D20295270F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */; };
+		D20295280F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */; };
+		D241BE760F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */; };
+		D241BE770F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */; };
+		D241BE780F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */; };
 		D266F8D90F7A9F120080CAD1 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1B87EB0F68452900F359D6 /* MainWindow.xib */; };
 		D266F8DA0F7A9F120080CAD1 /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C1B87F80F68452900F359D6 /* SporadicMView.xib */; };
 		D266F8DC0F7A9F120080CAD1 /* Sporadic_Games_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C1B87E40F68452900F359D6 /* Sporadic_Games_Logo.png */; };
@@ -270,6 +279,11 @@
 		8C8D27DA0F696F5A006E1D0B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C97FF540F70018400AFA4BB /* left.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = left.caf; sourceTree = "<group>"; };
 		8C97FF550F70018400AFA4BB /* right.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = right.caf; sourceTree = "<group>"; };
+		D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapPermutationsView.xib; sourceTree = "<group>"; };
+		D20295240F819B27003DE7D9 /* SwapPermutationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsView.h; sourceTree = "<group>"; };
+		D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsView.mm; sourceTree = "<group>"; };
+		D241BE740F81CBCC00BEDE40 /* SwapPermutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsViewController.h; sourceTree = "<group>"; };
+		D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsViewController.mm; sourceTree = "<group>"; };
 		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
 		D2655A850F8028300006A1FF /* swaps.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; name = swaps.inc; path = ../M12/PlatformIndependent/Permutation/swaps.inc; sourceTree = SOURCE_ROOT; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Lite.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -390,6 +404,7 @@
 				8C1B87DF0F68452900F359D6 /* Images */,
 				8C1B87EB0F68452900F359D6 /* MainWindow.xib */,
 				8C1B87EC0F68452900F359D6 /* PreferencesView.xib */,
+				D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */,
 				8C1B87ED0F68452900F359D6 /* Sounds */,
 				8C1B87F80F68452900F359D6 /* SporadicMView.xib */,
 			);
@@ -742,6 +757,7 @@
 			isa = PBXGroup;
 			children = (
 				8CFA01D30F697BF300B63278 /* Preferences */,
+				D22A8C880F81CF4A008436D4 /* Swap Permutations */,
 				8CFA01D20F697BE100B63278 /* Help */,
 			);
 			name = "Preferences Side";
@@ -776,6 +792,17 @@
 				8C1B87D00F68452900F359D6 /* PreferencesViewController.mm */,
 			);
 			name = Preferences;
+			sourceTree = "<group>";
+		};
+		D22A8C880F81CF4A008436D4 /* Swap Permutations */ = {
+			isa = PBXGroup;
+			children = (
+				D20295240F819B27003DE7D9 /* SwapPermutationsView.h */,
+				D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */,
+				D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */,
+				D241BE740F81CBCC00BEDE40 /* SwapPermutationsViewController.h */,
+			);
+			name = "Swap Permutations";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -883,6 +910,7 @@
 				8C6CDA0D0F69C87100B4F305 /* moves_and_steps.html in Resources */,
 				8C97FF560F70018400AFA4BB /* left.caf in Resources */,
 				8C97FF570F70018400AFA4BB /* right.caf in Resources */,
+				D20295200F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -917,6 +945,7 @@
 				8C321A7D0F6AD3CD0082D682 /* SporadicM24Icon_Prerendered.png in Resources */,
 				8C97FF580F70018400AFA4BB /* left.caf in Resources */,
 				8C97FF590F70018400AFA4BB /* right.caf in Resources */,
+				D202951F0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -951,6 +980,7 @@
 				D266F8F10F7A9F120080CAD1 /* moves_and_steps.html in Resources */,
 				D266F8F20F7A9F120080CAD1 /* left.caf in Resources */,
 				D266F8F30F7A9F120080CAD1 /* right.caf in Resources */,
+				D202951E0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,6 +1011,8 @@
 				8C081A4E0F699CF500C21C40 /* SimpleButton.m in Sources */,
 				8C6CD9910F69B8CF00B4F305 /* PreferencesView.mm in Sources */,
 				8C6CD9930F69B8D800B4F305 /* HelpView.mm in Sources */,
+				D20295280F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */,
+				D241BE780F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1008,6 +1040,8 @@
 				8C081A4F0F699CF500C21C40 /* SimpleButton.m in Sources */,
 				8C6CD9920F69B8D000B4F305 /* PreferencesView.mm in Sources */,
 				8C6CD9940F69B8D900B4F305 /* HelpView.mm in Sources */,
+				D20295260F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */,
+				D241BE760F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1035,6 +1069,8 @@
 				D266F9060F7A9F120080CAD1 /* SimpleButton.m in Sources */,
 				D266F9070F7A9F120080CAD1 /* PreferencesView.mm in Sources */,
 				D266F9080F7A9F120080CAD1 /* HelpView.mm in Sources */,
+				D20295270F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */,
+				D241BE770F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
