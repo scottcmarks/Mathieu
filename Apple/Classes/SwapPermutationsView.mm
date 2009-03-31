@@ -15,27 +15,42 @@
 
 @synthesize navigationBar;
 @synthesize swapPermutationPicker;
+@synthesize currentPermutation;
+@synthesize currentPermutationImage;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
-
+- ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - (void) awakeFromNib
 {
 	navigationBar.title        = appName                          ;
 }
 
+- ( void ) synchronize
+{
+    currentPermutation.text    = self.gameModel.cycles;
+    [ swapPermutationPicker selectRow:1 inComponent:0 animated:NO ];
+}
+
+- ( void ) willMoveToSuperview: ( UIView * )superView
+{
+    if ( superView ) [ self synchronize ] ;
+}
+
 // UIPickerViewDelegate methods
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     assert (component == 0);
-    return [ self.appDelegate.gameModel cyclesForSwap:row ];
+    return [ NSString stringWithFormat: @"#%d -- difficulty %d ", row, [ self.gameModel difficultyOfSwap:row ] ];
 }
 
 -(void) pickerView: (UIPickerView *)pickerView 
       didSelectRow: (NSInteger) row 
-       inComponent: (NSInteger) component {
+       inComponent: (NSInteger) component
+{
     assert (component == 0);
-    return NSLog(@"Row %d picked", row );
+    self.currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
+    NSLog(@"Row %d picked -- %@", row, self.currentPermutation.text );
 }
 
 
@@ -48,7 +63,7 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if ( component == 0 )
-        return 3;
+        return self.gameModel.nSwaps;
     return 0;
 }
 
