@@ -43,5 +43,8 @@ typedef MPermutationWithHistory::HistoryElement HistoryElement;
 -(int) historyLength;
 
 @property (nonatomic, readonly) NSString * history;
+@property (nonatomic, readonly) NSString * cycles;
+
+- ( NSString *) cyclesForSwap: (int)nSwap;
 
 @end
