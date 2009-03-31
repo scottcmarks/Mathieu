@@ -14,13 +14,13 @@
     UIPickerView * swapPermutationPicker;
 	UINavigationItem * navigationBar;
     UILabel * currentPermutation;
-    UIImageView * currentPermutationImage;
+    UIView * currentPermutationPreview;
 }
 
 @property( nonatomic, retain ) IBOutlet UIPickerView * swapPermutationPicker;
 @property( nonatomic, retain ) IBOutlet UINavigationItem * navigationBar;
 @property( nonatomic, retain ) IBOutlet UILabel * currentPermutation;
-@property( nonatomic, retain ) IBOutlet UIImageView * currentPermutationImage;
+@property( nonatomic, retain ) IBOutlet UIView * currentPermutationPreview;
 
 - ( void ) synchronize;
 

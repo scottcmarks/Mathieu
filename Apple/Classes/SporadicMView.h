@@ -7,45 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GameModel.h"
 
-@class BallView;
-@class SoundEffect;
+@class BallRingView;
 @class ComboButton;
 @class SporadicMViewController;
 @class DualActionButton;
-
+@class GameModel;
 @interface SporadicMView : UIView // TransitionView 
 {
 
     SporadicMViewController * controller;
     UIToolbar * toolbar;
     UITextView *history;
-    
-    BallView *ballViews[ nBalls ];
-    UILabel *ballLabels[ nBalls ];
-    CGPoint ballCenters[ nBalls ];
-    SoundEffect *rightSound;
-    SoundEffect *leftSound;
-    SoundEffect *swapSound;
-    SoundEffect *homeSound;
-    SoundEffect *shakeSound;
-    SoundEffect *restartSound;
-    SoundEffect *comboSound;
-    SoundEffect *comboSetSound;
-    SoundEffect *successSound;
-    SoundEffect *applauseSound;
-    
     NSTimer * historyTextUpdatingTimer;
+    BallRingView * ballRingView;    
     
-    //  bool animateBallPops;
-    int firstWedgeTouched;
-    bool swapGestureStarted ;
-    int previousWedgeTouched;
-    int lastWedgeTouched;
-    double firstThetaTouched;
-    double lastThetaTouched;
-    PermArray spinStartingPosition;
     NSString * historyTextCache;
     
     DualActionButton * shakeButton;
@@ -58,42 +34,15 @@
 @property ( nonatomic, assign   ) IBOutlet UIToolbar * toolbar;
 @property ( nonatomic, assign   ) IBOutlet UITextView *history;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
-
-@property ( nonatomic, retain   ) SoundEffect *rightSound;
-@property ( nonatomic, retain   ) SoundEffect *leftSound;
-@property ( nonatomic, retain   ) SoundEffect *swapSound;
-@property ( nonatomic, retain   ) SoundEffect *homeSound;
-@property ( nonatomic, retain   ) SoundEffect *shakeSound;
-@property ( nonatomic, retain   ) SoundEffect *restartSound;
-@property ( nonatomic, retain   ) SoundEffect *comboSound;
-@property ( nonatomic, retain   ) SoundEffect *comboSetSound;
-@property ( nonatomic, retain   ) SoundEffect *successSound;
-@property ( nonatomic, retain   ) SoundEffect *applauseSound;
-
+@property ( nonatomic, assign   ) IBOutlet BallRingView * ballRingView;
 @property ( nonatomic, retain   ) NSTimer * historyTextUpdatingTimer;
-
-//  @property ( nonatomic           ) bool animateBallPops;
-
 @property ( nonatomic, retain   ) NSString * historyTextCache;
 
 -( void ) updateHistoryText;    
 
--( bool ) findWedgeAtTouch:( UITouch * )touch tolerant: ( bool ) tolerant 
-                                               asWedge: ( Index & ) wedge
-                                              andTheta: ( double & ) theta;
-//  -( void ) animatePopBall:( Index )nBall first:( bool ) first;
 -( void ) showCurrentPermutationAtDuration: ( CGFloat ) duration;
 -( void ) setInvertibleButtonsInverted:( bool )inverted;
 -( void ) setComboButton:( HistoryElement )c enabled:( const bool )enabled;
 
--( void ) playRightSound    ;
--( void ) playLeftSound     ;
--( void ) playSwapSound     ;
--( void ) playHomeSound     ;
--( void ) playShakeSound    ;
--( void ) playRestartSound  ;
--( void ) playComboSound    ;
--( void ) playComboSetSound ;
--( void ) playSuccessSound  ;
 
 @end
