@@ -9,6 +9,7 @@
 #import "PreferencesView.h"
 #import "mathieu.h"
 #import "SporadicMAppDelegate.h"
+#import "GameModel.h"
 
 @implementation PreferencesView
 
@@ -41,6 +42,8 @@
 }
 const CGFloat helpFontSize = 11.0;
 
+@synthesize currentPermutation;
+
 - (void) awakeFromNib{
     confirmHelp.font = [UIFont systemFontOfSize:helpFontSize ];
     // TODO: I18n
@@ -52,7 +55,8 @@ const CGFloat helpFontSize = 11.0;
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
-	navigationBar.title        = appName;
+	navigationBar.title        = appName                          ;
+    currentPermutation.text    = self.appDelegate.gameModel.cycles;
 }
 
 

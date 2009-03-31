@@ -11,12 +11,14 @@
 #import "RootViewController.h"
 #import "PreferencesView.h"
 #import "HelpViewController.h"
+#import "SwapPermutationsViewController.h"
 
 @implementation PreferencesViewController
 
 @synthesize rootViewController;
 @synthesize preferencesView;
 @synthesize helpViewController;
+@synthesize swapPermutationsViewController;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 
@@ -41,6 +43,14 @@
     [viewController release];
 }
 
+- (void)loadSwapPermutationsViewController {
+    SwapPermutationsViewController *viewController = [[SwapPermutationsViewController alloc] initWithNibName:@"SwapPermutationsView" bundle:nil];
+    self.swapPermutationsViewController = viewController;
+    viewController.rootViewController = rootViewController;
+    viewController.preferencesViewController = self;
+    [viewController release];
+}
+
 - (IBAction)toggleView:(id)sender 
 {
     [ self.rootViewController toggleView ];
@@ -56,7 +66,20 @@
 	[self.rootViewController setAnimationTransition: UIViewAnimationTransitionCurlUp ];
     [self.rootViewController flipFrom: self to: helpViewController];
 	[UIView commitAnimations];
+    
+}
 
+
+- (IBAction)showSwapPermutations:(id)sender {
+    if ( self.swapPermutationsViewController == nil )
+        [ self loadSwapPermutationsViewController ];
+    
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: 1.0 ];	
+	[self.rootViewController setAnimationTransition: UIViewAnimationTransitionCurlUp ];
+    [self.rootViewController flipFrom: self to: swapPermutationsViewController];
+	[UIView commitAnimations];
+    
 }
 
 

@@ -11,7 +11,8 @@
 #include <string>
 using namespace std;
 
-#import "view.h"
+#include "view.h"
+#include "Utilities.h"
 
 #import "Constants.h"
 #import "GameModel.h"
@@ -123,12 +124,47 @@ using namespace std;
         if (! ( wchar_history[ i ] == ( wchar_t ) uni_history[ i ] ) )
             uni_history[ i ] = '?';
     }
-
+    
     NSString * result = [ NSString stringWithCharacters:uni_history length:history_size ];
     free( uni_history );
     return result;
 }
 
+
+-(NSString *) cyclesForPermutation: ( const MPermutation & )p
+{
+    const std::wstring cycles_text = cycles_wstr( p );
+    size_t cycles_size = cycles_text.size( ) ;
+    const wchar_t * wchar_cycles = cycles_text.c_str( );
+    unichar * uni_cycles = (unichar *)calloc( cycles_size, sizeof( unichar ) );
+    assert( uni_cycles );
+    
+    // The following is a reprehensible hack occasioned by
+    // the inability of the local wcstombs implementation
+    // to handle the superscriptMinusOne characters.
+    for( size_t i = 0 ; i < cycles_size ; i ++ )
+    {
+        uni_cycles[ i ] = ( unichar ) wchar_cycles[ i ] ;
+        if (! ( wchar_cycles[ i ] == ( wchar_t ) uni_cycles[ i ] ) )
+            uni_cycles[ i ] = '?';
+    }
+    
+    NSString * result = [ NSString stringWithCharacters:uni_cycles length:cycles_size ];
+    free( uni_cycles );
+    return result;
+}
+
+
+-(NSString *) cycles{
+    return  [ self cyclesForPermutation: (*currentPermutation).swapPermutation ];
+}
+
+-( NSString * ) cyclesForSwap: (int)nSwap
+{
+    if ( ! ( 0 <= nSwap && nSwap < n_array_elements( MPermutation::swaps ) ) )
+        return [ NSString stringWithFormat: @"No such swap %d", nSwap ];
+    return [ self cyclesForPermutation:MPermutation( MPermutation::swaps[ nSwap ].swap ) ];
+}
 
 // Allow permutation operations without history changes
 static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPermutation * ) & p ) ; }
