@@ -138,7 +138,8 @@ string cycles_str( const MPermutation & p )
     stringstream rss(stringstream::in | stringstream::out);
     p.insert_as_cycles( as(ostream,rss) );
     string rsstr;
-    rss >> rsstr;
+    for ( char c = (char)rss.get( ) ; !rss.eof( ) ; c = (char)rss.get( ) )
+        rsstr += c ;
     return rsstr;
 }
 
@@ -147,7 +148,8 @@ wstring cycles_wstr( const MPermutation & p )
     wstringstream rss(wstringstream::in | wstringstream::out);
     p.insert_as_cycles( as(wostream,rss) );
     wstring rsstr;
-    rss >> rsstr;
+    for ( wchar_t wc = (wchar_t)rss.get( ) ; !rss.eof( ) ; wc = (wchar_t)rss.get( ) )
+        rsstr += wc ;
     return rsstr;
 }
 

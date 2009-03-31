@@ -12,7 +12,6 @@
 
 @implementation HelpView
 
-//@synthesize helpWebView;
 @synthesize backButton;
 
 //- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
