@@ -6,15 +6,16 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
+#include "view.h"
 #import <UIKit/UIFont.h>
 #import "SporadicMAppDelegate.h"
 #import "RootViewController.h"
 #import "SporadicMViewController.h"
 #import "SporadicMView.h"
-#import "view.h"
-#import "ballView.h"
+#import "BallRingView.h"
 #import "OKCancelAlertView.h"
 #import "Constants.h"
+#import "iPhoneUtilities.h"
 
 @implementation SporadicMViewController
 
@@ -23,6 +24,8 @@
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 - ( SporadicMView *) spview { return (SporadicMView *) self.view ; }
+- ( BallRingView * ) ballRingView { return self.spview.ballRingView; }
+
 - ( bool ) confirm { return self.appDelegate.confirm; }
 - ( bool ) invert  { return self.appDelegate.invert; }
 - ( void ) setInvert:(bool)inverted { [ self.spview setInvertibleButtonsInverted: ( self.appDelegate.invert = inverted ) ]; }
@@ -64,9 +67,6 @@
     self.invert = !self.invert ;
 }
 
-
-static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
-
 - ( CGFloat ) appropriateDurationForMove: ( HistoryElement ) e
 {
     if ( History::is_left( e ) )
@@ -82,7 +82,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
     
     if ( [ self.gameModel isSolving ] && [ self.gameModel isIdentity ] && !haveNotedSuccess )
     {
-        [ self.spview playSuccessSound ];
+        [ self.ballRingView playSuccessSound ];
         haveNotedSuccess = true ;
     }
     
@@ -96,13 +96,13 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 - ( void ) playAfterMove: ( HistoryElement ) e
 {
     if ( History::is_left( e ) )
-        [ self.spview playLeftSound ];
+        [ self.ballRingView playLeftSound ];
     else if ( History::is_right( e ) )
-        [ self.spview playRightSound ];
+        [ self.ballRingView playRightSound ];
     else if ( History::is_swap( e ) )
-        [ self.spview playSwapSound ];
+        [ self.ballRingView playSwapSound ];
     else
-        [ self.spview playComboSound ];
+        [ self.ballRingView playComboSound ];
 }
 
 
@@ -146,7 +146,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
             && ! [ self.gameModel hasDefinedCombo:  comboName ] )
         return;
         
-    [ self.spview playComboSetSound ];
+    [ self.ballRingView playComboSetSound ];
     NSNumber * comboNameAsObject = [ NSNumber numberWithChar: comboName ] ;
     if ( self.confirm ) 
         [ self confirmSetCombo: comboNameAsObject ];
@@ -159,7 +159,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 {
     if ( [ self.gameModel hasDefinedCombo: comboName ] )
     {
-        [ self.spview playComboSound ];
+        [ self.ballRingView playComboSound ];
         [ self.gameModel runCombo: comboName inverted: inverse ];
         [ self updateDuration: LARGE_MOVE_DURATION ];
     }
@@ -177,19 +177,19 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 }
 
 -(IBAction) left: (id)sender{
-    [ self.spview playLeftSound ];
+    [ self.ballRingView playLeftSound ];
     [ self.gameModel left ];
     [ self updateDuration: SMALL_MOVE_DURATION ];
 }
 
 -(IBAction) swap: (id)sender{
-    [ self.spview playSwapSound ];
+    [ self.ballRingView playSwapSound ];
     [ self.gameModel swap ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
 }
 
 -(IBAction) right: (id)sender{
-    [ self.spview playRightSound ];
+    [ self.ballRingView playRightSound ];
     [ self.gameModel right ];
     [ self updateDuration: SMALL_MOVE_DURATION ];
 }
@@ -204,6 +204,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
     [ self updateDuration: INSTANTANEOUS ];
 }
 
+- (void) swapped { [ self swap: nil ] ; }
 
 -( void ) undo: ( bool ) move{
     HistoryElement e;
@@ -241,7 +242,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 }
 
 -(IBAction) home: (id)sender{
-    [ self.spview playHomeSound ];
+    [ self.ballRingView playHomeSound ];
     if ( self.confirm && [self.gameModel isSolving ] )
         [ self confirmHome ];
     else
@@ -296,7 +297,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 
 -(IBAction) shake: (id)sender{
-    [ self.spview playShakeSound ]; 
+    [ self.ballRingView playShakeSound ]; 
     if ( self.confirm && [self.gameModel isSolving ] )
         [ self confirmShake ];
     else
@@ -305,7 +306,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 
 -(IBAction) restart: (id)sender{
-    [ self.spview playRestartSound ];
+    [ self.ballRingView playRestartSound ];
     if ( self.confirm && [self.gameModel isSolving ] )
         [ self confirmRestart ];
     else

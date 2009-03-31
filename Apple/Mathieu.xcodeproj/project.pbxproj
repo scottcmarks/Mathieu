@@ -169,6 +169,9 @@
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D266F90D0F7A9F120080CAD1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */; };
 		D2F466DE0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F466DD0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png */; };
+		D2FD2C600F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
+		D2FD2C610F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
+		D2FD2C620F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -282,12 +285,15 @@
 		D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapPermutationsView.xib; sourceTree = "<group>"; };
 		D20295240F819B27003DE7D9 /* SwapPermutationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsView.h; sourceTree = "<group>"; };
 		D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsView.mm; sourceTree = "<group>"; };
+		D21B1D800F82CC8D001A4330 /* BallRingViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingViewDelegate.h; sourceTree = "<group>"; };
 		D241BE740F81CBCC00BEDE40 /* SwapPermutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsViewController.h; sourceTree = "<group>"; };
 		D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsViewController.mm; sourceTree = "<group>"; };
 		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
 		D2655A850F8028300006A1FF /* swaps.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; name = swaps.inc; path = ../M12/PlatformIndependent/Permutation/swaps.inc; sourceTree = SOURCE_ROOT; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Lite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F466DD0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12LiteIcon_Prerendered.png; sourceTree = "<group>"; };
+		D2FD2C5E0F82970C00584E49 /* BallRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingView.h; sourceTree = "<group>"; };
+		D2FD2C5F0F82970C00584E49 /* BallRingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallRingView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -738,6 +744,7 @@
 		8CFA01CF0F697B0400B63278 /* SporadicM Side */ = {
 			isa = PBXGroup;
 			children = (
+				D21B1D800F82CC8D001A4330 /* BallRingViewDelegate.h */,
 				8C1B87C00F68452900F359D6 /* BallView.h */,
 				8C1B87C10F68452900F359D6 /* BallView.mm */,
 				8C1B87C20F68452900F359D6 /* ComboButton.h */,
@@ -749,6 +756,8 @@
 				8C1B87D80F68452900F359D6 /* SporadicMView.mm */,
 				8C1B87D90F68452900F359D6 /* SporadicMViewController.h */,
 				8C1B87DA0F68452900F359D6 /* SporadicMViewController.mm */,
+				D2FD2C5E0F82970C00584E49 /* BallRingView.h */,
+				D2FD2C5F0F82970C00584E49 /* BallRingView.mm */,
 			);
 			name = "SporadicM Side";
 			sourceTree = "<group>";
@@ -1013,6 +1022,7 @@
 				8C6CD9930F69B8D800B4F305 /* HelpView.mm in Sources */,
 				D20295280F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */,
 				D241BE780F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */,
+				D2FD2C600F82970C00584E49 /* BallRingView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,6 +1052,7 @@
 				8C6CD9940F69B8D900B4F305 /* HelpView.mm in Sources */,
 				D20295260F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */,
 				D241BE760F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */,
+				D2FD2C620F82970C00584E49 /* BallRingView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1071,6 +1082,7 @@
 				D266F9080F7A9F120080CAD1 /* HelpView.mm in Sources */,
 				D20295270F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */,
 				D241BE770F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */,
+				D2FD2C610F82970C00584E49 /* BallRingView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

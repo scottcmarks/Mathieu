@@ -16,7 +16,7 @@
 @synthesize navigationBar;
 @synthesize swapPermutationPicker;
 @synthesize currentPermutation;
-@synthesize currentPermutationImage;
+@synthesize currentPermutationPreview;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }

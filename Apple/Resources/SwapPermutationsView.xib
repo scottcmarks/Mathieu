@@ -118,18 +118,16 @@
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
 					</object>
-					<object class="IBUIImageView" id="35624254">
+					<object class="IBUIView" id="888446353">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{96, 44}, {128, 128}}</string>
+						<string key="NSFrame">{{101, 52}, {118, 118}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MjM5MTMwNiAwLjIxMDcwNjggMC4xNDUyNjg4NiAwLjg3AA</bytes>
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MSAwAA</bytes>
 						</object>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
@@ -226,11 +224,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">currentPermutationImage</string>
+						<string key="label">currentPermutationPreview</string>
 						<reference key="source" ref="191373211"/>
-						<reference key="destination" ref="35624254"/>
+						<reference key="destination" ref="888446353"/>
 					</object>
-					<int key="connectionID">89</int>
+					<int key="connectionID">91</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -253,7 +251,7 @@
 							<reference ref="740960563"/>
 							<reference ref="286098560"/>
 							<reference ref="753031784"/>
-							<reference ref="35624254"/>
+							<reference ref="888446353"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
@@ -320,8 +318,8 @@
 						<string key="objectName">CurrentPermutation</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">86</int>
-						<reference key="object" ref="35624254"/>
+						<int key="objectID">90</int>
+						<reference key="object" ref="888446353"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
@@ -345,7 +343,7 @@
 					<string>75.showNotes</string>
 					<string>84.IBPluginDependency</string>
 					<string>84.showNotes</string>
-					<string>86.IBPluginDependency</string>
+					<string>90.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -387,7 +385,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">89</int>
+			<int key="maxID">91</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -400,14 +398,14 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>currentPermutation</string>
-							<string>currentPermutationImage</string>
+							<string>currentPermutationPreview</string>
 							<string>navigationBar</string>
 							<string>swapPermutationPicker</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UILabel</string>
-							<string>UIImageView</string>
+							<string>UIView</string>
 							<string>UINavigationItem</string>
 							<string>UIPickerView</string>
 						</object>

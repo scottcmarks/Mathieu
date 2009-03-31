@@ -9,39 +9,26 @@
 #import "view.h"
 #import "Constants.h"
 #import "Utilities.h"
+#import "iPhoneUtilities.h"
 #import "SporadicMView.h"
 #import "SporadicMViewController.h"
 #import "SporadicMAppDelegate.h"
-#import "BallView.h"
-#import "SoundEffect.h"
 #import "ComboButton.h"
-
-static point circleCenter;
-static CGFloat circleRadius;
+#import "BallRingView.h"
 
 @implementation SporadicMView
 
 @synthesize toolbar;
 @synthesize history;
 @synthesize controller;
-@synthesize rightSound;
-@synthesize leftSound;
-@synthesize swapSound;
-@synthesize homeSound;
-@synthesize shakeSound;
-@synthesize restartSound;
-@synthesize comboSound;
-@synthesize comboSetSound;
-@synthesize successSound;
-@synthesize applauseSound;
 @synthesize historyTextUpdatingTimer;
+@synthesize ballRingView;
 
 //  @synthesize animateBallPops;
 
 @synthesize historyTextCache;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
-- ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 - ( bool ) invert { return self.appDelegate.invert; }
 - (CGFloat ) animationSpeed { return self.appDelegate.animationSpeed ; }
 - (GameModel * ) gameModel { return self.appDelegate.gameModel ; }
@@ -126,82 +113,16 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 - (void) awakeFromNib
 {
 
-    self.rightSound     = [ [ SoundEffect alloc ] initWithResource:@"right"      ofType:@"caf" ];
-    self.leftSound     = [ [ SoundEffect alloc ] initWithResource:@"left"      ofType:@"caf" ];
-    self.swapSound     = [ [ SoundEffect alloc ] initWithResource:@"swap"      ofType:@"caf" ];
-    self.homeSound     = [ [ SoundEffect alloc ] initWithResource:@"home"      ofType:@"caf" ];
-    self.shakeSound    = [ [ SoundEffect alloc ] initWithResource:@"shake"     ofType:@"caf" ];
-    //TODO: make real sound for restart amd combo 
-    self.restartSound  = [ [ SoundEffect alloc ] initWithResource:@"restart"   ofType:@"caf" ];
-    self.comboSound    = [ [ SoundEffect alloc ] initWithResource:@"combo"     ofType:@"caf" ];
-    self.comboSetSound = [ [ SoundEffect alloc ] initWithResource:@"combo_set" ofType:@"caf" ];
-    self.successSound  = [ [ SoundEffect alloc ] initWithResource:@"success"   ofType:@"caf" ];
-    self.applauseSound = [ [ SoundEffect alloc ] initWithResource:@"applause"  ofType:@"caf" ];
 
 	history.font = [UIFont systemFontOfSize:historyFontSize ];
     self.historyTextCache = @"";
-	const CGFloat frameHalfWidth = self.frame.size.width/2;
-	circleRadius = frameHalfWidth - 2*MBallRadius ;
-	circleCenter = point( frameHalfWidth, frameHalfWidth + 1.5*MBallRadius + tagFontSize );
-
-    point ballCoordinates[ nBalls ];
-    point tagCoordinates [ nBalls ];
-    CalculateBallCoordinates( circleCenter, circleRadius, MBallRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
-    CGRect frame = CGRectMake ( 0.0, 0.0, MBallRadius*2, MBallRadius*2 );
-
-    // Do all the geometry
-    forAllBalls(i)
-    {
-        ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
-        ballCenters[ i ].y = round( ballCoordinates[ i ].y );
-    }
-
-    // Create and add all the balls
-    forAllBalls(i)
-    {
-        BallView *ballView = [ [BallView alloc] initWithFrame: frame ballNumber: i] ;      //TODO: if we're allocating all of these don't we need to release them? (keep track?)
-        if (! ballView )
-            return ;
-        ballView.center = ballCenters[ i ];
-        [self addSubview: ballView];
-        ballViews[ i ] = ballView;
-    }
     
-    UIFont * ballFont = [UIFont systemFontOfSize:ballFontSize ];
-    
-    // Create and add all the labels (in front of the balls)
-    forAllBalls(i)
-    {
-        UILabel * ballLabel = [ [ UILabel alloc ] initWithFrame: frame ];
-        if (! ballLabel )
-            return ;
-        ballLabel.center = ballCenters[ i ];
-        ballLabel.font = ballFont;
-        ballLabel.textAlignment = UITextAlignmentCenter;
-        ballLabel.backgroundColor = [ UIColor clearColor ];
-        ballLabel.text = [NSString stringWithFormat:@"%d", i ];
-        [self addSubview:ballLabel ];
-        ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
-    }
-    
-    UIFont * tagFont = [UIFont systemFontOfSize:tagFontSize ];
-    
-    // Create and add all the little gray labels (next to the balls)
-    forAllBalls(i)
-    {
-        UILabel * tagLabel = [ [ UILabel alloc ] initWithFrame: frame ];
-        if (! tagLabel )
-            return ;
-        tagLabel.center = CGPointMake( tagCoordinates[ i ].x, tagCoordinates[ i ].y );
-        tagLabel.font = tagFont;
-        tagLabel.textAlignment = UITextAlignmentCenter;
-        tagLabel.backgroundColor = [ UIColor clearColor ];
-        tagLabel.textColor = [ UIColor colorWithWhite:0.0 alpha:0.25 ];
-        tagLabel.text = [NSString stringWithFormat:@"%d", i ];
-        [self addSubview:tagLabel ];
-    }
-    
-    // Create and add all the action buttons
+    CGFloat ballRingFrameSize = min ( CGRectGetWidth( self.frame ), CGRectGetHeight( self.frame ) );
+    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( self.frame ), CGRectGetMinY( self.frame ), 
+                                                                               ballRingFrameSize, ballRingFrameSize ) 
+                                                   tags: YES 
+                                               delegate: self.controller ];
+    [ self addSubview: ( UIView *) ballRingView ];     // Create and add all the action buttons
     struct { NSString * normalTitle; SEL normalSelector; 
              NSString * alternateTitle; SEL alternateSelector; 
              CGPoint center; CGFloat width; UIButton * * variable; } dualActionButtons[ ] = {
@@ -293,11 +214,6 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     buttonsInverted = false;
     if ( self.invert ) [self setInvertibleButtonsInverted: true ];
     
-    // Not currently spinning
-    firstWedgeTouched = -1;
-    
-    // Not currently doing Swap gesture
-    swapGestureStarted = false;
 
     // Let's see it
     [ self showCurrentPermutationAtDuration: INSTANTANEOUS ];
@@ -312,38 +228,6 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 }
 
 
-
-/***
-
-- (void) animatePopBall:(Index)nBall first:(bool) first {
-    // Create animation for the grow, which uses a delegate method to
-    // start an animation for the shrink operation.
-    [UIView beginAnimations:nil context:(void *)( first ? +nBall : -nBall )];
-    [UIView setAnimationDuration: GROW_ANIMATION_DURATION_SECONDS];
-    [UIView setAnimationDelegate: self ];
-    [UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:) ];
-    CGFloat ballBloom  = first ? FIRST_BALL_BLOOM_FACTOR  : SUBSEQUENT_BALL_BLOOM_FACTOR ;
-    CGFloat labelBloom = first ? FIRST_LABEL_BLOOM_FACTOR : SUBSEQUENT_LABEL_BLOOM_FACTOR;
-    ballViews [nBall].transform = CGAffineTransformMakeScale(ballBloom , ballBloom );
-    ballLabels[nBall].transform = CGAffineTransformMakeScale(labelBloom, labelBloom);
-    [UIView commitAnimations];
-}
-
-- (void)growAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
-    int nBall = (int)context;
-    bool first = 0 < nBall;
-    if ( ! first ) nBall = - nBall ;
-    [UIView beginAnimations:nil context:context];
-    [UIView setAnimationDuration: SHRINK_ANIMATION_DURATION_SECONDS
-     * ( first
-        ? FIRST_ANIMATION_DURATION_FACTOR
-        : SUBSEQUENT_ANIMATION_DURATION_FACTOR ) ];
-    ballViews [ nBall ].transform = CGAffineTransformIdentity;
-    ballLabels[ nBall ].transform = CGAffineTransformIdentity;
-    [UIView commitAnimations];
-}
-
-***/
 
 -(void) animateButton:( DualActionButton *)button 
           normalTitle:( NSString * )normalTitle
@@ -431,10 +315,9 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         [UIView beginAnimations:nil context:NULL ];
         [UIView setAnimationDuration: duration ];
     }
-    forAllBalls(i)
-    {
-        ballLabels[ [ self.gameModel at: i ] ].center = ballCenters[ i ];
-    }
+    
+    [ ballRingView moveLabels ];
+
     if ( 0.0 < duration )
         [UIView commitAnimations];
     
@@ -443,201 +326,13 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     undoButton.enabled = ! [ self.gameModel historyIsEmpty ] ;
 }
 
-- (bool) findWedgeAtTouch:(UITouch *)touch tolerant: ( bool ) tolerant
-                  asWedge: ( Index & ) wedge
-                 andTheta: ( double & ) theta{
-    CGPoint touchPoint = [ touch locationInView: self ];
-    CGFloat annulusSemiWidth = tolerant ? circleRadius : TOUCH_SPOT_SIZE/2;
-    return FindBallWedge( point( touchPoint.x, touchPoint.y ),
-                         circleCenter, circleRadius - annulusSemiWidth, circleRadius + annulusSemiWidth,
-                         wedge, theta ) ;
-}
-
-- (bool) touch:(UITouch *)touch onBall:( Index )nBall{
-    CGRect ballZeroRect = CGRectMake( ballCenters[ nBall ].x-TOUCH_SPOT_SIZE/2,
-                                      ballCenters[ nBall ].y-TOUCH_SPOT_SIZE/2,
-                                      TOUCH_SPOT_SIZE, TOUCH_SPOT_SIZE );
-    CGPoint touchPoint = [ touch locationInView: self ];
-    return CGRectContainsPoint(ballZeroRect, touchPoint );
-}
-
-
-- (bool) ballZeroAtTouch:( UITouch *)touch {
-    return [ self touch: touch onBall: 0 ] ;
-}
-
-- (bool) innerWedgeOneContainsTouch: ( UITouch *)touch {
-    CGPoint touchPoint = [ touch locationInView: self ];
-    Index wedge;
-    double theta;
-    return FindBallWedge( point( touchPoint.x, touchPoint.y ),
-                          circleCenter, 0, circleRadius + TOUCH_SPOT_SIZE/2,
-                          wedge, theta )
-             && wedge == 1 ;
-}
-
-int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
-{
-    int nWedgesSpun = lastWedgeTouched - previousWedgeTouched;
-    if ( nWedgesSpun < -(nBalls/2 - 1 ) )
-        nWedgesSpun += (nBalls - 1);
-    else if ( +(nBalls/2 - 1) < nWedgesSpun )
-        nWedgesSpun -= (nBalls - 1);
-    return nWedgesSpun;
-}
-
-- (int) spinClicks: (int) nWedgesSpun
-{
-    if ( 0 < nWedgesSpun )
-        for ( int i = 0; i < +nWedgesSpun ; i ++ )
-            [ self playRightSound ];
-    else if ( nWedgesSpun < 0 )
-        for ( int i = 0; i < -nWedgesSpun ; i ++ )
-            [ self playLeftSound  ];
-    return nWedgesSpun;
-}
-
-- (void)startedTouching: (UITouch *)touch
-{
-    Index wedgeAtTouch = 0 ;
-    double thetaAtTouch = 0.0 ;
-    if ( [ self touch:touch onBall: 0 ] )
-    {
-        swapGestureStarted = true;
-        return ;
-    }
-    swapGestureStarted = false;
-    if (! [ self findWedgeAtTouch:touch tolerant:NO
-                          asWedge: wedgeAtTouch andTheta: thetaAtTouch ] )
-        return ;
-    
-    if ( ! ( 1 <= wedgeAtTouch && wedgeAtTouch < nBalls ) )
-        return;
-    
-    // Here we might consider whether ball 0 was touched, indicating a desire to swap.
-    
-    firstWedgeTouched = previousWedgeTouched = lastWedgeTouched = wedgeAtTouch;
-    firstThetaTouched = thetaAtTouch;
-    [ self.gameModel copyInto: spinStartingPosition ];
-    //  if ( self.animateBallPops ) [ self animatePopBall:wedgeAtTouch first:YES ];
-}
-
-
-- (void)  finishedTouching 
-{
-    [ self.controller spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
-    firstWedgeTouched = -1 ;
-}
-
-- (bool) recordTouch:(UITouch *)touch
-{
-    Index wedgeAtTouch;
-    double thetaAtTouch;
-    if ( ! [ self findWedgeAtTouch:touch tolerant:YES
-                           asWedge: wedgeAtTouch andTheta: thetaAtTouch ] )
-    {
-        [ self finishedTouching ] ;
-        return false;
-    }
-    lastWedgeTouched = wedgeAtTouch;
-    lastThetaTouched = thetaAtTouch ;
-    for (Index i = 1; i < nBalls ; i++ )
-    {
-        UILabel * ballLabel = ballLabels[ spinStartingPosition[ i ] ];
-        /*
-         ballLabel is currently who-knows-where.
-         But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.
-         It started at ballCenters[ i ].
-         
-         */
-        CGPoint oldBallCenter = ballCenters[ i ];
-        point spun = point( polar( point( oldBallCenter.x, oldBallCenter.y) 
-                                  - circleCenter ).rotate( lastThetaTouched - firstThetaTouched ) ) 
-        + circleCenter;
-        ballLabel.center = CGPointMake( spun.x, spun.y );
-    }
-    
-    [ self.controller spinInProgress: [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ] ];
-    previousWedgeTouched = lastWedgeTouched ;
-    return true;
-}
-
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self startedTouching: [ touches anyObject ] ];
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *) event {
-    if ( swapGestureStarted )
-        return ;
-    UITouch * touch = [ touches anyObject ];
-    if ( firstWedgeTouched == - 1 )
-    {
-        [ self startedTouching: touch ];
-        return;
-    }
-    [ self recordTouch: touch ];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *) event {
-    UITouch * touch = [ touches anyObject ];
-    if ( swapGestureStarted )
-    {
-        if ( [ self innerWedgeOneContainsTouch:touch ] )
-            [ self.controller swap: self ];
-        swapGestureStarted = false;
-        return;
-    }
-    if ( firstWedgeTouched == -1 ) return;
-    if ( [ self recordTouch: touch ] )
-        [ self finishedTouching ];
-}
-
-
 
 - (void)dealloc {
     altButton = nil;
-    forAllBalls( i )
-    {
-        [ ballLabels[ i ] release ];
-        ballLabels[ i ] = nil;
-        [ ballViews[ i ] release ];
-        ballViews[ i ] = nil;
-    }
-    [ rightSound     release ] ;
-    [ leftSound     release ] ;
-    [ swapSound     release ] ;
-    [ homeSound     release ] ;
-    [ shakeSound    release ] ;
-    [ restartSound  release  ] ;
-    [ comboSound    release ] ;
-    [ comboSetSound release ] ;
-    [ successSound  release ] ;
-    [ applauseSound release ] ;
     [ history release       ] ;
     [ historyTextUpdatingTimer invalidate ];
     [ historyTextUpdatingTimer release ];
     [ super dealloc         ] ;
-}
-
-
--( void ) playRightSound    { if ( self.soundEffects ) [ rightSound     play ]; }
--( void ) playLeftSound     { if ( self.soundEffects ) [ leftSound     play ]; }
--( void ) playSwapSound     { if ( self.soundEffects ) [ swapSound     play ]; }
--( void ) playHomeSound     { if ( self.soundEffects ) [ homeSound     play ]; }
--( void ) playShakeSound    { if ( self.soundEffects ) [ shakeSound    play ]; }
--( void ) playRestartSound  { if ( self.soundEffects ) [ restartSound  play ]; }
--( void ) playComboSound    { if ( self.soundEffects ) [ comboSound    play ]; }
--( void ) playComboSetSound { if ( self.soundEffects ) [ comboSetSound play ]; }
--( void ) playSuccessSound  
-{ 
-    if ( self.soundEffects ) 
-    {
-        if ( self.gameModel.historyLength <= APPLAUSE_THRESHOLD )
-            [ applauseSound play ];
-        else
-            [ successSound  play ]; 
-    }
 }
 
 

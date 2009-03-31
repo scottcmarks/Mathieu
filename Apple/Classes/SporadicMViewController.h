@@ -10,12 +10,14 @@
 #import "GameModel.h"
 #import "SporadicMView.h"
 #import "ComboButtonTargetProtocol.h"
+#import "BallRingViewDelegate.h"
 
 @class RootViewController;
 
 @interface SporadicMViewController : UIViewController < UITextFieldDelegate, 
-                                                          UIAlertViewDelegate,
-                                                          ComboButtonTarget > 
+                                                        UIAlertViewDelegate,
+                                                        ComboButtonTarget,
+                                                        BallRingViewDelegate > 
 {
     RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;

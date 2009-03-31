@@ -7,14 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "mathieu.h"
 
-@interface BallView : UIView {
-	float R;
-	float G;
-	float B;
+@interface BallView : UIView 
+{
+    int _ballNumber;
 }
 
-- (id)initWithFrame:(CGRect)frame ballNumber: (int)i;
++ ( void ) setColorsForSwapPermutation: ( const MPermutation & ) swap;
+
++ ( BallView * ) ballViewWithFrame: ( CGRect ) frame ballNumber:( int ) ballNumber;
+
+- (id)initWithFrame:(CGRect)frame ballNumber: ( int ) ballNumber;
 
 
 @end
