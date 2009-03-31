@@ -7,8 +7,6 @@
 //
 
 #import "BallView.h"
-#import "mathieu.h"
-#import "Constants.h"
 #import "Utilities.h"
 
 @implementation BallView
@@ -32,33 +30,48 @@ static BallColor colors[ ] = {
 
 static BallColor ballColors[ nBalls ];
 
-+ ( void ) initialize 
++ ( void ) setColorsForSwapPermutation: ( const MPermutation & ) swap
 {
-    const MPermutation & swap = MPermutation::swapPermutation;
     int lastColorUsed = -1;
     bool colorIsSet[ nBalls ];
     forAllBalls( i ) colorIsSet[ i ] = false;
     forAllBalls( i )
-        if ( ! colorIsSet[ i ] )
-        {
-            lastColorUsed ++;
-            ballColors[ i ] = ballColors[ swap[ i ] ] = colors[ lastColorUsed ];
-            colorIsSet[ i ] = colorIsSet[ swap[ i ] ] = true;
-        }
+    if ( ! colorIsSet[ i ] )
+    {
+        lastColorUsed ++;
+        ballColors[ i ] = ballColors[ swap[ i ] ] = colors[ lastColorUsed ];
+        colorIsSet[ i ] = colorIsSet[ swap[ i ] ] = true;
+    }
 }
 
-- (id)initWithFrame:(CGRect)frame ballNumber:(int)i {
-    if ( self = [super initWithFrame:frame] ) {
-        R = ballColors[i].r/255.0;
-        G = ballColors[i].g/255.0;
-        B = ballColors[i].b/255.0;
++ ( void ) initialize 
+{
+    [ self setColorsForSwapPermutation: MPermutation::swapPermutation] ;
+}
+
+
+- (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
+{
+    if ( self = [super initWithFrame:frame] ) 
+    {
+        _ballNumber = ballNumber;
+        self.backgroundColor = [UIColor clearColor];
     }
-    self.backgroundColor = [UIColor clearColor];
     return self;
 }
 
++ ( BallView * ) ballViewWithFrame: ( CGRect ) frame ballNumber:( int ) ballNumber
+{
+    return [ [ self alloc ] initWithFrame:frame ballNumber: ballNumber ];
+}
+
+
 - (void)drawRect:(CGRect)rect {
 
+    const float R = ballColors[ _ballNumber ].r / 255.0;
+    const float G = ballColors[ _ballNumber ].g / 255.0;
+    const float B = ballColors[ _ballNumber ].b / 255.0;
+    
     // Make the gradient
     const int nLocations = 3;
 
