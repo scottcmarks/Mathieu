@@ -128,6 +128,12 @@
 	}
 }
 
+- ( void ) setSwapIndex: ( int ) newSwapIndex
+{
+    [ mainViewController setSwapIndex: newSwapIndex ];
+}
+
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);

@@ -35,13 +35,16 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     {
         
         CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
-        _circleRadius = frameHalfWidth - 2*MBallRadius ;
-        _circleCenter = CGPointMake( frameHalfWidth, frameHalfWidth + 1.5*MBallRadius + tagFontSize );
+        _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
+        NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f", 
+                (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
+        _circleRadius = frameHalfWidth - 2*_ballRadius ;
+        _circleCenter = CGPointMake( frameHalfWidth, frameHalfWidth + 1.5*_ballRadius + tagFontSize );
         
         point ballCoordinates[ nBalls ];
         point tagCoordinates [ nBalls ];
-        CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, MBallRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
-        CGRect frame = CGRectMake ( 0.0, 0.0, MBallRadius*2, MBallRadius*2 );
+        CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
+        CGRect frame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
         
         // Do all the geometry
         forAllBalls(i)
@@ -57,7 +60,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             if (! ballView )
                 return nil;
             ballView.center = _ballCenters[ i ];
-            [self addSubview: ballView];
+            [ self addSubview: ballView ];
             _ballViews[ i ] = ballView;
         }
         
@@ -123,6 +126,12 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             self.userInteractionEnabled = NO;
     }
     return self;
+}
+
+
+- ( void ) redraw
+{
+    forAllBalls( i ) [ _ballViews[ i ] setNeedsDisplay ];
 }
 
 

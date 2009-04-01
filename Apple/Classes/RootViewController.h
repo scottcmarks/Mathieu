@@ -21,9 +21,11 @@
     bool                nowHandlingShake;
 }
 
-@property (nonatomic, retain) SporadicMViewController *mainViewController;
-@property (nonatomic, retain) PreferencesViewController *preferencesViewController;
-@property (nonatomic        ) bool nowHandlingShake;
+@property ( nonatomic, retain ) SporadicMViewController *mainViewController;
+@property ( nonatomic, retain ) PreferencesViewController *preferencesViewController;
+@property ( nonatomic         ) bool nowHandlingShake;
+
+- ( void ) setSwapIndex: ( int ) newSwapIndex;
 
 - (void)toggleView;
 - (void) flipFrom:( UIViewController * )oldViewController to:( UIViewController * )newViewController;

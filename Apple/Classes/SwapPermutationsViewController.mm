@@ -7,10 +7,18 @@
 //
 
 #import "mathieu.h"
+#import "SporadicMAppDelegate.h"
+#import "GameModel.h"
+#import "BallView.h"
+#import "SwapPermutationsView.h"
 #import "SwapPermutationsViewController.h"
 #import "RootViewController.h"
 
 @implementation SwapPermutationsViewController
+
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
+
 @synthesize rootViewController;
 @synthesize swapPermutationsView;
 @synthesize preferencesViewController;
@@ -46,7 +54,10 @@
 
 - (IBAction)dismissSwapPermutations:(id)sender 
 {
-    [ self.rootViewController toggleView ];
+    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
+    if ( newSwapIndex != self.gameModel.swapIndex )
+        [ rootViewController setSwapIndex: newSwapIndex ]; 
+    [ rootViewController toggleView ];
 }
 
 @end

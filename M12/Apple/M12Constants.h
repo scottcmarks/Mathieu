@@ -12,10 +12,15 @@
 
 
 // These are fiddly program parameters.
-#define MBallRadius           22.0
-#define ballFontSize          24.0
-#define tagFontSize           16.0
+#define MBallRadiusRatio  0.137500
+#define ballFontSize      ( _ballRadius + 2.0 )
+#define tagFontSize       round( ballFontSize * 0.73 )
 #define historyFontSize       13.0
 #define appName               @"M12"
+#if LITE
+#define fullAppName appName @" Lite"
+#else
+#define fullAppName appName
+#endif
 
 #endif /* !defined(__M12CONSTANTS_H_INCLUDED__) */
