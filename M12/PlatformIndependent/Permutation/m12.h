@@ -27,6 +27,9 @@ typedef long int big_int;
 #define Rank big_int
 #define nRandomMoves 100
 
+// Pick a nice default swap index from 0..340
+#define INITIAL_SWAP_PERMUTATION_INDEX 1   
+
 class M12Permutation: public Permutation< nBalls, Index, Rank > {
 public:
   typedef Permutation< nBalls, Index, Rank > super;
@@ -37,6 +40,8 @@ public:
   M12Permutation( const M12Permutation& other );
   M12Permutation( const super& other );
   M12Permutation( const PermArray & p );
+  M12Permutation( std::istream & serialization );
+  std::ostream & serialize( std::ostream & serialization );
   M12Permutation & reset( );
   M12Permutation & left ( Index count = 1 );
   M12Permutation & right( Index count = 1 );
