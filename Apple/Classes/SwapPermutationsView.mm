@@ -10,6 +10,8 @@
 #import "mathieu.h"
 #import "SporadicMAppDelegate.h"
 #import "GameModel.h"
+#import "BallView.h"
+#import "BallRingView.h"
 
 @implementation SwapPermutationsView
 
@@ -17,19 +19,24 @@
 @synthesize swapPermutationPicker;
 @synthesize currentPermutation;
 @synthesize currentPermutationPreview;
+@synthesize pickedSwapIndex;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - (void) awakeFromNib
 {
-	navigationBar.title        = appName                          ;
+	navigationBar.title       = fullAppName ;
+    currentPermutationPreview = [ BallRingView ballRingViewWithFrame: CGRectMake( 101, 44, 118, 118 )
+                                                                tags: NO
+                                                            delegate: nil ] ;
+    [ self addSubview:currentPermutationPreview ];
 }
 
 - ( void ) synchronize
 {
     currentPermutation.text    = self.gameModel.cycles;
-    [ swapPermutationPicker selectRow:1 inComponent:0 animated:NO ];
+    [ swapPermutationPicker selectRow: self.gameModel.swapIndex inComponent: 0 animated: NO ];
 }
 
 - ( void ) willMoveToSuperview: ( UIView * )superView
@@ -41,7 +48,7 @@
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     assert (component == 0);
-    return [ NSString stringWithFormat: @"#%d -- difficulty %d ", row, [ self.gameModel difficultyOfSwap:row ] ];
+    return [ NSString stringWithFormat: @"#%d  ----  difficulty %d ", row+1, [ self.gameModel difficultyOfSwap:row ] ];
 }
 
 -(void) pickerView: (UIPickerView *)pickerView 
@@ -50,7 +57,9 @@
 {
     assert (component == 0);
     self.currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
-    NSLog(@"Row %d picked -- %@", row, self.currentPermutation.text );
+    [ BallView setColorsForSwapPermutation: MPermutation( MPermutation::swaps[ row ].swap ) ] ;
+    [ currentPermutationPreview redraw ]; 
+    pickedSwapIndex =  row;
 }
 
 

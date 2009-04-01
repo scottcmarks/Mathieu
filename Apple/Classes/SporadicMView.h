@@ -43,6 +43,7 @@
 -( void ) showCurrentPermutationAtDuration: ( CGFloat ) duration;
 -( void ) setInvertibleButtonsInverted:( bool )inverted;
 -( void ) setComboButton:( HistoryElement )c enabled:( const bool )enabled;
+-( void ) disableAllComboButtons;
 
 
 @end

@@ -305,7 +305,17 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         }
 }
 
-
+-( void ) disableAllComboButtons
+{
+    NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
+    UIBarButtonItem * item;
+    while ( item = [ toolbarItemsEnumerator nextObject ] )
+        if ( item.tag == (int)comboButton )
+        {
+            ComboButton * button = ( ComboButton * )item.customView;
+            button.disabled = true;
+        }
+}
     
 -(void) showCurrentPermutationAtDuration:(CGFloat)duration {
     duration *= ( MAX_ANIMATION_DURATION_FACTOR - self.animationSpeed ) ;
