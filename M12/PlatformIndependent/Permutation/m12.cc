@@ -30,6 +30,21 @@ M12Permutation::M12Permutation( const M12Permutation::PermArray & p )
   { };
 
 
+M12Permutation::M12Permutation( istream & serialization )
+  : super( serialization )
+{ 
+    serialization >> swapPermutationIndex;
+    set_swapPermutationIndex( swapPermutationIndex );
+};
+
+ostream & M12Permutation::serialize( ostream & serialization )
+{
+    super::serialize( serialization );
+    serialization << ( int ) swapPermutationIndex;
+    return serialization;
+}
+
+
 // Below are the original SciAm M12 generators.
 // swap was called "Inverse", and right was called "Merge"
 // M12Permutation::PermArray swap_perm  = { 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0 } ;
@@ -44,7 +59,7 @@ M12Permutation::M12Permutation( const M12Permutation::PermArray & p )
 #include "swaps.inc"
 
 // Use the second one as it makes a simple 4-preserving move
-#define INITIAL_SWAP_PERMUTATION_INDEX 1
+
 M12Permutation::PermArray const & swap_perm = M12Permutation::swaps[ INITIAL_SWAP_PERMUTATION_INDEX ].swap; 
 M12Permutation M12Permutation::swapPermutation( swap_perm );
 int M12Permutation::swapPermutationIndex = INITIAL_SWAP_PERMUTATION_INDEX;
