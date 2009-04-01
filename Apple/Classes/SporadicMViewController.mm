@@ -313,5 +313,15 @@
         [ self doRestart ];
 }
 
+-( void ) setSwapIndex: ( int ) newSwapIndex
+{
+    // TODO: confirm dialog
+    self.gameModel.swapIndex = newSwapIndex;
+    [ self.gameModel reset ];
+    [ self.gameModel eraseAllCombos ];
+    [ self.spview disableAllComboButtons ];
+    [ self.ballRingView redraw ];
+    [ self.spview showCurrentPermutationAtDuration:INSTANTANEOUS ];
+}
 
 @end

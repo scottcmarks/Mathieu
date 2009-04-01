@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include <ostream>
+#include "Utilities.h"
 
 // The next defines are used as template parameters and are
 // also necessary to make the macro forAllBalls work correctly.
@@ -74,6 +75,17 @@ after_the_multiply:
     }
   };
   static M12Permutation swapPermutation;
+  static int swapPermutationIndex;
+  static int set_swapPermutationIndex( int i )
+  {
+    int old_index = swapPermutationIndex;
+    if ( 0 <= i && i <= n_array_elements( swaps ) )
+    {
+        swapPermutation = M12Permutation( swaps[ i ].swap );
+        swapPermutationIndex = i;
+    }
+    return old_index;
+  };
   static M12Permutation rightPermutation;
   bool preserves_4( )
   {
@@ -150,6 +162,7 @@ public:
     History& expand_macro ( const HistoryElement c );
     History& set_macro    ( const HistoryElement c , M12PermutationWithHistory & m );
     History& erase_macro  ( const HistoryElement c );
+    History& erase_all_macros( );
     static M12PermutationWithHistory & run_macro ( M12PermutationWithHistory & m, const HistoryElement c , bool inverted=false );
   protected:
     friend class M12PermutationWithHistory;
@@ -187,6 +200,7 @@ public:
   M12PermutationWithHistory& expand_macro ( const HistoryElement c );
   M12PermutationWithHistory& set_macro    ( const HistoryElement c ,       M12PermutationWithHistory & m );
   M12PermutationWithHistory& erase_macro  ( const HistoryElement c );
+  M12PermutationWithHistory& erase_all_macros( ) ;
   M12PermutationWithHistory& run_macro    ( const HistoryElement c , bool inverted=false );
 protected:
   friend class History;

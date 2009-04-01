@@ -55,7 +55,7 @@ const CGFloat helpFontSize = 11.0;
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
-	navigationBar.title        = appName                          ;
+	navigationBar.title        = fullAppName                      ;
     currentPermutation.text    = self.appDelegate.gameModel.cycles;
 }
 

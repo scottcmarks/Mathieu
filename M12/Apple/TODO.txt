@@ -29,3 +29,7 @@ Multiple swaps in SporadicM12
 Linux tests still work?  And need new tests for cycles( )
 
 Cancelled or not, Restart should reset Alt
+
+Save and restore current swap -- just initialize to 1 when starting app.
+
+Keep 341 sets of macros around for each swap?  It would be hard to remember what they are for!

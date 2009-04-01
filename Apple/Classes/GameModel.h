@@ -36,6 +36,7 @@ typedef MPermutationWithHistory::HistoryElement HistoryElement;
 -(void) runCombo: ( HistoryElement ) c inverted: ( bool ) inverted;
 -(void) setCombo: ( HistoryElement ) c;
 -(void) eraseCombo: ( HistoryElement ) c;
+-(void) eraseAllCombos;
 -(bool) hasDefinedCombo: ( HistoryElement) c;
 -(bool) isSolving;
 -(bool) historyIsEmpty;
@@ -46,7 +47,7 @@ typedef MPermutationWithHistory::HistoryElement HistoryElement;
 @property (nonatomic, readonly) NSString * cycles;
 
 @property (nonatomic, readonly) int nSwaps;
+@property (nonatomic          ) int swapIndex;
 - ( NSString *) cyclesForSwap: (int)nSwap;
 - ( int ) difficultyOfSwap: ( int )nSwap;
-
 @end

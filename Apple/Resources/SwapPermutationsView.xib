@@ -118,17 +118,6 @@
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
 					</object>
-					<object class="IBUIView" id="888446353">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{101, 52}, {118, 118}}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MSAwAA</bytes>
-						</object>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
 				<reference key="NSSuperview"/>
@@ -222,14 +211,6 @@
 					</object>
 					<int key="connectionID">88</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">currentPermutationPreview</string>
-						<reference key="source" ref="191373211"/>
-						<reference key="destination" ref="888446353"/>
-					</object>
-					<int key="connectionID">91</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -251,7 +232,6 @@
 							<reference ref="740960563"/>
 							<reference ref="286098560"/>
 							<reference ref="753031784"/>
-							<reference ref="888446353"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
@@ -317,11 +297,6 @@
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">CurrentPermutation</string>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">90</int>
-						<reference key="object" ref="888446353"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -343,7 +318,6 @@
 					<string>75.showNotes</string>
 					<string>84.IBPluginDependency</string>
 					<string>84.showNotes</string>
-					<string>90.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -362,7 +336,6 @@
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<reference ref="6"/>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
