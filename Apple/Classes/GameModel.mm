@@ -254,6 +254,11 @@ static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPer
     (*currentPermutation).erase_macro( c );
 }
 
+-(void) eraseAllCombos
+{
+    (*currentPermutation).erase_all_macros( );
+}
+
 -(bool) hasDefinedCombo:(HistoryElement)c
 {
     return (*currentPermutation).macro_is_defined(c);
@@ -278,5 +283,16 @@ static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPer
 {
     return (*currentPermutation).history_length( );
 }
+
+- ( int ) swapIndex
+{
+    return MPermutation::swapPermutationIndex;
+}
+
+- ( void ) setSwapIndex: ( int ) i
+{
+    MPermutation::set_swapPermutationIndex( i );
+}
+
 
 @end

@@ -30,48 +30,51 @@ M12Permutation::M12Permutation( const M12Permutation::PermArray & p )
   { };
 
 
-//  Below are the original SciAm M12 generators.
-//  swap was called "Inverse", and right was called "Merge"
-//  M12Permutation::PermArray swap_perm = { 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0 } ;
-//  M12Permutation::PermArray right_perm= {  0, 11,  1, 10,  2,  9,  3,  8,  4,  7,  5,  6 };
+// Below are the original SciAm M12 generators.
+// swap was called "Inverse", and right was called "Merge"
+// M12Permutation::PermArray swap_perm  = { 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0 } ;
+// M12Permutation::PermArray right_perm = {  0, 11,  1, 10,  2,  9,  3,  8,  4,  7,  5,  6 } ;
+// These underwent renaming to make M12 generators  0->0 1->1 2->3 3->5 4->7 5->9 6->10 7->8 8->6 9->4 10->2 11->11
 
 // Below are the generators of M12, "swap" and "right"
 // swap is a permutation composed of (nBalls/2) 2-cycles
 // right is a permutation composed of (0) with a (nBalls-1)-cycle.
-//
 
 // Include all 341 permutations that are six 2-cycles and still generate the whole group
 #include "swaps.inc"
 
 // Use the second one as it makes a simple 4-preserving move
 #define INITIAL_SWAP_PERMUTATION_INDEX 1
-
 M12Permutation::PermArray const & swap_perm = M12Permutation::swaps[ INITIAL_SWAP_PERMUTATION_INDEX ].swap; 
 M12Permutation M12Permutation::swapPermutation( swap_perm );
+int M12Permutation::swapPermutationIndex = INITIAL_SWAP_PERMUTATION_INDEX;
 
 M12Permutation::PermArray right_perm= {  0, 11,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10 };
 M12Permutation M12Permutation::rightPermutation( right_perm );
 
-M12Permutation & M12Permutation::left( Index count ) {
+M12Permutation & M12Permutation::left( Index count ) 
+{
   for ( Index i = 0 ; i < count ; i ++ ) *this /= rightPermutation ;
   return *this;
 }
 
-M12Permutation & M12Permutation::right( Index count ) {
+M12Permutation & M12Permutation::right( Index count ) 
+{
   for ( Index i = 0 ; i < count ; i ++ ) *this *= rightPermutation;
   return *this;
 }
 
-M12Permutation & M12Permutation::swap( ) {
-    *this *= swapPermutation ;
-    return *this;
+M12Permutation & M12Permutation::swap( ) 
+{
+  *this *= swapPermutation ;
+  return *this;
 }
 
-M12Permutation & M12Permutation::reset( ) {
-    super::reset( );
-    return *this;
+M12Permutation & M12Permutation::reset( ) 
+{
+  super::reset( );
+  return *this;
 }
-
 
 M12Permutation& M12Permutation::invert( )
 {
@@ -88,17 +91,16 @@ M12Permutation M12Permutation::inverse( ) const
 
 M12Permutation M12Permutation::operator *( const M12Permutation other) const
 {
-    M12Permutation result( *this );
-    result *= other;
-    return result;
+  M12Permutation result( *this );
+  result *= other;
+  return result;
 }
-
 
 M12Permutation M12Permutation::operator /( const M12Permutation other) const
 {
-    M12Permutation result( *this );
-    result /= other;
-    return result;
+  M12Permutation result( *this );
+  result /= other;
+  return result;
 }
 
 M12PermutationWithHistory::M12PermutationWithHistory( )
@@ -115,13 +117,13 @@ M12PermutationWithHistory::M12PermutationWithHistory( const super & other )
   { };
 
 M12PermutationWithHistory::M12PermutationWithHistory( const M12PermutationWithHistory::PermArray &p )
-: super( p )
-{ };
+  : super( p )
+  { };
 
 M12PermutationWithHistory::M12PermutationWithHistory( istream & serialization )
-: super( serialization ),
-  history( serialization )
-{ };
+  : super( serialization ),
+    history( serialization )
+  { };
 
 ostream & M12PermutationWithHistory::serialize( ostream & serialization )
 {
@@ -130,31 +132,36 @@ ostream & M12PermutationWithHistory::serialize( ostream & serialization )
   return serialization;
 }
 
-M12PermutationWithHistory & M12PermutationWithHistory::left( Index count ) {
+M12PermutationWithHistory & M12PermutationWithHistory::left( Index count ) 
+{
     super::left( count );
     history.left( count );
     return *this;
 }
 
-M12PermutationWithHistory & M12PermutationWithHistory::right( Index count ) {
+M12PermutationWithHistory & M12PermutationWithHistory::right( Index count ) 
+{
     super::right( count );
     history.right( count );
     return *this;
 }
 
-M12PermutationWithHistory & M12PermutationWithHistory::swap( ) {
+M12PermutationWithHistory & M12PermutationWithHistory::swap( ) 
+{
     super::swap( );
     history.swap( );
     return *this;
 }
 
-M12PermutationWithHistory & M12PermutationWithHistory::reset( ) {
+M12PermutationWithHistory & M12PermutationWithHistory::reset( ) 
+{
     super::reset( );
     history.reset( );
     return *this;
 }
 
-M12PermutationWithHistory & M12PermutationWithHistory::random( bool amnesia ) {
+M12PermutationWithHistory & M12PermutationWithHistory::random( bool amnesia ) 
+{
     super::reset( );
     // Start out with a swap?
     if ( rand() & 1 )
@@ -242,7 +249,8 @@ History& History::reset( )
 }
 
 
-History& History::_step( Index direction, Index count ){
+History& History::_step( Index direction, Index count )
+{
   for ( Index i = 0 ; i < count ; i ++ )
     if ( empty( ) )
       push_back( direction );
@@ -266,7 +274,8 @@ History& History::left ( Index count ){ return _step( -1, count ); }
 
 History& History::right( Index count ){ return _step( +1, count ); }
 
-History&  History::swap( ){
+History&  History::swap( )
+{
   if ( empty( ) )
     push_back( 0 );
   else {
@@ -279,11 +288,14 @@ History&  History::swap( ){
   return *this;
 }
 
-History& History::invert( ){
-  if ( ! empty( ) ) {
+History& History::invert( )
+{
+  if ( ! empty( ) ) 
+  {
     History::iterator p=begin( );
     History::iterator q=end( )-1;
-    while ( p < q ) {
+    while ( p < q ) 
+    {
       HistoryElement temp=*p;
       *p++ = -*q;
       *q-- = -temp;
@@ -295,7 +307,8 @@ History& History::invert( ){
 }
 
 
-M12PermutationWithHistory & M12PermutationWithHistory::run( const History& additional_history ) {
+M12PermutationWithHistory & M12PermutationWithHistory::run( const History& additional_history ) 
+{
   for ( History::const_iterator p=additional_history.begin( ); p != additional_history.end( ); p++ )
     if ( History::is_left( *p ) )
       for ( int i=0; i<-*p; i++) left( );
@@ -528,6 +541,12 @@ History& History::erase_macro( const HistoryElement c )
 }
 
 
+History& History::erase_all_macros( )
+{
+    macros.clear( );
+    return *this;
+}
+
 M12PermutationWithHistory & History::run_macro ( M12PermutationWithHistory & m, const HistoryElement c , bool inverted )
 {
   M12Permutation & p=m;  // so that we hack the perm and its history separately
@@ -570,6 +589,13 @@ M12PermutationWithHistory& M12PermutationWithHistory::erase_macro( const History
 {
   history.erase_macro( c );
   return *this;
+}
+
+
+M12PermutationWithHistory& M12PermutationWithHistory::erase_all_macros( )
+{
+    history.erase_all_macros( );
+    return *this;
 }
 
 

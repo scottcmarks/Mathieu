@@ -17,6 +17,7 @@
 {
     CGFloat   _circleRadius;
     CGPoint   _circleCenter;
+    CGFloat   _ballRadius;
     BallView * _ballViews[ nBalls ];
     UILabel *_ballLabels[ nBalls ];
     CGPoint _ballCenters[ nBalls ];
@@ -45,7 +46,7 @@
 - ( id ) initWithFrame:         ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id < BallRingViewDelegate > ) delegate ;
 
 - ( void ) moveLabels;
-
+- ( void ) redraw;
 - ( void ) playRightSound    ;
 - ( void ) playLeftSound     ;
 - ( void ) playSwapSound     ;
