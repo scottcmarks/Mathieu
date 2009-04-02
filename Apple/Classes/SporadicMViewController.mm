@@ -12,6 +12,7 @@
 #import "RootViewController.h"
 #import "SporadicMViewController.h"
 #import "SporadicMView.h"
+#import "BallView.h"
 #import "BallRingView.h"
 #import "OKCancelAlertView.h"
 #import "Constants.h"
@@ -315,13 +316,35 @@
 
 -( void ) setSwapIndex: ( int ) newSwapIndex
 {
-    // TODO: confirm dialog
-    self.gameModel.swapIndex = newSwapIndex;
+    _newSwapIndex = newSwapIndex;
+    [ OKCancelAlertView OKCancelAlertWithTitle: @"New Swap!" 
+                                       message: @"This will change the meaning of Swap.\n" 
+                                                @"The current puzzle will be discarded!\n" 
+                                                @"All combo moves will be erased!\n" 
+                                                @"Press OK if you want to do this."
+                                        target: self
+                                cancelSelector: @selector( dontChangeSwap )
+                                    OKSelector: @selector( doChangeSwap ) ];
+}
+
+
+-( void ) doChangeSwap
+{
+    self.gameModel.swapIndex = _newSwapIndex;
     [ self.gameModel reset ];
     [ self.gameModel eraseAllCombos ];
     [ self.spview disableAllComboButtons ];
     [ self.ballRingView redraw ];
     [ self.spview showCurrentPermutationAtDuration:INSTANTANEOUS ];
+    [ self.rootViewController toggleView ];
 }
+
+
+-( void ) dontChangeSwap
+{
+    [ BallView setColorsForSwapPermutation: MPermutation::swapPermutation ];
+    [ self.rootViewController toggleView ];
+}
+
 
 @end
