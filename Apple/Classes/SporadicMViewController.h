@@ -21,6 +21,7 @@
 {
     RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;
+    int                  _newSwapIndex      ;
 }
 
 @property ( nonatomic, assign   ) RootViewController * rootViewController;

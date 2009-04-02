@@ -57,7 +57,8 @@
     int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
     if ( newSwapIndex != self.gameModel.swapIndex )
         [ rootViewController setSwapIndex: newSwapIndex ]; 
-    [ rootViewController toggleView ];
+    else
+        [ rootViewController toggleView ];
 }
 
 @end
