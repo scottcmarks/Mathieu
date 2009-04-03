@@ -314,18 +314,6 @@
         [ self doRestart ];
 }
 
--( void ) setSwapIndex: ( int ) newSwapIndex
-{
-    _newSwapIndex = newSwapIndex;
-    [ OKCancelAlertView OKCancelAlertWithTitle: @"New Swap!" 
-                                       message: @"This will change the meaning of Swap.\n" 
-                                                @"The current puzzle will be discarded!\n" 
-                                                @"All combo moves will be erased!\n" 
-                                                @"Press OK if you want to do this."
-                                        target: self
-                                cancelSelector: @selector( dontChangeSwap )
-                                    OKSelector: @selector( doChangeSwap ) ];
-}
 
 
 -( void ) doChangeSwap
@@ -344,6 +332,23 @@
 {
     [ BallView setColorsForSwapPermutation: MPermutation::swapPermutation ];
     [ self.rootViewController toggleView ];
+}
+
+
+-( void ) setSwapIndex: ( int ) newSwapIndex
+{
+    _newSwapIndex = newSwapIndex;
+    if ( _newSwapIndex == self.gameModel.swapIndex )
+        [ self dontChangeSwap ];
+    else
+        [ OKCancelAlertView OKCancelAlertWithTitle: @"New Swap!" 
+                                           message: @"This will change the meaning of Swap.\n" 
+                                                    @"The current puzzle will be discarded!\n" 
+                                                    @"All combo moves will be erased!\n" 
+                                                    @"Press OK if you want to do this."
+                                            target: self
+                                    cancelSelector: @selector( dontChangeSwap )
+                                        OKSelector: @selector( doChangeSwap ) ];
 }
 
 

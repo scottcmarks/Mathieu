@@ -294,5 +294,16 @@ static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPer
     MPermutation::set_swapPermutationIndex( i );
 }
 
+- ( int ) moves 
+{
+    return (*currentPermutation).moves( );
+}
+
+- ( int ) steps 
+{
+    return (*currentPermutation).steps( );
+}
+
+
 
 @end

@@ -20,6 +20,7 @@
 
 @synthesize toolbar;
 @synthesize history;
+@synthesize moves;
 @synthesize controller;
 @synthesize historyTextUpdatingTimer;
 @synthesize ballRingView;
@@ -40,6 +41,7 @@
       && [ historyTextCache compare:historyText options:NSLiteralSearch ] == NSOrderedSame )
         return;
     history.text = self.historyTextCache = historyText ;
+    moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
     // I know of no good way to make the end of the string visible.
     //
     //    [ history scrollRangeToVisible: NSMakeRange( length, 0 ) ]
@@ -112,10 +114,10 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 - (void) awakeFromNib
 {
-
-
 	history.font = [UIFont systemFontOfSize:historyFontSize ];
     self.historyTextCache = @"";
+    moves.font = [ UIFont systemFontOfSize:movesFontSize ];
+    moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
     
     CGFloat ballRingFrameSize = min ( CGRectGetWidth( self.frame ), CGRectGetHeight( self.frame ) );
     ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( self.frame ), CGRectGetMinY( self.frame ), 

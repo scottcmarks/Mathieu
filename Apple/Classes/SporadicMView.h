@@ -18,6 +18,7 @@
 
     SporadicMViewController * controller;
     UIToolbar * toolbar;
+    UILabel * moves;
     UITextView *history;
     NSTimer * historyTextUpdatingTimer;
     BallRingView * ballRingView;    
@@ -32,6 +33,7 @@
 
 
 @property ( nonatomic, assign   ) IBOutlet UIToolbar * toolbar;
+@property ( nonatomic, assign   ) IBOutlet UILabel * moves;
 @property ( nonatomic, assign   ) IBOutlet UITextView *history;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
 @property ( nonatomic, assign   ) IBOutlet BallRingView * ballRingView;
