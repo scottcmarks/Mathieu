@@ -36,7 +36,13 @@
 - ( void ) synchronize
 {
     currentPermutation.text    = self.gameModel.cycles;
-    [ swapPermutationPicker selectRow: self.gameModel.swapIndex inComponent: 0 animated: NO ];
+    pickedSwapIndex = self.gameModel.swapIndex;
+#if LITE
+    int row = pickedSwapIndex == 1 ? 0 : 1;
+#else
+    int row = pickedSwapIndex ;
+#endif
+    [ swapPermutationPicker selectRow: row inComponent: 0 animated: NO ];
 }
 
 - ( void ) willMoveToSuperview: ( UIView * )superView
@@ -48,6 +54,9 @@
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     assert (component == 0);
+#if LITE
+    row = ( row == 0 ? 1 : 24 );
+#endif
     return [ NSString stringWithFormat: @"#%d  ----  difficulty %d ", row+1, [ self.gameModel difficultyOfSwap:row ] ];
 }
 
@@ -56,6 +65,9 @@
        inComponent: (NSInteger) component
 {
     assert (component == 0);
+#if LITE
+    row = ( row == 0 ? 1 : 24 );
+#endif
     self.currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
     [ BallView setColorsForSwapPermutation: MPermutation( MPermutation::swaps[ row ].swap ) ] ;
     [ currentPermutationPreview redraw ]; 
@@ -72,7 +84,11 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if ( component == 0 )
+#if LITE
+        return 2;
+#else
         return self.gameModel.nSwaps;
+#endif
     return 0;
 }
 
