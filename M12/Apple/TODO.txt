@@ -30,6 +30,8 @@ Factor SporadicM12 and SporadicM12 Lite
 
 * Multiple swaps in SporadicM12
 
+* Just 2 swaps in SM12 Lite
+
 Linux tests still work?  And need new tests for cycles( )
 
 Cancelled or not, Restart should reset Alt.  Left, Right, Swap buttons, too.
@@ -37,5 +39,7 @@ Cancelled or not, Restart should reset Alt.  Left, Right, Swap buttons, too.
 * Save and restore current swap -- just initialize to 1 when starting app.
 
 * Confirm swap change.
+
+* Counters for steps and moves next to history
 
 Keep 341 sets of macros around for each swap?  It would be hard to remember what they are for!

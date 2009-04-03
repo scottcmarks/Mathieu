@@ -34,12 +34,6 @@
 @synthesize confirmHelp;
 
 
-- (id)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
-        // Initialization code
-    }
-    return self;
-}
 const CGFloat helpFontSize = 11.0;
 
 @synthesize currentPermutation;
@@ -56,9 +50,12 @@ const CGFloat helpFontSize = 11.0;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
 	navigationBar.title        = fullAppName                      ;
-    currentPermutation.text    = self.appDelegate.gameModel.cycles;
 }
 
+- ( void ) willMoveToSuperview: ( UIView *) newSuperView
+{
+    if ( newSuperView ) currentPermutation.text  = self.appDelegate.gameModel.cycles;
+}
 
 - (void)dealloc {
     [super dealloc];
