@@ -42,6 +42,8 @@ typedef MPermutationWithHistory::HistoryElement HistoryElement;
 -(bool) historyIsEmpty;
 -(bool) historyIsSingleCombo: ( HistoryElement ) c;
 -(int) historyLength;
+-( int ) moves;
+-( int ) steps;
 
 @property (nonatomic, readonly) NSString * history;
 @property (nonatomic, readonly) NSString * cycles;
