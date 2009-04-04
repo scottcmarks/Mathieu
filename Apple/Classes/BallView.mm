@@ -14,18 +14,7 @@
 typedef struct { unsigned char r; unsigned char g; unsigned char b; } BallColor;
 
 static BallColor colors[ ] = {
-     WHITE             ,
-     PALE_DULL_PINK    ,
-     LIGHT_HARD_ORANGE ,
-     YELLOW            ,
-     DARK_HARD_GREEN   ,
-     MAGENTA           ,
-     LIGHT_AZURE_BLUE  ,
-     LIGHT_BLUE_AZURE  ,
-     DARK_HARD_ORANGE  ,
-     RED               ,
-     LIGHT_HARD_VIOLET ,
-     DARK_HARD_CYAN    ,
+    BALL_COLORS    // defined in MxxConstants.h
 };
 
 static BallColor ballColors[ nBalls ];
