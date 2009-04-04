@@ -7,6 +7,10 @@
  *
  */
 
+// Use this for making simplified screens for icon preparation
+#define ICONIC_PICTURE_ONLY 0
+
+// Reward levels -- TODO: M12/M24 specific?
 #define FIREWORKS_THRESHOLD 15
 #define APPLAUSE_THRESHOLD  20
 
