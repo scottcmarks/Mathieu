@@ -57,8 +57,8 @@
 #define tagFontSize       round( ballFontSize * 0.73 )
 #define historyFontSize       13.0
 #define movesFontSize         13.0
-#if LITE
-#define fullAppName appName @" Lite"
+#if FREE
+#define fullAppName appName @" Free"
 #else
 #define fullAppName appName
 #endif
@@ -74,14 +74,27 @@
 
 #define USE_FAT_BUTTONS
 #if defined( USE_FAT_BUTTONS )
-    #define toolbarButtonHeight    38.0
-    #define comboButtonWidth      38.0
-    #define altButtonWidth        44.0
+    #define toolbarButtonHeight   38.0
+    #if FREE
+         #define comboButtonWidth      58.0
+         #define altButtonWidth        58.0
+    #else
+         #define comboButtonWidth      38.0
+         #define altButtonWidth        44.0
+    #endif
     #undef infoInToolbar
     #if defined( infoInToolbar )
-        #define lastComboButton       'D'
+        #if FREE
+            #define lastComboButton       'B'
+        #else
+            #define lastComboButton       'D'
+        #endif
     #else
-        #define lastComboButton       'E'
+        #if FREE
+            #define lastComboButton       'B'
+        #else
+            #define lastComboButton       'E'
+        #endif
         #define INFO_BUTTON_CENTER CGPointMake( 32.0 , 320.0 )
     #endif
     #define simpleButtonSmallFontSize  13.0
@@ -90,7 +103,11 @@
     #define toolbarButtonHeight    28.0
     #define comboButtonWidth      30.0
     #define altButtonWidth        32.0
-    #define lastComboButton       'E'
+    #if FREE
+        #define lastComboButton       'B'
+    #else
+        #define lastComboButton       'E'
+    #endif
     #define simpleButtonSmallFontSize  13.0
     #define simpleButtonLargeFontSize  13.0
 #endif
