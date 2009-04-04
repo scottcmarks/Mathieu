@@ -30,5 +30,7 @@
 	<string>Copyright 2009 Magnolia Heights Research and Development</string>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 </dict>
 </plist>
