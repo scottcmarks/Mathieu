@@ -26,11 +26,11 @@ should this icon have the numbers on it?  try both ways  use #defines for genera
 
 * factor Touches Moved/Ended to avoid inf recursion
 
-Factor SporadicM12 and SporadicM12 Lite
+Factor SporadicM12 and SporadicM12 Free
 
 * Multiple swaps in SporadicM12
 
-* Just 2 swaps in SM12 Lite
+* Just 2 swaps in SM12 Free
 
 Linux tests still work?  And need new tests for cycles( )
 

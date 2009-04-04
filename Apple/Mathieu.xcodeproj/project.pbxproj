@@ -168,7 +168,7 @@
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D266F90D0F7A9F120080CAD1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */; };
-		D2F466DE0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F466DD0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png */; };
+		D2F466DE0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F466DD0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png */; };
 		D2FD2C600F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
 		D2FD2C610F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
 		D2FD2C620F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
@@ -279,7 +279,6 @@
 		8C5CC23C0F6AE3CA004B58DE /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
 		8C6CD7FF0F69A7AC00B4F305 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		8C6CD83B0F69A86C00B4F305 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
-		8C8D27DA0F696F5A006E1D0B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C97FF540F70018400AFA4BB /* left.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = left.caf; sourceTree = "<group>"; };
 		8C97FF550F70018400AFA4BB /* right.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = right.caf; sourceTree = "<group>"; };
 		D202951D0F8195FF003DE7D9 /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapPermutationsView.xib; sourceTree = "<group>"; };
@@ -290,8 +289,11 @@
 		D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsViewController.mm; sourceTree = "<group>"; };
 		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
 		D2655A850F8028300006A1FF /* swaps.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; name = swaps.inc; path = ../M12/PlatformIndependent/Permutation/swaps.inc; sourceTree = SOURCE_ROOT; };
-		D266F9110F7A9F120080CAD1 /* SporadicM12Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Lite.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2F466DD0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12LiteIcon_Prerendered.png; sourceTree = "<group>"; };
+		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2EEC79E0F87ED85004305BA /* InfoFree.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoFree.plist; sourceTree = "<group>"; };
+		D2EEC7A00F87ED98004305BA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2EEC7A20F87EDA4004305BA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2F466DD0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12FreeIcon_Prerendered.png; sourceTree = "<group>"; };
 		D2FD2C5E0F82970C00584E49 /* BallRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingView.h; sourceTree = "<group>"; };
 		D2FD2C5F0F82970C00584E49 /* BallRingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallRingView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -338,7 +340,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* SporadicM12.app */,
 				8C1B8AE70F68470300F359D6 /* SporadicM24.app */,
-				D266F9110F7A9F120080CAD1 /* SporadicM12Lite.app */,
+				D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -381,7 +383,6 @@
 		8C1B87BE0F68452900F359D6 /* Apple */ = {
 			isa = PBXGroup;
 			children = (
-				8C8D27DA0F696F5A006E1D0B /* Info.plist */,
 				32CA4F630368D1EE00C91783 /* Mathieu_Prefix.pch */,
 				8C1B87DB0F68452900F359D6 /* Constants.h */,
 				8C1B87DC0F68452900F359D6 /* main.mm */,
@@ -455,6 +456,8 @@
 		8C1B881D0F68452900F359D6 /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D2EEC7A00F87ED98004305BA /* Info.plist */,
+				D2EEC79E0F87ED85004305BA /* InfoFree.plist */,
 				8C7F60520F6987A50074A903 /* Resources */,
 				8C1B881F0F68452900F359D6 /* M12Constants.h */,
 			);
@@ -513,6 +516,7 @@
 		8C1B88BB0F68452900F359D6 /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D2EEC7A20F87EDA4004305BA /* Info.plist */,
 				8C1B88E70F68452900F359D6 /* M24Constants.h */,
 				8C1B88ED0F68452900F359D6 /* Resources */,
 			);
@@ -724,7 +728,7 @@
 		8C7F60530F6987C20074A903 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				D2F466DD0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png */,
+				D2F466DD0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png */,
 				8C0819B60F69890700C21C40 /* SporadicM12Icon_Prerendered.png */,
 			);
 			path = Images;
@@ -851,9 +855,9 @@
 			productReference = 8C1B8AE70F68470300F359D6 /* SporadicM24.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D266F8D70F7A9F120080CAD1 /* SporadicM12Lite */ = {
+		D266F8D70F7A9F120080CAD1 /* SporadicM12Free */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D266F90E0F7A9F120080CAD1 /* Build configuration list for PBXNativeTarget "SporadicM12Lite" */;
+			buildConfigurationList = D266F90E0F7A9F120080CAD1 /* Build configuration list for PBXNativeTarget "SporadicM12Free" */;
 			buildPhases = (
 				D266F8D80F7A9F120080CAD1 /* Resources */,
 				D266F8F40F7A9F120080CAD1 /* Sources */,
@@ -863,9 +867,9 @@
 			);
 			dependencies = (
 			);
-			name = SporadicM12Lite;
+			name = SporadicM12Free;
 			productName = Mathieu;
-			productReference = D266F9110F7A9F120080CAD1 /* SporadicM12Lite.app */;
+			productReference = D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -880,7 +884,7 @@
 			projectDirPath = "";
 			projectRoot = ..;
 			targets = (
-				D266F8D70F7A9F120080CAD1 /* SporadicM12Lite */,
+				D266F8D70F7A9F120080CAD1 /* SporadicM12Free */,
 				1D6058900D05DD3D006BFB54 /* SporadicM12 */,
 				8C1B8AD90F68470300F359D6 /* SporadicM24 */,
 			);
@@ -967,7 +971,7 @@
 				D266F8DC0F7A9F120080CAD1 /* Sporadic_Games_Logo.png in Resources */,
 				D266F8DD0F7A9F120080CAD1 /* PreferencesView.xib in Resources */,
 				D266F8DE0F7A9F120080CAD1 /* HelpView.xib in Resources */,
-				D2F466DE0F7D35D1009DB72D /* SporadicM12LiteIcon_Prerendered.png in Resources */,
+				D2F466DE0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png in Resources */,
 				D266F8DF0F7A9F120080CAD1 /* Images in Resources */,
 				D266F8E00F7A9F120080CAD1 /* applause.caf in Resources */,
 				D266F8E10F7A9F120080CAD1 /* combo.caf in Resources */,
@@ -1101,9 +1105,9 @@
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"LITE=0",
+					"FREE=0",
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = ../M12/Apple/Info.plist;
 				PRODUCT_NAME = SporadicM12;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 			};
@@ -1119,9 +1123,9 @@
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"LITE=0",
+					"FREE=0",
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = ../M12/Apple/Info.plist;
 				PRODUCT_NAME = SporadicM12;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 			};
@@ -1136,8 +1140,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "MATHIEU_GROUP_PERMUTATION_SIZE=24";
-				INFOPLIST_FILE = Info.plist;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = ../M24/Apple/Info.plist;
 				PRODUCT_NAME = SporadicM24;
 			};
 			name = Debug;
@@ -1149,8 +1156,11 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "MATHIEU_GROUP_PERMUTATION_SIZE=24";
-				INFOPLIST_FILE = Info.plist;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = ../M24/Apple/Info.plist;
 				PRODUCT_NAME = SporadicM24;
 			};
 			name = Release;
@@ -1198,10 +1208,10 @@
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"LITE=1",
+					"FREE=1",
 				);
-				INFOPLIST_FILE = /iPhoneSandbox/Mathieu/Apple/Info.plist;
-				PRODUCT_NAME = SporadicM12Lite;
+				INFOPLIST_FILE = ../M12/Apple/InfoFree.plist;
+				PRODUCT_NAME = SporadicM12Free;
 			};
 			name = Debug;
 		};
@@ -1214,10 +1224,10 @@
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"LITE=1",
+					"FREE=1",
 				);
-				INFOPLIST_FILE = /iPhoneSandbox/Mathieu/Apple/Info.plist;
-				PRODUCT_NAME = SporadicM12Lite;
+				INFOPLIST_FILE = ../M12/Apple/InfoFree.plist;
+				PRODUCT_NAME = SporadicM12Free;
 			};
 			name = Release;
 		};
@@ -1251,7 +1261,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D266F90E0F7A9F120080CAD1 /* Build configuration list for PBXNativeTarget "SporadicM12Lite" */ = {
+		D266F90E0F7A9F120080CAD1 /* Build configuration list for PBXNativeTarget "SporadicM12Free" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D266F90F0F7A9F120080CAD1 /* Debug */,

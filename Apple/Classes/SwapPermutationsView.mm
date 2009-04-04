@@ -37,7 +37,7 @@
 {
     currentPermutation.text    = self.gameModel.cycles;
     pickedSwapIndex = self.gameModel.swapIndex;
-#if LITE
+#if FREE
     int row = pickedSwapIndex == 1 ? 0 : 1;
 #else
     int row = pickedSwapIndex ;
@@ -54,7 +54,7 @@
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     assert (component == 0);
-#if LITE
+#if FREE
     row = ( row == 0 ? 1 : 24 );
 #endif
     return [ NSString stringWithFormat: @"#%d  ----  difficulty %d ", row+1, [ self.gameModel difficultyOfSwap:row ] ];
@@ -65,7 +65,7 @@
        inComponent: (NSInteger) component
 {
     assert (component == 0);
-#if LITE
+#if FREE
     row = ( row == 0 ? 1 : 24 );
 #endif
     self.currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
@@ -84,7 +84,7 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if ( component == 0 )
-#if LITE
+#if FREE
         return 2;
 #else
         return self.gameModel.nSwaps;

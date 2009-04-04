@@ -158,13 +158,22 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     struct { ToolbarButtonType type;
              NSString * title;
              CGFloat width;
-           } toolbarButtons[ ] = {
+           } toolbarButtons[ ] = 
+           {
                { flexibleSpace                            },
                { comboButton  ,  @"A"  , comboButtonWidth },
+#if FREE               
+               { flexibleSpace                            },
+#endif               
+               
                { comboButton  ,  @"B"  , comboButtonWidth },
+#if !FREE               
                { comboButton  ,  @"C"  , comboButtonWidth },
                { comboButton  ,  @"D"  , comboButtonWidth },
+    #if !defined( infoInToolbar )               
                { comboButton  ,  @"E"  , comboButtonWidth },
+    #endif               
+#endif               
                { flexibleSpace                            },
                { invButton    ,  @"Alt", altButtonWidth   },
                { flexibleSpace                            },
