@@ -114,17 +114,21 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 - (void) awakeFromNib
 {
+    CGFloat ballRingFrameSize = min ( CGRectGetWidth( self.frame ), CGRectGetHeight( self.frame ) );
+    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( self.frame ), CGRectGetMinY( self.frame ), 
+                                                                    ballRingFrameSize, ballRingFrameSize ) 
+                                                   tags: YES 
+                                               delegate: self.controller ];
+    [ self addSubview: ( UIView *) ballRingView ];
+    
+#if !ICONIC_PICTURE_ONLY        
+
 	history.font = [UIFont systemFontOfSize:historyFontSize ];
     self.historyTextCache = @"";
     moves.font = [ UIFont systemFontOfSize:movesFontSize ];
     moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
     
-    CGFloat ballRingFrameSize = min ( CGRectGetWidth( self.frame ), CGRectGetHeight( self.frame ) );
-    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( self.frame ), CGRectGetMinY( self.frame ), 
-                                                                               ballRingFrameSize, ballRingFrameSize ) 
-                                                   tags: YES 
-                                               delegate: self.controller ];
-    [ self addSubview: ( UIView *) ballRingView ];     // Create and add all the action buttons
+     // Create and add all the action buttons
     struct { NSString * normalTitle; SEL normalSelector; 
              NSString * alternateTitle; SEL alternateSelector; 
              CGPoint center; CGFloat width; UIButton * * variable; } dualActionButtons[ ] = {
@@ -227,6 +231,16 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
                                                            userInfo:nil 
                                                             repeats:YES ];
     [ [ NSRunLoop currentRunLoop ] addTimer:self.historyTextUpdatingTimer forMode: NSDefaultRunLoopMode];
+
+#else
+    
+    history.hidden = YES;
+    moves.hidden = YES;
+    toolbar.hidden = YES;
+    self.backgroundColor = [ UIColor blackColor ];
+    
+#endif
+
 }
 
 

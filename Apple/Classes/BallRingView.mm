@@ -64,8 +64,10 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             _ballViews[ i ] = ballView;
         }
         
-        UIFont * ballFont = [UIFont systemFontOfSize:ballFontSize ];
+#if !ICONIC_PICTURE_ONLY        
         
+        UIFont * ballFont = [UIFont systemFontOfSize:ballFontSize ];
+
         // Create and add all the labels (in front of the balls)
         forAllBalls(i)
         {
@@ -124,6 +126,15 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         }
         else
             self.userInteractionEnabled = NO;
+        
+#else
+
+        self.backgroundColor = [ UIColor blackColor ];
+        self.opaque = YES;
+        self.userInteractionEnabled = NO;
+        
+#endif        
+        
     }
     return self;
 }
