@@ -290,6 +290,7 @@
 		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
 		D2655A850F8028300006A1FF /* swaps.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; name = swaps.inc; path = ../M12/PlatformIndependent/Permutation/swaps.inc; sourceTree = SOURCE_ROOT; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D28F85F80F8864C700C2AD71 /* m.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m.h; sourceTree = "<group>"; };
 		D2EEC79E0F87ED85004305BA /* InfoFree.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoFree.plist; sourceTree = "<group>"; };
 		D2EEC7A00F87ED98004305BA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2EEC7A20F87EDA4004305BA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -582,6 +583,7 @@
 		8C1B899C0F68452A00F359D6 /* PlatformIndependent */ = {
 			isa = PBXGroup;
 			children = (
+				D28F85F70F8864C700C2AD71 /* Permutation */,
 				D2655A850F8028300006A1FF /* swaps.inc */,
 				8C5CC23C0F6AE3CA004B58DE /* mathieu.h */,
 				8C1B899F0F68452A00F359D6 /* View */,
@@ -816,6 +818,14 @@
 				D241BE740F81CBCC00BEDE40 /* SwapPermutationsViewController.h */,
 			);
 			name = "Swap Permutations";
+			sourceTree = "<group>";
+		};
+		D28F85F70F8864C700C2AD71 /* Permutation */ = {
+			isa = PBXGroup;
+			children = (
+				D28F85F80F8864C700C2AD71 /* m.h */,
+			);
+			path = Permutation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
