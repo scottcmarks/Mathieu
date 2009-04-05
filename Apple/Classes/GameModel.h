@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "mathieu.h"
 
-typedef MPermutationWithHistory::PermArray PermArray;
-typedef MPermutationWithHistory::HistoryElement HistoryElement;
+typedef MathieuPermutationWithHistory::PermArray PermArray;
+typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
 @interface GameModel : NSObject {
 @private
-    MPermutationWithHistory *currentPermutation;
-    MPermutationWithHistory *startingPermutation;
+    MathieuPermutationWithHistory *currentPermutation;
+    MathieuPermutationWithHistory *startingPermutation;
 }
 
 -(id) init;
