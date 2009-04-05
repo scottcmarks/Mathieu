@@ -330,7 +330,7 @@
 
 -( void ) dontChangeSwap
 {
-    [ BallView setColorsForSwapPermutation: MPermutation::swapPermutation ];
+    [ BallView setColorsForSwapPermutation: MathieuPermutation::swapPermutation ];
     [ self.rootViewController toggleView ];
 }
 

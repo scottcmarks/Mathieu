@@ -133,7 +133,7 @@ wstring wstr( const History & h )
     return rsstr;
 }
 
-string cycles_str( const MPermutation & p )
+string cycles_str( const MathieuPermutation & p )
 {
     stringstream rss(stringstream::in | stringstream::out);
     p.insert_as_cycles( as(ostream,rss) );
@@ -143,7 +143,7 @@ string cycles_str( const MPermutation & p )
     return rsstr;
 }
 
-wstring cycles_wstr( const MPermutation & p )
+wstring cycles_wstr( const MathieuPermutation & p )
 {
     wstringstream rss(wstringstream::in | wstringstream::out);
     p.insert_as_cycles( as(wostream,rss) );
