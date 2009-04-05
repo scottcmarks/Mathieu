@@ -10,8 +10,8 @@
 #include "mathieu.h"
 #include "point.h"
 #include <string>
-typedef MPermutationWithHistory::HistoryElement HistoryElement;
-typedef MPermutationWithHistory::History History;
+typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
+typedef MathieuPermutationWithHistory::History History;
 
 // Unicode constants for superscript -1
 const wchar_t superscriptMinus = 0x207B;
@@ -30,5 +30,5 @@ extern bool FindBallWedge( const point probe,
 
 extern std::string str( const History & h );
 extern std::wstring wstr( const History & h );
-extern std::string cycles_str( const MPermutation & p );
-extern std::wstring cycles_wstr( const MPermutation & p );
+extern std::string cycles_str( const MathieuPermutation & p );
+extern std::wstring cycles_wstr( const MathieuPermutation & p );

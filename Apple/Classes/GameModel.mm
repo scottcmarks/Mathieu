@@ -19,17 +19,17 @@ using namespace std;
 #import "iPhoneUtilities.h"
 @implementation GameModel
 
--( MPermutationWithHistory *) serializePermutationFrom: ( istream & ) is
+-( MathieuPermutationWithHistory *) serializePermutationFrom: ( istream & ) is
 {
     unsigned char flag;
     is.read( ( char * )& flag, sizeof( flag ) );
     if ( 0 == flag )
         return NULL;
     assert ( 1 == flag );
-    return new MPermutationWithHistory( is );
+    return new MathieuPermutationWithHistory( is );
 }
 
--( ostream & ) serializePermutation:( MPermutationWithHistory *)p to:( ostream & ) os
+-( ostream & ) serializePermutation:( MathieuPermutationWithHistory *)p to:( ostream & ) os
 {
     unsigned char flag = p ? 1 : 0;
     os.write( ( char * )& flag, sizeof( flag ) );
@@ -40,7 +40,7 @@ using namespace std;
 
 -(id)init{
 	if ( self = [super init] ) {
-        currentPermutation = new MPermutationWithHistory;
+        currentPermutation = new MathieuPermutationWithHistory;
         startingPermutation = NULL;
 	}
 	return self;
@@ -131,7 +131,7 @@ using namespace std;
 }
 
 
--(NSString *) cyclesForPermutation: ( const MPermutation & )p
+-(NSString *) cyclesForPermutation: ( const MathieuPermutation & )p
 {
     const std::wstring cycles_text = cycles_wstr( p );
     size_t cycles_size = cycles_text.size( ) ;
@@ -161,36 +161,36 @@ using namespace std;
 
 -( NSString * ) cyclesForSwap: (int)nSwap
 {
-    if ( ! ( 0 <= nSwap && nSwap < n_array_elements( MPermutation::swaps ) ) )
+    if ( ! ( 0 <= nSwap && nSwap < n_array_elements( MathieuPermutation::swaps ) ) )
         return [ NSString stringWithFormat: @"No such swap %d", nSwap ];
-    return [ self cyclesForPermutation:MPermutation( MPermutation::swaps[ nSwap ].swap ) ];
+    return [ self cyclesForPermutation:MathieuPermutation( MathieuPermutation::swaps[ nSwap ].swap ) ];
 }
 
--( int ) nSwaps  { return n_array_elements( MPermutation::swaps ); }
+-( int ) nSwaps  { return n_array_elements( MathieuPermutation::swaps ); }
 
 - ( int ) difficultyOfSwap: ( int )nSwap
 {
     if ( ! ( 0 <= nSwap && nSwap < self.nSwaps ) )
         return 666;
-    return MPermutation::swaps[ nSwap ].best;
+    return MathieuPermutation::swaps[ nSwap ].best;
 }
 
 // Allow permutation operations without history changes
-static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPermutation * ) & p ) ; }
+static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { return (* ( MathieuPermutation * ) & p ) ; }
 
 -(void) revert
 {
-    MPermutationWithHistory::History saveHistory = currentPermutation -> getHistory( );
+    MathieuPermutationWithHistory::History saveHistory = currentPermutation -> getHistory( );
 	*currentPermutation = *startingPermutation;  // copy
     for( HistoryElement c = 'A'; c <= lastComboButton ; c++ )
         if ( saveHistory.macro_is_defined( c ) )
         {
-            MPermutationWithHistory comboDef = saveHistory.macro_definition( c );
+            MathieuPermutationWithHistory comboDef = saveHistory.macro_definition( c );
             currentPermutation -> set_macro( c , comboDef ) ;
         }
 }
 
--(void) setStartingPermutation: ( MPermutationWithHistory *)p
+-(void) setStartingPermutation: ( MathieuPermutationWithHistory *)p
 {
     if ( startingPermutation )
         delete startingPermutation;
@@ -216,7 +216,7 @@ static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPer
 
 -(void) random{
 	(*currentPermutation).random( );
-    [ self setStartingPermutation: new MPermutationWithHistory( *currentPermutation ) ]; 
+    [ self setStartingPermutation: new MathieuPermutationWithHistory( *currentPermutation ) ]; 
 }
 
 -(bool) undo: (bool)move move: ( HistoryElement & ) e
@@ -243,7 +243,7 @@ static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPer
 
 -(void) setCombo:(HistoryElement)c
 {
-    MPermutationWithHistory comboDef( * currentPermutation );
+    MathieuPermutationWithHistory comboDef( * currentPermutation );
     if ( startingPermutation )
         as( comboDef ) = as( * startingPermutation ).inverse( ) * as( comboDef ); 
     (*currentPermutation).set_macro( c, comboDef );
@@ -286,12 +286,12 @@ static inline MPermutation & as( MPermutationWithHistory & p) { return (* ( MPer
 
 - ( int ) swapIndex
 {
-    return MPermutation::swapPermutationIndex;
+    return MathieuPermutation::swapPermutationIndex;
 }
 
 - ( void ) setSwapIndex: ( int ) i
 {
-    MPermutation::set_swapPermutationIndex( i );
+    MathieuPermutation::set_swapPermutationIndex( i );
 }
 
 - ( int ) moves 

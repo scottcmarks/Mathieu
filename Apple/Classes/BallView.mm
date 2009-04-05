@@ -19,7 +19,7 @@ static BallColor colors[ ] = {
 
 static BallColor ballColors[ nBalls ];
 
-+ ( void ) setColorsForSwapPermutation: ( const MPermutation & ) swap
++ ( void ) setColorsForSwapPermutation: ( const MathieuPermutation & ) swap
 {
     int lastColorUsed = -1;
     bool colorIsSet[ nBalls ];
@@ -35,7 +35,7 @@ static BallColor ballColors[ nBalls ];
 
 + ( void ) initialize 
 {
-    [ self setColorsForSwapPermutation: MPermutation::swapPermutation] ;
+    [ self setColorsForSwapPermutation: MathieuPermutation::swapPermutation] ;
 }
 
 
