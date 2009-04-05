@@ -69,7 +69,7 @@
     row = ( row == 0 ? 1 : 24 );
 #endif
     self.currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
-    [ BallView setColorsForSwapPermutation: MPermutation( MPermutation::swaps[ row ].swap ) ] ;
+    [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
     [ currentPermutationPreview redraw ]; 
     pickedSwapIndex =  row;
 }
