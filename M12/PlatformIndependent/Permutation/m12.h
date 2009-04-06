@@ -12,6 +12,7 @@
 #include "permutation"
 
 #define nBalls 12
+#define nSwaps 341
 
 #include "m.h"
 

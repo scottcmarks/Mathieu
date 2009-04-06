@@ -180,27 +180,32 @@
 -(IBAction) left: (id)sender{
     [ self.ballRingView playLeftSound ];
     [ self.gameModel left ];
+    self.invert = false ;
     [ self updateDuration: SMALL_MOVE_DURATION ];
 }
 
 -(IBAction) swap: (id)sender{
     [ self.ballRingView playSwapSound ];
     [ self.gameModel swap ];
+    self.invert = false ;
     [ self updateDuration: LARGE_MOVE_DURATION ];
 }
 
 -(IBAction) right: (id)sender{
     [ self.ballRingView playRightSound ];
     [ self.gameModel right ];
+    self.invert = false ;
     [ self updateDuration: SMALL_MOVE_DURATION ];
 }
 
 -(void) spinInProgress: (int) wedges{
+    self.invert = false ;
     [ self.gameModel spin: wedges ];
 //      [ self.spview updateHistoryText ];
 }
 
 - (void) spinFinished: (int)wedges{
+    self.invert = false ;
     [ self.gameModel spin: wedges ];
     [ self updateDuration: INSTANTANEOUS ];
 }
@@ -265,7 +270,8 @@
 }
 
 
--(void) doRestart{
+-(void) doRestart
+{
     self.invert = false ;
     if ( [ self.gameModel isSolving ] )
     {
