@@ -48,7 +48,6 @@ typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
 @property (nonatomic, readonly) NSString * history;
 @property (nonatomic, readonly) NSString * cycles;
 
-@property (nonatomic, readonly) int nSwaps;
 @property (nonatomic          ) int swapIndex;
 - ( NSString *) cyclesForSwap: (int)nSwap;
 - ( int ) difficultyOfSwap: ( int )nSwap;
