@@ -12,9 +12,9 @@
 
 @implementation OKCancelAlertView
 
-@synthesize parameter;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame 
+{
     return nil;
 }
 
@@ -33,12 +33,11 @@
                                     cancelButtonTitle: @"Cancel" 
                                     otherButtonTitles: @"OK", nil ] ;
         if ( ! alert ) return nil;
-        [ alert retain ] ;
         target         = targ      ; 
         cancelSelector = cancelSel ;
         OKSelector     = OKSel     ;
         hasParameter   = false     ;
-        self.parameter = nil       ;
+        parameter      = nil       ;
     }
     return self;
 }
@@ -59,12 +58,11 @@
                                     cancelButtonTitle: @"Cancel" 
                                     otherButtonTitles: @"OK", nil ] ;
         if ( ! alert ) return nil;
-        [ alert retain ] ;
         target         = targ      ; 
         cancelSelector = cancelSel ;
         OKSelector     = OKSel     ;
         hasParameter   = true      ;
-        self.parameter = param     ;
+        parameter      = param     ;
     }
     return self;
 }
@@ -85,51 +83,41 @@
 }
 
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
-                          target: ( id ) target
-                  cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel 
++ ( id ) alertWithTitle: ( NSString * ) title 
+                message: ( NSString * ) message 
+                 target: ( id ) target
+         cancelSelector: ( SEL ) cancelSel
+             OKSelector: ( SEL ) OKSel 
 {
-    OKCancelAlertView * alert = [ [ [ OKCancelAlertView alloc ]
-                                   initWithTitle: title 
-                                   message: message 
-                                   target: target
-                                   cancelSelector: cancelSel
-                                   OKSelector: OKSel ] retain ];
-    if ( alert )
-    {
-        [ alert show ];
-        [ alert release ];
-    }
+    return [ [ OKCancelAlertView alloc ]
+                initWithTitle: title 
+                      message: message 
+                       target: target
+               cancelSelector: cancelSel
+                   OKSelector: OKSel ] ;
 }
 
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
-                          target: ( id ) target
-                  cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel 
-                       parameter: ( id ) parameter
++ ( id ) alertWithTitle: ( NSString * ) title 
+                message: ( NSString * ) message 
+                 target: ( id ) target
+         cancelSelector: ( SEL ) cancelSel
+             OKSelector: ( SEL ) OKSel 
+              parameter: ( id ) parameter
 {
-    OKCancelAlertView * alert = [ [ [ OKCancelAlertView alloc ]
-                                        initWithTitle: title 
-                                              message: message 
-                                               target: target
-                                       cancelSelector: cancelSel
-                                           OKSelector: OKSel 
-                                            parameter: parameter] retain ];
-    if ( alert )
-    {
-        [ alert show ];
-        [ alert release ];
-    }
+   return [ [ OKCancelAlertView alloc ]
+               initWithTitle: title 
+                     message: message 
+                      target: target
+              cancelSelector: cancelSel
+                  OKSelector: OKSel 
+                   parameter: parameter ];
 }
 
 
-- (void)dealloc {
+- (void)dealloc
+{
     [ alert release ] ;
-    [ parameter release ] ;
     [super dealloc];
 }
 

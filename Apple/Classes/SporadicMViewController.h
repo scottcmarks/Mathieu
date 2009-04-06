@@ -12,7 +12,8 @@
 #import "ComboButtonTargetProtocol.h"
 #import "BallRingViewDelegate.h"
 
-@class RootViewController;
+@class RootViewController ;
+@class OKCancelAlertView  ;
 
 @interface SporadicMViewController : UIViewController < UITextFieldDelegate, 
                                                         UIAlertViewDelegate,
@@ -21,10 +22,11 @@
 {
     RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;
-    int                  _newSwapIndex      ;
+    OKCancelAlertView *  alert              ;
 }
 
 @property ( nonatomic, assign   ) RootViewController * rootViewController;
+@property ( nonatomic, retain   ) OKCancelAlertView *  alert              ;
 
 // Handlers for events from the SporadicMView
 - (IBAction) toggleView     : (id)sender;

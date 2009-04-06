@@ -259,7 +259,12 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
 
 -(bool) hasDefinedCombo:(HistoryElement)c
 {
-    return (*currentPermutation).macro_is_defined(c);
+    return (*currentPermutation).macro_is_defined( c );
+}
+
+-(bool) hasAnyDefinedCombo
+{
+    return (*currentPermutation).any_macro_is_defined( );
 }
 
 -(bool) isSolving
