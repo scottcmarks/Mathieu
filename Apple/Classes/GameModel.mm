@@ -166,11 +166,9 @@ using namespace std;
     return [ self cyclesForPermutation:MathieuPermutation( MathieuPermutation::swaps[ nSwap ].swap ) ];
 }
 
--( int ) nSwaps  { return n_array_elements( MathieuPermutation::swaps ); }
-
 - ( int ) difficultyOfSwap: ( int )nSwap
 {
-    if ( ! ( 0 <= nSwap && nSwap < self.nSwaps ) )
+    if ( ! ( 0 <= nSwap && nSwap < nSwaps ) )
         return 666;
     return MathieuPermutation::swaps[ nSwap ].best;
 }
