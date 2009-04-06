@@ -38,6 +38,7 @@ typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
 -(void) eraseCombo: ( HistoryElement ) c;
 -(void) eraseAllCombos;
 -(bool) hasDefinedCombo: ( HistoryElement) c;
+-(bool) hasAnyDefinedCombo;
 -(bool) isSolving;
 -(bool) historyIsEmpty;
 -(bool) historyIsSingleCombo: ( HistoryElement ) c;
