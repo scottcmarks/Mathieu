@@ -19,19 +19,18 @@
     id            parameter      ;
 }
 
-@property ( nonatomic, retain ) id parameter;
++ ( id ) alertWithTitle: ( NSString * ) title 
+                message: ( NSString * ) message 
+                 target: ( id ) target
+         cancelSelector: ( SEL ) cancelSel
+             OKSelector: ( SEL ) OKSel ;
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
-                          target: ( id ) target
-                  cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel ;
++ ( id ) alertWithTitle: ( NSString * ) title 
+                message: ( NSString * ) message 
+                 target: ( id ) target
+         cancelSelector: ( SEL ) cancelSel
+             OKSelector: ( SEL ) OKSel 
+              parameter: ( id ) parameter;
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
-                          target: ( id ) target
-                  cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel 
-                       parameter: ( id ) parameter;
-
+- ( void ) show ;
 @end
