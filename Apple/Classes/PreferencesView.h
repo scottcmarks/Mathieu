@@ -15,13 +15,17 @@
     UILabel  * confirmHelp;
 	UINavigationItem * navigationBar;
     UILabel *currentPermutation;
+    UILabel *currentPermLabel;
+    UIButton * swapsButton;
 }
-@property( nonatomic, retain ) IBOutlet UISlider * animationSpeedSlider;
-@property( nonatomic, retain ) IBOutlet UISwitch * soundEffectsSwitch;
-@property( nonatomic, retain ) IBOutlet UISwitch * confirmSwitch;
-@property( nonatomic, retain ) IBOutlet UILabel  * confirmHelp;
-@property( nonatomic, retain ) IBOutlet UINavigationItem * navigationBar;
-@property( nonatomic, retain ) IBOutlet UILabel *currentPermutation;
+@property( nonatomic, assign ) IBOutlet UISlider * animationSpeedSlider;
+@property( nonatomic, assign ) IBOutlet UISwitch * soundEffectsSwitch;
+@property( nonatomic, assign ) IBOutlet UISwitch * confirmSwitch;
+@property( nonatomic, assign ) IBOutlet UILabel  * confirmHelp;
+@property( nonatomic, assign ) IBOutlet UINavigationItem * navigationBar;
+@property( nonatomic, assign ) IBOutlet UILabel *currentPermutation;
+@property( nonatomic, assign ) IBOutlet UILabel *currentPermLabel;
+@property( nonatomic, assign ) IBOutlet UIButton * swapsButton;
 
 @property /* dynamic */           CGFloat animationSpeed;
 

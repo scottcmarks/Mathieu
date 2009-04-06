@@ -37,6 +37,8 @@
 const CGFloat helpFontSize = 11.0;
 
 @synthesize currentPermutation;
+@synthesize currentPermLabel;
+@synthesize swapsButton;
 
 - (void) awakeFromNib{
     confirmHelp.font = [UIFont systemFontOfSize:helpFontSize ];
@@ -50,11 +52,29 @@ const CGFloat helpFontSize = 11.0;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
 	navigationBar.title        = fullAppName                      ;
+    swapsButton.hidden         = ( nBalls == 24 )                 ;
+    currentPermutation.hidden  = ( nBalls == 24 )                 ;
+    currentPermLabel.hidden    = ( nBalls == 24 )                 ;
 }
 
 - ( void ) willMoveToSuperview: ( UIView *) newSuperView
 {
-    if ( newSuperView ) currentPermutation.text  = self.appDelegate.gameModel.cycles;
+    if ( newSuperView ) 
+    {
+        NSString * cycles = self.appDelegate.gameModel.cycles;
+        if ( nBalls == 24 )
+        {
+#if defined( SHOW_M24_CURRENT_PERMUTATION )
+            NSRange brk = [ cycles rangeOfString:@") (" 
+                                         options:NSLiteralSearch
+                                           range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
+            cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
+            currentPermutation.font = [ UIFont systemFontOfSize:13.0 ];
+#endif
+        }
+        currentPermutation.text = cycles;
+        
+    }
 }
 
 - (void)dealloc {
