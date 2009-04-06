@@ -31,7 +31,6 @@ class MathieuPermutation: public Permutation< nBalls, Index, Rank >
 {
 public:
     typedef Permutation< nBalls, Index, Rank > super;
-    static const int nSwaps=341;
     typedef struct{ Index best; const PermArray swap; } swap_table_entry;
     static swap_table_entry swaps[ nSwaps ];
     

@@ -10,8 +10,6 @@
 
 #include "m12.h"
 
-using namespace std;
-
 // Pick a nice default swap index from 0..340
 #define INITIAL_SWAP_PERMUTATION_INDEX 1   
 
