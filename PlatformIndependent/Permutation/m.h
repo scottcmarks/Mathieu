@@ -282,6 +282,11 @@ public:
             return ( macros.find( c ) != macros.end( ) );
         };
         
+        bool any_macro_is_defined ( ) const
+        {
+            return ( 0 != macros.size( ) );
+        };
+        
         MathieuPermutationWithHistory macro_definition( const HistoryElement c )
         {
             return macro_is_defined( c ) ? macros[ c ] : MathieuPermutationWithHistory( );
@@ -690,30 +695,41 @@ public:
     {
         return history.macro_is_defined( c );
     };
+    
+    bool any_macro_is_defined( ) const
+    {
+        return history.any_macro_is_defined( );
+    };
+    
     MathieuPermutationWithHistory& expand_macro ( const HistoryElement c )
     {
         history.expand_macro( c );
         return *this;
     };
+    
     MathieuPermutationWithHistory& set_macro    ( const HistoryElement c ,       MathieuPermutationWithHistory & m )
     {
         history.set_macro( c, m );
         return *this;
     };
+    
     MathieuPermutationWithHistory& erase_macro  ( const HistoryElement c )
     {
         history.erase_macro( c );
         return *this;
     };
+    
     MathieuPermutationWithHistory& erase_all_macros( )
     {
         history.erase_all_macros( );
         return *this;
     };
+    
     MathieuPermutationWithHistory& run_macro    ( const HistoryElement c , bool inverted=false )
     {
         return History::run_macro( *this, c, inverted );
     };
+    
 protected:
     friend class History;
     History history;

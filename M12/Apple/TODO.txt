@@ -19,14 +19,15 @@ A.png
 AA.png
 AAA.png
 
-M12/Apple/Resources/Images/SporadicM12Icon_Prerendered.png
-should this icon have the numbers on it?  try both ways  use #defines for generating icon source
+* M12/Apple/Resources/Images/SporadicM12Icon_Prerendered.png
+  should this icon have the numbers on it?  
+  try both ways  use #defines for generating icon source
 
 * fix setting C to C-inv
 
 * factor Touches Moved/Ended to avoid inf recursion
 
-Factor SporadicM12 and SporadicM12 Free
+* Factor SporadicM12 and SporadicM12 Free
 
 * Multiple swaps in SporadicM12
 
@@ -34,11 +35,11 @@ Factor SporadicM12 and SporadicM12 Free
 
 Linux tests still work?  And need new tests for cycles( )
 
-Cancelled or not, Restart should reset Alt.  Left, Right, Swap buttons, too.
+* Cancelled or not, Restart should reset Alt.  Left, Right, Swap buttons, too.
 
 * Save and restore current swap -- just initialize to 1 when starting app.
 
-* Confirm swap change.
+* Confirm swap change.  Intelligent confirm message depending on where you are (solving, etc.)
 
 * Counters for steps and moves next to history
 
