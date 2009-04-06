@@ -20,8 +20,6 @@
 #import "m24.h"
 #import "Constants.h"
 #import "M24Constants.h"
-typedef M24Permutation MathieuPermutation;
-typedef M24PermutationWithHistory MathieuPermutationWithHistory;
 
 #else
 

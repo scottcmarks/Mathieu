@@ -87,7 +87,7 @@
 #if FREE
         return 2;
 #else
-        return self.gameModel.nSwaps;
+        return nSwaps;
 #endif
     return 0;
 }
