@@ -148,7 +148,13 @@
     if ( [ self.gameModel historyIsEmpty ] 
             && ! [ self.gameModel hasDefinedCombo:  comboName ] )
         return;
-        
+    
+    if ( [ self.gameModel isSolving ] )
+    {
+        [ self.ballRingView playComboNotSetSound ];
+        return;
+    }
+    
     [ self.ballRingView playComboSetSound ];
     if ( self.confirm ) 
         [ self confirmSetCombo: ( id ) comboName ];
