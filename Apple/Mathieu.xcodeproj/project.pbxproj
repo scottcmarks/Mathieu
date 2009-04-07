@@ -115,6 +115,9 @@
 		D20295260F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */; };
 		D20295270F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */; };
 		D20295280F819B27003DE7D9 /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */; };
+		D22F00FA0F8B08D100B78ED9 /* combo_not_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = D22F00EF0F8B08D100B78ED9 /* combo_not_set.caf */; };
+		D22F01050F8B08D100B78ED9 /* combo_not_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = D22F00EF0F8B08D100B78ED9 /* combo_not_set.caf */; };
+		D22F01100F8B08D100B78ED9 /* combo_not_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = D22F00EF0F8B08D100B78ED9 /* combo_not_set.caf */; };
 		D241BE760F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */; };
 		D241BE770F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */; };
 		D241BE780F81CBCC00BEDE40 /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */; };
@@ -285,6 +288,7 @@
 		D20295240F819B27003DE7D9 /* SwapPermutationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsView.h; sourceTree = "<group>"; };
 		D20295250F819B27003DE7D9 /* SwapPermutationsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsView.mm; sourceTree = "<group>"; };
 		D21B1D800F82CC8D001A4330 /* BallRingViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingViewDelegate.h; sourceTree = "<group>"; };
+		D22F00EF0F8B08D100B78ED9 /* combo_not_set.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = combo_not_set.caf; sourceTree = "<group>"; };
 		D241BE740F81CBCC00BEDE40 /* SwapPermutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsViewController.h; sourceTree = "<group>"; };
 		D241BE750F81CBCC00BEDE40 /* SwapPermutationsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsViewController.mm; sourceTree = "<group>"; };
 		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
@@ -436,6 +440,7 @@
 				8C1B87EE0F68452900F359D6 /* applause.caf */,
 				8C1B87EF0F68452900F359D6 /* combo.caf */,
 				8C1B87F00F68452900F359D6 /* combo_set.caf */,
+				D22F00EF0F8B08D100B78ED9 /* combo_not_set.caf */,
 				8C1B87F10F68452900F359D6 /* home.caf */,
 				8C1B87F20F68452900F359D6 /* restart.caf */,
 				8C1B87F30F68452900F359D6 /* shake.caf */,
@@ -934,6 +939,7 @@
 				8C97FF560F70018400AFA4BB /* left.caf in Resources */,
 				8C97FF570F70018400AFA4BB /* right.caf in Resources */,
 				D20295200F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
+				D22F01050F8B08D100B78ED9 /* combo_not_set.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -969,6 +975,7 @@
 				8C97FF580F70018400AFA4BB /* left.caf in Resources */,
 				8C97FF590F70018400AFA4BB /* right.caf in Resources */,
 				D202951F0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
+				D22F00FA0F8B08D100B78ED9 /* combo_not_set.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1004,6 +1011,7 @@
 				D266F8F20F7A9F120080CAD1 /* left.caf in Resources */,
 				D266F8F30F7A9F120080CAD1 /* right.caf in Resources */,
 				D202951E0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
+				D22F01100F8B08D100B78ED9 /* combo_not_set.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
