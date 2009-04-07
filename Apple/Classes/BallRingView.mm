@@ -106,17 +106,18 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         _delegate = delegate ;
         if ( delegate )  // only interactive if delegate provided
         {
-            _rightSound    = [ SoundEffect soundEffectWithCaf: @"right"     ];
-            _leftSound     = [ SoundEffect soundEffectWithCaf: @"left"      ];
-            _swapSound     = [ SoundEffect soundEffectWithCaf: @"swap"      ];
-            _homeSound     = [ SoundEffect soundEffectWithCaf: @"home"      ];
-            _shakeSound    = [ SoundEffect soundEffectWithCaf: @"shake"     ];
+            _rightSound       = [ SoundEffect soundEffectWithCaf: @"right"         ];
+            _leftSound        = [ SoundEffect soundEffectWithCaf: @"left"          ];
+            _swapSound        = [ SoundEffect soundEffectWithCaf: @"swap"          ];
+            _homeSound        = [ SoundEffect soundEffectWithCaf: @"home"          ];
+            _shakeSound       = [ SoundEffect soundEffectWithCaf: @"shake"         ];
             //TODO:  make real sound for restart amd combo 
-            _restartSound  = [ SoundEffect soundEffectWithCaf: @"restart"   ];
-            _comboSound    = [ SoundEffect soundEffectWithCaf: @"combo"     ];
-            _comboSetSound = [ SoundEffect soundEffectWithCaf: @"combo_set" ];
-            _successSound  = [ SoundEffect soundEffectWithCaf: @"success"   ];
-            _applauseSound = [ SoundEffect soundEffectWithCaf: @"applause"  ];
+            _restartSound     = [ SoundEffect soundEffectWithCaf: @"restart"       ];
+            _comboSound       = [ SoundEffect soundEffectWithCaf: @"combo"         ];
+            _comboSetSound    = [ SoundEffect soundEffectWithCaf: @"combo_set"     ];
+            _comboNotSetSound = [ SoundEffect soundEffectWithCaf: @"combo_not_set" ];
+            _successSound     = [ SoundEffect soundEffectWithCaf: @"success"       ];
+            _applauseSound    = [ SoundEffect soundEffectWithCaf: @"applause"      ];
             
             // Not currently spinning
             firstWedgeTouched = -1;
@@ -303,14 +304,15 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
         [ self finishedTouching ];
 }
 
--( void ) playRightSound    { if ( self.soundEffects ) [ _rightSound    play ]; }
--( void ) playLeftSound     { if ( self.soundEffects ) [ _leftSound     play ]; }
--( void ) playSwapSound     { if ( self.soundEffects ) [ _swapSound     play ]; }
--( void ) playHomeSound     { if ( self.soundEffects ) [ _homeSound     play ]; }
--( void ) playShakeSound    { if ( self.soundEffects ) [ _shakeSound    play ]; }
--( void ) playRestartSound  { if ( self.soundEffects ) [ _restartSound  play ]; }
--( void ) playComboSound    { if ( self.soundEffects ) [ _comboSound    play ]; }
--( void ) playComboSetSound { if ( self.soundEffects ) [ _comboSetSound play ]; }
+-( void ) playRightSound       { if ( self.soundEffects ) [ _rightSound       play ]; }
+-( void ) playLeftSound        { if ( self.soundEffects ) [ _leftSound        play ]; }
+-( void ) playSwapSound        { if ( self.soundEffects ) [ _swapSound        play ]; }
+-( void ) playHomeSound        { if ( self.soundEffects ) [ _homeSound        play ]; }
+-( void ) playShakeSound       { if ( self.soundEffects ) [ _shakeSound       play ]; }
+-( void ) playRestartSound     { if ( self.soundEffects ) [ _restartSound     play ]; }
+-( void ) playComboSound       { if ( self.soundEffects ) [ _comboSound       play ]; }
+-( void ) playComboSetSound    { if ( self.soundEffects ) [ _comboSetSound    play ]; }
+-( void ) playComboNotSetSound { if ( self.soundEffects ) [ _comboNotSetSound play ]; }
 
 
 -( void ) playSuccessSound  
