@@ -29,6 +29,7 @@
     SoundEffect * _restartSound;
     SoundEffect * _comboSound;
     SoundEffect * _comboSetSound;
+    SoundEffect * _comboNotSetSound;
     SoundEffect * _successSound;
     SoundEffect * _applauseSound;
     int firstWedgeTouched;
@@ -47,14 +48,15 @@
 
 - ( void ) moveLabels;
 - ( void ) redraw;
-- ( void ) playRightSound    ;
-- ( void ) playLeftSound     ;
-- ( void ) playSwapSound     ;
-- ( void ) playHomeSound     ;
-- ( void ) playShakeSound    ;
-- ( void ) playRestartSound  ;
-- ( void ) playComboSound    ;
-- ( void ) playComboSetSound ;
-- ( void ) playSuccessSound  ;
+- ( void ) playRightSound       ;
+- ( void ) playLeftSound        ;
+- ( void ) playSwapSound        ;
+- ( void ) playHomeSound        ;
+- ( void ) playShakeSound       ;
+- ( void ) playRestartSound     ;
+- ( void ) playComboSound       ;
+- ( void ) playComboSetSound    ;
+- ( void ) playComboNotSetSound ;
+- ( void ) playSuccessSound     ;
 
 @end
