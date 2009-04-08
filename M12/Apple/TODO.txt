@@ -1,8 +1,16 @@
 * home_confirm.png seems to be home_position.png
+  All pngs cleaned up
 
 
 (it's planar, and only has one non-adjacent swap: (2 9) in ((0 1)(2 9)(3 4)(5 6)(7 8)(10 11)) )
 (are there other planar swaps?)
+More precisely, it's _internally_ planar: all swaps can be connected by lines (1) lying within
+the ring and (2) not crossing (i.e. planar) (not counting (0 1), which isn't a problem, either).
+#22 seems to be the only one of the 31 swaps for which this is true.  Most are planar, and
+the determining criterion seems to be that a swap is not planar iff there are three colors 
+that are in the same order on both occurrences around the ring: 
+basically (A B C A B C) forces crossing, 
+(A B C A C B) allows B and C to be "parallel" and A to go around.
 
 * M12/Apple/Resources/Images/SporadicM12Icon_Prerendered.png
   should this icon have the numbers on it?  
@@ -18,7 +26,7 @@
 
 * Just 2 swaps in SM12 Free
 
-Linux tests still work?  And need new tests for cycles( )
+Linux tests still work?  (repaired) And need new tests for cycles( )
 
 * Cancelled or not, Restart should reset Alt.  Left, Right, Swap buttons, too.
 
