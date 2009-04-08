@@ -3,12 +3,12 @@
 
 #include "m12.h"
 
-typedef M12PermutationWithHistory Perm;
+typedef MathieuPermutationWithHistory Perm;
 
 typedef Perm::PermArray PermArray;
 
-typedef M12PermutationWithHistory::HistoryElement HistoryElement;
-typedef M12PermutationWithHistory::History History;
+typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
+typedef MathieuPermutationWithHistory::History History;
 
 const Rank nPermutations = (nBalls) * (nBalls-1) * (nBalls-2) * (nBalls-3) * (nBalls-4);
 const int max_history_length = 32;
@@ -107,17 +107,17 @@ public:
   bool valid( const Perm & p );
   perm_info & lookup( const Perm & p );
   perm_info & lookup( const Rank r ) { return table[ r ]; };
-  M12PermutationWithHistory lookup_shortest_inverse( const Perm & p );
-  M12PermutationWithHistory lookup_shortest_inverse( const Rank r );
-  M12PermutationWithHistory lookup_next_move( const Perm & p );
-  M12PermutationWithHistory lookup_next_move( const Rank r );
+  MathieuPermutationWithHistory lookup_shortest_inverse( const Perm & p );
+  MathieuPermutationWithHistory lookup_shortest_inverse( const Rank r );
+  MathieuPermutationWithHistory lookup_next_move( const Perm & p );
+  MathieuPermutationWithHistory lookup_next_move( const Rank r );
   ~M12PermInfoTable( ) { deallocate( ) ; } ;
   M12PermInfoTable & allocate( ) { table = static_cast< perm_info *>( malloc( perm_table_size ) ) ; return *this ;} ;
   M12PermInfoTable & deallocate( ) { if ( table ) free( table ) ; table = NULL ; return *this ; } ;
   static const int perm_table_size = nPermutations * sizeof( perm_info ) ;
 protected:
-  void _try_move( const Perm & p, const M12PermutationWithHistory & this_move,
-                  perm_info & best_perm_info, M12PermutationWithHistory & best_move );
+  void _try_move( const Perm & p, const MathieuPermutationWithHistory & this_move,
+                  perm_info & best_perm_info, MathieuPermutationWithHistory & best_move );
   map_attachment_type table_attachment_type;
   perm_info * table;
 };

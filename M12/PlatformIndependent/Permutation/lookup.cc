@@ -140,8 +140,8 @@ int process_permutation_request( const PermArray & a, M12PermInfoTable & table )
   Perm pa( a );
   if ( table.valid( pa ) )
   {
-    M12PermutationWithHistory pinv = table.lookup_shortest_inverse( pa );
-    M12PermutationWithHistory p = pinv.inverse( );
+    MathieuPermutationWithHistory pinv = table.lookup_shortest_inverse( pa );
+    MathieuPermutationWithHistory p = pinv.inverse( );
     if ( discreet <= verbosity )
       cout << str( pinv.getHistory( ) ) << " " << pinv << " = pinv  p = " << p << " " << str( p.getHistory( ) )
           << endl;
@@ -163,8 +163,8 @@ int process_permutation_request( const PermArray & a, M12PermInfoTable & table )
 
 int process_permutation_number_request( Rank n_permutation, M12PermInfoTable & table )
 {
-  M12PermutationWithHistory pinv = table.lookup_shortest_inverse( n_permutation );
-  M12PermutationWithHistory p = pinv.inverse( );
+  MathieuPermutationWithHistory pinv = table.lookup_shortest_inverse( n_permutation );
+  MathieuPermutationWithHistory p = pinv.inverse( );
   if ( discreet <= verbosity )
     cout << str( pinv.getHistory( ) ) << " " << pinv << " = pinv  p = " << p << " " << str( p.getHistory( ) )
         << endl;
@@ -201,7 +201,7 @@ int usage( char *argv[], int return_code )
 {
   ostream & os = return_code == 0 ? cout : cerr;
   os << "usage: " << argv[ 0 ] << " [OPTION]... [FILE]" << endl
-      << "M12Permutation lookup" << endl
+      << "MathieuPermutation lookup" << endl
       << "Example: " << argv[ 0 ] << " -p 1,23,4,3,22,11,8,7,10,9,6,21,14,13,20,17,16,19,18,15,12,5,2,0" << endl
       << "Example: " << argv[ 0 ] << " -n 10663728" << endl
       << "Example: " << argv[ 0 ] << endl
