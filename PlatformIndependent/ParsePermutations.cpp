@@ -5,7 +5,7 @@ using namespace std;
 
 #include "ParsePermutations.h"
 
-typedef MPermutation::PermArray PermArray;
+typedef MathieuPermutation::PermArray PermArray;
 
 bool parse_permutation_number( string s, Rank & n_permutation, const Rank nPermutations )
 {

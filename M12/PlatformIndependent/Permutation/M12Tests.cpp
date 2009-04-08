@@ -11,7 +11,7 @@ using namespace std;
 
 #include "view.h"
 
-typedef M12PermutationWithHistory Perm;
+typedef MathieuPermutationWithHistory Perm;
 typedef Perm::PermArray PermArray;
 typedef Perm::History History;
 
@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
 
   serialization.seekg( 0 );
 
-  M12PermutationWithHistory m12_2( serialization );
+  MathieuPermutationWithHistory m12_2( serialization );
 
   assert( m12 == m12_2 );
 
