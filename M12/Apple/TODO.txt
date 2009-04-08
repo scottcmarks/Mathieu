@@ -4,21 +4,6 @@ Patent application on M12 using swap permutation #22 (really 21 when 0-origin)
 (it's planar, and only has one non-adjacent swap: (2 9) in ((0 1)(2 9)(3 4)(5 6)(7 8)(10 11)) )
 (are there other planar swaps?)
 
-Still using M24:
-alt_button_clicked.png
-combo_button_A_defined.png
-combo_button_A_pressed.png
-combo_erase_confirm.png
-combo_set_confirm.png
-info_button_pressed.png
-puzzle_start_position.png
-puzzle_penultimate_position.png
-puzzle_solved_position.png
-preferences_page.png?  settings.png?  are these even used?
-A.png
-AA.png
-AAA.png
-
 * M12/Apple/Resources/Images/SporadicM12Icon_Prerendered.png
   should this icon have the numbers on it?  
   try both ways  use #defines for generating icon source
@@ -43,58 +28,4 @@ Linux tests still work?  And need new tests for cycles( )
 
 * Counters for steps and moves next to history
 
-Keep 341 sets of macros around for each swap?  It would be hard to remember what they are for!
-info_button.png
-alt_button.png
-alt_button_active.png
-alt_button_clicked.png
-combo_button_A_defined.png
-combo_button_A_defined_state.png
-combo_button_A_inverse.png
-combo_button_A_pressed.png
-combo_button_A_undefined.png
-home_button.png
-info_button_pressed.png
-left_button.png
-restart_button.png
-right_button.png
-shake_button.png
-swap_button.png
-undo_button.png
-undo_move_button.png
-info_button.png
-home_confirm.png
-restart_confirm.png
-right_position.png
-home_position.png
-shake_confirm.png
-swap_position.png
-left_position.png
-A.png
-AA.png
-AAA.png
-alt_button.png
-alt_button_active.png
-alt_button_clicked.png
-combo_button_A_defined.png
-combo_button_A_defined_state.png
-combo_button_A_inverse.png
-combo_button_A_pressed.png
-combo_button_A_undefined.png
-combo_erase_confirm.png
-combo_set_confirm.png
-home_button.png
-info_button_pressed.png
-left_button.png
-preferences_page.png
-puzzle_penultimate_position.png
-puzzle_solved.png
-puzzle_solved_position.png
-puzzle_start_position.png
-restart_button.png
-right_button.png
-settings.png
-shake_button.png
-swap_button.png
-undo_button.png
-undo_move_button.png
+! Keep 341 sets of macros around for each swap?  It would be hard to remember what they are for!
