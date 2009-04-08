@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 
 #if defined( WIN32 ) && defined( _DEBUG )
   // make sure the memory debugger finds at least one leak
-  // M12Permutation *p = new M12Permutation( );
+  // MathieuPermutation *p = new MathieuPermutation( );
   _CrtDumpMemoryLeaks();
 #endif   /* defined( WIN32 ) && defined( _DEBUG )  */
 
