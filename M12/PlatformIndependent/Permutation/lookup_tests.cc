@@ -38,7 +38,7 @@ int n_random_tests = default_n_random_tests;
 
 bool test( const Perm & p, M12PermInfoTable & table  )
 {
-  M12PermutationWithHistory pinv = table.lookup_shortest_inverse( p );
+  MathieuPermutationWithHistory pinv = table.lookup_shortest_inverse( p );
   bool result = ( p * pinv ).is_identity( );
   if ( ! result )
     cout << p << " = p  pinv = " << pinv << " " << str( pinv.getHistory( ) )
@@ -75,7 +75,7 @@ bool test_R7SR9SR7( M12PermInfoTable & table )
 
 bool test_one_random( bool amnesia, M12PermInfoTable & table  )
 {
-  M12PermutationWithHistory p;
+  MathieuPermutationWithHistory p;
   p.random( amnesia );
   if ( ! amnesia ) cout << str( p.getHistory( ) ) << " ";
   return test( p, table );
@@ -116,7 +116,7 @@ int usage( char *argv[], int return_code )
 {
   ostream & os = return_code == 0 ? cout : cerr;
   os << "usage: " << argv[ 0 ] << " [OPTION]... [FILE]" << endl
-     << "Test M12Permutation lookup" << endl
+     << "Test MathieuPermutation lookup" << endl
      << "Example: " << argv[ 0 ] << " -r Perms.bin" << endl
      << endl
      << "Options:" << endl

@@ -265,14 +265,14 @@ int main(int argc, char *argv[])
   if ( simple )
   {
     // Find all permutations that are all 2-cycles ("swaps")
-    typedef vector< M12Permutation > perm_vector;
+    typedef vector< MathieuPermutation > perm_vector;
     perm_vector swaps;
     swaps.reserve( 396 );
     for ( Rank r = 0; r < nPermutations; r++ )
     {
       perm_info & pi = table.lookup( r );
       if ( pi.is_all_2_cycles( ) )
-        swaps.push_back( M12Permutation( pi.perm ) );
+        swaps.push_back( MathieuPermutation( pi.perm ) );
     }
     
     // Using each of those as a basis together with "right"
@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
     max_depth = 7; // 2;
     for ( perm_vector::const_iterator p = swaps.begin( ); p < swaps.end( ); p ++ )
     {
-      M12Permutation::swapPermutation = *p;
+      MathieuPermutation::swapPermutation = *p;
       bool printed = false;
       find_all_permutations( table );
       for ( Rank r=0; r<nPermutations; r++ )
@@ -294,7 +294,7 @@ int main(int argc, char *argv[])
           {
             if ( ! printed )
             {
-              cout << M12Permutation::swapPermutation << endl;
+              cout << MathieuPermutation::swapPermutation << endl;
               printed = true;
             }
 
