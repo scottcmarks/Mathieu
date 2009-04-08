@@ -171,6 +171,12 @@
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D266F90D0F7A9F120080CAD1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */; };
+		D26C55AD0F8C3E940025F6A8 /* preferences.html in Resources */ = {isa = PBXBuildFile; fileRef = D26C55AB0F8C3E940025F6A8 /* preferences.html */; };
+		D26C55AE0F8C3E940025F6A8 /* swap_permutations.html in Resources */ = {isa = PBXBuildFile; fileRef = D26C55AC0F8C3E940025F6A8 /* swap_permutations.html */; };
+		D26C55AF0F8C3E940025F6A8 /* preferences.html in Resources */ = {isa = PBXBuildFile; fileRef = D26C55AB0F8C3E940025F6A8 /* preferences.html */; };
+		D26C55B00F8C3E940025F6A8 /* swap_permutations.html in Resources */ = {isa = PBXBuildFile; fileRef = D26C55AC0F8C3E940025F6A8 /* swap_permutations.html */; };
+		D26C55B10F8C3E940025F6A8 /* preferences.html in Resources */ = {isa = PBXBuildFile; fileRef = D26C55AB0F8C3E940025F6A8 /* preferences.html */; };
+		D26C55B20F8C3E940025F6A8 /* swap_permutations.html in Resources */ = {isa = PBXBuildFile; fileRef = D26C55AC0F8C3E940025F6A8 /* swap_permutations.html */; };
 		D2F466DE0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2F466DD0F7D35D1009DB72D /* SporadicM12FreeIcon_Prerendered.png */; };
 		D2FD2C600F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
 		D2FD2C610F82970C00584E49 /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2FD2C5F0F82970C00584E49 /* BallRingView.mm */; };
@@ -294,6 +300,8 @@
 		D2655A770F801A2B0006A1FF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = M12/Apple/TODO.txt; sourceTree = "<group>"; };
 		D2655A850F8028300006A1FF /* swaps.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; name = swaps.inc; path = ../M12/PlatformIndependent/Permutation/swaps.inc; sourceTree = SOURCE_ROOT; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D26C55AB0F8C3E940025F6A8 /* preferences.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = preferences.html; sourceTree = "<group>"; };
+		D26C55AC0F8C3E940025F6A8 /* swap_permutations.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = swap_permutations.html; sourceTree = "<group>"; };
 		D28F85F80F8864C700C2AD71 /* m.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m.h; sourceTree = "<group>"; };
 		D2EEC79E0F87ED85004305BA /* InfoFree.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoFree.plist; sourceTree = "<group>"; };
 		D2EEC7A00F87ED98004305BA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -490,6 +498,8 @@
 		8C1B887B0F68452900F359D6 /* html */ = {
 			isa = PBXGroup;
 			children = (
+				D26C55AB0F8C3E940025F6A8 /* preferences.html */,
+				D26C55AC0F8C3E940025F6A8 /* swap_permutations.html */,
 				8C6CD7FF0F69A7AC00B4F305 /* Images */,
 				8C1B887C0F68452900F359D6 /* buttons.html */,
 				8C1B887D0F68452900F359D6 /* combo_buttons.html */,
@@ -940,6 +950,8 @@
 				8C97FF570F70018400AFA4BB /* right.caf in Resources */,
 				D20295200F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
 				D22F01050F8B08D100B78ED9 /* combo_not_set.caf in Resources */,
+				D26C55AF0F8C3E940025F6A8 /* preferences.html in Resources */,
+				D26C55B00F8C3E940025F6A8 /* swap_permutations.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -976,6 +988,8 @@
 				8C97FF590F70018400AFA4BB /* right.caf in Resources */,
 				D202951F0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
 				D22F00FA0F8B08D100B78ED9 /* combo_not_set.caf in Resources */,
+				D26C55AD0F8C3E940025F6A8 /* preferences.html in Resources */,
+				D26C55AE0F8C3E940025F6A8 /* swap_permutations.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1012,6 +1026,8 @@
 				D266F8F30F7A9F120080CAD1 /* right.caf in Resources */,
 				D202951E0F8195FF003DE7D9 /* SwapPermutationsView.xib in Resources */,
 				D22F01100F8B08D100B78ED9 /* combo_not_set.caf in Resources */,
+				D26C55B10F8C3E940025F6A8 /* preferences.html in Resources */,
+				D26C55B20F8C3E940025F6A8 /* swap_permutations.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
