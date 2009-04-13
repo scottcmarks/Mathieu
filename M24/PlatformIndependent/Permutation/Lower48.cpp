@@ -5,9 +5,9 @@
 #include <iostream>
 using namespace std;
 
-typedef M24PermutationWithHistory::PermArray PermArray;
-typedef M24PermutationWithHistory::History History;
-typedef M24PermutationWithHistory::HistoryElement HistoryArray[ 16 ];
+typedef MathieuPermutationWithHistory::PermArray PermArray;
+typedef MathieuPermutationWithHistory::History History;
+typedef MathieuPermutationWithHistory::HistoryElement HistoryArray[ 16 ];
 typedef struct{ PermArray p;
                 Index len;
                 HistoryArray h; } PermData;
@@ -90,22 +90,22 @@ PermData seen[ 48 ] = {
                           12, { 0, +10, 0, +16, 0, +11, 0, +12, 0, +13, 0, +15 } },
                       } ;
 
-vector<M24PermutationWithHistory> seen_perms ;
+vector<MathieuPermutationWithHistory> seen_perms ;
 
 int nseen = 38 ;
 
-ostream & show( ostream & os, int i, M24PermutationWithHistory & p )
+ostream & show( ostream & os, int i, MathieuPermutationWithHistory & p )
 {
   cout << setw( 2 ) << i << ": " << p << " " << str( p.getHistory( ) ) << endl ;
   return cout;
 }
 
-bool lexicographic( const M24PermutationWithHistory& a, const M24PermutationWithHistory& b )
+bool lexicographic( const MathieuPermutationWithHistory& a, const MathieuPermutationWithHistory& b )
 {
   return a < b ;
 }
 
-bool history_length( const M24PermutationWithHistory& a, const M24PermutationWithHistory& b ) 
+bool history_length( const MathieuPermutationWithHistory& a, const MathieuPermutationWithHistory& b ) 
 {
   const int comparison = a.cmp( b );
   if ( comparison < 0 )
@@ -121,15 +121,15 @@ int main( int argc, char *argv[ ] )
 {
   for ( int i = 0 ; i < nseen ; i++ )
   {
-    M24PermutationWithHistory seen_perm( seen[ i ].p ) ;
-    M24PermutationWithHistory::History h;
+    MathieuPermutationWithHistory seen_perm( seen[ i ].p ) ;
+    MathieuPermutationWithHistory::History h;
     for ( int j = 0 ; j < seen[ i ].len; j++ )
       h.push_back( seen[ i ].h[ j ] );
-    seen_perms.push_back( M24PermutationWithHistory( ).run( h ) );
+    seen_perms.push_back( MathieuPermutationWithHistory( ).run( h ) );
     assert( seen_perm == seen_perms[ i ] );
 //      show( cout, i, seen_perms[ i ] ) ;
   }
-  seen_perms.push_back( M24PermutationWithHistory( ) );
+  seen_perms.push_back( MathieuPermutationWithHistory( ) );
   nseen ++ ;
 
   sort( seen_perms.begin( ), seen_perms.end( ), history_length );
@@ -143,7 +143,7 @@ int main( int argc, char *argv[ ] )
       int j = i_plus_j - i;
       if ( 0 <= j && j < nseen )
       {
-        M24PermutationWithHistory product = seen_perms[ i ] * seen_perms[ j ] ;
+        MathieuPermutationWithHistory product = seen_perms[ i ] * seen_perms[ j ] ;
         int k ;
         for ( k = 0; k < nseen ; k++ )
           if ( product == seen_perms[ k ] )

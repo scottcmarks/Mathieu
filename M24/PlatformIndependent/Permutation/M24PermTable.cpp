@@ -84,8 +84,8 @@ dump_result M24PermInfoTable::dump( const char * filename )
 }
 
 
-void M24PermInfoTable::_try_move( const Perm & p, const M24PermutationWithHistory & this_move,
-                                  perm_info & best_perm_info, M24PermutationWithHistory & best_move )
+void M24PermInfoTable::_try_move( const Perm & p, const MathieuPermutationWithHistory & this_move,
+                                  perm_info & best_perm_info, MathieuPermutationWithHistory & best_move )
 {
   const perm_info & this_perm_info = lookup( p * this_move );
   if ( this_perm_info < best_perm_info )
@@ -96,34 +96,34 @@ void M24PermInfoTable::_try_move( const Perm & p, const M24PermutationWithHistor
 }
 
 
-M24PermutationWithHistory M24PermInfoTable::lookup_next_move( const Perm & p )
+MathieuPermutationWithHistory M24PermInfoTable::lookup_next_move( const Perm & p )
 {
   perm_info best_perm_info = lookup( p );
-  M24PermutationWithHistory best_move;
+  MathieuPermutationWithHistory best_move;
 
   // See if any right moves improve things
   for ( int i = 1 ; i < nBalls / 2; i++ )
-    _try_move( p, M24PermutationWithHistory( ).right( i ), best_perm_info, best_move );
+    _try_move( p, MathieuPermutationWithHistory( ).right( i ), best_perm_info, best_move );
 
   // See if any left moves improve things
   for ( int i = 1 ; i < nBalls / 2; i++ )
-    _try_move( p, M24PermutationWithHistory( ).left( i ), best_perm_info, best_move );
+    _try_move( p, MathieuPermutationWithHistory( ).left( i ), best_perm_info, best_move );
 
   // See if a swap move improve things
-  _try_move( p, M24PermutationWithHistory( ).swap( ), best_perm_info, best_move );
+  _try_move( p, MathieuPermutationWithHistory( ).swap( ), best_perm_info, best_move );
 
   return best_move;
 }
 
 
-M24PermutationWithHistory M24PermInfoTable::lookup_shortest_inverse( const Perm & p )
+MathieuPermutationWithHistory M24PermInfoTable::lookup_shortest_inverse( const Perm & p )
 {
-  M24Permutation p_reduced( p ); // no history, for speed
-  M24PermutationWithHistory p_inverse;
+  MathieuPermutation p_reduced( p ); // no history, for speed
+  MathieuPermutationWithHistory p_inverse;
   // Invariant: p_reduced == p * p_inverse
   while ( ! p_reduced.is_identity( ) )
   {
-    const M24PermutationWithHistory & next_move = lookup_next_move( p_reduced );
+    const MathieuPermutationWithHistory & next_move = lookup_next_move( p_reduced );
     if ( next_move.is_identity( ) )
     {
       cout << endl
@@ -139,10 +139,10 @@ M24PermutationWithHistory M24PermInfoTable::lookup_shortest_inverse( const Perm 
 }
 
 
-M24PermutationWithHistory M24PermInfoTable::lookup_next_move( const Rank r )
+MathieuPermutationWithHistory M24PermInfoTable::lookup_next_move( const Rank r )
 {
   perm_info best_perm_info = lookup( r );
-  M24PermutationWithHistory best_move;
+  MathieuPermutationWithHistory best_move;
   Perm p;
   
   cout << "lookup_next_move( const Rank ) not yet implemented." << endl;
@@ -150,32 +150,32 @@ M24PermutationWithHistory M24PermInfoTable::lookup_next_move( const Rank r )
   
   // See if any right moves improve things
   for ( int i = 1 ; i < nBalls / 2; i++ )
-    _try_move( p, M24PermutationWithHistory( ).right( i ), best_perm_info, best_move );
+    _try_move( p, MathieuPermutationWithHistory( ).right( i ), best_perm_info, best_move );
 
   // See if any left moves improve things
   for ( int i = 1 ; i < nBalls / 2; i++ )
-    _try_move( p, M24PermutationWithHistory( ).left( i ), best_perm_info, best_move );
+    _try_move( p, MathieuPermutationWithHistory( ).left( i ), best_perm_info, best_move );
 
   // See if a swap move improve things
-  _try_move( p, M24PermutationWithHistory( ).swap( ), best_perm_info, best_move );
+  _try_move( p, MathieuPermutationWithHistory( ).swap( ), best_perm_info, best_move );
 
   return best_move;
 }
 
 
-M24PermutationWithHistory M24PermInfoTable::lookup_shortest_inverse( Rank r )
+MathieuPermutationWithHistory M24PermInfoTable::lookup_shortest_inverse( Rank r )
 {
   Perm p;
   
   cout << "lookup_shortest_inverse( const Rank ) not yet implemented." << endl;
   assert( false );
   
-  M24Permutation p_reduced( p ); // no history, for speed
-  M24PermutationWithHistory p_inverse;
+  MathieuPermutation p_reduced( p ); // no history, for speed
+  MathieuPermutationWithHistory p_inverse;
   // Invariant: p_reduced == p * p_inverse
   while ( ! p_reduced.is_identity( ) )
   {
-    const M24PermutationWithHistory & next_move = lookup_next_move( p_reduced );
+    const MathieuPermutationWithHistory & next_move = lookup_next_move( p_reduced );
     if ( next_move.is_identity( ) )
     {
       cout << endl

@@ -15,5 +15,5 @@ lookup_SOURCES = Constants.h M24Constants.h M24PermTable.cpp M24PermTable.h \
 bin_PROGRAMS = Lower48
 TestM24_SOURCES = M24Tests.cpp m24.cc m24.h permutation point.cc point.h \
 	rand_utils.c rand_utils.h view.cc view.h
-Lower48_SOURCES = Lower48.cpp M24PermTable.cpp M24PermTable.h m24.cc m24.h \
-	point.cc point.h view.cc view.h
+Lower48_SOURCES = Lower48.cpp M24PermTable.cpp M24PermTable.h Utilities.h m.h \
+	m24.cc m24.h point.cc point.h view.cc view.h
