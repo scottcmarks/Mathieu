@@ -4,9 +4,9 @@
 #include "m24.h"
 
 #if defined(USE_M24PERMUTATION_WITH_HISTORY)
-typedef M24PermutationWithHistory Perm;
+typedef MathieuPermutationWithHistory Perm;
 #else
-typedef M24PermutationWithHistory::super Perm;
+typedef MathieuPermutationWithHistory::super Perm;
 #endif
 
 typedef Perm::PermArray PermArray;
@@ -102,17 +102,17 @@ public:
   perm_info & lookup_in_group( const Perm & p, table_group & group );
   perm_info & lookup( const Perm& p ) { return lookup_in_group( p, lookup_group( p ) ); };
   perm_info & lookup( const Rank r ) { return table[ r / 48 ].perms[ r % 48 ]; };
-  M24PermutationWithHistory lookup_shortest_inverse( const Perm & p );
-  M24PermutationWithHistory lookup_shortest_inverse( const Rank r );
-  M24PermutationWithHistory lookup_next_move( const Perm & p );
-  M24PermutationWithHistory lookup_next_move( const Rank r );
+  MathieuPermutationWithHistory lookup_shortest_inverse( const Perm & p );
+  MathieuPermutationWithHistory lookup_shortest_inverse( const Rank r );
+  MathieuPermutationWithHistory lookup_next_move( const Perm & p );
+  MathieuPermutationWithHistory lookup_next_move( const Rank r );
   ~M24PermInfoTable( ) { deallocate( ) ; } ;
   M24PermInfoTable & allocate( ) { table = static_cast< table_group *>( malloc( perm_table_size ) ) ; return *this ;} ;
   M24PermInfoTable & deallocate( ) { if ( table ) free( table ) ; table = NULL ; return *this ; } ;
   static const int perm_table_size = nPerms_0_to_4 * sizeof( table_group ) ;
 protected:
-  void _try_move( const M24Permutation & p, const M24PermutationWithHistory & this_move, 
-                  perm_info & best_perm_info, M24PermutationWithHistory & best_move );
+  void _try_move( const MathieuPermutation & p, const MathieuPermutationWithHistory & this_move, 
+                  perm_info & best_perm_info, MathieuPermutationWithHistory & best_move );
   map_attachment_type table_attachment_type;
   table_group * table;
 };
