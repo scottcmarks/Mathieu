@@ -344,10 +344,10 @@ inverse permutation, compute its split rank part as above.
 Analysis implementation optimization ideas:
    Only save pinv5 and pinv6 instead of all of pinv in the table
    Don't compute steps by calling steps.  Instead, compute it by induction in the recursion.
-     Then build the table using Permutation<nBalls, Index, Rank> instead of M24Permutation,
+     Then build the table using Permutation<nBalls, Index, Rank> instead of MathieuPermutation,
      and avoid the history baggage.
-     [It actually turned out necessary to split M24Permutation into a class that knows right,
-      etc. (M24Permutation) and a subclass that knows about history (M24PermutationWithHistory)].
+     [It actually turned out necessary to split MathieuPermutation into a class that knows right,
+      etc. (MathieuPermutation) and a subclass that knows about history (MathieuPermutationWithHistory)].
    Don't bother to invert the permutation.  Just think of the recursion as generating all
       the inverse permutations -- it's the same set.
       Then lookup should be fast enough to use it for search pruning.
