@@ -6,7 +6,7 @@
 //  Copyright Magnolia Heights Research and Development. 2008. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 @class RootViewController;
 @class GameModel;
