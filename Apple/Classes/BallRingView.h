@@ -6,20 +6,21 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
+
 #import "GameModel.h"
 #import "BallRingViewDelegate.h"
 
 @class SoundEffect;
 @class BallView;
 
-@interface BallRingView : UIView 
+@interface BallRingView : View 
 {
     CGFloat   _circleRadius;
     CGPoint   _circleCenter;
     CGFloat   _ballRadius;
     BallView * _ballViews[ nBalls ];
-    UILabel *_ballLabels[ nBalls ];
+    Label *_ballLabels[ nBalls ];
     CGPoint _ballCenters[ nBalls ];
     SoundEffect * _rightSound;
     SoundEffect * _leftSound;
