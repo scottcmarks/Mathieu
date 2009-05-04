@@ -207,9 +207,9 @@
 		D2AE5C3F0FACE9BB0093E56B /* m12.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5A980FACE9BB0093E56B /* m12.cc */; };
 		D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5AA00FACE9BB0093E56B /* perms.lst */; };
 		D2AE5C850FACE9BB0093E56B /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5AEC0FACE9BB0093E56B /* view.cc */; };
-		D2AE5C960FACEA6C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C860FACEA6C0093E56B /* Images */; };
-		D2AE5C970FACEA6C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C860FACEA6C0093E56B /* Images */; };
-		D2AE5C980FACEA6C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C860FACEA6C0093E56B /* Images */; };
+		D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C860FACEA6C0093E56B /* Generic_Images */; };
+		D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C860FACEA6C0093E56B /* Generic_Images */; };
+		D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C860FACEA6C0093E56B /* Generic_Images */; };
 		D2AE5CBD0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CBE0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CE50FACEAA80093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5CBF0FACEAA80093E56B /* Images */; };
@@ -339,7 +339,7 @@
 		D2AE5AEA0FACE9BB0093E56B /* m.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m.h; sourceTree = "<group>"; };
 		D2AE5AEC0FACE9BB0093E56B /* view.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = view.cc; sourceTree = "<group>"; };
 		D2AE5AED0FACE9BB0093E56B /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
-		D2AE5C860FACEA6C0093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		D2AE5C860FACEA6C0093E56B /* Generic_Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generic_Images; sourceTree = "<group>"; };
 		D2AE5C990FACEA8C0093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		D2AE5CBF0FACEAA80093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -770,7 +770,7 @@
 		D2AE5A500FACE9BB0093E56B /* html */ = {
 			isa = PBXGroup;
 			children = (
-				D2AE5C860FACEA6C0093E56B /* Images */,
+				D2AE5C860FACEA6C0093E56B /* Generic_Images */,
 			);
 			path = html;
 			sourceTree = "<group>";
@@ -997,7 +997,7 @@
 				D2AE5BAE0FACE9BB0093E56B /* preferences.html in Resources */,
 				D2AE5BAF0FACE9BB0093E56B /* swap_permutations.html in Resources */,
 				D2AE5BBD0FACE9BB0093E56B /* perms.lst in Resources */,
-				D2AE5C970FACEA6C0093E56B /* Images in Resources */,
+				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1043,7 +1043,7 @@
 				D2AE5B3E0FACE9BB0093E56B /* hints.html in Resources */,
 				D2AE5B630FACE9BB0093E56B /* index.html in Resources */,
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
-				D2AE5C960FACEA6C0093E56B /* Images in Resources */,
+				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1093,7 +1093,7 @@
 				D2AE5C360FACE9BB0093E56B /* preferences.html in Resources */,
 				D2AE5C370FACE9BB0093E56B /* swap_permutations.html in Resources */,
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
-				D2AE5C980FACEA6C0093E56B /* Images in Resources */,
+				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
