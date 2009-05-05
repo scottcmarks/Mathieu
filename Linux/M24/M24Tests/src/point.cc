@@ -1,1 +1,1 @@
-../../../../../Toolbox/PlatformIndependent/point.cc
+link ../../../../../Toolbox/PlatformIndependent/point.cc
