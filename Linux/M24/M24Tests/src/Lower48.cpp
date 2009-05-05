@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/M24/Permutation/Lower48.cpp
+../../../../PlatformIndependent/M24/Permutation/Lower48.cpp

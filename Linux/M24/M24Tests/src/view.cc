@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/View/view.cc
+../../../../PlatformIndependent/View/view.cc

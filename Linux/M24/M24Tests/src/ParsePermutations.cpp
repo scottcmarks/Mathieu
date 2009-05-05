@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/ParsePermutations.cpp
+../../../../PlatformIndependent/ParsePermutations.cpp
