@@ -1,1 +1,1 @@
-../../../PlatformIndependent/Permutation/swaps.inc
+link ../../../../PlatformIndependent//M12/Permutation/swaps.inc

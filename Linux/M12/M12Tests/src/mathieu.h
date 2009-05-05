@@ -1,1 +1,1 @@
-../../../../PlatformIndependent/mathieu.h
+link ../../../../PlatformIndependent/mathieu.h
