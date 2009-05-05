@@ -1,1 +1,1 @@
-link ../../../../../Toolbox/PlatformIndependent/point.h
+../../../../../Toolbox/PlatformIndependent/point.h

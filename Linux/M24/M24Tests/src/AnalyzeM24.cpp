@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/M24/Permutation/AnalyzeM24.cpp
+../../../../PlatformIndependent/M24/Permutation/AnalyzeM24.cpp

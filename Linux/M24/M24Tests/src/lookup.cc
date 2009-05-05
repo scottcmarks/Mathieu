@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/M24/Permutation/lookup.cc
+../../../../PlatformIndependent/M24/Permutation/lookup.cc
