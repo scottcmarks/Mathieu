@@ -1,1 +1,1 @@
-../../../../PlatformIndependent/View/view.h
+link ../../../../PlatformIndependent/View/view.h
