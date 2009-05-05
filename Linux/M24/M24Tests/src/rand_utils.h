@@ -1,1 +1,1 @@
-link ../../../../../Toolbox/PlatformIndependent/rand_utils.h
+../../../../../Toolbox/PlatformIndependent/rand_utils.h

@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/Permutation/m.h
+../../../../PlatformIndependent/Permutation/m.h
