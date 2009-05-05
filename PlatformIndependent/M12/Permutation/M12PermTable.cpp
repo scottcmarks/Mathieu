@@ -253,7 +253,7 @@ map_result M12PermInfoTable::map( const char * filename, map_attachment_type att
       // Set file length
       char nul[ 1 ] = { 0 };
       lseek( fd, perm_table_size - 1, SEEK_SET );
-      write( fd, nul, 1 );
+      assert( 1 == write( fd, nul, 1 ) );
       lseek( fd,                   0, SEEK_SET );
     }
     break;
