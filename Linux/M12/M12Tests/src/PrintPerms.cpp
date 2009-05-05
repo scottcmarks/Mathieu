@@ -1,1 +1,1 @@
-link ../../../../PlatformIndependent/M12/Permutation/PrintPerms.cpp
+../../../../PlatformIndependent/M12/Permutation/PrintPerms.cpp
