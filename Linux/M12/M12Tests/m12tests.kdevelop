@@ -21,7 +21,7 @@
   <kdevautoproject>
     <general>
       <activetarget>src/AnalyzeM12</activetarget>
-      <useconfiguration>optimized</useconfiguration>
+      <useconfiguration>default</useconfiguration>
     </general>
     <run>
       <mainprogram/>
