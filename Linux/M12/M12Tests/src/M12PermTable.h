@@ -1,1 +1,1 @@
-../../../PlatformIndependent/Permutation/M12PermTable.h
+link ../../../../PlatformIndependent/M12/Permutation/M12PermTable.h
