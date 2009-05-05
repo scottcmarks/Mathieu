@@ -10,21 +10,11 @@
  */
 
 #if MATHIEU_GROUP_PERMUTATION_SIZE==12
-
-#import "m12.h"
-#import "Constants.h"
-#import "M12Constants.h"
-
+    #import "m12.h"
 #elif MATHIEU_GROUP_PERMUTATION_SIZE==24
-
-#import "m24.h"
-#import "Constants.h"
-#import "M24Constants.h"
-
+    #import "m24.h"
 #else
-
-#error MATHIEU_GROUP_PERMUTATION_SIZE not defined
-
-#endif  /* nBalls  */
+    #error MATHIEU_GROUP_PERMUTATION_SIZE not defined
+#endif  /* MATHIEU_GROUP_PERMUTATION_SIZE  */
 
 #endif /* !defined(__MATHIEU_H_INCLUDED__) */

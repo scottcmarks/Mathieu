@@ -13,7 +13,7 @@
 # PARTICULAR PURPOSE.
 
 
-VPATH = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests
+VPATH = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests
 pkgdatadir = $(datadir)/m12tests
 pkglibdir = $(libdir)/m12tests
 pkgincludedir = $(includedir)/m12tests
@@ -71,12 +71,12 @@ DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/missing --run aclocal-1.10
-AMTAR = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/missing --run tar
+ACLOCAL = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/missing --run aclocal-1.10
+AMTAR = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/missing --run automake-1.10
+AUTOCONF = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/missing --run automake-1.10
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -111,7 +111,7 @@ LIBS =
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 NMEDIT = 
 OBJEXT = o
@@ -128,10 +128,10 @@ SET_MAKE =
 SHELL = /bin/sh
 STRIP = strip
 VERSION = 0.1
-abs_builddir = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/optimized
-abs_srcdir = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests
-abs_top_builddir = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/optimized
-abs_top_srcdir = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests
+abs_builddir = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/optimized
+abs_srcdir = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests
+abs_top_builddir = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/optimized
+abs_top_srcdir = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_F77 = gfortran
@@ -160,7 +160,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests/install-sh
+install_sh = $(SHELL) /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -174,12 +174,12 @@ program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
-srcdir = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests
+srcdir = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests
 sysconfdir = ${prefix}/etc
 target_alias = 
 top_build_prefix = 
 top_builddir = .
-top_srcdir = /home/markss/iPhoneSandbox/Mathieu/M12/Linux/M12Tests
+top_srcdir = /home/markss/iPhoneSandbox/Mathieu/Linux/M12/M12Tests
 
 # not a GNU package. You can remove this line, if
 # have all needed files, that a GNU package needs
