@@ -31,23 +31,23 @@ struct perm_info {
 typedef struct { Index pinv5; Index pinv6; perm_info perms[ nPerms_5_to_6 ]; } table_group;
 //typedef table_group perm_table[ nPerms_0_to_4 ];
 
-typedef enum load_result
+typedef enum
 {
   load_no_data         = -3 ,
   load_wrong_size_file = -2 ,
   load_no_file         = -1 ,
   load_success         =  0 ,
-};
+} load_result;
 
-typedef enum dump_result
+typedef enum
 {
   dump_no_data         = -3 ,
   dump_write_failed    = -2 ,
   dump_no_file         = -1 ,
   dump_success         =  0 ,
-};
+} dump_result;
 
-typedef enum map_attachment_type
+typedef enum
 { 
   map_attach_not_mapped ,
   map_attach_read_only  ,
@@ -55,22 +55,22 @@ typedef enum map_attachment_type
   map_attach_write      ,
   map_attach_update     ,
   map_attach_copy       ,
-};
+} map_attachment_type;
 
 
-typedef enum map_result
+typedef enum
 {
   map_result_wrong_size_file = -3,
   map_result_no_file         = -2,
   map_result_mapping_failed  = -1,
   map_result_success         =  0,
-};
+} map_result;
 
-typedef enum sync_result
+typedef enum
 {
   sync_result_success =  0,
   sync_result_failed  = -1,
-};
+} sync_result;
 
 
 class M24PermInfoTable 
