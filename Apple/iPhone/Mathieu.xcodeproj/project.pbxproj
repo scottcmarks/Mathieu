@@ -19,6 +19,9 @@
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D266F90D0F7A9F120080CAD1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */; };
+		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
+		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
+		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
 		D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56760FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D2AE56770FACE47B0093E56B /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AC0FACE47A0093E56B /* ComboButton.mm */; };
@@ -223,6 +226,12 @@
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D27C7B950FB21B9400ECAE6F /* SporadicM12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D27C7C1D0FB2202700ECAE6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D27C7C1E0FB2202700ECAE6F /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		D27C7C1F0FB2202700ECAE6F /* Mathieu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathieu_Prefix.pch; sourceTree = "<group>"; };
+		D27C7C300FB2211800ECAE6F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D2AE55A10FACE4560093E56B /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../../TODO.txt; sourceTree = SOURCE_ROOT; };
 		D2AE55A60FACE47A0093E56B /* BallRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingView.h; sourceTree = "<group>"; };
 		D2AE55A70FACE47A0093E56B /* BallRingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallRingView.mm; sourceTree = "<group>"; };
@@ -378,6 +387,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D27C7B930FB21B9400ECAE6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -387,6 +403,7 @@
 				1D6058910D05DD3D006BFB54 /* SporadicM12.app */,
 				8C1B8AE70F68470300F359D6 /* SporadicM24.app */,
 				D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */,
+				D27C7B950FB21B9400ECAE6F /* SporadicM12.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -424,9 +441,48 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		D27C7B9B0FB21BE300ECAE6F /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				D27C7BBC0FB21D0600ECAE6F /* Cocoa */,
+			);
+			name = Mac;
+			sourceTree = "<group>";
+		};
+		D27C7BBC0FB21D0600ECAE6F /* Cocoa */ = {
+			isa = PBXGroup;
+			children = (
+				D27C7C2E0FB2211800ECAE6F /* Resources */,
+				D27C7C180FB2202700ECAE6F /* M12 */,
+			);
+			name = Cocoa;
+			sourceTree = "<group>";
+		};
+		D27C7C180FB2202700ECAE6F /* M12 */ = {
+			isa = PBXGroup;
+			children = (
+				D27C7C1D0FB2202700ECAE6F /* Info.plist */,
+				D27C7C1E0FB2202700ECAE6F /* main.mm */,
+				D27C7C1F0FB2202700ECAE6F /* Mathieu_Prefix.pch */,
+			);
+			name = M12;
+			path = Mac/Cocoa/M12;
+			sourceTree = "<group>";
+		};
+		D27C7C2E0FB2211800ECAE6F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */,
+				D27C7C310FB2211800ECAE6F /* MainMenu.xib */,
+			);
+			name = Resources;
+			path = Mac/Cocoa/Resources;
+			sourceTree = "<group>";
+		};
 		D2AE55A30FACE47A0093E56B /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D27C7B9B0FB21BE300ECAE6F /* Mac */,
 				D2AE55A40FACE47A0093E56B /* DeviceIndependent */,
 				D2AE55DC0FACE47A0093E56B /* iPhone */,
 			);
@@ -932,6 +988,23 @@
 			productReference = D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D27C7B940FB21B9400ECAE6F /* SporadicM12Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D27C7B9A0FB21B9500ECAE6F /* Build configuration list for PBXNativeTarget "SporadicM12Mac" */;
+			buildPhases = (
+				D27C7B910FB21B9400ECAE6F /* Resources */,
+				D27C7B920FB21B9400ECAE6F /* Sources */,
+				D27C7B930FB21B9400ECAE6F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SporadicM12Mac;
+			productName = SporadicM12Mac;
+			productReference = D27C7B950FB21B9400ECAE6F /* SporadicM12.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -947,6 +1020,7 @@
 				D266F8D70F7A9F120080CAD1 /* SporadicM12Free */,
 				1D6058900D05DD3D006BFB54 /* SporadicM12 */,
 				8C1B8AD90F68470300F359D6 /* SporadicM24 */,
+				D27C7B940FB21B9400ECAE6F /* SporadicM12Mac */,
 			);
 		};
 /* End PBXProject section */
@@ -1098,6 +1172,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D27C7B910FB21B9400ECAE6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */,
+				D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1191,7 +1274,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D27C7B920FB21B9400ECAE6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D27C7C230FB2202700ECAE6F /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D27C7C300FB2211800ECAE6F /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D27C7C310FB2211800ECAE6F /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D27C7C320FB2211800ECAE6F /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -1269,6 +1379,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "";
 				APPLY_RULES_IN_COPY_FILES = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
@@ -1334,6 +1445,56 @@
 			};
 			name = Release;
 		};
+		D27C7B980FB21B9500ECAE6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SporadicM12;
+				SDKROOT = macosx10.5;
+			};
+			name = Debug;
+		};
+		D27C7B990FB21B9500ECAE6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SporadicM12;
+				SDKROOT = macosx10.5;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1369,6 +1530,15 @@
 			buildConfigurations = (
 				D266F90F0F7A9F120080CAD1 /* Debug */,
 				D266F9100F7A9F120080CAD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D27C7B9A0FB21B9500ECAE6F /* Build configuration list for PBXNativeTarget "SporadicM12Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D27C7B980FB21B9500ECAE6F /* Debug */,
+				D27C7B990FB21B9500ECAE6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
