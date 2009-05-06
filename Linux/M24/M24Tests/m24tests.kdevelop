@@ -21,7 +21,7 @@
   <kdevautoproject>
     <general>
       <activetarget>src/TestM24</activetarget>
-      <useconfiguration>optimized</useconfiguration>
+      <useconfiguration>default</useconfiguration>
     </general>
     <run>
       <mainprogram/>
