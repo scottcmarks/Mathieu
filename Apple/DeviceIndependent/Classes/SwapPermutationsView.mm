@@ -2,8 +2,8 @@
 //  SwapPermutations.m
 //  Mathieu
 //
-//  Created by scott on 3/30/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Created by Scott Marks on 3/30/09.
+//  Copyright 2009 Magnolia Heights R & D. All rights reserved.
 //
 
 #import "SwapPermutationsView.h"
