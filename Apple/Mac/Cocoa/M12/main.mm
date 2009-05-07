@@ -1,9 +1,9 @@
 //
-//  main.m
+//  main.mm
 //  SporadicM12Mac
 //
-//  Created by scott on 5/6/09.
-//  Copyright __MyCompanyName__ 2009. All rights reserved.
+//  Created by Scott Marks on 5/6/09.
+//  Copyright Magnolia Heights R & D 2009. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

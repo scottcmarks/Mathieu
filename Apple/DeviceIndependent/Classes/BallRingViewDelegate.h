@@ -2,8 +2,8 @@
 //  BallRingViewDelegate.h
 //  Mathieu
 //
-//  Created by scott on 3/31/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Created by Scott Marks on 3/31/09.
+//  Copyright 2009 Magnolia Heights R & D. All rights reserved.
 //
 @protocol BallRingViewDelegate
 -( void ) spinInProgress: ( int ) wedges;
