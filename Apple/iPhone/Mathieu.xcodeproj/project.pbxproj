@@ -22,6 +22,7 @@
 		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
+		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56760FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D2AE56770FACE47B0093E56B /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AC0FACE47A0093E56B /* ComboButton.mm */; };
@@ -232,6 +233,7 @@
 		D27C7C1F0FB2202700ECAE6F /* Mathieu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathieu_Prefix.pch; sourceTree = "<group>"; };
 		D27C7C300FB2211800ECAE6F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D295286E0FB4B9E100BABAF4 /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
 		D2AE55A10FACE4560093E56B /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../../TODO.txt; sourceTree = SOURCE_ROOT; };
 		D2AE55A60FACE47A0093E56B /* BallRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingView.h; sourceTree = "<group>"; };
 		D2AE55A70FACE47A0093E56B /* BallRingView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallRingView.mm; sourceTree = "<group>"; };
@@ -344,7 +346,6 @@
 		D2AE5AD30FACE9BB0093E56B /* moves_and_steps.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = moves_and_steps.html; sourceTree = "<group>"; };
 		D2AE5ADD0FACE9BB0093E56B /* m24.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = m24.cc; sourceTree = "<group>"; };
 		D2AE5ADE0FACE9BB0093E56B /* m24.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m24.h; sourceTree = "<group>"; };
-		D2AE5AE60FACE9BB0093E56B /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
 		D2AE5AEA0FACE9BB0093E56B /* m.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m.h; sourceTree = "<group>"; };
 		D2AE5AEC0FACE9BB0093E56B /* view.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = view.cc; sourceTree = "<group>"; };
 		D2AE5AED0FACE9BB0093E56B /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
@@ -482,6 +483,7 @@
 		D2AE55A30FACE47A0093E56B /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D295286E0FB4B9E100BABAF4 /* mathieu.h */,
 				D27C7B9B0FB21BE300ECAE6F /* Mac */,
 				D2AE55A40FACE47A0093E56B /* DeviceIndependent */,
 				D2AE55DC0FACE47A0093E56B /* iPhone */,
@@ -807,7 +809,6 @@
 				D2AE5A4F0FACE9BB0093E56B /* Documentation */,
 				D2AE5A600FACE9BB0093E56B /* M12 */,
 				D2AE5AA60FACE9BB0093E56B /* M24 */,
-				D2AE5AE60FACE9BB0093E56B /* mathieu.h */,
 				D2AE5AE90FACE9BB0093E56B /* Permutation */,
 				D2AE5AEB0FACE9BB0093E56B /* View */,
 			);
@@ -1279,6 +1280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D27C7C230FB2202700ECAE6F /* main.mm in Sources */,
+				D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
