@@ -252,23 +252,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 }
 
-/*
 
--(void) animateButton:( DualActionButton *)button 
-          normalTitle:( NSString * )normalTitle
-        invertedTitle:( NSString *)invertedTitle
-             inverted:( bool ) inverted
-{
-    [UIView beginAnimations:nil context:NULL ];
-    [UIView setAnimationDuration: BUTTON_INVERSION_DURATION ];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone
-                           forView:button 
-                             cache:YES];
-    button.alternate = inverted;
-    [UIView commitAnimations];
-}
-
-*/
 -( void ) setActionButtonsInverted: ( bool ) inverted
 {
     if ( [ self.gameModel isSolving ] )
