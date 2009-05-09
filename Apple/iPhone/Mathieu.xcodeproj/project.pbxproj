@@ -53,8 +53,6 @@
 		D2AE56940FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
 		D2AE56950FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE56960FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
-		D2AE56A50FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */; };
-		D2AE56AA0FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */; };
 		D2AE56E30FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56510FACE47A0093E56B /* HelpView.xib */; };
 		D2AE56EC0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */; };
 		D2AE56F10FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56600FACE47A0093E56B /* PreferencesView.xib */; };
@@ -91,10 +89,7 @@
 		D2AE57170FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
 		D2AE57180FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
-		D2AE57280FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */; };
 		D2AE572D0FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */; };
-		D2AE57660FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56510FACE47A0093E56B /* HelpView.xib */; };
-		D2AE576F0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */; };
 		D2AE57760FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
 		D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566B0FACE47B0093E56B /* PreferencesView.xib */; };
@@ -130,9 +125,6 @@
 		D2AE579B0FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE579C0FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
 		D2AE57AB0FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */; };
-		D2AE57B00FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */; };
-		D2AE57E90FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56510FACE47A0093E56B /* HelpView.xib */; };
-		D2AE57F20FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */; };
 		D2AE57F90FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
 		D2AE57FA0FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566B0FACE47B0093E56B /* PreferencesView.xib */; };
@@ -1046,10 +1038,7 @@
 				D2AE57170FACE47B0093E56B /* success.caf in Resources */,
 				D2AE57180FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
-				D2AE57280FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */,
 				D2AE572D0FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */,
-				D2AE57660FACE47B0093E56B /* HelpView.xib in Resources */,
-				D2AE576F0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */,
 				D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */,
 				D2AE57790FACE47B0093E56B /* SporadicMView.xib in Resources */,
@@ -1096,8 +1085,6 @@
 				D2AE56940FACE47B0093E56B /* success.caf in Resources */,
 				D2AE56950FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE56960FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
-				D2AE56A50FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */,
-				D2AE56AA0FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */,
 				D2AE56E30FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2AE56EC0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */,
 				D2AE56F10FACE47B0093E56B /* PreferencesView.xib in Resources */,
@@ -1143,9 +1130,6 @@
 				D2AE579B0FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE579C0FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
 				D2AE57AB0FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */,
-				D2AE57B00FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */,
-				D2AE57E90FACE47B0093E56B /* HelpView.xib in Resources */,
-				D2AE57F20FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */,
 				D2AE57FA0FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */,
 				D2AE57FC0FACE47B0093E56B /* SporadicMView.xib in Resources */,
@@ -1458,6 +1442,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+				);
 				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (

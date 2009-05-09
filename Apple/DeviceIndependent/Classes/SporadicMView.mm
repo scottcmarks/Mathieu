@@ -252,7 +252,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 }
 
-
+/*
 
 -(void) animateButton:( DualActionButton *)button 
           normalTitle:( NSString * )normalTitle
@@ -268,20 +268,15 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     [UIView commitAnimations];
 }
 
-
--( void ) setActionButtonsInverted:(bool)inverted{
+*/
+-( void ) setActionButtonsInverted: ( bool ) inverted
+{
     if ( [ self.gameModel isSolving ] )
-        [ self animateButton:shakeButton
-                 normalTitle:@"Shake"
-               invertedTitle:@"Restart"
-                    inverted:inverted ];
-    [ self animateButton:undoButton
-             normalTitle:@"Undo"
-           invertedTitle:@"Undo!"
-                inverted:inverted ];
+        shakeButton.alternate = inverted;
+    undoButton.alternate = inverted;
 }
 
--( void ) setComboButtonsInverted:(bool)inverted
+-( void ) setComboButtonsInverted: ( bool ) inverted
 {
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
     UIBarButtonItem * item;
@@ -289,13 +284,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         if ( item.tag == (int)comboButton )
         {
             ComboButton * button = (ComboButton *)item.customView;
-            NSString * comboName = [ [ button titleForState:UIControlStateNormal ] substringToIndex:1 ] ;
-            [ self animateButton: button
-                     normalTitle: comboName
-                   invertedTitle: [ comboName stringByAppendingFormat:@"%C%C",
-                                                                      superscriptMinus,
-                                                                      superscriptOne ]
-                        inverted: inverted ];
+            button.alternate = inverted;
         }
 }
 
