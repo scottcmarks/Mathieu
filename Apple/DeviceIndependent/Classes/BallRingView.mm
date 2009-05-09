@@ -325,35 +325,6 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
             [ _successSound  play ]; 
     }
 }    
-/***
-- (void) animatePopBall:(Index)nBall first:(bool) first {
-    // Create animation for the grow, which uses a delegate method to
-    // start an animation for the shrink operation.
-    [UIView beginAnimations:nil context:(void *)( first ? +nBall : -nBall )];
-    [UIView setAnimationDuration: GROW_ANIMATION_DURATION_SECONDS];
-    [UIView setAnimationDelegate: self ];
-    [UIView setAnimationDidStopSelector:@selector(growAnimationDidStop:finished:context:) ];
-    CGFloat ballBloom  = first ? FIRST_BALL_BLOOM_FACTOR  : SUBSEQUENT_BALL_BLOOM_FACTOR ;
-    CGFloat labelBloom = first ? FIRST_LABEL_BLOOM_FACTOR : SUBSEQUENT_LABEL_BLOOM_FACTOR;
-    _ballViews [nBall].transform = CGAffineTransformMakeScale(ballBloom , ballBloom );
-    _ballLabels[nBall].transform = CGAffineTransformMakeScale(labelBloom, labelBloom);
-    [UIView commitAnimations];
-}
-
-- (void)growAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
-    int nBall = (int)context;
-    bool first = 0 < nBall;
-    if ( ! first ) nBall = - nBall ;
-    [UIView beginAnimations:nil context:context];
-    [UIView setAnimationDuration: SHRINK_ANIMATION_DURATION_SECONDS
-                                  * ( first
-                                      ? FIRST_ANIMATION_DURATION_FACTOR
-                                     : SUBSEQUENT_ANIMATION_DURATION_FACTOR ) ];
-    _ballViews [ nBall ].transform = CGAffineTransformIdentity;
-    _ballLabels[ nBall ].transform = CGAffineTransformIdentity;
-    [UIView commitAnimations];
-}
-***/
 
 
 - (void)dealloc 
