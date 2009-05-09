@@ -36,7 +36,14 @@
 - ( void ) setSwapIndex: ( int ) newSwapIndex;
 
 - (void) toggleView;
-- (void) flipFrom: ( ViewController * ) oldViewController to: ( ViewController * ) newViewController;
-- (void) setAnimationTransition: ( UIViewAnimationTransition ) transition;
+typedef enum 
+{ 
+    curl,
+    flip,
+    flop
+} RootViewControllerTransition;
+- (void) flipFrom: ( ViewController * ) oldViewController 
+               to: ( ViewController * ) newViewController 
+       transition: ( RootViewControllerTransition ) transition;
 
 @end
