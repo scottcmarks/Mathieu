@@ -11,8 +11,12 @@
 @class RootViewController;
 @class GameModel;
 
-@interface SporadicMAppDelegate : NSObject <UIApplicationDelegate> {
-    IBOutlet UIWindow *window;
+@interface SporadicMAppDelegate : NSObject 
+#if TARGET_OS_IPHONE
+                                           <UIApplicationDelegate>
+#endif /* TARGET_OS_IPHONE */
+{
+    IBOutlet Window *window;
 	RootViewController *rootViewController;
     CGFloat animationSpeed;
     bool soundEffects;
@@ -22,7 +26,7 @@
     
 }
 
-@property (nonatomic, retain ) IBOutlet UIWindow *window;
+@property (nonatomic, retain ) IBOutlet Window *window;
 @property (nonatomic, retain ) RootViewController *rootViewController;
 @property (nonatomic         ) CGFloat animationSpeed;
 @property (nonatomic         ) bool soundEffects;
