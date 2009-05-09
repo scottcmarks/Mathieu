@@ -60,7 +60,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 }
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
-- (void)applicationDidFinishLaunching:(UIApplication *)application 
+- (void)applicationDidFinishLaunching:(Application *)application 
 {
     __timestamp__;
     
@@ -91,7 +91,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 }
 
 // Invoked immediately before the application terminates.
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(Application *)application {
     // Store user's time signature preference, so that it is used the next time the app is launched
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
     [ defaults setFloat:  self.animationSpeed       forKey:SporadicMAnimationSpeedKey ];
