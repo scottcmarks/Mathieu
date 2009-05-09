@@ -58,21 +58,43 @@
 }
 
 
-- (void) flipFrom:( UIViewController * )oldViewController to:( UIViewController * )newViewController
+- (void) flipFrom:( UIViewController * )oldViewController 
+               to:( UIViewController * )newViewController
+      transition: (RootViewControllerTransition) transition
 {
+#if TARGET_OS_IPHONE
+    UIViewAnimationTransition uitransition;
+    switch ( transition )
+    {
+        case curl:
+            uitransition = UIViewAnimationTransitionCurlUp;
+            break;
+        case flip:
+            uitransition = UIViewAnimationTransitionFlipFromLeft;
+            break;
+        case flop:
+            uitransition = UIViewAnimationTransitionFlipFromRight;
+            break;
+        default:
+            uitransition = UIViewAnimationTransitionNone;
+    }
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: 1.0 ];	
+	[UIView setAnimationTransition:uitransition
+                           forView:self.view 
+                             cache:YES];
+#endif /* TARGET_OS_IPHONE */
     [newViewController viewWillAppear:YES];
     [oldViewController viewWillDisappear:YES];
     [oldViewController.view removeFromSuperview];
     [self.view addSubview:newViewController.view];
     [oldViewController viewDidDisappear:YES];
     [newViewController viewDidAppear:YES];
-}
+#if TARGET_OS_IPHONE
+    [UIView commitAnimations];
+#endif /* TARGET_OS_IPHONE */
+}    
 
-- (void) setAnimationTransition:(UIViewAnimationTransition)transition {
-	[UIView setAnimationTransition:transition
-                           forView:self.view 
-                             cache:YES];
-}
 
 - (void)toggleView 
 {	
@@ -82,19 +104,10 @@
 	if (preferencesViewController == nil)
 		[self loadPreferencesViewController];
 	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: 1.0 ];	
 	if ( [mainViewController.view superview] )
-    {
-        [self setAnimationTransition: UIViewAnimationTransitionFlipFromRight ];
-        [self flipFrom: mainViewController to: preferencesViewController];
-    }
+        [self flipFrom: mainViewController to: preferencesViewController transition: flop];
     else 
-    {
-        [self setAnimationTransition: UIViewAnimationTransitionFlipFromLeft ];
-        [self flipFrom: preferencesViewController to: mainViewController];
-    }
-	[UIView commitAnimations];
+        [self flipFrom: preferencesViewController to: mainViewController transition: flip];
 }
 
 // Called when the accelerometer detects motion; plays the erase sound and redraws the view if the motion is over a threshold.

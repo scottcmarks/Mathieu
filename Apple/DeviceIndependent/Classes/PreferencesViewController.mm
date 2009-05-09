@@ -63,11 +63,7 @@
     if ( self.helpViewController == nil )
         [ self loadHelpViewController ];
     
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: 1.0 ];	
-	[self.rootViewController setAnimationTransition: UIViewAnimationTransitionCurlUp ];
-    [self.rootViewController flipFrom: self to: helpViewController];
-	[UIView commitAnimations];
+    [self.rootViewController flipFrom: self to: helpViewController transition: curl ];
     
 }
 
@@ -76,11 +72,7 @@
     if ( self.swapPermutationsViewController == nil )
         [ self loadSwapPermutationsViewController ];
     
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: 1.0 ];	
-	[self.rootViewController setAnimationTransition: UIViewAnimationTransitionCurlUp ];
-    [self.rootViewController flipFrom: self to: swapPermutationsViewController];
-	[UIView commitAnimations];
+    [self.rootViewController flipFrom: self to: swapPermutationsViewController transition: curl];
     
 }
 
