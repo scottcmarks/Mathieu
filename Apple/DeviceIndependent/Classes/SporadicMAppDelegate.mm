@@ -13,12 +13,12 @@
 #import "iPhoneUtilities.h"
 
 
-static NSString *SporadicMAnimationSpeedKey = @"SporadicMAnimationSpeedKey" ;
-static NSString *SporadicMSoundEffectsKey   = @"SporadicMSoundEffectsKey"   ;
-static NSString *SporadicMConfirmKey        = @"SporadicMConfirmKey"        ;
-static NSString *SporadicMInvertKey         = @"SporadicMInvertKey"         ;
-static NSString *SporadicMSpinMessagesKey   = @"SporadicMSpinMessagesKey"   ;
-static NSString *SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
+static NSString * const SporadicMAnimationSpeedKey = @"SporadicMAnimationSpeedKey" ;
+static NSString * const SporadicMSoundEffectsKey   = @"SporadicMSoundEffectsKey"   ;
+static NSString * const SporadicMConfirmKey        = @"SporadicMConfirmKey"        ;
+static NSString * const SporadicMInvertKey         = @"SporadicMInvertKey"         ;
+static NSString * const SporadicMSpinMessagesKey   = @"SporadicMSpinMessagesKey"   ;
+static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
 
 @implementation SporadicMAppDelegate
 
