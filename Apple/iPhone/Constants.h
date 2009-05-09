@@ -46,7 +46,7 @@
 #define SUBSEQUENT_BALL_BLOOM_FACTOR  1.6
 #define SUBSEQUENT_LABEL_BLOOM_FACTOR ( 0.75 * SUBSEQUENT_BALL_BLOOM_FACTOR )
 
-#define BUTTON_INVERSION_DURATION 0.5
+#define BUTTON_INVERSION_DURATION 2.5
 
 #define kAccelerometerFrequency			25 //Hz
 #define kFilteringFactor				0.1
