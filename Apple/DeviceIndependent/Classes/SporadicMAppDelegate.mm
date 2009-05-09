@@ -85,7 +85,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
     __timestamp__;
     
     // Add the root view controller's view to the window
-    [window addSubview:[rootViewController view]];
+    [ window_view( window ) addSubview:[rootViewController view]];
     __timestamp__;
     
 }
