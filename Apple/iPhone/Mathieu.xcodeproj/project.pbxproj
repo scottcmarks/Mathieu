@@ -21,6 +21,9 @@
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D266F90D0F7A9F120080CAD1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */; };
+		D27097BC0FB67B0C00E7B5FA /* m12.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5A980FACE9BB0093E56B /* m12.cc */; };
+		D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5AEC0FACE9BB0093E56B /* view.cc */; };
+		D27097CE0FB67B8200E7B5FA /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58870FACE81D0093E56B /* point.cc */; };
 		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
@@ -1269,6 +1272,9 @@
 				D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */,
 				D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */,
 				D22D58FA0FB622080040121A /* GameModel.mm in Sources */,
+				D27097BC0FB67B0C00E7B5FA /* m12.cc in Sources */,
+				D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */,
+				D27097CE0FB67B8200E7B5FA /* point.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
