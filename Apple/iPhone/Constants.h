@@ -47,9 +47,9 @@
 #define historyFontSize       13.0
 #define movesFontSize         13.0
 #if FREE
-#define fullAppName appName @" Free"
+#define fullAppName applicationName @" Free"
 #else
-#define fullAppName appName
+#define fullAppName applicationName
 #endif
 
 // Apple user interface recommendation
