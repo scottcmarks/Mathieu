@@ -247,7 +247,7 @@
 -(void) confirmHome 
 {
     [ alert = [ OKCancelAlertView alertWithTitle: @"Home!"
-                                         message: @"This will reset " appName @" to the home position.\n" 
+                                         message: @"This will reset " applicationName @" to the home position.\n" 
                                                   @"Press OK if you want to do this."
                                           target: self
                                   cancelSelector: NULL
@@ -299,7 +299,7 @@
 -(void) confirmShake
 {
     [ alert = [ OKCancelAlertView alertWithTitle: @"Shake!"
-                                         message: @"This will create a new " appName @" puzzle.\n" 
+                                         message: @"This will create a new " applicationName @" puzzle.\n" 
                                                   @"Press OK if you want to do this."
                                           target: self
                                   cancelSelector: @selector( noShake )
