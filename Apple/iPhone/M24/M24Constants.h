@@ -13,7 +13,7 @@
 
 // These are fiddly program parameters.
 #define MBallRadiusRatio   0.09375
-#define appName               @"M24"
+#define applicationName               @"M24"
 
 #define BALL_COLORS \
 WHITE             , \
