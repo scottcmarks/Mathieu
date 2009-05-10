@@ -26,7 +26,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // this will appear as the title in the navigation bar
-        self.title = NSLocalizedString(appName, @"");
+        self.title = NSLocalizedString(applicationName, @"");
     }
     return self;
 }
