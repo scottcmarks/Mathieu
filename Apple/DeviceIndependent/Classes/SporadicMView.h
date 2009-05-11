@@ -6,20 +6,20 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 @class BallRingView;
 @class ComboButton;
 @class SporadicMViewController;
 @class DualActionButton;
 @class GameModel;
-@interface SporadicMView : UIView // TransitionView 
+@interface SporadicMView : View // TransitionView 
 {
 
     SporadicMViewController * controller;
-    UIToolbar * toolbar;
-    UILabel * moves;
-    UITextView *history;
+    Toolbar * toolbar;
+    Label * moves;
+    TextView *history;
     NSTimer * historyTextUpdatingTimer;
     BallRingView * ballRingView;    
     
@@ -32,9 +32,9 @@
 }
 
 
-@property ( nonatomic, assign   ) IBOutlet UIToolbar * toolbar;
-@property ( nonatomic, assign   ) IBOutlet UILabel * moves;
-@property ( nonatomic, assign   ) IBOutlet UITextView *history;
+@property ( nonatomic, assign   ) IBOutlet Toolbar * toolbar;
+@property ( nonatomic, assign   ) IBOutlet Label * moves;
+@property ( nonatomic, assign   ) IBOutlet TextView *history;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
 @property ( nonatomic, assign   ) IBOutlet BallRingView * ballRingView;
 @property ( nonatomic, retain   ) NSTimer * historyTextUpdatingTimer;
