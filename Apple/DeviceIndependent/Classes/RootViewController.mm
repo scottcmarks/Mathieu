@@ -16,7 +16,9 @@
 
 @synthesize mainViewController;
 @synthesize preferencesViewController;
+#if TARGET_OS_IPHONE
 @synthesize nowHandlingShake;
+#endif /* TARGET_OS_IPHONE */
 
 // TODO:  Factor out common code.
 // This might require invention of a common superclass for PV controller and mainview controller.
@@ -50,16 +52,18 @@
 - (void)viewDidLoad {
     [self.view addSubview:self.mainViewController.view];
 	
+#if TARGET_OS_IPHONE
 	//Configure and enable the accelerometer
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / kAccelerometerFrequency)];
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
     self.nowHandlingShake = false;
+#endif /* TARGET_OS_IPHONE */
 	
 }
 
 
-- (void) flipFrom:( UIViewController * )oldViewController 
-               to:( UIViewController * )newViewController
+- (void) flipFrom:( ViewController * )oldViewController 
+               to:( ViewController * )newViewController
       transition: (RootViewControllerTransition) transition
 {
 #if TARGET_OS_IPHONE
@@ -83,14 +87,14 @@
 	[UIView setAnimationTransition:uitransition
                            forView:self.view 
                              cache:YES];
-#endif /* TARGET_OS_IPHONE */
     [newViewController viewWillAppear:YES];
     [oldViewController viewWillDisappear:YES];
+#endif /* TARGET_OS_IPHONE */
     [oldViewController.view removeFromSuperview];
     [self.view addSubview:newViewController.view];
+#if TARGET_OS_IPHONE
     [oldViewController viewDidDisappear:YES];
     [newViewController viewDidAppear:YES];
-#if TARGET_OS_IPHONE
     [UIView commitAnimations];
 #endif /* TARGET_OS_IPHONE */
 }    
@@ -110,6 +114,20 @@
         [self flipFrom: preferencesViewController to: mainViewController transition: flip];
 }
 
+- ( void ) setSwapIndex: ( int ) newSwapIndex
+{
+    [ mainViewController setSwapIndex: newSwapIndex ];
+}
+
+
+- (void)dealloc {
+    self.mainViewController = nil;
+    self.preferencesViewController = nil;
+    [super dealloc];
+}
+
+
+#if TARGET_OS_IPHONE
 // Called when the accelerometer detects motion; plays the erase sound and redraws the view if the motion is over a threshold.
 - (void) accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
 {
@@ -141,11 +159,6 @@
 	}
 }
 
-- ( void ) setSwapIndex: ( int ) newSwapIndex
-{
-    [ mainViewController setSwapIndex: newSwapIndex ];
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
@@ -158,12 +171,8 @@
     // Release anything that's not essential, such as cached data
 }
 
+#endif /* TARGET_OS_IPHONE */
 
-- (void)dealloc {
-    self.mainViewController = nil;
-    self.preferencesViewController = nil;
-    [super dealloc];
-}
 
 
 @end
