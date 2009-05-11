@@ -6,15 +6,16 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 @class RootViewController;
 @class PreferencesView;
 @class HelpViewController;
 @class SwapPermutationsViewController;
 
-@interface PreferencesViewController : UIViewController {
-             RootViewController * rootViewController ;
+@interface PreferencesViewController : ViewController 
+{
+    RootViewController * rootViewController ;
     HelpViewController * helpViewController ;
     SwapPermutationsViewController * swapPermutationsViewController ;
     IBOutlet PreferencesView    * preferencesView    ;
