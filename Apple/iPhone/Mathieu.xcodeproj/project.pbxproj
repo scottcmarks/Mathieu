@@ -28,6 +28,7 @@
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
 		D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
+		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56760FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
@@ -1277,6 +1278,7 @@
 				D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */,
 				D27097CE0FB67B8200E7B5FA /* point.cc in Sources */,
 				D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */,
+				D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

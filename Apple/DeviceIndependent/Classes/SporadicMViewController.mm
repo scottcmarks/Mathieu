@@ -7,7 +7,6 @@
 //
 
 #include "view.h"
-#import <UIKit/UIFont.h>
 #import "SporadicMAppDelegate.h"
 #import "RootViewController.h"
 #import "SporadicMViewController.h"
@@ -23,7 +22,7 @@
 @synthesize rootViewController;
 @synthesize alert;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 - ( SporadicMView *) spview { return (SporadicMView *) self.view ; }
 - ( BallRingView * ) ballRingView { return self.spview.ballRingView; }
@@ -33,6 +32,7 @@
 - ( void ) setInvert:(bool)inverted { [ self.spview setInvertibleButtonsInverted: ( self.appDelegate.invert = inverted ) ]; }
 
 // Framework-generated messages
+#if TARGET_OS_IPHONE
 
 // Implement viewDidLoad to do additional setup after loading the view.
 - (void)viewDidLoad {
@@ -49,6 +49,8 @@
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
+
+#endif /* TARGET_OS_IPHONE */
 
 - (void)dealloc 
 {
@@ -267,13 +269,17 @@
     self.invert = false ;
     [ self.gameModel random ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
+#if TARGET_OS_IPHONE
     self.rootViewController.nowHandlingShake = false;
+#endif /* TARGET_OS_IPHONE */
     haveNotedSuccess = false;
 }
 
 
 -(void) noShake{
+#if TARGET_OS_IPHONE
     self.rootViewController.nowHandlingShake = false;
+#endif /* TARGET_OS_IPHONE */
 }
 
 
@@ -281,11 +287,11 @@
 {
     self.invert = false ;
     if ( [ self.gameModel isSolving ] )
-    {
         [ self.gameModel revert ];
-    }
     [ self updateDuration: LARGE_MOVE_DURATION ];
+#if TARGET_OS_IPHONE
     self.rootViewController.nowHandlingShake = false;
+#endif /* TARGET_OS_IPHONE */
 }
 
 
