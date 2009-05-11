@@ -6,17 +6,17 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 
 @interface OKCancelAlertView : NSObject
 {
-    id            target         ;
-    SEL           cancelSelector ;
-    SEL           OKSelector     ;
-    UIAlertView * alert          ; 
-    bool          hasParameter   ;
-    id            parameter      ;
+    id          target         ;
+    SEL         cancelSelector ;
+    SEL         OKSelector     ;
+    AlertView * alert          ; 
+    bool        hasParameter   ;
+    id          parameter      ;
 }
 
 + ( id ) alertWithTitle: ( NSString * ) title 
