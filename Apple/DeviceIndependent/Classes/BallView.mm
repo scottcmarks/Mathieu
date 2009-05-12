@@ -41,11 +41,11 @@ static BallColor ballColors[ nBalls ];
 
 - (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
 {
-    if ( self = [super initWithFrame:GCRect_to_NSRect(frame)] ) 
+    if ( self = [super initWithFrame:CGRect_to_NSRect(frame)] ) 
     {
         _ballNumber = ballNumber;
 #if TARGET_OS_IPHONE
-        self.backgroundColor = [UIColor clearColor];
+CGR        self.backgroundColor = [UIColor clearColor];
 #endif /* TARGET_OS_IPHONE */
     }
     return self;
