@@ -45,7 +45,7 @@ static BallColor ballColors[ nBalls ];
     {
         _ballNumber = ballNumber;
 #if TARGET_OS_IPHONE
-CGR        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
 #endif /* TARGET_OS_IPHONE */
     }
     return self;
