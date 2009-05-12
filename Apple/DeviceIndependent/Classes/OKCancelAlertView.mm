@@ -27,11 +27,22 @@
 {
     if ( self = [ super init ] )
     {
-        alert = [ [ UIAlertView alloc ] initWithTitle: title 
+        alert = 
+#if TARGET_OS_IPHONE
+                [ [ UIAlertView alloc ] initWithTitle: title 
                                               message: message 
                                              delegate: self
                                     cancelButtonTitle: @"Cancel" 
                                     otherButtonTitles: @"OK", nil ] ;
+#elif TARGET_OS_MAC
+                [ NSAlert alertWithMessageText: title
+                                 defaultButton: @"Cancel"
+                               alternateButton: nil
+                                   otherButton: @"OK" 
+                     informativeTextWithFormat: message ] ;
+#else
+#error Don't know this platform!
+#endif
         if ( ! alert ) return nil;
         target         = targ      ; 
         cancelSelector = cancelSel ;
@@ -52,11 +63,22 @@
 {
     if ( self = [ super init ] )
     {
-        alert = [ [ UIAlertView alloc ] initWithTitle: title 
-                                              message: message 
-                                             delegate: self
-                                    cancelButtonTitle: @"Cancel" 
-                                    otherButtonTitles: @"OK", nil ] ;
+        alert = 
+#if TARGET_OS_IPHONE
+        [ [ UIAlertView alloc ] initWithTitle: title 
+                                      message: message 
+                                     delegate: self
+                            cancelButtonTitle: @"Cancel" 
+                            otherButtonTitles: @"OK", nil ] ;
+#elif TARGET_OS_MAC
+        [ NSAlert alertWithMessageText: title
+                         defaultButton: @"Cancel"
+                       alternateButton: @"OK" 
+                           otherButton: nil
+             informativeTextWithFormat: message ] ;
+#else
+#error Don't know this platform!
+#endif
         if ( ! alert ) return nil;
         target         = targ      ; 
         cancelSelector = cancelSel ;
@@ -67,12 +89,18 @@
     return self;
 }
 
-- ( void ) show { [ alert show ] ; }
-
-- ( void ) alertView: ( UIAlertView * ) alertView clickedButtonAtIndex: ( NSInteger ) buttonIndex
+- ( void ) alertView: ( AlertView * ) alertView clickedButtonAtIndex: ( NSInteger ) buttonIndex
 {
     // the user clicked one of the OK/Cancel buttons
-    SEL sel =  buttonIndex == alertView.cancelButtonIndex ? cancelSelector : OKSelector ;
+    SEL sel = buttonIndex ==
+#if TARGET_OS_IPHONE
+                              alertView.cancelButtonIndex 
+#elif TARGET_OS_MAC
+                              NSAlertDefaultReturn   // This might be the wrong one of the two choices here
+#else
+    #error Don't know this platform!
+#endif
+                                                          ? cancelSelector : OKSelector ;
     if ( sel ) 
     {
         if ( hasParameter )
@@ -80,6 +108,19 @@
         else
             [ target performSelector: sel                       ] ;
     }
+}
+
+
+
+- ( void ) show 
+{ 
+#if TARGET_OS_IPHONE
+    [ alert show ] ;
+#elif TARGET_OS_MAC
+    [ self alertView: alert clickedButtonAtIndex: [ alert runModal ] ];
+#else
+    #error Don't know this platform!
+#endif
 }
 
 
