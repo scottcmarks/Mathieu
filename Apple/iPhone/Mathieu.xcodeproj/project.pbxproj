@@ -30,6 +30,7 @@
 		D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
+		D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56760FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D2AE56770FACE47B0093E56B /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AC0FACE47A0093E56B /* ComboButton.mm */; };
@@ -1279,6 +1280,7 @@
 				D27097CE0FB67B8200E7B5FA /* point.cc in Sources */,
 				D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */,
 				D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */,
+				D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
