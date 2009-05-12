@@ -15,6 +15,7 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D266F90A0F7A9F120080CAD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -1281,6 +1282,7 @@
 				D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */,
 				D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */,
 				D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */,
+				D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
