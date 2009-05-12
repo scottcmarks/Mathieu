@@ -41,10 +41,12 @@ static BallColor ballColors[ nBalls ];
 
 - (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
 {
-    if ( self = [super initWithFrame:frame] ) 
+    if ( self = [super initWithFrame:GCRect_to_NSRect(frame)] ) 
     {
         _ballNumber = ballNumber;
+#if TARGET_OS_IPHONE
         self.backgroundColor = [UIColor clearColor];
+#endif /* TARGET_OS_IPHONE */
     }
     return self;
 }
@@ -77,7 +79,16 @@ static BallColor ballColors[ nBalls ];
     CGColorSpaceRelease(rgb);
 
     // Draw a radial gradient to make the 2D image of a sphere cap lit from above
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    
+    CGContextRef ctx = 
+#if TARGET_OS_IPHONE
+                       UIGraphicsGetCurrentContext( );
+#elif TARGET_OS_MAC
+                       ( CGContextRef ) [ [ NSGraphicsContext currentContext ] graphicsPort ];
+#else 
+#error Don't know this platform!
+#endif
+    
     CGContextClearRect(ctx, rect);
     CGContextDrawRadialGradient (ctx, gradient,
                                  CGPointMake( CGRectGetMidX( rect ), CGRectGetMidY( rect )  ),  // start point
