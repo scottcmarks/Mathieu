@@ -6,27 +6,31 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
-@interface PreferencesView : UIView {
-    UISlider * animationSpeedSlider;
-    UISwitch * soundEffectsSwitch;
-    UISwitch * confirmSwitch;
-    UILabel  * confirmHelp;
+@interface PreferencesView : View 
+{
+    Slider * animationSpeedSlider;
+    Switch * soundEffectsSwitch;
+    Switch * confirmSwitch;
+    Label  * confirmHelp;
+    Label *currentPermutation;
+    Label *currentPermLabel;
+    Button * swapsButton;
+#if TARGET_OS_IPHONE
 	UINavigationItem * navigationBar;
-    UILabel *currentPermutation;
-    UILabel *currentPermLabel;
-    UIButton * swapsButton;
-}
-@property( nonatomic, assign ) IBOutlet UISlider * animationSpeedSlider;
-@property( nonatomic, assign ) IBOutlet UISwitch * soundEffectsSwitch;
-@property( nonatomic, assign ) IBOutlet UISwitch * confirmSwitch;
-@property( nonatomic, assign ) IBOutlet UILabel  * confirmHelp;
+#endif
+}    
+@property( nonatomic, assign ) IBOutlet Slider * animationSpeedSlider;
+@property( nonatomic, assign ) IBOutlet Switch * soundEffectsSwitch;
+@property( nonatomic, assign ) IBOutlet Switch * confirmSwitch;
+@property( nonatomic, assign ) IBOutlet Label  * confirmHelp;
+@property( nonatomic, assign ) IBOutlet Label *currentPermutation;
+@property( nonatomic, assign ) IBOutlet Label *currentPermLabel;
+@property( nonatomic, assign ) IBOutlet Button * swapsButton;
+#if TARGET_OS_IPHONE
 @property( nonatomic, assign ) IBOutlet UINavigationItem * navigationBar;
-@property( nonatomic, assign ) IBOutlet UILabel *currentPermutation;
-@property( nonatomic, assign ) IBOutlet UILabel *currentPermLabel;
-@property( nonatomic, assign ) IBOutlet UIButton * swapsButton;
-
+#endif
 @property /* dynamic */           CGFloat animationSpeed;
 
 @end

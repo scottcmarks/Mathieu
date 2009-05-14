@@ -15,18 +15,21 @@
 
 @implementation SwapPermutationsView
 
-@synthesize navigationBar;
-@synthesize swapPermutationPicker;
 @synthesize currentPermutation;
 @synthesize currentPermutationPreview;
 @synthesize pickedSwapIndex;
-
+#if TARGET_OS_IPHONE
+@synthesize navigationBar;
+@synthesize swapPermutationPicker;
+#endif
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - (void) awakeFromNib
 {
-	navigationBar.title       = fullAppName ;
+#if TARGET_OS_IPHONE
+    navigationBar.title       = fullAppName ;
+#endif
     currentPermutationPreview = [ BallRingView ballRingViewWithFrame: CGRectMake( 101, 44, 118, 118 )
                                                                 tags: NO
                                                             delegate: nil ] ;
@@ -42,13 +45,17 @@
 #else
     int row = pickedSwapIndex ;
 #endif
+#if TARGET_OS_IPHONE
     [ swapPermutationPicker selectRow: row inComponent: 0 animated: NO ];
-}
+#endif
+}    
 
 - ( void ) willMoveToSuperview: ( UIView * )superView
 {
     if ( superView ) [ self synchronize ] ;
 }
+
+#if TARGET_OS_IPHONE
 
 // UIPickerViewDelegate methods
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
@@ -91,6 +98,8 @@
 #endif
     return 0;
 }
+
+#endif  /* TARGET_OS_IPHONE */
 
 
 - (void)dealloc 

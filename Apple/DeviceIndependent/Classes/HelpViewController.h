@@ -6,13 +6,16 @@
 //  Copyright 2009 Magnolia Heights Research and Development.  All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 #import "RootViewController.h"
 #import "HelpView.h"
 
 
-@interface HelpViewController : UIViewController <UIWebViewDelegate>
+@interface HelpViewController : ViewController
+#if TARGET_OS_IPHONE
+                                                <UIWebViewDelegate>
+#endif
 {
     RootViewController *rootViewController;
     IBOutlet HelpView* helpView;
