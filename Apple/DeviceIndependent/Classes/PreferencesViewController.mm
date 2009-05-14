@@ -22,14 +22,16 @@
 @synthesize helpViewController;
 @synthesize swapPermutationsViewController;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 
 
+#if TARGET_OS_IPHONE
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+#endif
 
 - (void)dealloc {
     self.rootViewController = nil;
@@ -82,11 +84,25 @@
 }
 
 - (IBAction)soundEffectsSwitchChanged:(id)sender {
-    self.appDelegate.soundEffects = preferencesView.soundEffectsSwitch.on ;
+    self.appDelegate.soundEffects =
+#if TARGET_OS_IPHONE
+                                    preferencesView.soundEffectsSwitch.on ;
+#elif TARGET_OS_MAC
+                                    preferencesView.soundEffectsSwitch.state != 0 ;
+#else
+#error Don't know this platform!
+#endif
 }
 
 - (IBAction)confirmSwitchChanged:(id)sender {
-    self.appDelegate.confirm = preferencesView.confirmSwitch.on ;
+    self.appDelegate.confirm =
+#if TARGET_OS_IPHONE
+                                preferencesView.confirmSwitch.on ;
+#elif TARGET_OS_MAC
+                                preferencesView.confirmSwitch.state != 0 ;
+#else
+#error Don't know this platform!
+#endif
 }
 
 
