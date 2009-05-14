@@ -15,7 +15,9 @@
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
 
+#if TARGET_OS_IPHONE
 @synthesize navigationBar;
+#endif
 
 @synthesize soundEffectsSwitch;
 
@@ -51,10 +53,12 @@ const CGFloat helpFontSize = 11.0;
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
-	navigationBar.title        = fullAppName                      ;
     swapsButton.hidden         = ( nBalls == 24 )                 ;
     currentPermutation.hidden  = ( nBalls == 24 )                 ;
     currentPermLabel.hidden    = ( nBalls == 24 )                 ;
+#if TARGET_OS_IPHONE
+	navigationBar.title        = fullAppName                      ;
+#endif
 }
 
 - ( void ) willMoveToSuperview: ( UIView *) newSuperView
