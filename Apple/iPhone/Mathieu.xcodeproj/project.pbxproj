@@ -18,6 +18,9 @@
 		D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
+		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
+		D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEB480FBB610D0051EB25 /* WebKit.framework */; };
+		D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEC0C0FBB65130051EB25 /* Cocoa.framework */; };
 		D266F90A0F7A9F120080CAD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -227,6 +230,8 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27C7B950FB21B9400ECAE6F /* SporadicM12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27C7C1D0FB2202700ECAE6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -393,6 +398,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */,
+				D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,9 +450,19 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		D25CEB470FBB60360051EB25 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D25CEC0C0FBB65130051EB25 /* Cocoa.framework */,
+				D25CEB480FBB610D0051EB25 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D27C7B9B0FB21BE300ECAE6F /* Mac */ = {
 			isa = PBXGroup;
 			children = (
+				D25CEB470FBB60360051EB25 /* Frameworks */,
 				D27C7BBC0FB21D0600ECAE6F /* Cocoa */,
 			);
 			name = Mac;
@@ -1283,6 +1300,7 @@
 				D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */,
 				D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */,
 				D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */,
+				D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

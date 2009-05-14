@@ -6,24 +6,31 @@
 //  Copyright 2009 Magnolia Heights R & D. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 @class BallRingView;
 
-@interface SwapPermutationsView : UIView <UIPickerViewDelegate , UIPickerViewDataSource>
+@interface SwapPermutationsView : View 
+#if TARGET_OS_IPHONE
+                                       <UIPickerViewDelegate , UIPickerViewDataSource>
+#endif
 {
-    UIPickerView * swapPermutationPicker;
-	UINavigationItem * navigationBar;
-    UILabel * currentPermutation;
+    Label * currentPermutation;
     BallRingView * currentPermutationPreview;
     int pickedSwapIndex;
+#if TARGET_OS_IPHONE
+    UIPickerView * swapPermutationPicker;
+	UINavigationItem * navigationBar;
+#endif
 }
 
+@property( nonatomic, retain ) IBOutlet Label * currentPermutation;
+@property( nonatomic, retain ) IBOutlet View * currentPermutationPreview;
+@property( nonatomic, readonly ) int pickedSwapIndex;
+#if TARGET_OS_IPHONE
 @property( nonatomic, retain ) IBOutlet UIPickerView * swapPermutationPicker;
 @property( nonatomic, retain ) IBOutlet UINavigationItem * navigationBar;
-@property( nonatomic, retain ) IBOutlet UILabel * currentPermutation;
-@property( nonatomic, retain ) IBOutlet UIView * currentPermutationPreview;
-@property( nonatomic, readonly ) int pickedSwapIndex;
+#endif
 
 - ( void ) synchronize;
 
