@@ -14,7 +14,7 @@
 @synthesize rootViewController;
 @synthesize helpView;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -26,6 +26,7 @@
 }
 
 
+#if TARGET_OS_IPHONE
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -37,6 +38,8 @@
 //      [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 //      // Release anything that's not essential, such as cached data shadow?
 //  }
+
+#endif
 
 
 - (void)dealloc {
@@ -50,25 +53,31 @@
     [ self.rootViewController toggleView ];
 }
 
-#pragma mark UIWebView delegate methods
+#pragma mark WebView delegate methods
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(WebView *)webView
 {
+#if TARGET_OS_IPHONE
 	// starting the load, show the activity indicator in the status bar
-	[UIApplication sharedApplication].isNetworkActivityIndicatorVisible = YES;
+	[Application sharedApplication].isNetworkActivityIndicatorVisible = YES;
+#endif
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(WebView *)webView
 {
+#if TARGET_OS_IPHONE
 	// finished loading, hide the activity indicator in the status bar
-	[UIApplication sharedApplication].isNetworkActivityIndicatorVisible = NO;
+	[Application sharedApplication].isNetworkActivityIndicatorVisible = NO;
+#endif
     [ helpView updateBackButton ];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WebView *)webView didFailLoadWithError:(NSError *)error
 {
+#if TARGET_OS_IPHONE
 	// load error, hide the activity indicator in the status bar
-	[UIApplication sharedApplication].isNetworkActivityIndicatorVisible = NO;
+	[Application sharedApplication].isNetworkActivityIndicatorVisible = NO;
+#endif
     // let the helpView report the error;
     [ helpView reportError: error ];
 }

@@ -13,7 +13,7 @@
 
 @implementation PreferencesView
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 
 #if TARGET_OS_IPHONE
 @synthesize navigationBar;
@@ -43,7 +43,7 @@ const CGFloat helpFontSize = 11.0;
 @synthesize swapsButton;
 
 - (void) awakeFromNib{
-    confirmHelp.font = [UIFont systemFontOfSize:helpFontSize ];
+    confirmHelp.font = [Font systemFontOfSize:helpFontSize ];
     // TODO: I18n
     confirmHelp.text = @"When solving, confirm Shake,\n"
                         "Restart and Home.  Confirm\n"
@@ -61,7 +61,7 @@ const CGFloat helpFontSize = 11.0;
 #endif
 }
 
-- ( void ) willMoveToSuperview: ( UIView *) newSuperView
+- ( void ) willMoveToSuperview: ( View *) newSuperView
 {
     if ( newSuperView ) 
     {
@@ -73,7 +73,7 @@ const CGFloat helpFontSize = 11.0;
                                          options:NSLiteralSearch
                                            range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
             cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
-            currentPermutation.font = [ UIFont systemFontOfSize:13.0 ];
+            currentPermutation.font = [ Font systemFontOfSize:13.0 ];
 #endif
         }
         currentPermutation.text = cycles;

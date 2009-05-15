@@ -12,7 +12,7 @@
 #import "ComboButton.h"
 
 // Class variables
-static UIImage * comboButtonDisabledImage    ;
+static Image * comboButtonDisabledImage    ;
 
 @interface ComboButton( PrivateLocking )
 - ( bool ) isTimerRunning;
@@ -22,7 +22,7 @@ static UIImage * comboButtonDisabledImage    ;
 
 + ( void ) initialize
 {
-    comboButtonDisabledImage = [ [ [ UIImage imageNamed: @"ComboButtonDisabled.png" ] 
+    comboButtonDisabledImage = [ [ [ Image imageNamed: @"ComboButtonDisabled.png" ] 
                                         stretchableImageWithLeftCapWidth: 12.0 
                                                             topCapHeight: 0.0 ] 
                                       retain ] ;
