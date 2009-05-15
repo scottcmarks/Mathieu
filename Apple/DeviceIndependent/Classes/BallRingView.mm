@@ -16,7 +16,7 @@
 
 @implementation BallRingView
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 - ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 
@@ -66,7 +66,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         
 #if !ICONIC_PICTURE_ONLY        
         
-        UIFont * ballFont = [UIFont systemFontOfSize:ballFontSize ];
+        Font * ballFont = [Font systemFontOfSize:ballFontSize ];
 
         // Create and add all the labels (in front of the balls)
         forAllBalls(i)
@@ -85,7 +85,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         
         if ( tags )
         {
-            UIFont * tagFont = [UIFont systemFontOfSize:tagFontSize ];
+            Font * tagFont = [Font systemFontOfSize:tagFontSize ];
             
             // Create and add all the little gray labels (next to the balls)
             forAllBalls(i)

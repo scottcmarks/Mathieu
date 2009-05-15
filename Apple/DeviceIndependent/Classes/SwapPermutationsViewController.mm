@@ -16,7 +16,7 @@
 
 @implementation SwapPermutationsViewController
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 @synthesize rootViewController;
@@ -34,6 +34,9 @@
 
 - (void) showHelp: (id) sender { [ self.preferencesViewController showHelp: sender ] ; }
 
+
+#if TARGET_OS_IPHONE
+
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
@@ -44,6 +47,8 @@
 //      [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 //      // Release anything that's not essential, such as cached data shadow?
 //  }
+
+#endif
 
 
 - (void)dealloc {

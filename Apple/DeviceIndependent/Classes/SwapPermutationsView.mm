@@ -22,7 +22,7 @@
 @synthesize navigationBar;
 @synthesize swapPermutationPicker;
 #endif
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - (void) awakeFromNib
@@ -50,7 +50,7 @@
 #endif
 }    
 
-- ( void ) willMoveToSuperview: ( UIView * )superView
+- ( void ) willMoveToSuperview: ( View * )superView
 {
     if ( superView ) [ self synchronize ] ;
 }

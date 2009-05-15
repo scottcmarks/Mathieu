@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
+			<integer value="371"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1113,7 +1113,7 @@
 			<object class="NSWindowTemplate" id="972006081">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{335, 390}, {480, 360}}</string>
+				<string key="NSWindowRect">{{311, 375}, {640, 760}}</string>
 				<int key="NSWTFlags">1946157056</int>
 				<string key="NSWindowTitle">Sporadic M12 for the Mac</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -1122,7 +1122,7 @@
 				<object class="NSView" key="NSWindowView" id="439893737">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
-					<string key="NSFrameSize">{480, 360}</string>
+					<string key="NSFrameSize">{640, 760}</string>
 					<reference key="NSSuperview"/>
 					<bool key="NSViewIsLayerTreeHost">YES</bool>
 					<double key="NSViewAlphaValue">4.963381e-01</double>
@@ -1187,7 +1187,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1200, 1578}}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
 			<object class="NSCustomObject" id="755631768">
@@ -2997,8 +2997,8 @@
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{319, 290}, {480, 360}}</string>
-					<string>{{319, 290}, {480, 360}}</string>
+					<string>{{1334, 81}, {640, 760}}</string>
+					<string>{{1334, 81}, {640, 760}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>
@@ -3124,7 +3124,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">PreferencesView</string>
-					<string key="superclassName">UIView</string>
+					<string key="superclassName">View</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
@@ -3140,14 +3140,14 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UISlider</string>
-							<string>UILabel</string>
-							<string>UISwitch</string>
-							<string>UILabel</string>
-							<string>UILabel</string>
+							<string>Slider</string>
+							<string>Label</string>
+							<string>Switch</string>
+							<string>Label</string>
+							<string>Label</string>
 							<string>UINavigationItem</string>
-							<string>UISwitch</string>
-							<string>UIButton</string>
+							<string>Switch</string>
+							<string>Button</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -3157,7 +3157,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">PreferencesViewController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="superclassName">ViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
@@ -3190,7 +3190,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">SwapPermutationsView</string>
-					<string key="superclassName">UIView</string>
+					<string key="superclassName">View</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
@@ -3202,8 +3202,8 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UILabel</string>
-							<string>UIView</string>
+							<string>Label</string>
+							<string>View</string>
 							<string>UINavigationItem</string>
 							<string>UIPickerView</string>
 						</object>
@@ -3215,7 +3215,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">SwapPermutationsViewController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="superclassName">ViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">

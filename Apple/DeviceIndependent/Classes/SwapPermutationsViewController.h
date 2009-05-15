@@ -15,7 +15,7 @@
 
 @interface SwapPermutationsViewController : ViewController
 #if TARGET_OS_IPHONE
-                                                           <UIWebViewDelegate>
+//                                                           <UIWebViewDelegate>
 #endif
 {
     RootViewController *rootViewController;

@@ -6,7 +6,7 @@
 //  Copyright Magnolia Heights Research and Development 2009. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Kit.h"
 
 
 int main(int argc, char *argv[]) {
