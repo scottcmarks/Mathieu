@@ -35,6 +35,22 @@
 };
 @end
 
+@interface NSToolbarItem(UIBarButtonItemCompatibility)
+-(NSView *) customView;
+-(void) setCustomView: (NSView *) customView;
+@end
+
+@implementation NSToolbarItem(UIBarButtonItemCompatibility)
+-(NSView *) customView
+{
+    return [ self view ];
+};
+-(void) setCustomView: (NSView *) customView
+{
+    [ self setView: customView ];
+};
+@end
+
 #endif
 
 
@@ -153,9 +169,12 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 - (void) awakeFromNib
 {
-    CGFloat ballRingFrameSize = min ( CGRectGetWidth( self.frame ), CGRectGetHeight( self.frame ) );
-    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( self.frame ), CGRectGetMinY( self.frame ), 
-                                                                    ballRingFrameSize, ballRingFrameSize ) 
+    NSRect frame = self.frame;
+    CGFloat ballRingFrameSize = min ( CGRectGetWidth( NSRect_to_CGRect( frame ) ), 
+                                      CGRectGetHeight( NSRect_to_CGRect( frame ) ) );
+    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( NSRect_to_CGRect( frame ) ), 
+                                                                     CGRectGetMinY( NSRect_to_CGRect( frame ) ), 
+                                                                     ballRingFrameSize, ballRingFrameSize ) 
                                                    tags: YES 
                                                delegate: self.controller ];
     [ self addSubview: ( View *) ballRingView ];
@@ -231,28 +250,55 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         switch ( type )
         {
             case flexibleSpace:
-                theToolbarItem = [ [ ToolbarButtonItem alloc ]
-                                    initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                            target:nil
-                                                            action:nil ] ;
+                theToolbarItem = [ ToolbarButtonItem alloc ];
+#if TARGET_OS_IPHONE
+                [ theToolbarItem initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                      target:nil
+                                                      action:nil ] ;
+#elif TARGET_OS_MAC
+                [ theToolbarItem initWithItemIdentifier: NSToolbarFlexibleSpaceItemIdentifier ];
+#else
+#error Don't know this platform!
+#endif
                 break;
 
             case comboButton:
                 toolbarButton = [ self createToolbarComboButtonWidth: toolbarButtons[ i ].width
                                                            comboName: [ toolbarButtons[ i ].title characterAtIndex: 0] ];
-                theToolbarItem = [ [ToolbarButtonItem alloc] initWithCustomView: toolbarButton ];
+                theToolbarItem = [ToolbarButtonItem alloc];
+#if TARGET_OS_IPHONE
+                [ theToolbarItem initWithCustomView: toolbarButton ];
+#elif TARGET_OS_MAC
+                [ theToolbarItem setView: toolbarButton ];
+#else
+#error Don't know this platform!
+#endif
                 break;
 
             case invButton:
                 toolbarButton = [ self createToolbarAltButtonWidth: toolbarButtons[ i ].width ];
-                theToolbarItem = [ [ToolbarButtonItem alloc] initWithCustomView: toolbarButton ];
+                theToolbarItem = [ToolbarButtonItem alloc];
+#if TARGET_OS_IPHONE
+                [ theToolbarItem initWithCustomView: toolbarButton ];
+#elif TARGET_OS_MAC
+                [ theToolbarItem setView: toolbarButton ];
+#else
+#error Don't know this platform!
+#endif
                 altButton = ( DualActionButton * )toolbarButton ;
                 break;
         }
         theToolbarItem.tag = type;
         [ toolbarArray addObject: theToolbarItem ];
     }
+    
+#if TARGET_OS_IPHONE
     [ toolbar setItems:toolbarArray animated: false];
+#elif TARGET_OS_MAC
+    NSLog(@"Don't yet build the toolbar");
+#else
+#error Don't know this platform!
+#endif
     
     [ self addSubview: [ self createInfoButton ] ];
 
