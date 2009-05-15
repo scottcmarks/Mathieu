@@ -82,9 +82,9 @@
         default:
             uitransition = UIViewAnimationTransitionNone;
     }
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: 1.0 ];	
-	[UIView setAnimationTransition:uitransition
+	[View beginAnimations:nil context:NULL];
+	[View setAnimationDuration: 1.0 ];	
+	[View setAnimationTransition:uitransition
                            forView:self.view 
                              cache:YES];
     [newViewController viewWillAppear:YES];
@@ -95,7 +95,7 @@
 #if TARGET_OS_IPHONE
     [oldViewController viewDidDisappear:YES];
     [newViewController viewDidAppear:YES];
-    [UIView commitAnimations];
+    [View commitAnimations];
 #endif /* TARGET_OS_IPHONE */
 }    
 

@@ -6,6 +6,7 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
+#import "Kit.h"
 #import "view.h"
 #import "Constants.h"
 #import "Utilities.h"
@@ -15,6 +16,27 @@
 #import "SporadicMAppDelegate.h"
 #import "ComboButton.h"
 #import "BallRingView.h"
+
+#if TARGET_OS_MAC & ! TARGET_OS_IPHONE
+
+@interface NSTextField(UILabelCompatibility)
+-(NSString *) text;
+-(void) setText: (NSString *) text;
+@end
+
+@implementation NSTextField(UILabelCompatibility)
+-(NSString *) text
+{
+    return [ self stringValue ];
+};
+-(void) setText: (NSString *) text
+{
+    [ self setStringValue: text ];
+};
+@end
+
+#endif
+
 
 @implementation SporadicMView
 
@@ -29,10 +51,11 @@
 
 @synthesize historyTextCache;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ UIApplication sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( bool ) invert { return self.appDelegate.invert; }
 - (CGFloat ) animationSpeed { return self.appDelegate.animationSpeed ; }
 - (GameModel * ) gameModel { return self.appDelegate.gameModel ; }
+
 
 - (void ) updateHistoryText {  // Should cache in the controller?
     NSString * historyText = self.gameModel.history;
@@ -69,13 +92,16 @@
                                alternateTitle: ( NSString * ) alternateTitle
 {	
     DualActionButton * button = 
-        [ DualActionButton dualActionButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight) 
+        [ DualActionButton dualActionButtonWithFrame: CGRectMake( center.x - width/2, 
+                                                                  center.y - toolbarButtonHeight/2, 
+                                                                  width, 
+                                                                  toolbarButtonHeight) 
                                               target: self.controller
                                       normalSelector: normalSelector
                                          normalTitle: normalTitle
                                    alternateSelector: alternateSelector
                                       alternateTitle: alternateTitle ] ;
-    button.center = center ;
+//    button.center = center ;
     return button ;
 }
 
@@ -101,11 +127,24 @@
 
 - ( ComboButton * ) createInfoButton
 {
-    ComboButton * button = [ UIButton buttonWithType:UIButtonTypeInfoDark ] ;
+    ComboButton * button;
+#if TARGET_OS_IPHONE
+    button = [ Button buttonWithType:UIButtonTypeInfoDark ] ;
     [ button addTarget: self.controller
                 action: @selector(toggleView:)
       forControlEvents: UIControlEventTouchUpInside ];
     button.center = INFO_BUTTON_CENTER;
+#elif TARGET_OS_MAC
+#else
+    button = [ [ Button alloc ] init ];
+    [ button setButtonType: NSMomentaryLightButton ];
+    [ button addTarget: self.controller
+                action: @selector(toggleView:)
+      forControlEvents: UIControlEventTouchUpInside ];
+    button.center = INFO_BUTTON_CENTER;
+#error Don't know this platform!
+#endif
+    
     return button;
 }
 
@@ -119,19 +158,19 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
                                                                     ballRingFrameSize, ballRingFrameSize ) 
                                                    tags: YES 
                                                delegate: self.controller ];
-    [ self addSubview: ( UIView *) ballRingView ];
+    [ self addSubview: ( View *) ballRingView ];
     
 #if !ICONIC_PICTURE_ONLY        
 
-	history.font = [UIFont systemFontOfSize:historyFontSize ];
+	history.font = [Font systemFontOfSize:historyFontSize ];
     self.historyTextCache = @"";
-    moves.font = [ UIFont systemFontOfSize:movesFontSize ];
+    moves.font = [ Font systemFontOfSize:movesFontSize ];
     moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
     
      // Create and add all the action buttons
     struct { NSString * normalTitle; SEL normalSelector; 
              NSString * alternateTitle; SEL alternateSelector; 
-             CGPoint center; CGFloat width; UIButton * * variable; } dualActionButtons[ ] = {
+             CGPoint center; CGFloat width; Button * * variable; } dualActionButtons[ ] = {
                  { @"Shake", @selector(shake:)    , @"Restart", @selector(restart:)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
                  { @"Home" , @selector(home:)     , nil       , NULL                 , { 268,  34 }, largeActionButtonWidth , NULL         },
                  { @"Left" , @selector(left:)     , nil       , NULL                 , { 130, 220 }, mediumActionButtonWidth, NULL         },
@@ -185,14 +224,14 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     forArray( i, toolbarButtons )
     {
         ToolbarButtonType type = toolbarButtons[ i ].type;
-        UIButton * toolbarButton ;
-        UIBarButtonItem * theToolbarItem ;
+        Button * toolbarButton ;
+        ToolbarButtonItem * theToolbarItem ;
 
 
         switch ( type )
         {
             case flexibleSpace:
-                theToolbarItem = [ [ UIBarButtonItem alloc ]
+                theToolbarItem = [ [ ToolbarButtonItem alloc ]
                                     initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                             target:nil
                                                             action:nil ] ;
@@ -201,12 +240,12 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
             case comboButton:
                 toolbarButton = [ self createToolbarComboButtonWidth: toolbarButtons[ i ].width
                                                            comboName: [ toolbarButtons[ i ].title characterAtIndex: 0] ];
-                theToolbarItem = [ [UIBarButtonItem alloc] initWithCustomView: toolbarButton ];
+                theToolbarItem = [ [ToolbarButtonItem alloc] initWithCustomView: toolbarButton ];
                 break;
 
             case invButton:
                 toolbarButton = [ self createToolbarAltButtonWidth: toolbarButtons[ i ].width ];
-                theToolbarItem = [ [UIBarButtonItem alloc] initWithCustomView: toolbarButton ];
+                theToolbarItem = [ [ToolbarButtonItem alloc] initWithCustomView: toolbarButton ];
                 altButton = ( DualActionButton * )toolbarButton ;
                 break;
         }
@@ -263,7 +302,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 -( void ) setComboButtonsInverted: ( bool ) inverted
 {
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
-    UIBarButtonItem * item;
+    ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
         if ( item.tag == (int)comboButton )
         {
@@ -293,7 +332,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 -( void ) setComboButton:( HistoryElement )c enabled:( const bool )enabled
 {
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
-    UIBarButtonItem * item;
+    ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
         if ( item.tag == (int)comboButton )
         {
@@ -306,7 +345,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 -( void ) disableAllComboButtons
 {
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
-    UIBarButtonItem * item;
+    ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
         if ( item.tag == (int)comboButton )
         {
@@ -315,23 +354,28 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         }
 }
     
--(void) showCurrentPermutationAtDuration:(CGFloat)duration {
+-(void) showCurrentPermutationAtDuration:(CGFloat)duration 
+{
+#if TARGET_OS_IPHONE
     duration *= ( MAX_ANIMATION_DURATION_FACTOR - self.animationSpeed ) ;
     if ( 0.0 < duration )
     {
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView beginAnimations:nil context:NULL ];
-        [UIView setAnimationDuration: duration ];
+        [View setAnimationBeginsFromCurrentState:YES];
+        [View beginAnimations:nil context:NULL ];
+        [View setAnimationDuration: duration ];
     }
+#endif
     
     [ ballRingView moveLabels ];
 
+#if TARGET_OS_IPHONE
     if ( 0.0 < duration )
-        [UIView commitAnimations];
+        [View commitAnimations];
+#endif
     
     [ self updateHistoryText ];
     
-    undoButton.enabled = ! [ self.gameModel historyIsEmpty ] ;
+    [ undoButton setEnabled: ! [ self.gameModel historyIsEmpty ] ] ;
 }
 
 
