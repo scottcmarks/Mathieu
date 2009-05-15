@@ -21,6 +21,9 @@
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEB480FBB610D0051EB25 /* WebKit.framework */; };
 		D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEC0C0FBB65130051EB25 /* Cocoa.framework */; };
+		D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
+		D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */; };
+		D266CA4A0FBCCAA50095135E /* SporadicMView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */; };
 		D266F90A0F7A9F120080CAD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -1301,6 +1304,9 @@
 				D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */,
 				D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */,
 				D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */,
+				D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */,
+				D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */,
+				D266CA4A0FBCCAA50095135E /* SporadicMView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

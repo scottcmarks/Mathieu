@@ -21,7 +21,13 @@
                                                       UIAlertViewDelegate,
                                                       ComboButtonTarget,
                                                       BallRingViewDelegate > 
+#elif TARGET_OS_MAC
+                                                    < ComboButtonTarget,
+                                                      BallRingViewDelegate > 
+#else
+#error Don't know this platform!
 #endif
+
 {
     RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;
