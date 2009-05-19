@@ -224,6 +224,8 @@
 		D2AE5CBD0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CBE0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CE50FACEAA80093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5CBF0FACEAA80093E56B /* Images */; };
+		D2EA769F0FBD283400423485 /* DualActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58270FACE81D0093E56B /* DualActionButton.m */; };
+		D2EA76CD0FBD412700423485 /* SimpleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE582A0FACE81D0093E56B /* SimpleButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1307,6 +1309,8 @@
 				D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */,
 				D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */,
 				D266CA4A0FBCCAA50095135E /* SporadicMView.mm in Sources */,
+				D2EA769F0FBD283400423485 /* DualActionButton.m in Sources */,
+				D2EA76CD0FBD412700423485 /* SimpleButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
