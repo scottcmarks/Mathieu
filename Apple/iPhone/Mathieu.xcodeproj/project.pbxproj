@@ -15,7 +15,6 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
@@ -44,7 +43,6 @@
 		D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D2AE56790FACE47B0093E56B /* HelpView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B10FACE47A0093E56B /* HelpView.mm */; };
 		D2AE567A0FACE47B0093E56B /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
-		D2AE567B0FACE47B0093E56B /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */; };
 		D2AE567C0FACE47B0093E56B /* PreferencesView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B70FACE47A0093E56B /* PreferencesView.mm */; };
 		D2AE567D0FACE47B0093E56B /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D2AE567E0FACE47B0093E56B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
@@ -80,7 +78,6 @@
 		D2AE56FB0FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D2AE56FC0FACE47B0093E56B /* HelpView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B10FACE47A0093E56B /* HelpView.mm */; };
 		D2AE56FD0FACE47B0093E56B /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
-		D2AE56FE0FACE47B0093E56B /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */; };
 		D2AE56FF0FACE47B0093E56B /* PreferencesView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B70FACE47A0093E56B /* PreferencesView.mm */; };
 		D2AE57000FACE47B0093E56B /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D2AE57010FACE47B0093E56B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
@@ -115,7 +112,6 @@
 		D2AE577E0FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D2AE577F0FACE47B0093E56B /* HelpView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B10FACE47A0093E56B /* HelpView.mm */; };
 		D2AE57800FACE47B0093E56B /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
-		D2AE57810FACE47B0093E56B /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */; };
 		D2AE57820FACE47B0093E56B /* PreferencesView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B70FACE47A0093E56B /* PreferencesView.mm */; };
 		D2AE57830FACE47B0093E56B /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D2AE57840FACE47B0093E56B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
@@ -226,6 +222,10 @@
 		D2AE5CE50FACEAA80093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5CBF0FACEAA80093E56B /* Images */; };
 		D2EA769F0FBD283400423485 /* DualActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58270FACE81D0093E56B /* DualActionButton.m */; };
 		D2EA76CD0FBD412700423485 /* SimpleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE582A0FACE81D0093E56B /* SimpleButton.m */; };
+		D2EE166B0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
+		D2EE166C0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
+		D2EE166D0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
+		D2EE166E0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -260,8 +260,6 @@
 		D2AE55B10FACE47A0093E56B /* HelpView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HelpView.mm; sourceTree = "<group>"; };
 		D2AE55B20FACE47A0093E56B /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		D2AE55B30FACE47A0093E56B /* HelpViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HelpViewController.mm; sourceTree = "<group>"; };
-		D2AE55B40FACE47A0093E56B /* OKCancelAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OKCancelAlertView.h; sourceTree = "<group>"; };
-		D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OKCancelAlertView.mm; sourceTree = "<group>"; };
 		D2AE55B60FACE47A0093E56B /* PreferencesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesView.h; sourceTree = "<group>"; };
 		D2AE55B70FACE47A0093E56B /* PreferencesView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferencesView.mm; sourceTree = "<group>"; };
 		D2AE55B80FACE47A0093E56B /* PreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesViewController.h; sourceTree = "<group>"; };
@@ -363,6 +361,8 @@
 		D2AE5C860FACEA6C0093E56B /* Generic_Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generic_Images; sourceTree = "<group>"; };
 		D2AE5C990FACEA8C0093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		D2AE5CBF0FACEAA80093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		D2EE16690FCCFB59005DA002 /* OKCancelAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OKCancelAlertView.h; sourceTree = "<group>"; };
+		D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OKCancelAlertView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -685,8 +685,6 @@
 				D2AE55AB0FACE47A0093E56B /* ComboButton.h */,
 				D2AE55AC0FACE47A0093E56B /* ComboButton.mm */,
 				D2AE55AD0FACE47A0093E56B /* ComboButtonTargetProtocol.h */,
-				D2AE55B40FACE47A0093E56B /* OKCancelAlertView.h */,
-				D2AE55B50FACE47A0093E56B /* OKCancelAlertView.mm */,
 				D2AE55BE0FACE47A0093E56B /* SporadicMView.h */,
 				D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */,
 				D2AE55C00FACE47A0093E56B /* SporadicMViewController.h */,
@@ -727,6 +725,7 @@
 		D2AE58220FACE81D0093E56B /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D2EE16680FCCFB59005DA002 /* OKCancelAlertView */,
 				D2AE58230FACE81D0093E56B /* Buttons */,
 				D2AE58470FACE81D0093E56B /* iPhoneUtilities.h */,
 				D2AE58480FACE81D0093E56B /* Kit.h */,
@@ -956,6 +955,15 @@
 				D2AE5AED0FACE9BB0093E56B /* view.h */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		D2EE16680FCCFB59005DA002 /* OKCancelAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				D2EE16690FCCFB59005DA002 /* OKCancelAlertView.h */,
+				D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */,
+			);
+			path = OKCancelAlertView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1210,7 +1218,6 @@
 				D2AE56FB0FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56FC0FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE56FD0FACE47B0093E56B /* HelpViewController.mm in Sources */,
-				D2AE56FE0FACE47B0093E56B /* OKCancelAlertView.mm in Sources */,
 				D2AE56FF0FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE57000FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
 				D2AE57010FACE47B0093E56B /* RootViewController.mm in Sources */,
@@ -1227,6 +1234,7 @@
 				D2AE59950FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5BB70FACE9BB0093E56B /* m12.cc in Sources */,
 				D2AE5BFD0FACE9BB0093E56B /* view.cc in Sources */,
+				D2EE166D0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1240,7 +1248,6 @@
 				D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56790FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE567A0FACE47B0093E56B /* HelpViewController.mm in Sources */,
-				D2AE567B0FACE47B0093E56B /* OKCancelAlertView.mm in Sources */,
 				D2AE567C0FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE567D0FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
 				D2AE567E0FACE47B0093E56B /* RootViewController.mm in Sources */,
@@ -1257,6 +1264,7 @@
 				D2AE59160FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5B6D0FACE9BB0093E56B /* m24.cc in Sources */,
 				D2AE5B750FACE9BB0093E56B /* view.cc in Sources */,
+				D2EE166C0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1270,7 +1278,6 @@
 				D2AE577E0FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE577F0FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE57800FACE47B0093E56B /* HelpViewController.mm in Sources */,
-				D2AE57810FACE47B0093E56B /* OKCancelAlertView.mm in Sources */,
 				D2AE57820FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE57830FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
 				D2AE57840FACE47B0093E56B /* RootViewController.mm in Sources */,
@@ -1287,6 +1294,7 @@
 				D2AE5A140FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5C3F0FACE9BB0093E56B /* m12.cc in Sources */,
 				D2AE5C850FACE9BB0093E56B /* view.cc in Sources */,
+				D2EE166E0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1304,13 +1312,13 @@
 				D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */,
 				D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */,
 				D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */,
-				D20E09370FB9EF8600CA92E3 /* OKCancelAlertView.mm in Sources */,
 				D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */,
 				D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */,
 				D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */,
 				D266CA4A0FBCCAA50095135E /* SporadicMView.mm in Sources */,
 				D2EA769F0FBD283400423485 /* DualActionButton.m in Sources */,
 				D2EA76CD0FBD412700423485 /* SimpleButton.m in Sources */,
+				D2EE166B0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
