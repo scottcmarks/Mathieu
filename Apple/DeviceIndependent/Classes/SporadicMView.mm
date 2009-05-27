@@ -169,11 +169,11 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 - (void) awakeFromNib
 {
-    NSRect frame = self.frame;
-    CGFloat ballRingFrameSize = min ( CGRectGetWidth( NSRect_to_CGRect( frame ) ), 
-                                      CGRectGetHeight( NSRect_to_CGRect( frame ) ) );
-    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( NSRect_to_CGRect( frame ) ), 
-                                                                     CGRectGetMinY( NSRect_to_CGRect( frame ) ), 
+    CGRect frame = NSRect_to_CGRect( self.frame );
+    CGFloat ballRingFrameSize = min ( CGRectGetWidth( frame ), 
+                                      CGRectGetHeight( frame ) );
+    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( frame ), 
+                                                                     CGRectGetMinY( frame ), 
                                                                      ballRingFrameSize, ballRingFrameSize ) 
                                                    tags: YES 
                                                delegate: self.controller ];
