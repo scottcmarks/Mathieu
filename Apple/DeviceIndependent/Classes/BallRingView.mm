@@ -31,7 +31,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 
 - ( id ) initWithFrame:         ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id< BallRingViewDelegate > ) delegate
 {
-    if ( self = [ super initWithFrame: frame ] )
+    if ( self = [ super initWithFrame: CGRect_to_NSRect( frame ) ] )
     {
         
         CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
@@ -71,7 +71,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         // Create and add all the labels (in front of the balls)
         forAllBalls(i)
         {
-            UILabel * ballLabel = [ [ UILabel alloc ] initWithFrame: frame ];
+            Label * ballLabel = [ [ Label alloc ] initWithFrame: frame ];
             if (! ballLabel )
                 return nil;
             ballLabel.center = _ballCenters[ i ];
@@ -90,7 +90,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             // Create and add all the little gray labels (next to the balls)
             forAllBalls(i)
             {
-                UILabel * tagLabel = [ [ UILabel alloc ] initWithFrame: frame ];
+                Label * tagLabel = [ [ Label alloc ] initWithFrame: frame ];
                 if (! tagLabel )
                     return nil;
                 tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
@@ -129,10 +129,15 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             self.userInteractionEnabled = NO;
         
 #else
-
+    #if TARGET_OS_IPHONE
         self.backgroundColor = [ UIColor blackColor ];
         self.opaque = YES;
         self.userInteractionEnabled = NO;
+    #elif TARGET_OS_MAC
+    #else
+        #error Don't know this platform!
+    #endif
+        
         
 #endif        
         
@@ -154,6 +159,8 @@ forAllBalls(i)
         _ballLabels[ [ self.gameModel at: i ] ].center = _ballCenters[ i ];
     }
 }
+
+#if TARGET_OS_IPHONE
 
 - (bool) findWedgeAtTouch:(UITouch *)touch tolerant: ( bool ) tolerant
                   asWedge: ( Index & ) wedge
@@ -255,7 +262,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     lastThetaTouched = thetaAtTouch ;
     for (Index i = 1; i < nBalls ; i++ )
     {
-        UILabel * ballLabel = _ballLabels[ spinStartingPosition[ i ] ];
+        Label * ballLabel = _ballLabels[ spinStartingPosition[ i ] ];
         /*
          ballLabel is currently who-knows-where.
          But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.
@@ -325,6 +332,11 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
             [ _successSound  play ]; 
     }
 }    
+
+#elif TARGET_OS_MAC
+#else
+#error Don't know this platform!
+#endif
 
 
 - (void)dealloc 
