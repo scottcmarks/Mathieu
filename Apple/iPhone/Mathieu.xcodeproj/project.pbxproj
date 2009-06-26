@@ -220,8 +220,7 @@
 		D2AE5CBD0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CBE0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CE50FACEAA80093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5CBF0FACEAA80093E56B /* Images */; };
-		D2EA769F0FBD283400423485 /* DualActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58270FACE81D0093E56B /* DualActionButton.m */; };
-		D2EA76CD0FBD412700423485 /* SimpleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE582A0FACE81D0093E56B /* SimpleButton.m */; };
+		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2EE166B0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
 		D2EE166C0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
 		D2EE166D0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
@@ -609,8 +608,8 @@
 		D2AE55F30FACE47A0093E56B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */,
 				D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */,
+				D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -1316,9 +1315,8 @@
 				D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */,
 				D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */,
 				D266CA4A0FBCCAA50095135E /* SporadicMView.mm in Sources */,
-				D2EA769F0FBD283400423485 /* DualActionButton.m in Sources */,
-				D2EA76CD0FBD412700423485 /* SimpleButton.m in Sources */,
 				D2EE166B0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
+				D2D427080FF0087200A6706E /* BallRingView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1500,6 +1498,7 @@
 					"TARGET_OS_MAC=1",
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=0",
+					"ICONIC_PICTURE_ONLY=1",
 				);
 				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1525,6 +1524,12 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"TARGET_OS_MAC=1",
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+					"ICONIC_PICTURE_ONLY=1",
+				);
 				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
