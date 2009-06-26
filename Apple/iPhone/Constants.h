@@ -8,7 +8,9 @@
  */
 
 // Use this for making simplified screens for icon preparation
-#define ICONIC_PICTURE_ONLY 0
+#if ! defined( ICONIC_PICTURE_ONLY )
+    #define ICONIC_PICTURE_ONLY 0
+#endif
 
 // Reward levels -- TODO: M12/M24 specific?
 #define FIREWORKS_THRESHOLD 15

@@ -107,6 +107,7 @@
                             alternateSelector: ( SEL        ) alternateSelector
                                alternateTitle: ( NSString * ) alternateTitle
 {	
+#if TARGET_OS_IPHONE
     DualActionButton * button = 
         [ DualActionButton dualActionButtonWithFrame: CGRectMake( center.x - width/2, 
                                                                   center.y - toolbarButtonHeight/2, 
@@ -117,21 +118,32 @@
                                          normalTitle: normalTitle
                                    alternateSelector: alternateSelector
                                       alternateTitle: alternateTitle ] ;
-//    button.center = center ;
     return button ;
+#elif TARGET_OS_MAC
+    return nil;
+#else
+#error Don't know this platform!
+#endif
 }
 
 
 - (ComboButton *)createToolbarComboButtonWidth: ( CGFloat    ) width
                                      comboName: ( HistoryElement ) comboName
 {
+#if TARGET_OS_IPHONE
     return  [ ComboButton comboButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight) 
                                         target: self.controller
                                      comboName: comboName ] ;
+#elif TARGET_OS_MAC
+    return nil;
+#else
+#error Don't know this platform!
+#endif
 }
 
 - (DualActionButton *)createToolbarAltButtonWidth: ( CGFloat    ) width
 {
+#if TARGET_OS_IPHONE
     return [ [ DualActionButton alloc ] 
             initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)   
             target:            self.controller
@@ -139,6 +151,11 @@
             normalTitle:       @"Alt"
             alternateSelector: @selector( toggleInverted: )
             alternateTitle:    @"Alt"  ];
+#elif TARGET_OS_MAC
+    return nil;
+#else
+#error Don't know this platform!
+#endif
 }
 
 - ( ComboButton * ) createInfoButton
@@ -169,7 +186,14 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 - (void) awakeFromNib
 {
-    CGRect frame = NSRect_to_CGRect( self.frame );
+#if TARGET_OS_IPHONE
+    CGRect frame = self.frame ;
+#elif TARGET_OS_MAC
+    NSRect NSframe = self.frame;
+    CGRect frame = NSRect_to_CGRect( NSframe );
+#else
+#error Don't know this platform!
+#endif
     CGFloat ballRingFrameSize = min ( CGRectGetWidth( frame ), 
                                       CGRectGetHeight( frame ) );
     ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( frame ), 
@@ -199,6 +223,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     };
     forArray( i, dualActionButtons )
     {
+#if TARGET_OS_IPHONE
         DualActionButton * dualActionButton =  [ self createActionButtonAt: dualActionButtons[ i ].center
                                                                      width: dualActionButtons[ i ].width 
                                                             normalSelector: dualActionButtons[ i ].normalSelector
@@ -208,6 +233,10 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         if ( dualActionButtons[ i ].variable != NULL )
             *(dualActionButtons[ i ].variable) = dualActionButton;
         [ self addSubview: dualActionButton ];
+#elif TARGET_OS_MAC
+#else
+#error Don't know this platform!
+#endif
     }
     
     
@@ -327,11 +356,15 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     [ [ NSRunLoop currentRunLoop ] addTimer:self.historyTextUpdatingTimer forMode: NSDefaultRunLoopMode];
 
 #else
-    
-    history.hidden = YES;
-    moves.hidden = YES;
-    toolbar.hidden = YES;
-    self.backgroundColor = [ UIColor blackColor ];
+    #if TARGET_OS_IPHONE
+        history.hidden = YES;
+        moves.hidden = YES;
+        toolbar.hidden = YES;
+        self.backgroundColor = [ UIColor blackColor ];
+    #elif TARGET_OS_MAC
+    #else
+    #error Don't know this platform!
+    #endif
     
 #endif
 

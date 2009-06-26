@@ -49,6 +49,7 @@
 
 - ( void ) moveLabels;
 - ( void ) redraw;
+#if TARGET_OS_IPHONE
 - ( void ) playRightSound       ;
 - ( void ) playLeftSound        ;
 - ( void ) playSwapSound        ;
@@ -59,5 +60,9 @@
 - ( void ) playComboSetSound    ;
 - ( void ) playComboNotSetSound ;
 - ( void ) playSuccessSound     ;
+#elif TARGET_OS_MAC
+#else
+#error Don't know this platform!
+#endif
 
 @end
