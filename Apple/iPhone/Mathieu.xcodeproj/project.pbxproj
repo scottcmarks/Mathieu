@@ -15,6 +15,8 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
+		D222B0800FF5937900B2618B /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
@@ -33,6 +35,9 @@
 		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
+		D28025360FFBBF9B008CA92E /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28025350FFBBF9B008CA92E /* Entitlements.plist */; };
+		D28025370FFBBF9B008CA92E /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28025350FFBBF9B008CA92E /* Entitlements.plist */; };
+		D28025380FFBBF9B008CA92E /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28025350FFBBF9B008CA92E /* Entitlements.plist */; };
 		D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
@@ -190,7 +195,6 @@
 		D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5AD30FACE9BB0093E56B /* moves_and_steps.html */; };
 		D2AE5B6D0FACE9BB0093E56B /* m24.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5ADD0FACE9BB0093E56B /* m24.cc */; };
 		D2AE5B750FACE9BB0093E56B /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5AEC0FACE9BB0093E56B /* view.cc */; };
-		D2AE5B840FACE9BB0093E56B /* Application Description.txt in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5A620FACE9BB0093E56B /* Application Description.txt */; };
 		D2AE5B850FACE9BB0093E56B /* buttons.html in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5A640FACE9BB0093E56B /* buttons.html */; };
 		D2AE5B860FACE9BB0093E56B /* combo_buttons.html in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5A650FACE9BB0093E56B /* combo_buttons.html */; };
 		D2AE5B870FACE9BB0093E56B /* error.html in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5A660FACE9BB0093E56B /* error.html */; };
@@ -234,6 +238,7 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D222AEFC0FF578C400B2618B /* English */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = English; path = English.lproj/SporadicM12Icon_Prerendered.icns; sourceTree = "<group>"; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +248,7 @@
 		D27C7C1F0FB2202700ECAE6F /* Mathieu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathieu_Prefix.pch; sourceTree = "<group>"; };
 		D27C7C300FB2211800ECAE6F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D28025350FFBBF9B008CA92E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		D295286E0FB4B9E100BABAF4 /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
 		D2AE55A10FACE4560093E56B /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../../TODO.txt; sourceTree = SOURCE_ROOT; };
 		D2AE55A60FACE47A0093E56B /* BallRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingView.h; sourceTree = "<group>"; };
@@ -427,6 +433,7 @@
 				8C1B87BD0F68452900F359D6 /* Mathieu */,
 				D2AE58210FACE81D0093E56B /* Toolbox */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				D28025350FFBBF9B008CA92E /* Entitlements.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -495,6 +502,7 @@
 		D27C7C2E0FB2211800ECAE6F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */,
 				D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */,
 				D27C7C310FB2211800ECAE6F /* MainMenu.xib */,
 			);
@@ -1089,7 +1097,6 @@
 				D2AE59640FACE81D0093E56B /* SimpleDarkButtonHighlighted.png in Resources */,
 				D2AE59650FACE81D0093E56B /* SimpleDarkButtonNormal.png in Resources */,
 				D2AE598D0FACE81D0093E56B /* SporadicGamesLogo.png in Resources */,
-				D2AE5B840FACE9BB0093E56B /* Application Description.txt in Resources */,
 				D2AE5B850FACE9BB0093E56B /* buttons.html in Resources */,
 				D2AE5B860FACE9BB0093E56B /* combo_buttons.html in Resources */,
 				D2AE5B870FACE9BB0093E56B /* error.html in Resources */,
@@ -1101,6 +1108,7 @@
 				D2AE5BBD0FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
+				D28025370FFBBF9B008CA92E /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1145,6 +1153,7 @@
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
+				D28025360FFBBF9B008CA92E /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1192,6 +1201,7 @@
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
+				D28025380FFBBF9B008CA92E /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1201,6 +1211,8 @@
 			files = (
 				D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */,
 				D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */,
+				D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */,
+				D222B0800FF5937900B2618B /* SporadicMView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,6 +1335,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D222AEFC0FF578C400B2618B /* English */,
+			);
+			name = SporadicM12Icon_Prerendered.icns;
+			sourceTree = "<group>";
+		};
 		D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1346,6 +1366,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1366,6 +1387,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1448,6 +1470,202 @@
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
 			name = Release;
+		};
+		D22A67D50FFBBCE100714FAF /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLY_RULES_IN_COPY_FILES = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				SDKROOT = iphoneos2.2.1;
+				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
+			};
+			name = "App Store Distribution";
+		};
+		D22A67D60FFBBCE100714FAF /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=1",
+				);
+				INFOPLIST_FILE = M12/InfoFree.plist;
+				PRODUCT_NAME = SporadicM12Free;
+			};
+			name = "App Store Distribution";
+		};
+		D22A67D70FFBBCE100714FAF /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = M12/Info.plist;
+				PRODUCT_NAME = SporadicM12;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44F650DE-7277-4524-8B4C-E3E90ABE6EFC";
+			};
+			name = "App Store Distribution";
+		};
+		D22A67D80FFBBCE100714FAF /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = M24/Info.plist;
+				PRODUCT_NAME = SporadicM24;
+			};
+			name = "App Store Distribution";
+		};
+		D22A67D90FFBBCE100714FAF /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"TARGET_OS_MAC=1",
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+					"ICONIC_PICTURE_ONLY=1",
+				);
+				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SporadicM12;
+				SDKROOT = macosx10.5;
+				ZERO_LINK = NO;
+			};
+			name = "App Store Distribution";
+		};
+		D22A67DA0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLY_RULES_IN_COPY_FILES = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				SDKROOT = iphoneos2.2.1;
+				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
+			};
+			name = "Ad Hoc Distribution";
+		};
+		D22A67DB0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=1",
+				);
+				INFOPLIST_FILE = M12/InfoFree.plist;
+				PRODUCT_NAME = SporadicM12Free;
+			};
+			name = "Ad Hoc Distribution";
+		};
+		D22A67DC0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = M12/Info.plist;
+				PRODUCT_NAME = SporadicM12;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+			};
+			name = "Ad Hoc Distribution";
+		};
+		D22A67DD0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = M24/Info.plist;
+				PRODUCT_NAME = SporadicM24;
+			};
+			name = "Ad Hoc Distribution";
+		};
+		D22A67DE0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"TARGET_OS_MAC=1",
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+					"ICONIC_PICTURE_ONLY=1",
+				);
+				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SporadicM12;
+				SDKROOT = macosx10.5;
+				ZERO_LINK = NO;
+			};
+			name = "Ad Hoc Distribution";
 		};
 		D266F90F0F7A9F120080CAD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1553,6 +1771,8 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				D22A67D70FFBBCE100714FAF /* App Store Distribution */,
+				D22A67DC0FFBBCF600714FAF /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1562,6 +1782,8 @@
 			buildConfigurations = (
 				8C1B8AE50F68470300F359D6 /* Debug */,
 				8C1B8AE60F68470300F359D6 /* Release */,
+				D22A67D80FFBBCE100714FAF /* App Store Distribution */,
+				D22A67DD0FFBBCF600714FAF /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1571,6 +1793,8 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				D22A67D50FFBBCE100714FAF /* App Store Distribution */,
+				D22A67DA0FFBBCF600714FAF /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1580,6 +1804,8 @@
 			buildConfigurations = (
 				D266F90F0F7A9F120080CAD1 /* Debug */,
 				D266F9100F7A9F120080CAD1 /* Release */,
+				D22A67D60FFBBCE100714FAF /* App Store Distribution */,
+				D22A67DB0FFBBCF600714FAF /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1589,6 +1815,8 @@
 			buildConfigurations = (
 				D27C7B980FB21B9500ECAE6F /* Debug */,
 				D27C7B990FB21B9500ECAE6F /* Release */,
+				D22A67D90FFBBCE100714FAF /* App Store Distribution */,
+				D22A67DE0FFBBCF600714FAF /* Ad Hoc Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
