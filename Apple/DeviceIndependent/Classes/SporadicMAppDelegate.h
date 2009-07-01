@@ -26,7 +26,14 @@
     
 }
 
-@property (nonatomic, retain ) IBOutlet Window *window;
+// You'd think that the Interface builder would expand preprocessor constants, but apparently not
+#if TARGET_OS_IPHONE
+@property (nonatomic, retain ) IBOutlet UIWindow *window;
+#elif TARGET_OS_MAC
+@property (nonatomic, retain ) IBOutlet NSWindow *window;
+#else
+#error Don't know this platform!
+#endif
 @property (nonatomic, retain ) RootViewController *rootViewController;
 @property (nonatomic         ) CGFloat animationSpeed;
 @property (nonatomic         ) bool soundEffects;
