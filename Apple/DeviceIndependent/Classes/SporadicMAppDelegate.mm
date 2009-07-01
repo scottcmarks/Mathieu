@@ -85,9 +85,23 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
     __timestamp__;
     
     // Add the root view controller's view to the window
-    [ window_view( window ) addSubview:[rootViewController view]];
+#if TARGET_OS_IPHONE
+    View * rootView = [ rootViewController view ];
+    [ window_view( window ) addSubview: rootView ];
+#elif TARGET_OS_MAC
+    rootViewController.view = window_view( window );
+    [ rootViewController viewDidLoad ];  // tacky to call this directly?
+#else
+#error Don't know this platform!
+#endif
     __timestamp__;
     
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed: (Application *)sender
+{
+    // return YES to allow the application to terminate when the user closes the last window the application has open
+    return YES;
 }
 
 // Invoked immediately before the application terminates.

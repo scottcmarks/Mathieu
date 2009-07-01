@@ -24,11 +24,20 @@
 	UIAccelerationValue	myAccelerometer[3];
     CFTimeInterval		lastShakeTime;
     bool                nowHandlingShake;
-#endif /* TARGET_OS_IPHONE */
+#elif TARGET_OS_MAC
+#else
+#error Don't know this platform!
+#endif
 }
 
 @property ( nonatomic, retain ) SporadicMViewController *mainViewController;
 @property ( nonatomic, retain ) PreferencesViewController *preferencesViewController;
+#if TARGET_OS_IPHONE
+#elif TARGET_OS_MAC
+#else
+#error Don't know this platform!
+#endif
+
 #if TARGET_OS_IPHONE
 @property ( nonatomic         ) bool nowHandlingShake;
 #endif /* TARGET_OS_IPHONE */
