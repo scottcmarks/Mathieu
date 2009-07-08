@@ -59,7 +59,7 @@
 {
 #if TARGET_OS_IPHONE
 	// starting the load, show the activity indicator in the status bar
-	[Application sharedApplication].isNetworkActivityIndicatorVisible = YES;
+	[Application sharedApplication].networkActivityIndicatorVisible = YES;
 #endif
 }
 
@@ -67,7 +67,7 @@
 {
 #if TARGET_OS_IPHONE
 	// finished loading, hide the activity indicator in the status bar
-	[Application sharedApplication].isNetworkActivityIndicatorVisible = NO;
+	[Application sharedApplication].networkActivityIndicatorVisible = NO;
 #endif
     [ helpView updateBackButton ];
 }
@@ -76,7 +76,7 @@
 {
 #if TARGET_OS_IPHONE
 	// load error, hide the activity indicator in the status bar
-	[Application sharedApplication].isNetworkActivityIndicatorVisible = NO;
+	[Application sharedApplication].networkActivityIndicatorVisible = NO;
 #endif
     // let the helpView report the error;
     [ helpView reportError: error ];
