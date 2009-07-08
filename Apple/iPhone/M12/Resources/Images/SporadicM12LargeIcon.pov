@@ -105,6 +105,6 @@ plane { <0,1,0> // normal vector
         , 0 // distance from origin
   pigment {
 //    checker color White, color Black
-      color Black
+      color rgb<0.05, 0.05, 0.10>
   }
 }
