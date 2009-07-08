@@ -366,7 +366,6 @@
 		D2AE5C860FACEA6C0093E56B /* Generic_Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generic_Images; sourceTree = "<group>"; };
 		D2AE5C990FACEA8C0093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		D2AE5CBF0FACEAA80093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
-		D2CE315F0FFD276D000B607A /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		D2EE16690FCCFB59005DA002 /* OKCancelAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OKCancelAlertView.h; sourceTree = "<group>"; };
 		D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OKCancelAlertView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -617,7 +616,6 @@
 		D2AE55F30FACE47A0093E56B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				D2CE315F0FFD276D000B607A /* icon.png */,
 				D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */,
 				D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */,
 			);
@@ -1368,7 +1366,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1389,7 +1387,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1480,13 +1478,13 @@
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44F650DE-7277-4524-8B4C-E3E90ABE6EFC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
