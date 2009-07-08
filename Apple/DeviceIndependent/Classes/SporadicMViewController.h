@@ -15,13 +15,14 @@
 @class RootViewController ;
 @class OKCancelAlertView  ;
 
-@interface SporadicMViewController : ViewController 
 #if TARGET_OS_IPHONE
+@interface SporadicMViewController : UIViewController 
                                                     < UITextFieldDelegate, 
                                                       UIAlertViewDelegate,
                                                       ComboButtonTarget,
                                                       BallRingViewDelegate > 
 #elif TARGET_OS_MAC
+@interface SporadicMViewController : NSViewController 
                                                     < ComboButtonTarget,
                                                       BallRingViewDelegate > 
 #else
