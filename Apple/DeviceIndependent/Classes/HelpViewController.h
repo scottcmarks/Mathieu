@@ -12,17 +12,20 @@
 #import "HelpView.h"
 
 
-@interface HelpViewController : ViewController
 #if TARGET_OS_IPHONE
-                                                <UIWebViewDelegate>
+@interface HelpViewController : UIViewController <UIWebViewDelegate>
+#elif TARGET_OS_MAC
+@interface HelpViewController : NSViewController
+#else
+#error Don't know this platform!
 #endif
 {
     RootViewController *rootViewController;
-    IBOutlet HelpView* helpView;
+    HelpView* helpView;
 }
 
 @property ( nonatomic, assign   ) RootViewController *rootViewController;
-@property ( nonatomic, retain   ) HelpView *helpView;
+@property ( nonatomic, retain   ) IBOutlet HelpView *helpView;
 
 - (IBAction)dismissHelp:(id)sender;
 

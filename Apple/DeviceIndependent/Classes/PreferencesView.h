@@ -8,26 +8,26 @@
 
 #import "Kit.h"
 
-@interface PreferencesView : View 
+@interface PreferencesView : UIView 
 {
     Slider * animationSpeedSlider;
     Switch * soundEffectsSwitch;
     Switch * confirmSwitch;
     Label  * confirmHelp;
-    Label *currentPermutation;
-    Label *currentPermLabel;
+    Label  * currentPermutation;
+    Label  * currentPermLabel;
     Button * swapsButton;
 #if TARGET_OS_IPHONE
 	UINavigationItem * navigationBar;
 #endif
 }    
-@property( nonatomic, assign ) IBOutlet Slider * animationSpeedSlider;
-@property( nonatomic, assign ) IBOutlet Switch * soundEffectsSwitch;
-@property( nonatomic, assign ) IBOutlet Switch * confirmSwitch;
-@property( nonatomic, assign ) IBOutlet Label  * confirmHelp;
-@property( nonatomic, assign ) IBOutlet Label *currentPermutation;
-@property( nonatomic, assign ) IBOutlet Label *currentPermLabel;
-@property( nonatomic, assign ) IBOutlet Button * swapsButton;
+@property( nonatomic, assign ) IBOutlet UISlider * animationSpeedSlider;
+@property( nonatomic, assign ) IBOutlet UISwitch * soundEffectsSwitch;
+@property( nonatomic, assign ) IBOutlet UISwitch * confirmSwitch;
+@property( nonatomic, assign ) IBOutlet UILabel  * confirmHelp;
+@property( nonatomic, assign ) IBOutlet UILabel  * currentPermutation;
+@property( nonatomic, assign ) IBOutlet UILabel  * currentPermLabel;
+@property( nonatomic, assign ) IBOutlet UIButton * swapsButton;
 #if TARGET_OS_IPHONE
 @property( nonatomic, assign ) IBOutlet UINavigationItem * navigationBar;
 #endif
