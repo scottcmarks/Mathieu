@@ -13,21 +13,21 @@
 @class SwapPermutationsView;
 
 
-@interface SwapPermutationsViewController : ViewController
+@interface SwapPermutationsViewController : UIViewController
 #if TARGET_OS_IPHONE
 //                                                           <UIWebViewDelegate>
 #endif
 {
-    RootViewController *rootViewController;
-    PreferencesViewController *preferencesViewController;
-    IBOutlet SwapPermutationsView* swapPermutationsView;
+    RootViewController        * rootViewController        ;
+    PreferencesViewController * preferencesViewController ;
+    SwapPermutationsView      * swapPermutationsView      ;
 }
 
-@property ( nonatomic, assign   ) RootViewController *rootViewController;
-@property ( nonatomic, assign   ) PreferencesViewController *preferencesViewController;
-@property ( nonatomic, retain   ) SwapPermutationsView *swapPermutationsView;
+@property ( nonatomic, assign   )          RootViewController        * rootViewController        ;
+@property ( nonatomic, assign   )          PreferencesViewController * preferencesViewController ;
+@property ( nonatomic, retain   ) IBOutlet SwapPermutationsView      * swapPermutationsView      ;
 
-- (IBAction)dismissSwapPermutations:(id)sender;
-- (IBAction)showHelp:(id)sender;
+- ( IBAction ) dismissSwapPermutations: ( id ) sender;
+- ( IBAction ) showHelp: ( id ) sender;
 
 @end

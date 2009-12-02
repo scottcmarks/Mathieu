@@ -42,8 +42,9 @@ const CGFloat helpFontSize = 11.0;
 @synthesize currentPermLabel;
 @synthesize swapsButton;
 
-- (void) awakeFromNib{
-    confirmHelp.font = [Font systemFontOfSize:helpFontSize ];
+- (void) awakeFromNib
+{
+    confirmHelp.font = [ Font systemFontOfSize: helpFontSize ];
     // TODO: I18n
     confirmHelp.text = @"When solving, confirm Shake,\n"
                         "Restart and Home.  Confirm\n"
@@ -53,9 +54,10 @@ const CGFloat helpFontSize = 11.0;
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
-    swapsButton.hidden         = ( nBalls == 24 )                 ;
-    currentPermutation.hidden  = ( nBalls == 24 )                 ;
-    currentPermLabel.hidden    = ( nBalls == 24 )                 ;
+    BOOL bigBalls              = ( nBalls == 24 )                 ;
+    swapsButton.hidden         = bigBalls                         ;
+    currentPermutation.hidden  = bigBalls                         ;
+    currentPermLabel.hidden    = bigBalls                         ;
 #if TARGET_OS_IPHONE
 	navigationBar.title        = fullAppName                      ;
 #endif
@@ -66,16 +68,13 @@ const CGFloat helpFontSize = 11.0;
     if ( newSuperView ) 
     {
         NSString * cycles = self.appDelegate.gameModel.cycles;
-        if ( nBalls == 24 )
-        {
-#if defined( SHOW_M24_CURRENT_PERMUTATION )
+#if ( nBalls == 24 )  && defined( SHOW_M24_CURRENT_PERMUTATION )
             NSRange brk = [ cycles rangeOfString:@") (" 
                                          options:NSLiteralSearch
                                            range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
             cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
             currentPermutation.font = [ Font systemFontOfSize:13.0 ];
 #endif
-        }
         currentPermutation.text = cycles;
         
     }

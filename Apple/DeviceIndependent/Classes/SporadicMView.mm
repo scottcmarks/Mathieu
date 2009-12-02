@@ -77,7 +77,7 @@
     NSString * historyText = self.gameModel.history;
     NSUInteger historyLength = historyText.length;
     if ( historyTextCache.length == historyLength
-      && [ historyTextCache compare:historyText options:NSLiteralSearch ] == NSOrderedSame )
+      && [ historyTextCache compare: historyText options: NSLiteralSearch ] == NSOrderedSame )
         return;
     history.text = self.historyTextCache = historyText ;
     moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];

@@ -295,7 +295,7 @@
 		D2AE55D80FACE47A0093E56B /* shake.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = shake.caf; sourceTree = "<group>"; };
 		D2AE55D90FACE47A0093E56B /* success.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.caf; sourceTree = "<group>"; };
 		D2AE55DA0FACE47A0093E56B /* swap.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = swap.caf; sourceTree = "<group>"; };
-		D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwapPermutationsView.xib; sourceTree = "<group>"; };
+		D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SwapPermutationsView.xib; path = ../../DeviceIndependent/Resources/SwapPermutationsView.xib; sourceTree = "<group>"; };
 		D2AE55ED0FACE47A0093E56B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		D2AE55EF0FACE47A0093E56B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2AE55F00FACE47A0093E56B /* InfoFree.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoFree.plist; sourceTree = "<group>"; };
@@ -547,7 +547,6 @@
 				D2AE55C70FACE47A0093E56B /* HelpView.xib */,
 				D2AE55C80FACE47A0093E56B /* Images */,
 				D2AE55CF0FACE47A0093E56B /* Sounds */,
-				D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -657,6 +656,7 @@
 				D2AE566A0FACE47B0093E56B /* MainWindow.xib */,
 				D2AE566B0FACE47B0093E56B /* PreferencesView.xib */,
 				D2AE566C0FACE47B0093E56B /* SporadicMView.xib */,
+				D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1379,7 +1379,7 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67CCDF3A-9D30-4767-9346-F1CA8B5DBA6A";
 			};
 			name = Debug;
 		};
@@ -1398,7 +1398,7 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67CCDF3A-9D30-4767-9346-F1CA8B5DBA6A";
 			};
 			name = Release;
 		};
@@ -1450,7 +1450,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67CCDF3A-9D30-4767-9346-F1CA8B5DBA6A";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
@@ -1467,7 +1467,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67CCDF3A-9D30-4767-9346-F1CA8B5DBA6A";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
@@ -1484,7 +1484,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67CCDF3A-9D30-4767-9346-F1CA8B5DBA6A";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
@@ -1583,7 +1583,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77AACF72-9A79-4E79-942F-6143DC44BA73";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67CCDF3A-9D30-4767-9346-F1CA8B5DBA6A";
 				SDKROOT = iphoneos2.2.1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
