@@ -1,0 +1,2 @@
+The iTunesArtWork and Payload are zipped into the .ipa file.
+The .ipa file and the .mobileprovision file are the two items needed by the ad hoc distribution recipient.
