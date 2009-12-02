@@ -49,7 +49,9 @@
 }
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
+    CGRect frame = self.view.frame;
     [self.view addSubview:self.mainViewController.view];
 	
 #if TARGET_OS_IPHONE

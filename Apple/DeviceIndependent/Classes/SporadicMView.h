@@ -13,7 +13,7 @@
 @class SporadicMViewController;
 @class DualActionButton;
 @class GameModel;
-@interface SporadicMView : View // TransitionView 
+@interface SporadicMView : UIView // TransitionView 
 {
 
     SporadicMViewController * controller;
@@ -43,16 +43,16 @@
 @property ( nonatomic, assign   ) IBOutlet UIToolbar  * toolbar;
 @property ( nonatomic, assign   ) IBOutlet UITextView * history;
 #elif TARGET_OS_MAC
-@property ( nonatomic, assign   ) IBOutlet NSToolbar   * toolbar;
-@property ( nonatomic, assign   ) IBOutlet NSTextField * history;
+@property ( nonatomic, assign   )          NSToolbar   * toolbar;
+@property ( nonatomic, assign   )          NSTextField * history;
 #else
 #error Don't know this platform!
 #endif
-@property ( nonatomic, assign   ) IBOutlet Label * moves;
+@property ( nonatomic, assign   ) IBOutlet Label                   * moves;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
-@property ( nonatomic, assign   ) IBOutlet BallRingView * ballRingView;
-@property ( nonatomic, retain   ) NSTimer * historyTextUpdatingTimer;
-@property ( nonatomic, retain   ) NSString * historyTextCache;
+@property ( nonatomic, assign   ) IBOutlet BallRingView            * ballRingView;
+@property ( nonatomic, retain   )          NSTimer                 * historyTextUpdatingTimer;
+@property ( nonatomic, retain   )          NSString                * historyTextCache;
 
 -( void ) updateHistoryText;    
 

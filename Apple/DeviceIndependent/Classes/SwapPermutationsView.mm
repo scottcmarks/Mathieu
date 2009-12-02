@@ -15,14 +15,13 @@
 
 @implementation SwapPermutationsView
 
-@synthesize currentPermutation;
-@synthesize currentPermutationPreview;
-@synthesize pickedSwapIndex;
+@synthesize currentPermutation        ;
+@synthesize pickedSwapIndex           ;
 #if TARGET_OS_IPHONE
-@synthesize navigationBar;
-@synthesize swapPermutationPicker;
+@synthesize navigationBar             ;
+@synthesize swapPermutationPicker     ;
 #endif
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate { return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - (void) awakeFromNib
@@ -75,7 +74,7 @@
 #if FREE
     row = ( row == 0 ? 1 : 24 );
 #endif
-    self.currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
+    currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
     [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
     [ currentPermutationPreview redraw ]; 
     pickedSwapIndex =  row;

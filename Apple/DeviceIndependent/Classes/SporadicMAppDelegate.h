@@ -16,7 +16,7 @@
                                            <UIApplicationDelegate>
 #endif /* TARGET_OS_IPHONE */
 {
-    IBOutlet Window *window;
+    UIWindow *window;
 	RootViewController *rootViewController;
     CGFloat animationSpeed;
     bool soundEffects;
@@ -30,7 +30,7 @@
 #if TARGET_OS_IPHONE
 @property (nonatomic, retain ) IBOutlet UIWindow *window;
 #elif TARGET_OS_MAC
-@property (nonatomic, retain ) IBOutlet NSWindow *window;
+@property (nonatomic, retain )          NSWindow *window;
 #else
 #error Don't know this platform!
 #endif
