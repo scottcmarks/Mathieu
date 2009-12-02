@@ -31,6 +31,8 @@
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UIPrerenderedIcon</key>
-	<true/>
+	<false/>
+	<key>LSMinimumSystemVersion</key>
+	<string>2.2.1</string>
 </dict>
 </plist>
