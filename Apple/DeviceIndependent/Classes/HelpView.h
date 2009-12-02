@@ -9,14 +9,14 @@
 #import "Kit.h"
 
 
-@interface HelpView : View 
+@interface HelpView : UIView 
 {
-    IBOutlet WebView* helpWebView;
-    IBOutlet ToolbarButtonItem* backButton;
+    IBOutlet UIWebView* helpWebView;
+    IBOutlet UIBarButtonItem* backButton;
     NSURL * baseURL;
 }
 
-@property ( nonatomic, assign   ) ToolbarButtonItem *backButton;
+@property ( nonatomic, assign   ) UIBarButtonItem *backButton;
 
 -(void) reportError: (NSError *)error;
 -(void) updateBackButton;

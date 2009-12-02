@@ -13,18 +13,18 @@
 @class HelpViewController;
 @class SwapPermutationsViewController;
 
-@interface PreferencesViewController : ViewController 
+@interface PreferencesViewController : UIViewController 
 {
     RootViewController * rootViewController ;
     HelpViewController * helpViewController ;
     SwapPermutationsViewController * swapPermutationsViewController ;
-    IBOutlet PreferencesView    * preferencesView    ;
+    PreferencesView    * preferencesView    ;
 }
 
 @property ( nonatomic, assign   ) RootViewController * rootViewController ;
 @property ( nonatomic, retain   ) HelpViewController * helpViewController ;
 @property ( nonatomic, retain   ) SwapPermutationsViewController * swapPermutationsViewController ;
-@property ( nonatomic, retain   ) PreferencesView    * preferencesView    ;
+@property ( nonatomic, retain   ) IBOutlet  PreferencesView    * preferencesView    ;
 
 - (IBAction)toggleView:(id)sender;
 - (IBAction)showHelp:(id)sender;
