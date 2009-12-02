@@ -9,27 +9,28 @@
 #import "Kit.h"
 
 @class BallRingView;
-
-@interface SwapPermutationsView : View 
 #if TARGET_OS_IPHONE
-                                       <UIPickerViewDelegate , UIPickerViewDataSource>
+@interface SwapPermutationsView : UIView   <UIPickerViewDelegate , UIPickerViewDataSource> 
+#elif TARGET_OS_MAC
+@interface SwapPermutationsView : NSView 
+else
+#error Don't know this platform!
 #endif
 {
-    Label * currentPermutation;
-    BallRingView * currentPermutationPreview;
-    int pickedSwapIndex;
+    UILabel          * currentPermutation        ;
+    BallRingView     * currentPermutationPreview ;
+    int                pickedSwapIndex           ;
 #if TARGET_OS_IPHONE
-    UIPickerView * swapPermutationPicker;
-	UINavigationItem * navigationBar;
+    UIPickerView     * swapPermutationPicker     ;
+	UINavigationItem * navigationBar             ;
 #endif
 }
 
-@property( nonatomic, retain ) IBOutlet Label * currentPermutation;
-@property( nonatomic, retain ) IBOutlet View * currentPermutationPreview;
-@property( nonatomic, readonly ) int pickedSwapIndex;
+@property( nonatomic, readonly )          int               pickedSwapIndex                ;
 #if TARGET_OS_IPHONE
-@property( nonatomic, retain ) IBOutlet UIPickerView * swapPermutationPicker;
-@property( nonatomic, retain ) IBOutlet UINavigationItem * navigationBar;
+@property( nonatomic, assign   ) IBOutlet UILabel         * currentPermutation             ;
+@property( nonatomic, assign   ) IBOutlet UIPickerView     * swapPermutationPicker         ;
+@property( nonatomic, assign   ) IBOutlet UINavigationItem * navigationBar                 ;
 #endif
 
 - ( void ) synchronize;
