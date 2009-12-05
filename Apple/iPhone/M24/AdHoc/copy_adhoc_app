@@ -1,1 +1,1 @@
-cp -rp Apple/iPhone/build/Ad Hoc Distribution-iphoneos/SporadicM24.app Payload/
+cp -rp '../../build/Ad Hoc Distribution-iphoneos/SporadicM24.app' Payload/
