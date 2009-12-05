@@ -1,1 +1,2 @@
-zip -r SporadicM24.ipa iTunesArtWork Payload
+zip -r SporadicM24.ipa iTunesArtWork Payload >> distribution.log
+
