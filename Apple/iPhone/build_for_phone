@@ -1,1 +1,0 @@
-xcodebuild -project Mathieu.xcodeproj -target SporadicM24 -configuration Release -sdk iphoneos3.1.2
