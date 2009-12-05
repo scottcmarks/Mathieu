@@ -1,6 +1,6 @@
-$svn_log = `svn log --limit 1 /Sandboxes/Mathieu`;
+$svn_info = `svn info`;
 
-$svn_log =~ /^r([0-9]+) /m;
+$svn_info =~ /^Revision: ([0-9]+)/m;
 
 $ver = $1;
 
