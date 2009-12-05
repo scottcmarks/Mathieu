@@ -1,0 +1,3 @@
+echo Make AdHoc Distribution of SporadicM24
+rm -rf Payload/*
+( cd ../.. ; M24/AdHoc/build_for_phone ) && ./copy_adhoc_app && ./copy_adhoc_artwork && ./make_adhoc_ipa && perl make_mail.pl
