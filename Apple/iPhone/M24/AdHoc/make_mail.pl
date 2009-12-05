@@ -1,4 +1,4 @@
-$svn_log = `svn log --limit 1`;
+$svn_log = `svn log --limit 1 /Sandboxes/Mathieu`;
 
 $svn_log =~ /^r([0-9]+) /m;
 
