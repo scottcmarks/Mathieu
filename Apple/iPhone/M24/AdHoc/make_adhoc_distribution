@@ -1,3 +1,8 @@
-echo Make AdHoc Distribution of SporadicM24
+echo Make AdHoc Distribution of SporadicM24 > distribution.log
+date >> distribution.log
 rm -rf Payload/*
-( cd ../.. ; M24/AdHoc/build_for_phone ) && ./copy_adhoc_app && ./copy_adhoc_artwork && ./make_adhoc_ipa && perl make_mail.pl
+( cd ../.. ; M24/AdHoc/build_for_phone ) >> distribution.log \
+   && ./copy_adhoc_app >> distribution.log \
+   && ./copy_adhoc_artwork >> distribution.log \
+   && ./make_adhoc_ipa >> distribution.log \
+   && perl make_mail.pl >> distribution.log
