@@ -1,2 +1,0 @@
-xcodebuild -project Mathieu.xcodeproj -target SporadicM24 -configuration 'Ad Hoc Distribution' -sdk iphoneos3.1.2
-
