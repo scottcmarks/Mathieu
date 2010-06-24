@@ -106,18 +106,18 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         _delegate = delegate ;
         if ( delegate )  // only interactive if delegate provided
         {
-            _rightSound       = [ SoundEffect soundEffectWithCaf: @"right"         ];
-            _leftSound        = [ SoundEffect soundEffectWithCaf: @"left"          ];
-            _swapSound        = [ SoundEffect soundEffectWithCaf: @"swap"          ];
-            _homeSound        = [ SoundEffect soundEffectWithCaf: @"home"          ];
-            _shakeSound       = [ SoundEffect soundEffectWithCaf: @"shake"         ];
+            _rightSound       = [ SoundEffect newSoundEffectWithCaf: @"right"         ];
+            _leftSound        = [ SoundEffect newSoundEffectWithCaf: @"left"          ];
+            _swapSound        = [ SoundEffect newSoundEffectWithCaf: @"swap"          ];
+            _homeSound        = [ SoundEffect newSoundEffectWithCaf: @"home"          ];
+            _shakeSound       = [ SoundEffect newSoundEffectWithCaf: @"shake"         ];
             //TODO:  make real sound for restart amd combo 
-            _restartSound     = [ SoundEffect soundEffectWithCaf: @"restart"       ];
-            _comboSound       = [ SoundEffect soundEffectWithCaf: @"combo"         ];
-            _comboSetSound    = [ SoundEffect soundEffectWithCaf: @"combo_set"     ];
-            _comboNotSetSound = [ SoundEffect soundEffectWithCaf: @"combo_not_set" ];
-            _successSound     = [ SoundEffect soundEffectWithCaf: @"success"       ];
-            _applauseSound    = [ SoundEffect soundEffectWithCaf: @"applause"      ];
+            _restartSound     = [ SoundEffect newSoundEffectWithCaf: @"restart"       ];
+            _comboSound       = [ SoundEffect newSoundEffectWithCaf: @"combo"         ];
+            _comboSetSound    = [ SoundEffect newSoundEffectWithCaf: @"combo_set"     ];
+            _comboNotSetSound = [ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ];
+            _successSound     = [ SoundEffect newSoundEffectWithCaf: @"success"       ];
+            _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
             
             // Not currently spinning
             firstWedgeTouched = -1;

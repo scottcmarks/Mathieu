@@ -224,6 +224,9 @@
 		D2AE5CBD0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CBE0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CE50FACEAA80093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5CBF0FACEAA80093E56B /* Images */; };
+		D2B7EA7E11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
+		D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
+		D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2EE166B0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
 		D2EE166C0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
@@ -328,7 +331,6 @@
 		D2AE583E0FACE81D0093E56B /* SimpleButtonRoundHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleButtonRoundHighlighted.png; sourceTree = "<group>"; };
 		D2AE583F0FACE81D0093E56B /* SimpleDarkButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleDarkButtonHighlighted.png; sourceTree = "<group>"; };
 		D2AE58400FACE81D0093E56B /* SimpleDarkButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleDarkButtonNormal.png; sourceTree = "<group>"; };
-		D2AE58470FACE81D0093E56B /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneUtilities.h; sourceTree = "<group>"; };
 		D2AE58480FACE81D0093E56B /* Kit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kit.h; sourceTree = "<group>"; };
 		D2AE584E0FACE81D0093E56B /* SoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffect.h; sourceTree = "<group>"; };
 		D2AE584F0FACE81D0093E56B /* SoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffect.m; sourceTree = "<group>"; };
@@ -366,6 +368,8 @@
 		D2AE5C860FACEA6C0093E56B /* Generic_Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generic_Images; sourceTree = "<group>"; };
 		D2AE5C990FACEA8C0093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		D2AE5CBF0FACEAA80093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		D2B7EA7C11D32AF600BCE169 /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneUtilities.h; sourceTree = "<group>"; };
+		D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPhoneUtilities.m; sourceTree = "<group>"; };
 		D2EE16690FCCFB59005DA002 /* OKCancelAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OKCancelAlertView.h; sourceTree = "<group>"; };
 		D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OKCancelAlertView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -732,9 +736,9 @@
 		D2AE58220FACE81D0093E56B /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D2B7EA7B11D32AF600BCE169 /* iPhoneUtilities */,
 				D2EE16680FCCFB59005DA002 /* OKCancelAlertView */,
 				D2AE58230FACE81D0093E56B /* Buttons */,
-				D2AE58470FACE81D0093E56B /* iPhoneUtilities.h */,
 				D2AE58480FACE81D0093E56B /* Kit.h */,
 				D2AE584C0FACE81D0093E56B /* SoundEffect */,
 			);
@@ -962,6 +966,15 @@
 				D2AE5AED0FACE9BB0093E56B /* view.h */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		D2B7EA7B11D32AF600BCE169 /* iPhoneUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				D2B7EA7C11D32AF600BCE169 /* iPhoneUtilities.h */,
+				D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */,
+			);
+			path = iPhoneUtilities;
 			sourceTree = "<group>";
 		};
 		D2EE16680FCCFB59005DA002 /* OKCancelAlertView */ = {
@@ -1246,6 +1259,7 @@
 				D2AE5BB70FACE9BB0093E56B /* m12.cc in Sources */,
 				D2AE5BFD0FACE9BB0093E56B /* view.cc in Sources */,
 				D2EE166D0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
+				D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1276,6 +1290,7 @@
 				D2AE5B6D0FACE9BB0093E56B /* m24.cc in Sources */,
 				D2AE5B750FACE9BB0093E56B /* view.cc in Sources */,
 				D2EE166C0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
+				D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1306,6 +1321,7 @@
 				D2AE5C3F0FACE9BB0093E56B /* m12.cc in Sources */,
 				D2AE5C850FACE9BB0093E56B /* view.cc in Sources */,
 				D2EE166E0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */,
+				D2B7EA7E11D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1367,7 +1383,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1379,7 +1395,7 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73904C98-E4A7-47D4-8487-E58198398D56";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Debug;
 		};
@@ -1388,7 +1404,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1398,7 +1414,7 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73904C98-E4A7-47D4-8487-E58198398D56";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Release;
 		};
@@ -1406,7 +1422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1418,6 +1434,7 @@
 				);
 				INFOPLIST_FILE = M24/Info.plist;
 				PRODUCT_NAME = SporadicM24;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1425,7 +1442,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1435,6 +1452,7 @@
 				);
 				INFOPLIST_FILE = M24/Info.plist;
 				PRODUCT_NAME = SporadicM24;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1443,8 +1461,8 @@
 			buildSettings = {
 				ADDITIONAL_SDKS = "";
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1452,8 +1470,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73904C98-E4A7-47D4-8487-E58198398D56";
-				SDKROOT = iphoneos2.2.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.1.3;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
 			name = Debug;
@@ -1462,15 +1481,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73904C98-E4A7-47D4-8487-E58198398D56";
-				SDKROOT = iphoneos2.2.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.1.3;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
 			name = Release;
@@ -1479,15 +1499,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "817C9C39-BE0F-4E2E-AFFB-903193F4F062";
-				SDKROOT = iphoneos2.2.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.1.3;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
 			name = "App Store Distribution";
@@ -1513,7 +1535,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1523,7 +1545,7 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "817C9C39-BE0F-4E2E-AFFB-903193F4F062";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = "App Store Distribution";
 		};
@@ -1541,6 +1563,7 @@
 				);
 				INFOPLIST_FILE = M24/Info.plist;
 				PRODUCT_NAME = SporadicM24;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "App Store Distribution";
 		};
@@ -1579,15 +1602,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7289BEF9-3323-4D0C-9801-BC3396EFFD3A";
-				SDKROOT = iphoneos2.2.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.1.3;
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
 			name = "Ad Hoc Distribution";
@@ -1613,7 +1638,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jacqueline Marks";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1623,7 +1648,7 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7289BEF9-3323-4D0C-9801-BC3396EFFD3A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = "Ad Hoc Distribution";
 		};
@@ -1641,6 +1666,7 @@
 				);
 				INFOPLIST_FILE = M24/Info.plist;
 				PRODUCT_NAME = SporadicM24;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Ad Hoc Distribution";
 		};
