@@ -15,6 +15,7 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		D220848111FD7735005BDD5D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D220848011FD7735005BDD5D /* iTunesArtwork */; };
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D222B0800FF5937900B2618B /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
@@ -35,9 +36,6 @@
 		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
-		D28025360FFBBF9B008CA92E /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28025350FFBBF9B008CA92E /* Entitlements.plist */; };
-		D28025370FFBBF9B008CA92E /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28025350FFBBF9B008CA92E /* Entitlements.plist */; };
-		D28025380FFBBF9B008CA92E /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = D28025350FFBBF9B008CA92E /* Entitlements.plist */; };
 		D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
@@ -241,6 +239,7 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D220848011FD7735005BDD5D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		D222AEFC0FF578C400B2618B /* English */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = English; path = English.lproj/SporadicM12Icon_Prerendered.icns; sourceTree = "<group>"; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -619,6 +618,7 @@
 		D2AE55F30FACE47A0093E56B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D220848011FD7735005BDD5D /* iTunesArtwork */,
 				D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */,
 				D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */,
 			);
@@ -1121,7 +1121,7 @@
 				D2AE5BBD0FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
-				D28025370FFBBF9B008CA92E /* Entitlements.plist in Resources */,
+				D220848111FD7735005BDD5D /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1166,7 +1166,6 @@
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
-				D28025360FFBBF9B008CA92E /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1214,7 +1213,6 @@
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
-				D28025380FFBBF9B008CA92E /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1383,7 +1381,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1404,7 +1403,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1461,17 +1461,18 @@
 			buildSettings = {
 				ADDITIONAL_SDKS = "";
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
@@ -1481,143 +1482,42 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
 			};
 			name = Release;
 		};
-		D22A67D50FFBBCE100714FAF /* App Store Distribution */ = {
+		D2453C6D11FE07FA00896B14 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.1.3;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "25515472-BBFF-4BAC-A9DC-D7502A499168";
+				SDKROOT = iphoneos4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
-			};
-			name = "App Store Distribution";
-		};
-		D22A67D60FFBBCE100714FAF /* App Store Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"FREE=1",
-				);
-				INFOPLIST_FILE = M12/InfoFree.plist;
-				PRODUCT_NAME = SporadicM12Free;
-			};
-			name = "App Store Distribution";
-		};
-		D22A67D70FFBBCE100714FAF /* App Store Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"FREE=0",
-				);
-				INFOPLIST_FILE = M12/Info.plist;
-				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-			};
-			name = "App Store Distribution";
-		};
-		D22A67D80FFBBCE100714FAF /* App Store Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
-					"FREE=0",
-				);
-				INFOPLIST_FILE = M24/Info.plist;
-				PRODUCT_NAME = SporadicM24;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "App Store Distribution";
-		};
-		D22A67D90FFBBCE100714FAF /* App Store Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"TARGET_OS_MAC=1",
-					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
-					"FREE=0",
-					"ICONIC_PICTURE_ONLY=1",
-				);
-				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = SporadicM12;
-				SDKROOT = macosx10.5;
-				ZERO_LINK = NO;
-			};
-			name = "App Store Distribution";
-		};
-		D22A67DA0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COMPRESS_PNG_FILES = NO;
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.1.3;
-				TARGETED_DEVICE_FAMILY = 1;
-				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc Distribution";
 		};
-		D22A67DB0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+		D2453C6E11FE07FA00896B14 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1633,12 +1533,10 @@
 			};
 			name = "Ad Hoc Distribution";
 		};
-		D22A67DC0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+		D2453C6F11FE07FA00896B14 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1648,15 +1546,13 @@
 				);
 				INFOPLIST_FILE = M12/Info.plist;
 				PRODUCT_NAME = SporadicM12;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = "Ad Hoc Distribution";
 		};
-		D22A67DD0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+		D2453C7011FE07FA00896B14 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1666,11 +1562,10 @@
 				);
 				INFOPLIST_FILE = M24/Info.plist;
 				PRODUCT_NAME = SporadicM24;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Ad Hoc Distribution";
 		};
-		D22A67DE0FFBBCF600714FAF /* Ad Hoc Distribution */ = {
+		D2453C7111FE07FA00896B14 /* Ad Hoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1700,6 +1595,105 @@
 				ZERO_LINK = NO;
 			};
 			name = "Ad Hoc Distribution";
+		};
+		D2453C7211FE080400896B14 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLY_RULES_IN_COPY_FILES = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
+				COMPRESS_PNG_FILES = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "741E4AEB-69A4-4A10-8F7A-725641F06DB7";
+				SDKROOT = iphoneos4.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "App Store Distribution";
+		};
+		D2453C7311FE080400896B14 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=1",
+				);
+				INFOPLIST_FILE = M12/InfoFree.plist;
+				PRODUCT_NAME = SporadicM12Free;
+			};
+			name = "App Store Distribution";
+		};
+		D2453C7411FE080400896B14 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = M12/Info.plist;
+				PRODUCT_NAME = SporadicM12;
+			};
+			name = "App Store Distribution";
+		};
+		D2453C7511FE080400896B14 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
+					"FREE=0",
+				);
+				INFOPLIST_FILE = M24/Info.plist;
+				PRODUCT_NAME = SporadicM24;
+			};
+			name = "App Store Distribution";
+		};
+		D2453C7611FE080400896B14 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"TARGET_OS_MAC=1",
+					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
+					"FREE=0",
+					"ICONIC_PICTURE_ONLY=1",
+				);
+				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SporadicM12;
+				SDKROOT = macosx10.5;
+				ZERO_LINK = NO;
+			};
+			name = "App Store Distribution";
 		};
 		D266F90F0F7A9F120080CAD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1805,8 +1799,8 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				D22A67D70FFBBCE100714FAF /* App Store Distribution */,
-				D22A67DC0FFBBCF600714FAF /* Ad Hoc Distribution */,
+				D2453C6F11FE07FA00896B14 /* Ad Hoc Distribution */,
+				D2453C7411FE080400896B14 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1816,8 +1810,8 @@
 			buildConfigurations = (
 				8C1B8AE50F68470300F359D6 /* Debug */,
 				8C1B8AE60F68470300F359D6 /* Release */,
-				D22A67D80FFBBCE100714FAF /* App Store Distribution */,
-				D22A67DD0FFBBCF600714FAF /* Ad Hoc Distribution */,
+				D2453C7011FE07FA00896B14 /* Ad Hoc Distribution */,
+				D2453C7511FE080400896B14 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1827,8 +1821,8 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				D22A67D50FFBBCE100714FAF /* App Store Distribution */,
-				D22A67DA0FFBBCF600714FAF /* Ad Hoc Distribution */,
+				D2453C6D11FE07FA00896B14 /* Ad Hoc Distribution */,
+				D2453C7211FE080400896B14 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1838,8 +1832,8 @@
 			buildConfigurations = (
 				D266F90F0F7A9F120080CAD1 /* Debug */,
 				D266F9100F7A9F120080CAD1 /* Release */,
-				D22A67D60FFBBCE100714FAF /* App Store Distribution */,
-				D22A67DB0FFBBCF600714FAF /* Ad Hoc Distribution */,
+				D2453C6E11FE07FA00896B14 /* Ad Hoc Distribution */,
+				D2453C7311FE080400896B14 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1849,8 +1843,8 @@
 			buildConfigurations = (
 				D27C7B980FB21B9500ECAE6F /* Debug */,
 				D27C7B990FB21B9500ECAE6F /* Release */,
-				D22A67D90FFBBCE100714FAF /* App Store Distribution */,
-				D22A67DE0FFBBCF600714FAF /* Ad Hoc Distribution */,
+				D2453C7111FE07FA00896B14 /* Ad Hoc Distribution */,
+				D2453C7611FE080400896B14 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
