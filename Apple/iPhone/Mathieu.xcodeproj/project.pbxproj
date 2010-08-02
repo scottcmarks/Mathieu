@@ -250,7 +250,7 @@
 		D27C7C1F0FB2202700ECAE6F /* Mathieu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathieu_Prefix.pch; sourceTree = "<group>"; };
 		D27C7C300FB2211800ECAE6F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		D28025350FFBBF9B008CA92E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		D28025350FFBBF9B008CA92E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; plistStructureDefinitionIdentifier = "<none>"; sourceTree = "<group>"; };
 		D295286E0FB4B9E100BABAF4 /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
 		D2AE55A10FACE4560093E56B /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../../TODO.txt; sourceTree = SOURCE_ROOT; };
 		D2AE55A60FACE47A0093E56B /* BallRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingView.h; sourceTree = "<group>"; };
