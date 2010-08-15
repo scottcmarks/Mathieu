@@ -225,6 +225,9 @@
 		D2B7EA7E11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
+		D2CB55661214704B00D822AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CB55651214704B00D822AB /* Default.png */; };
+		D2CB55671214704B00D822AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CB55651214704B00D822AB /* Default.png */; };
+		D2CB55681214704B00D822AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CB55651214704B00D822AB /* Default.png */; };
 		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2EE166B0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
 		D2EE166C0FCCFB59005DA002 /* OKCancelAlertView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */; };
@@ -369,6 +372,7 @@
 		D2AE5CBF0FACEAA80093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		D2B7EA7C11D32AF600BCE169 /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneUtilities.h; sourceTree = "<group>"; };
 		D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPhoneUtilities.m; sourceTree = "<group>"; };
+		D2CB55651214704B00D822AB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		D2EE16690FCCFB59005DA002 /* OKCancelAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OKCancelAlertView.h; sourceTree = "<group>"; };
 		D2EE166A0FCCFB59005DA002 /* OKCancelAlertView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OKCancelAlertView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -584,6 +588,7 @@
 		D2AE55DC0FACE47A0093E56B /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				D2CB55651214704B00D822AB /* Default.png */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				D2AE55ED0FACE47A0093E56B /* Constants.h */,
 				D2AE55EE0FACE47A0093E56B /* M12 */,
@@ -1122,6 +1127,7 @@
 				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
 				D220848111FD7735005BDD5D /* iTunesArtwork in Resources */,
+				D2CB55661214704B00D822AB /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1166,6 +1172,7 @@
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
+				D2CB55671214704B00D822AB /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1213,6 +1220,7 @@
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
+				D2CB55681214704B00D822AB /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1382,7 +1390,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1404,7 +1412,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1462,7 +1470,7 @@
 				ADDITIONAL_SDKS = "";
 				APPLY_RULES_IN_COPY_FILES = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1483,7 +1491,7 @@
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
