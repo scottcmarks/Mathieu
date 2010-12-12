@@ -13,7 +13,7 @@
 @class HelpViewController;
 @class SwapPermutationsViewController;
 
-@interface PreferencesViewController : UIViewController 
+@interface PreferencesViewController : UIViewController
 {
     RootViewController * rootViewController ;
     HelpViewController * helpViewController ;

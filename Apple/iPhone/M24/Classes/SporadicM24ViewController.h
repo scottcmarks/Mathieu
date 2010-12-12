@@ -13,9 +13,9 @@
 
 @class RootViewController;
 
-@interface SporadicM24ViewController : UIViewController < UITextFieldDelegate, 
+@interface SporadicM24ViewController : UIViewController < UITextFieldDelegate,
                                                           UIAlertViewDelegate,
-                                                          ComboButtonTarget > 
+                                                          ComboButtonTarget >
 {
     RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;

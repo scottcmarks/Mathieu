@@ -50,30 +50,30 @@ using namespace std;
     // Allow data to be nil
     if ( ! data )
         return [ self init ];
-    
-    
+
+
     __timestamp__;
-    
+
 	if ( self = [super init] ) {
-        
+
         __timestamp__;
-        
+
         stringstream ss;
         const char * bytes = ( const char * ) data.bytes;
         size_t length = data.length;
         ss.write( bytes, length );
-        
+
         __timestamp__;
-        
+
         currentPermutation  = [ self serializePermutationFrom: ss ];
-        
+
         __timestamp__;
-        
+
         startingPermutation = [ self serializePermutationFrom: ss ];
 	}
-    
+
     __timestamp__;
-    
+
 	return self;
 }
 
@@ -113,7 +113,7 @@ using namespace std;
     const wchar_t * wchar_history = history_text.c_str( );
     unichar * uni_history = (unichar *)calloc( history_size, sizeof( unichar ) );
     assert( uni_history );
-    
+
     // The following is a reprehensible hack occasioned by
     // the inability of the local wcstombs implementation
     // to handle the superscriptMinusOne characters.
@@ -171,7 +171,7 @@ static inline M24Permutation & as( M24PermutationWithHistory & p) { return (* ( 
 
 -(void) random{
 	(*currentPermutation).random( );
-    [ self setStartingPermutation: new M24PermutationWithHistory( *currentPermutation ) ]; 
+    [ self setStartingPermutation: new M24PermutationWithHistory( *currentPermutation ) ];
 }
 
 -(bool) undo: (bool)move move: ( HistoryElement & ) e
@@ -200,7 +200,7 @@ static inline M24Permutation & as( M24PermutationWithHistory & p) { return (* ( 
 {
     M24PermutationWithHistory comboDef( * currentPermutation );
     if ( startingPermutation )
-        as( comboDef ) = as( * startingPermutation ).inverse( ) * as( comboDef ); 
+        as( comboDef ) = as( * startingPermutation ).inverse( ) * as( comboDef );
     (*currentPermutation).set_macro( c, comboDef );
 }
 

@@ -19,13 +19,13 @@
 - ( void ) showInitialHelpScreen
 {
     NSURL * indexURL = [NSURL URLWithString: @"index.html" relativeToURL: baseURL];
-    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:indexURL ] ];    
+    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:indexURL ] ];
 }
 
 - ( void ) showErrorScreen: ( NSError *)error
 {
     NSURL * errorURL = [NSURL URLWithString: @"error.html" relativeToURL: baseURL];
-    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];    
+    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];
 }
 
 - (void) awakeFromNib{
@@ -37,7 +37,7 @@
 
 -(void) reportError: (NSError *)error
 {
-	// report the error 
+	// report the error
     [ self showErrorScreen: error ];
 }
 

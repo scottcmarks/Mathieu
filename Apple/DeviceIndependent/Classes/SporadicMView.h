@@ -13,16 +13,16 @@
 @class SporadicMViewController;
 @class DualActionButton;
 @class GameModel;
-@interface SporadicMView : UIView // TransitionView 
+@interface SporadicMView : UIView // TransitionView
 {
 
     SporadicMViewController * controller;
     Label * moves;
     NSTimer * historyTextUpdatingTimer;
-    BallRingView * ballRingView;    
-    
+    BallRingView * ballRingView;
+
     NSString * historyTextCache;
-    
+
     DualActionButton * shakeButton;
     DualActionButton * altButton;
     DualActionButton * undoButton;
@@ -54,7 +54,7 @@
 @property ( nonatomic, retain   )          NSTimer                 * historyTextUpdatingTimer;
 @property ( nonatomic, retain   )          NSString                * historyTextCache;
 
--( void ) updateHistoryText;    
+-( void ) updateHistoryText;
 
 -( void ) showCurrentPermutationAtDuration: ( CGFloat ) duration;
 -( void ) setInvertibleButtonsInverted:( bool )inverted;
