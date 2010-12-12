@@ -14,7 +14,7 @@
 @class SoundEffect;
 @class BallView;
 
-@interface BallRingView : View 
+@interface BallRingView : View
 {
     CGFloat   _circleRadius;
     CGPoint   _circleCenter;
@@ -39,7 +39,7 @@
     int lastWedgeTouched;
     double firstThetaTouched;
     double lastThetaTouched;
-    PermArray spinStartingPosition;    
+    PermArray spinStartingPosition;
     id < BallRingViewDelegate > _delegate;
     //  bool animateBallPops;
 }

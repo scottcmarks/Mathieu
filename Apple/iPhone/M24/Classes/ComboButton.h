@@ -23,12 +23,12 @@
 }
 
 // Convenience method -- return button has been autoreleased
-+ ( id ) comboButtonWithFrame: ( CGRect                  ) frame  
++ ( id ) comboButtonWithFrame: ( CGRect                  ) frame
                        target: ( id< ComboButtonTarget > ) target
                     comboName: ( HistoryElement          ) comboName ;
 
 // Initializer used by above convenience method
-- (id) initWithFrame: ( CGRect                  ) frame  
+- (id) initWithFrame: ( CGRect                  ) frame
               target: ( id< ComboButtonTarget > ) target
            comboName: ( HistoryElement          ) comboName ;
 

@@ -50,7 +50,7 @@ const CGFloat helpFontSize = 11.0;
                         "Restart and Home.  Confirm\n"
                         "combo set or erase of a\n"
                         "previously-set combo.";
-    
+
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
@@ -65,18 +65,18 @@ const CGFloat helpFontSize = 11.0;
 
 - ( void ) willMoveToSuperview: ( View *) newSuperView
 {
-    if ( newSuperView ) 
+    if ( newSuperView )
     {
         NSString * cycles = self.appDelegate.gameModel.cycles;
 #if ( nBalls == 24 )  && defined( SHOW_M24_CURRENT_PERMUTATION )
-            NSRange brk = [ cycles rangeOfString:@") (" 
+            NSRange brk = [ cycles rangeOfString:@") ("
                                          options:NSLiteralSearch
                                            range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
             cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
             currentPermutation.font = [ Font systemFontOfSize:13.0 ];
 #endif
         currentPermutation.text = cycles;
-        
+
     }
 }
 

@@ -6,7 +6,7 @@
 //  Copyright Magnolia Heights Research and Development. 2008. All rights reserved.
 //
 
-#include "rand_utils.h"    
+#include "rand_utils.h"
 #import "RootViewController.h"
 #import "SporadicM24AppDelegate.h"
 #import "GameModel.h"
@@ -35,36 +35,36 @@ static NSString *SporadicM24GameModelKey      = @"SporadicM24GameModelKey"      
 // is a good place to set up application defaults
 + (void)initialize {
     if ( self == [SporadicM24AppDelegate class]) {
-        
+
         __timestamp__;
-        
+
         initialize_rand( );  //TODO: mach_time?
-        
-        // Register default values for the persistent state. 
+
+        // Register default values for the persistent state.
         // This will be used when the app has never previously terminated.
-        [ [ NSUserDefaults standardUserDefaults ]  
-              registerDefaults: [ NSDictionary 
-                                      dictionaryWithObjectsAndKeys: 
+        [ [ NSUserDefaults standardUserDefaults ]
+              registerDefaults: [ NSDictionary
+                                      dictionaryWithObjectsAndKeys:
                                       [ NSNumber numberWithFloat: 2.0 ] , SporadicM24AnimationSpeedKey ,
                                       [ NSNumber numberWithBool:true  ] , SporadicM24SoundEffectsKey   ,
                                       [ NSNumber numberWithBool:true  ] , SporadicM24ConfirmKey        ,
                                       [ NSNumber numberWithBool:false ] , SporadicM24InvertKey         ,
                                       [ NSNumber numberWithBool:false ] , SporadicM24SpinMessagesKey   ,
                                       // no default gameModel -- nil will map to new game
-                                      nil // sentinel for brain-dead C varargs 
-                                 ] 
+                                      nil // sentinel for brain-dead C varargs
+                                 ]
         ];
-        
+
         __timestamp__;
-        
+
     }
 }
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
-- (void)applicationDidFinishLaunching:(UIApplication *)application 
+- (void)applicationDidFinishLaunching:(UIApplication *)application
 {
     __timestamp__;
-    
+
    // Restore application settings
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
     self.animationSpeed  = [ defaults floatForKey:SporadicM24AnimationSpeedKey ];
@@ -74,22 +74,22 @@ static NSString *SporadicM24GameModelKey      = @"SporadicM24GameModelKey"      
     self.useSpinMessages = [ defaults boolForKey: SporadicM24SpinMessagesKey   ];
 
     __timestamp__;
-    
+
     self.gameModel       = [ GameModel createFromData:[ defaults dataForKey:SporadicM24GameModelKey ] ];
-    
+
     __timestamp__;
-    
-    // Set up root view controller 
+
+    // Set up root view controller
     rootViewController = [[RootViewController alloc] init];
-    
+
     __timestamp__;
-    
+
     // Add the root view controller's view to the window.
     // This is a little sneaky, as the view property will
     // create a view on demand, and even call viewDidLoad on it.
     [ window addSubview: [ rootViewController view ] ];
     __timestamp__;
-    
+
 }
 
 // Invoked immediately before the application terminates.

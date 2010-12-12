@@ -12,14 +12,14 @@
 @class PreferencesViewController;
 @class GameModel;
 
-@interface RootViewController : ViewController 
+@interface RootViewController : ViewController
 #if TARGET_OS_IPHONE
                                                 <UIAccelerometerDelegate>
 #endif /* TARGET_OS_IPHONE */
 {
     SporadicMViewController *mainViewController;
     PreferencesViewController *preferencesViewController;
-    
+
 #if TARGET_OS_IPHONE
 	UIAccelerationValue	myAccelerometer[3];
     CFTimeInterval		lastShakeTime;
@@ -45,14 +45,14 @@
 - ( void ) setSwapIndex: ( int ) newSwapIndex;
 
 - (void) toggleView;
-typedef enum 
-{ 
+typedef enum
+{
     curl,
     flip,
     flop
 } RootViewControllerTransition;
-- (void) flipFrom: ( ViewController * ) oldViewController 
-               to: ( ViewController * ) newViewController 
+- (void) flipFrom: ( ViewController * ) oldViewController
+               to: ( ViewController * ) newViewController
        transition: ( RootViewControllerTransition ) transition;
 
 @end

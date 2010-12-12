@@ -6,7 +6,7 @@
 //  Copyright Magnolia Heights Research and Development. 2008. All rights reserved.
 //
 
-#include "rand_utils.h"    
+#include "rand_utils.h"
 #import "RootViewController.h"
 #import "SporadicMAppDelegate.h"
 #import "GameModel.h"
@@ -34,36 +34,36 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 // is a good place to set up application defaults
 + (void)initialize {
     if ( self == [SporadicMAppDelegate class]) {
-        
+
         __timestamp__;
-        
+
         initialize_rand( );  //TODO: mach_time?
-        
-        // Register default values for the persistent state. 
+
+        // Register default values for the persistent state.
         // This will be used when the app has never previously terminated.
-        [ [ NSUserDefaults standardUserDefaults ]  
-              registerDefaults: [ NSDictionary 
-                                      dictionaryWithObjectsAndKeys: 
+        [ [ NSUserDefaults standardUserDefaults ]
+              registerDefaults: [ NSDictionary
+                                      dictionaryWithObjectsAndKeys:
                                       [ NSNumber numberWithFloat: 2.0 ] , SporadicMAnimationSpeedKey ,
                                       [ NSNumber numberWithBool:true  ] , SporadicMSoundEffectsKey   ,
                                       [ NSNumber numberWithBool:true  ] , SporadicMConfirmKey        ,
                                       [ NSNumber numberWithBool:false ] , SporadicMInvertKey         ,
                                       [ NSNumber numberWithBool:false ] , SporadicMSpinMessagesKey   ,
                                       // no default gameModel -- nil will map to new game
-                                      nil // sentinel for brain-dead C varargs 
-                                 ] 
+                                      nil // sentinel for brain-dead C varargs
+                                 ]
         ];
-        
+
         __timestamp__;
-        
+
     }
 }
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
-- (void)applicationDidFinishLaunching:(Application *)application 
+- (void)applicationDidFinishLaunching:(Application *)application
 {
     __timestamp__;
-    
+
    // Restore application settings
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
     self.animationSpeed  = [ defaults floatForKey:SporadicMAnimationSpeedKey ];
@@ -72,18 +72,18 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
     self.invert          = [ defaults boolForKey: SporadicMInvertKey         ];
 
     __timestamp__;
-    
+
     self.gameModel       = [ GameModel createFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
-    
+
     __timestamp__;
-    
-    // Set up root view controller 
+
+    // Set up root view controller
     RootViewController *viewController = [[RootViewController alloc] init];
     self.rootViewController = viewController;
     [viewController release];
-    
+
     __timestamp__;
-    
+
     // Add the root view controller's view to the window
 #if TARGET_OS_IPHONE
     View * rootView = [ rootViewController view ];
@@ -95,7 +95,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 #error Don't know this platform!
 #endif
     __timestamp__;
-    
+
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed: (Application *)sender

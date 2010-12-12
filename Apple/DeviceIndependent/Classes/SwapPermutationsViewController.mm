@@ -57,11 +57,11 @@
     [super dealloc];
 }
 
-- (IBAction)dismissSwapPermutations:(id)sender 
+- (IBAction)dismissSwapPermutations:(id)sender
 {
     int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
     if ( newSwapIndex != self.gameModel.swapIndex )
-        [ rootViewController setSwapIndex: newSwapIndex ]; 
+        [ rootViewController setSwapIndex: newSwapIndex ];
     else
         [ rootViewController toggleView ];
 }

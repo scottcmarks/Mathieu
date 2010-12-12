@@ -21,6 +21,6 @@ LIGHT_BLUE_AZURE  , \
 LIGHT_HARD_ORANGE , \
 YELLOW            , \
 DARK_HARD_GREEN   , \
-RED               
+RED
 
 #endif /* !defined(__M12CONSTANTS_H_INCLUDED__) */
