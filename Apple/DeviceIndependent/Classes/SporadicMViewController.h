@@ -16,15 +16,15 @@
 @class OKCancelAlertView  ;
 
 #if TARGET_OS_IPHONE
-@interface SporadicMViewController : UIViewController 
-                                                    < UITextFieldDelegate, 
+@interface SporadicMViewController : UIViewController
+                                                    < UITextFieldDelegate,
                                                       UIAlertViewDelegate,
                                                       ComboButtonTarget,
-                                                      BallRingViewDelegate > 
+                                                      BallRingViewDelegate >
 #elif TARGET_OS_MAC
-@interface SporadicMViewController : NSViewController 
+@interface SporadicMViewController : NSViewController
                                                     < ComboButtonTarget,
-                                                      BallRingViewDelegate > 
+                                                      BallRingViewDelegate >
 #else
 #error Don't know this platform!
 #endif

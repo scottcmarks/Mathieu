@@ -11,7 +11,7 @@
 @class RootViewController;
 @class GameModel;
 
-@interface SporadicMAppDelegate : NSObject 
+@interface SporadicMAppDelegate : NSObject
 #if TARGET_OS_IPHONE
                                            <UIApplicationDelegate>
 #endif /* TARGET_OS_IPHONE */
@@ -23,7 +23,7 @@
     bool confirm;
     bool invert;
     GameModel * gameModel;
-    
+
 }
 
 // You'd think that the Interface builder would expand preprocessor constants, but apparently not

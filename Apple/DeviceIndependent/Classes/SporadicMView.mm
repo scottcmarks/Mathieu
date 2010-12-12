@@ -92,7 +92,7 @@
     //
     // is, amazingly, worse -- it brings up the keyboard!  To avoid that, the
     // history would need to be subclassed to respond NO to canBecomeFirstResponder.
-    //    
+    //
 }
 
 - ( void ) historyUpdatingTimerFired: (NSTimer *) theTimer
@@ -108,11 +108,11 @@
                                alternateTitle: ( NSString * ) alternateTitle
 {	
 #if TARGET_OS_IPHONE
-    DualActionButton * button = 
-        [ DualActionButton dualActionButtonWithFrame: CGRectMake( center.x - width/2, 
-                                                                  center.y - toolbarButtonHeight/2, 
-                                                                  width, 
-                                                                  toolbarButtonHeight) 
+    DualActionButton * button =
+        [ DualActionButton dualActionButtonWithFrame: CGRectMake( center.x - width/2,
+                                                                  center.y - toolbarButtonHeight/2,
+                                                                  width,
+                                                                  toolbarButtonHeight)
                                               target: self.controller
                                       normalSelector: normalSelector
                                          normalTitle: normalTitle
@@ -131,7 +131,7 @@
                                      comboName: ( HistoryElement ) comboName
 {
 #if TARGET_OS_IPHONE
-    return  [ ComboButton comboButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight) 
+    return  [ ComboButton comboButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight)
                                         target: self.controller
                                      comboName: comboName ] ;
 #elif TARGET_OS_MAC
@@ -144,8 +144,8 @@
 - (DualActionButton *)createToolbarAltButtonWidth: ( CGFloat    ) width
 {
 #if TARGET_OS_IPHONE
-    return [ [ DualActionButton alloc ] 
-            initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)   
+    return [ [ DualActionButton alloc ]
+            initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)
             target:            self.controller
             normalSelector:    @selector( toggleInverted: )
             normalTitle:       @"Alt"
@@ -177,7 +177,7 @@
     button.center = INFO_BUTTON_CENTER;
 #error Don't know this platform!
 #endif
-    
+
     return button;
 }
 
@@ -194,25 +194,25 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 #else
 #error Don't know this platform!
 #endif
-    CGFloat ballRingFrameSize = min ( CGRectGetWidth( frame ), 
+    CGFloat ballRingFrameSize = min ( CGRectGetWidth( frame ),
                                       CGRectGetHeight( frame ) );
-    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( frame ), 
-                                                                     CGRectGetMinY( frame ), 
-                                                                     ballRingFrameSize, ballRingFrameSize ) 
-                                                   tags: YES 
+    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( frame ),
+                                                                     CGRectGetMinY( frame ),
+                                                                     ballRingFrameSize, ballRingFrameSize )
+                                                   tags: YES
                                                delegate: self.controller ];
     [ self addSubview: ( View *) ballRingView ];
-    
-#if !ICONIC_PICTURE_ONLY        
+
+#if !ICONIC_PICTURE_ONLY
 
 	history.font = [Font systemFontOfSize:historyFontSize ];
     self.historyTextCache = @"";
     moves.font = [ Font systemFontOfSize:movesFontSize ];
     moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
-    
+
      // Create and add all the action buttons
-    struct { NSString * normalTitle; SEL normalSelector; 
-             NSString * alternateTitle; SEL alternateSelector; 
+    struct { NSString * normalTitle; SEL normalSelector;
+             NSString * alternateTitle; SEL alternateSelector;
              CGPoint center; CGFloat width; Button * * variable; } dualActionButtons[ ] = {
                  { @"Shake", @selector(shake:)    , @"Restart", @selector(restart:)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
                  { @"Home" , @selector(home:)     , nil       , NULL                 , { 268,  34 }, largeActionButtonWidth , NULL         },
@@ -225,7 +225,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     {
 #if TARGET_OS_IPHONE
         DualActionButton * dualActionButton =  [ self createActionButtonAt: dualActionButtons[ i ].center
-                                                                     width: dualActionButtons[ i ].width 
+                                                                     width: dualActionButtons[ i ].width
                                                             normalSelector: dualActionButtons[ i ].normalSelector
                                                                normalTitle: dualActionButtons[ i ].normalTitle
                                                          alternateSelector: dualActionButtons[ i ].alternateSelector
@@ -238,29 +238,29 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 #error Don't know this platform!
 #endif
     }
-    
-    
+
+
 
     // Create and add the toolbar buttons
     struct { ToolbarButtonType type;
              NSString * title;
              CGFloat width;
-           } toolbarButtons[ ] = 
+           } toolbarButtons[ ] =
            {
                { flexibleSpace                            },
                { comboButton  ,  @"A"  , comboButtonWidth },
-#if FREE               
+#if FREE
                { flexibleSpace                            },
-#endif               
-               
+#endif
+
                { comboButton  ,  @"B"  , comboButtonWidth },
-#if !FREE               
+#if !FREE
                { comboButton  ,  @"C"  , comboButtonWidth },
                { comboButton  ,  @"D"  , comboButtonWidth },
-    #if !defined( infoInToolbar )               
+    #if !defined( infoInToolbar )
                { comboButton  ,  @"E"  , comboButtonWidth },
-    #endif               
-#endif               
+    #endif
+#endif
                { flexibleSpace                            },
                { invButton    ,  @"Alt", altButtonWidth   },
                { flexibleSpace                            },
@@ -320,7 +320,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         theToolbarItem.tag = type;
         [ toolbarArray addObject: theToolbarItem ];
     }
-    
+
 #if TARGET_OS_IPHONE
     [ toolbar setItems:toolbarArray animated: false];
 #elif TARGET_OS_MAC
@@ -328,30 +328,30 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 #else
 #error Don't know this platform!
 #endif
-    
+
     [ self addSubview: [ self createInfoButton ] ];
 
-    
+
     // Establish invariant between combo definednesses and combo buttons appearance
     for ( HistoryElement c='A'; c<=lastComboButton; c++ )
         [ self setComboButton:c enabled:[ self.gameModel hasDefinedCombo:c ] ];
-    
+
     // Establish invariant between self.invert and the buttons appearance
     // as the buttons are created in the non-inverted state
     // Also, in the current hacked code, the buttons need to be correctly
     // pseudo-disabled (or not) to avoid being inverted while p-d.
     buttonsInverted = false;
     if ( self.invert ) [self setInvertibleButtonsInverted: true ];
-    
+
 
     // Let's see it
     [ self showCurrentPermutationAtDuration: INSTANTANEOUS ];
-    
+
     // Start history text updating timer
-    self.historyTextUpdatingTimer = [ NSTimer timerWithTimeInterval:(NSTimeInterval)0.2 
-                                                             target:self 
-                                                           selector:@selector(historyUpdatingTimerFired:) 
-                                                           userInfo:nil 
+    self.historyTextUpdatingTimer = [ NSTimer timerWithTimeInterval:(NSTimeInterval)0.2
+                                                             target:self
+                                                           selector:@selector(historyUpdatingTimerFired:)
+                                                           userInfo:nil
                                                             repeats:YES ];
     [ [ NSRunLoop currentRunLoop ] addTimer:self.historyTextUpdatingTimer forMode: NSDefaultRunLoopMode];
 
@@ -365,7 +365,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     #else
     #error Don't know this platform!
     #endif
-    
+
 #endif
 
 }
@@ -432,8 +432,8 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
             button.disabled = true;
         }
 }
-    
--(void) showCurrentPermutationAtDuration:(CGFloat)duration 
+
+-(void) showCurrentPermutationAtDuration:(CGFloat)duration
 {
 #if TARGET_OS_IPHONE
     duration *= ( MAX_ANIMATION_DURATION_FACTOR - self.animationSpeed ) ;
@@ -444,16 +444,16 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         [View setAnimationDuration: duration ];
     }
 #endif
-    
+
     [ ballRingView moveLabels ];
 
 #if TARGET_OS_IPHONE
     if ( 0.0 < duration )
         [View commitAnimations];
 #endif
-    
+
     [ self updateHistoryText ];
-    
+
     [ undoButton setEnabled: ! [ self.gameModel historyIsEmpty ] ] ;
 }
 

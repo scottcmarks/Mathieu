@@ -19,22 +19,22 @@
 }
 
 
-- ( id ) initWithTitle: ( NSString * ) title 
-               message: ( NSString * ) message 
+- ( id ) initWithTitle: ( NSString * ) title
+               message: ( NSString * ) message
                 target: ( id  ) targ
         cancelSelector: ( SEL ) cancelSel
-            OKSelector: ( SEL ) OKSel 
+            OKSelector: ( SEL ) OKSel
 {
     if ( self = [ super init ] )
     {
-        alert = [ [ UIAlertView alloc ] initWithTitle: title 
-                                              message: message 
+        alert = [ [ UIAlertView alloc ] initWithTitle: title
+                                              message: message
                                              delegate: self
-                                    cancelButtonTitle: @"Cancel" 
+                                    cancelButtonTitle: @"Cancel"
                                     otherButtonTitles: @"OK", nil ] ;
         if ( ! alert ) return nil;
         [ alert retain ] ;
-        target         = targ      ; 
+        target         = targ      ;
         cancelSelector = cancelSel ;
         OKSelector     = OKSel     ;
         hasParameter   = false     ;
@@ -44,23 +44,23 @@
 }
 
 
-- ( id ) initWithTitle: ( NSString * ) title 
-               message: ( NSString * ) message 
+- ( id ) initWithTitle: ( NSString * ) title
+               message: ( NSString * ) message
                 target: ( id  ) targ
         cancelSelector: ( SEL ) cancelSel
-            OKSelector: ( SEL ) OKSel 
+            OKSelector: ( SEL ) OKSel
              parameter: ( id ) param
 {
     if ( self = [ super init ] )
     {
-        alert = [ [ UIAlertView alloc ] initWithTitle: title 
-                                              message: message 
+        alert = [ [ UIAlertView alloc ] initWithTitle: title
+                                              message: message
                                              delegate: self
-                                    cancelButtonTitle: @"Cancel" 
+                                    cancelButtonTitle: @"Cancel"
                                     otherButtonTitles: @"OK", nil ] ;
         if ( ! alert ) return nil;
         [ alert retain ] ;
-        target         = targ      ; 
+        target         = targ      ;
         cancelSelector = cancelSel ;
         OKSelector     = OKSel     ;
         hasParameter   = true      ;
@@ -75,7 +75,7 @@
 {
     // the user clicked one of the OK/Cancel buttons
     SEL sel =  buttonIndex == alertView.cancelButtonIndex ? cancelSelector : OKSelector ;
-    if ( sel ) 
+    if ( sel )
     {
         if ( hasParameter )
             [ target performSelector: sel withObject: parameter ] ;
@@ -85,15 +85,15 @@
 }
 
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
++ ( void )OKCancelAlertWithTitle: ( NSString * ) title
+                         message: ( NSString * ) message
                           target: ( id ) target
                   cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel 
+                      OKSelector: ( SEL ) OKSel
 {
     OKCancelAlertView * alert = [ [ [ OKCancelAlertView alloc ]
-                                   initWithTitle: title 
-                                   message: message 
+                                   initWithTitle: title
+                                   message: message
                                    target: target
                                    cancelSelector: cancelSel
                                    OKSelector: OKSel ] retain ];
@@ -105,19 +105,19 @@
 }
 
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
++ ( void )OKCancelAlertWithTitle: ( NSString * ) title
+                         message: ( NSString * ) message
                           target: ( id ) target
                   cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel 
+                      OKSelector: ( SEL ) OKSel
                        parameter: ( id ) parameter
 {
     OKCancelAlertView * alert = [ [ [ OKCancelAlertView alloc ]
-                                        initWithTitle: title 
-                                              message: message 
+                                        initWithTitle: title
+                                              message: message
                                                target: target
                                        cancelSelector: cancelSel
-                                           OKSelector: OKSel 
+                                           OKSelector: OKSel
                                             parameter: parameter] retain ];
     if ( alert )
     {

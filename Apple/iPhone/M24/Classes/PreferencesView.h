@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface PreferencesView : UIView 
+@interface PreferencesView : UIView
 {
     UISlider * animationSpeedSlider;
     UISwitch * soundEffectsSwitch;

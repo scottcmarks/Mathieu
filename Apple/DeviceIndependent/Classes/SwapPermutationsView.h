@@ -10,9 +10,9 @@
 
 @class BallRingView;
 #if TARGET_OS_IPHONE
-@interface SwapPermutationsView : UIView   <UIPickerViewDelegate , UIPickerViewDataSource> 
+@interface SwapPermutationsView : UIView   <UIPickerViewDelegate , UIPickerViewDataSource>
 #elif TARGET_OS_MAC
-@interface SwapPermutationsView : NSView 
+@interface SwapPermutationsView : NSView
 else
 #error Don't know this platform!
 #endif

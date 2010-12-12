@@ -75,16 +75,16 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
     return LARGE_MOVE_DURATION;
 }
 
-- ( void )updateDuration: ( CGFloat ) duration 
+- ( void )updateDuration: ( CGFloat ) duration
 {
     [ self.spview showCurrentPermutationAtDuration: duration ];
-    
+
     if ( [ self.gameModel isSolving ] && [ self.gameModel isIdentity ] && !haveNotedSuccess )
     {
         [ self.spview playSuccessSound ];
         haveNotedSuccess = true ;
     }
-    
+
 }
 
 - ( void ) showCurrentPermutationAfterMove: ( HistoryElement ) e
@@ -133,7 +133,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
                                        message: [ NSString stringWithFormat:alertFormat, verb, comboName ]
                                         target: self
                                 cancelSelector: NULL
-                                    OKSelector: @selector( doSetCombo: ) 
+                                    OKSelector: @selector( doSetCombo: )
                                      parameter: comboNameAsObject ];
 }
 
@@ -141,13 +141,13 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 - (void)comboSet: ( HistoryElement )comboName
 {
-    if ( [ self.gameModel historyIsEmpty ] 
+    if ( [ self.gameModel historyIsEmpty ]
             && ! [ self.gameModel hasDefinedCombo:  comboName ] )
         return;
-        
+
     [ self.spview playComboSetSound ];
     NSNumber * comboNameAsObject = [ NSNumber numberWithChar: comboName ] ;
-    if ( self.confirm ) 
+    if ( self.confirm )
         [ self confirmSetCombo: comboNameAsObject ];
     else
         [ self doSetCombo: comboNameAsObject ];
@@ -229,10 +229,10 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
     [ self updateDuration: LARGE_MOVE_DURATION ];
 }
 
--(void) confirmHome 
+-(void) confirmHome
 {
     [ OKCancelAlertView OKCancelAlertWithTitle: @"Home!"
-                                       message: @"This will reset M24 to the home position.\n" 
+                                       message: @"This will reset M24 to the home position.\n"
                                                 @"Press OK if you want to do this."
                                         target: self
                                 cancelSelector: NULL
@@ -276,7 +276,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 -(void) confirmShake{
     [ OKCancelAlertView OKCancelAlertWithTitle: @"Shake!"
-                                       message: @"This will create a new M24 puzzle.\n" 
+                                       message: @"This will create a new M24 puzzle.\n"
                                                 @"Press OK if you want to do this."
                                         target: self
                                 cancelSelector: @selector( noShake )
@@ -285,8 +285,8 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 -(void) confirmRestart
 {
-    [ OKCancelAlertView OKCancelAlertWithTitle: @"Restart!" 
-                                       message: @"This will restart solving this puzzle.\n" 
+    [ OKCancelAlertView OKCancelAlertWithTitle: @"Restart!"
+                                       message: @"This will restart solving this puzzle.\n"
                                                 @"Press OK if you want to do this."
                                         target: self
                                 cancelSelector: NULL
@@ -295,7 +295,7 @@ static inline CGFloat min( CGFloat a, CGFloat b ) { return a < b ? a : b ; }
 
 
 -(IBAction) shake: (id)sender{
-    [ self.spview playShakeSound ]; 
+    [ self.spview playShakeSound ];
     if ( self.confirm && [self.gameModel isSolving ] )
         [ self confirmShake ];
     else

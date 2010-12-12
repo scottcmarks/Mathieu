@@ -68,14 +68,14 @@
 
 - (void) setAnimationTransition:(UIViewAnimationTransition)transition {
 	[UIView setAnimationTransition:transition
-                           forView:self.view 
+                           forView:self.view
                              cache:YES];
 }
 
 - (void)toggleView:(UIViewController *)currentController {	
     // This method is called when the info or Done button is pressed.
     // It flips the displayed view from the main view to the flipside view and vice-versa.
-    
+
 	if (preferencesViewController == nil) {
 		[self loadPreferencesViewController];
 	}
@@ -87,7 +87,7 @@
         [self setAnimationTransition: UIViewAnimationTransitionFlipFromRight ];
         [self flipFrom: mainViewController to: preferencesViewController];
     }
-    else 
+    else
     {
         [self setAnimationTransition: UIViewAnimationTransitionFlipFromLeft ];
         [self flipFrom: preferencesViewController to: mainViewController];
@@ -112,13 +112,13 @@
 	y = acceleration.y - myAccelerometer[0];
 	z = acceleration.z - myAccelerometer[0];
 	
-	//Compute the intensity of the current acceleration 
+	//Compute the intensity of the current acceleration
 	length = sqrt(x * x + y * y + z * z);
 	// If above a given threshold, send the shake message
-	if ( ( kEraseAccelerationThreshold <= length) 
-        && (lastShakeTime + kMinEraseInterval < CFAbsoluteTimeGetCurrent() ) 
-        && [mainViewController.view superview] 
-        && ! self.nowHandlingShake ) 
+	if ( ( kEraseAccelerationThreshold <= length)
+        && (lastShakeTime + kMinEraseInterval < CFAbsoluteTimeGetCurrent() )
+        && [mainViewController.view superview]
+        && ! self.nowHandlingShake )
     {
         self.nowHandlingShake = true;
 		lastShakeTime = CFAbsoluteTimeGetCurrent();

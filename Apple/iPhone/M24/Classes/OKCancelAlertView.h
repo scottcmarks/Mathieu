@@ -14,24 +14,24 @@
     id            target         ;
     SEL           cancelSelector ;
     SEL           OKSelector     ;
-    UIAlertView * alert          ; 
+    UIAlertView * alert          ;
     bool          hasParameter   ;
     id            parameter      ;
 }
 
 @property ( nonatomic, retain ) id parameter;
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
++ ( void )OKCancelAlertWithTitle: ( NSString * ) title
+                         message: ( NSString * ) message
                           target: ( id ) target
                   cancelSelector: ( SEL ) cancelSel
                       OKSelector: ( SEL ) OKSel ;
 
-+ ( void )OKCancelAlertWithTitle: ( NSString * ) title 
-                         message: ( NSString * ) message 
++ ( void )OKCancelAlertWithTitle: ( NSString * ) title
+                         message: ( NSString * ) message
                           target: ( id ) target
                   cancelSelector: ( SEL ) cancelSel
-                      OKSelector: ( SEL ) OKSel 
+                      OKSelector: ( SEL ) OKSel
                        parameter: ( id ) parameter;
 
 @end

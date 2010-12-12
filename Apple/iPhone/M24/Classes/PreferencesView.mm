@@ -71,7 +71,7 @@ const CGFloat helpFontSize = 11.0;
                          "spinning the ball ring.  This\n"
                          "makes it easier to position\n"
                          "but with much rougher spinning.";
-    
+
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;

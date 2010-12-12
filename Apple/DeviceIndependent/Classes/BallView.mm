@@ -33,7 +33,7 @@ static BallColor ballColors[ nBalls ];
     }
 }
 
-+ ( void ) initialize 
++ ( void ) initialize
 {
     [ self setColorsForSwapPermutation: MathieuPermutation::swapPermutation] ;
 }
@@ -41,7 +41,7 @@ static BallColor ballColors[ nBalls ];
 
 - (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
 {
-    if ( self = [super initWithFrame:CGRect_to_NSRect(frame)] ) 
+    if ( self = [super initWithFrame:CGRect_to_NSRect(frame)] )
     {
         _ballNumber = ballNumber;
 #if TARGET_OS_IPHONE
@@ -62,7 +62,7 @@ static BallColor ballColors[ nBalls ];
     const float R = ballColors[ _ballNumber ].r / 255.0;
     const float G = ballColors[ _ballNumber ].g / 255.0;
     const float B = ballColors[ _ballNumber ].b / 255.0;
-    
+
     // Make the gradient
     const int nLocations = 3;
 
@@ -79,16 +79,16 @@ static BallColor ballColors[ nBalls ];
     CGColorSpaceRelease(rgb);
 
     // Draw a radial gradient to make the 2D image of a sphere cap lit from above
-    
-    CGContextRef ctx = 
+
+    CGContextRef ctx =
 #if TARGET_OS_IPHONE
                        UIGraphicsGetCurrentContext( );
 #elif TARGET_OS_MAC
                        ( CGContextRef ) [ [ NSGraphicsContext currentContext ] graphicsPort ];
-#else 
+#else
 #error Don't know this platform!
 #endif
-    
+
     CGContextClearRect(ctx, rect);
     CGContextDrawRadialGradient (ctx, gradient,
                                  CGPointMake( CGRectGetMidX( rect ), CGRectGetMidY( rect )  ),  // start point

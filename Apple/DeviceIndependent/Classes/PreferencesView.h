@@ -8,7 +8,7 @@
 
 #import "Kit.h"
 
-@interface PreferencesView : UIView 
+@interface PreferencesView : UIView
 {
     Slider * animationSpeedSlider;
     Switch * soundEffectsSwitch;
@@ -20,7 +20,7 @@
 #if TARGET_OS_IPHONE
 	UINavigationItem * navigationBar;
 #endif
-}    
+}
 @property( nonatomic, assign ) IBOutlet UISlider * animationSpeedSlider;
 @property( nonatomic, assign ) IBOutlet UISwitch * soundEffectsSwitch;
 @property( nonatomic, assign ) IBOutlet UISwitch * confirmSwitch;

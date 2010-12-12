@@ -27,114 +27,114 @@ typedef long int big_int;
 #define Rank big_int
 #define nRandomMoves 100
 
-class MathieuPermutation: public Permutation< nBalls, Index, Rank > 
+class MathieuPermutation: public Permutation< nBalls, Index, Rank >
 {
 public:
     typedef Permutation< nBalls, Index, Rank > super;
     typedef struct{ Index best; const PermArray swap; } swap_table_entry;
     static swap_table_entry swaps[ nSwaps ];
-    
+
     MathieuPermutation( )
     : super( )
     { };
-    
+
     MathieuPermutation( const MathieuPermutation& other )
     : super( other )
     { };
-    
+
     MathieuPermutation( const super& other )
     : super( other )
     { };
-    
+
     MathieuPermutation( const PermArray & p )
     : super( p )
     { }
-    
+
     MathieuPermutation( std::istream & serialization )
     : super( serialization )
-    { 
+    {
         serialization >> swapPermutationIndex;
         set_swapPermutationIndex( swapPermutationIndex );
     }
-    
+
     std::ostream & serialize( std::ostream & serialization )
     {
         super::serialize( serialization );
         serialization << ( int ) swapPermutationIndex;
         return serialization;
     };
-    
+
     MathieuPermutation & reset( )
     {
         super::reset( );
         return *this;
     };
-    
+
     MathieuPermutation & left ( Index count = 1 )
     {
         for ( Index i = 0 ; i < count ; i ++ ) *this /= rightPermutation ;
         return *this;
     };
-    
+
     MathieuPermutation & right( Index count = 1 )
     {
         for ( Index i = 0 ; i < count ; i ++ ) *this *= rightPermutation;
         return *this;
     };
-    
+
     MathieuPermutation & swap( )
     {
         *this *= swapPermutation ;
         return *this;
     };
-    
+
     MathieuPermutation & random( );
     MathieuPermutation & undo( );
-    
+
     MathieuPermutation & invert( )
     {
         super::invert( );
         return *this;
     };
-    
+
     MathieuPermutation inverse( ) const
     {
         MathieuPermutation result( *this );
         result.invert( );
         return result;
     };
-    
+
     MathieuPermutation operator *( const MathieuPermutation other) const
     {
         MathieuPermutation result( *this );
         result *= other;
         return result;
     };
-    
+
     MathieuPermutation operator /( const MathieuPermutation other) const
     {
         MathieuPermutation result( *this );
         result /= other;
         return result;
     };
-    
+
     void compute_indices( PermArray & f, Rank & r ) const
     {
         // Compute the inverse into f, by hand for speed
         Index i;
         for( i = 0 ; i < nBalls ; i++ ) f[ permutation[ i ] ] = i;
-        
+
         //  cout << "lookup_group: pinv=" << f << endl;
-        
-        
+
+
         // Do a factoradic, truncated to the first 5 elements
         // In particular, leave f[5] and f[6] untouched
         Index fi;
-        
+
         Index j;
         r = fi = f[ i = 0 ];
         goto after_the_multiply;
-        
+
         while ( ++i < 5 )
         {
             fi = f[ i ];
@@ -165,26 +165,26 @@ public:
             for ( Index j=0; j < 4; j++ )
             {
                 Index k=( i + j ) % ( nBalls - 1 ) + 1;
-                if ( ! ( permutation[ k ] == k ) ) goto not_this_k; 
+                if ( ! ( permutation[ k ] == k ) ) goto not_this_k;
             }
             return true;
-        not_this_k: 
+        not_this_k:
             ;
         }
         return false;
     }
 };
 
-class MathieuPermutationWithHistory: public MathieuPermutation 
+class MathieuPermutationWithHistory: public MathieuPermutation
 {
 public:
     typedef MathieuPermutation super;
     typedef signed char HistoryElement;
 
-    
-    class History: public std::vector<HistoryElement> 
+
+    class History: public std::vector<HistoryElement>
     {
-        
+
         // The representation of history is as a vector<signed char>, where
         // for each signed char
         //   -(nBalls-1)..-1  represents left moves
@@ -196,20 +196,20 @@ public:
         //
         // Macro moves are represented as 'A'...
         // and their inverses as -'A', ...
-        
+
     public:
         static inline bool is_left( HistoryElement e )
         { return -( nBalls - 1 ) <= e && e <= -1 ; };
-        
+
         static inline bool is_right( HistoryElement e )
         { return +1 <= e && e <= +( nBalls - 1 ) ; };
-        
+
         static inline bool is_left_or_right( HistoryElement e )
         { return is_left( e ) || is_right( e ) ; };
-        
+
         static inline bool is_swap( HistoryElement e )
         { return 0 == e ; };
-        
+
         template < typename ostream_type >
         ostream_type& insert( ostream_type& os,
                              ostream_type& insert_left ( ostream_type& os, int Count ),
@@ -231,18 +231,18 @@ public:
                     insert_macro( os, +*p );
             return os;
         };
-        
+
         History( ){ };
-        
+
         History( std::istream & serialization )
         {
             size_t length;
-            
+
             // Serialize in the history elements
             serialization.read( ( char * )&length, sizeof( length ) );
             resize( length );
             serialization.read( ( char * )&( * this )[ 0 ], ( std::streamsize )( length*sizeof( HistoryElement ) ) );
-            
+
             // Serialize in the macros
             serialization.read( ( char * )&length, sizeof( length ) );
             macros.clear( );
@@ -254,16 +254,16 @@ public:
                 macros.insert( x );
             }
         };
-        
+
         std::ostream & serialize( std::ostream & serialization )
         {
             size_t length;
-            
+
             // Serialize out the history elements
             length = size( );
             serialization.write( ( char * )&length, sizeof( length ) );
             serialization.write( ( char * )&( * this )[ 0 ], ( std::streamsize )( length*sizeof( HistoryElement ) ) );
-            
+
             //Serialze out the macros
             length = macros.size( );
             serialization.write( ( char * )&length, sizeof( length ) );
@@ -273,25 +273,25 @@ public:
                 serialization.write( ( char * )&x.first, sizeof( x.first ) );
                 x.second.serialize( serialization );
             }
-            
+
             return serialization;
         };
-        
+
         bool macro_is_defined ( const HistoryElement c ) const
         {
             return ( macros.find( c ) != macros.end( ) );
         };
-        
+
         bool any_macro_is_defined ( ) const
         {
             return ( 0 != macros.size( ) );
         };
-        
+
         MathieuPermutationWithHistory macro_definition( const HistoryElement c )
         {
             return macro_is_defined( c ) ? macros[ c ] : MathieuPermutationWithHistory( );
         };
-        
+
         History& expand_macro ( const HistoryElement c )
         {
             // Recursively expand all macro definitions first
@@ -308,28 +308,28 @@ public:
                     *this *= *hp;
             return *this;
         };
-        
+
         History& set_macro    ( const HistoryElement c , MathieuPermutationWithHistory & m )
         {
             expand_macro( c );
             macros[ c ] = m;
             return *this;
         };
-        
+
         History& erase_macro  ( const HistoryElement c )
         {
             expand_macro( c );
             macros.erase( c );
             return *this;
         };
-        
+
         History& erase_all_macros( )
-        
+
         {
             macros.clear( );
             return *this;
         };
-        
+
         static MathieuPermutationWithHistory & run_macro ( MathieuPermutationWithHistory & m, const HistoryElement c , bool inverted=false )
         {
             MathieuPermutation & p=m;  // so that we hack the perm and its history separately
@@ -349,13 +349,13 @@ public:
         };
     protected:
         friend class MathieuPermutationWithHistory;
-        
+
         History& reset( ) { resize( 0 ); return *this; };
-        
+
         History& left ( Index count = 1 ) { return _step( -1, count ); };
-        
+
         History& right( Index count = 1 ) { return _step( +1, count ); };
-        
+
         History& swap( )
         {
             if ( empty( ) )
@@ -369,14 +369,14 @@ public:
             }
             return *this;
         };
-        
+
         History& invert( )
         {
-            if ( ! empty( ) ) 
+            if ( ! empty( ) )
             {
                 History::iterator p=begin( );
                 History::iterator q=end( )-1;
-                while ( p < q ) 
+                while ( p < q )
                 {
                     HistoryElement temp=*p;
                     *p++ = -*q;
@@ -387,7 +387,7 @@ public:
             }
             return *this;
         };
-        
+
         History& operator *=( const HistoryElement e )
         {
             if ( empty( ) )
@@ -427,26 +427,26 @@ public:
             }
             return *this;
         };
-        
+
         History& operator /=( const HistoryElement e )
         {
             return *this *= -e;
         };
-        
+
         History& operator *=( const History & other_history )
         {
             for ( const_iterator p = other_history.begin( ); p != other_history.end( ); p++ )
                 *this *= *p;
             return *this;
         };
-        
+
         History& operator /=( const History & other_history )
         {
             for ( const_iterator p = other_history.begin( ); p != other_history.end( ); p++ )
                 *this /= *p;
             return *this;
         };
-        
+
         int cmp( History other_history ) const
         {
             const int this_steps = steps( );
@@ -458,11 +458,11 @@ public:
             else
                 return 0;
         };
-        
+
         bool operator <( const History & other_history ) const { return cmp( other_history ) < 0 ; };
-        
+
         int moves( ) const { return (int)size( ); } ;
-        
+
         int steps( ) const
         {
             int result = 0;
@@ -484,12 +484,12 @@ public:
                         result += macros.find( abs( *p ) )->second.history.steps( );
             return result;
         };
-        
+
         typedef std::map < HistoryElement,  MathieuPermutationWithHistory > macro_map;
         macro_map macros;
-        
+
     private:
-        
+
         History& _step( Index direction, Index count )
         {
             for ( Index i = 0 ; i < count ; i ++ )
@@ -511,64 +511,64 @@ public:
             return *this;
         };
     };
-    
+
     MathieuPermutationWithHistory( )
     : super( )
     { };
-    
+
     MathieuPermutationWithHistory( const MathieuPermutationWithHistory& other )
     : super( other ),
     history( other.history )
     { };
-    
+
     MathieuPermutationWithHistory( const super& other )
     : super( other )
     { };
-    
+
     MathieuPermutationWithHistory( const PermArray & p )
     : super( p )
     { };
-    
+
     MathieuPermutationWithHistory( std::istream & serialization )
     : super( serialization ),
     history( serialization )
     { };
-    
+
     std::ostream & serialize( std::ostream & serialization )
     {
         super::serialize( serialization );
         history.serialize( serialization );
         return serialization;
     };
-    
+
     MathieuPermutationWithHistory & reset( )
     {
         super::reset( );
         history.reset( );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory & left ( Index count = 1 )
     {
         super::left( count );
         history.left( count );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory & right( Index count = 1 )
     {
         super::right( count );
         history.right( count );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory & swap( )
     {
         super::swap( );
         history.swap( );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory & random( bool amnesia=true )
     {
         super::reset( );
@@ -598,11 +598,11 @@ public:
         maybe_undo( e, move );
         return *this;
     };
-    
+
     bool maybe_undo( HistoryElement & e, bool move=true )
     {
         if ( history.empty( ) ) return false;
-        
+
         e = history.back( );
         if ( History::is_left( e ) )
         {
@@ -622,12 +622,12 @@ public:
             run_macro( +e, true );
         return true;
     };
-    
+
     History getHistory( ) const { return history ; } ;
     bool history_is_empty( ) const { return history.empty( ) ; } ;
     bool history_is_single_macro( HistoryElement e ) { return history.size( ) == 1 && history[ 0 ] == e ; } ;
     int history_length( ) { return history.size( ) ; } ;
-    
+
     MathieuPermutationWithHistory & run( const History& additional_history )
     {
         for ( History::const_iterator p=additional_history.begin( ); p != additional_history.end( ); p++ )
@@ -644,92 +644,92 @@ public:
         return *this;
     };
 
-    
+
     MathieuPermutationWithHistory & invert( )
     {
         super::invert( );
         history.invert( );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory   inverse( ) const
     {
         MathieuPermutationWithHistory result( *this );
         result.invert( );
         return result;
     };
-    
+
     MathieuPermutationWithHistory   operator * ( const MathieuPermutationWithHistory & other ) const
     {
         MathieuPermutationWithHistory result( *this );
         result *= other;
         return result;
     };
-    
+
     MathieuPermutationWithHistory & operator *=( const MathieuPermutationWithHistory & other )
     {
         super::operator *=( other );
         history *= other.history;
         return *this;
     };
-    
+
     MathieuPermutationWithHistory   operator / ( const MathieuPermutationWithHistory & other ) const
     {
         MathieuPermutationWithHistory result( *this );
         result /= other;
         return result;
     };
-    
+
     MathieuPermutationWithHistory & operator /=( const MathieuPermutationWithHistory & other )
     {
         super::operator /=( other );
         history /= other.history;
         return *this;
     };
-    
+
     int moves( ) const { return history.moves( ) ; } ;
-    
+
     int steps( ) const { return history.steps( ) ; } ;
-    
+
     bool macro_is_defined( const HistoryElement c ) const
     {
         return history.macro_is_defined( c );
     };
-    
+
     bool any_macro_is_defined( ) const
     {
         return history.any_macro_is_defined( );
     };
-    
+
     MathieuPermutationWithHistory& expand_macro ( const HistoryElement c )
     {
         history.expand_macro( c );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory& set_macro    ( const HistoryElement c ,       MathieuPermutationWithHistory & m )
     {
         history.set_macro( c, m );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory& erase_macro  ( const HistoryElement c )
     {
         history.erase_macro( c );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory& erase_all_macros( )
     {
         history.erase_all_macros( );
         return *this;
     };
-    
+
     MathieuPermutationWithHistory& run_macro    ( const HistoryElement c , bool inverted=false )
     {
         return History::run_macro( *this, c, inverted );
     };
-    
+
 protected:
     friend class History;
     History history;

@@ -49,7 +49,7 @@
 }
 
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     CGRect frame = self.view.frame;
     [self.view addSubview:self.mainViewController.view];
@@ -64,7 +64,7 @@
 }
 
 
-- (void) flipFrom:( ViewController * )oldViewController 
+- (void) flipFrom:( ViewController * )oldViewController
                to:( ViewController * )newViewController
       transition: (RootViewControllerTransition) transition
 {
@@ -87,7 +87,7 @@
 	[View beginAnimations:nil context:NULL];
 	[View setAnimationDuration: 1.0 ];	
 	[View setAnimationTransition:uitransition
-                           forView:self.view 
+                           forView:self.view
                              cache:YES];
     [newViewController viewWillAppear:YES];
     [oldViewController viewWillDisappear:YES];
@@ -99,20 +99,20 @@
     [newViewController viewDidAppear:YES];
     [View commitAnimations];
 #endif /* TARGET_OS_IPHONE */
-}    
+}
 
 
-- (void)toggleView 
+- (void)toggleView
 {	
     // This method is called when the info or Done button is pressed.
     // It flips the displayed view from the main view to the flipside view and vice-versa.
-    
+
 	if (preferencesViewController == nil)
 		[self loadPreferencesViewController];
 	
 	if ( [mainViewController.view superview] )
         [self flipFrom: mainViewController to: preferencesViewController transition: flop];
-    else 
+    else
         [self flipFrom: preferencesViewController to: mainViewController transition: flip];
 }
 
@@ -147,13 +147,13 @@
 	y = acceleration.y - myAccelerometer[0];
 	z = acceleration.z - myAccelerometer[0];
 	
-	//Compute the intensity of the current acceleration 
+	//Compute the intensity of the current acceleration
 	length = sqrt(x * x + y * y + z * z);
 	// If above a given threshold, send the shake message
-	if ( ( kEraseAccelerationThreshold <= length) 
-        && (lastShakeTime + kMinEraseInterval < CFAbsoluteTimeGetCurrent() ) 
-        && [mainViewController.view superview] 
-        && ! self.nowHandlingShake ) 
+	if ( ( kEraseAccelerationThreshold <= length)
+        && (lastShakeTime + kMinEraseInterval < CFAbsoluteTimeGetCurrent() )
+        && [mainViewController.view superview]
+        && ! self.nowHandlingShake )
     {
         self.nowHandlingShake = true;
 		lastShakeTime = CFAbsoluteTimeGetCurrent();
