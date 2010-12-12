@@ -52,7 +52,7 @@
 
 #endif /* TARGET_OS_IPHONE */
 
-- (void)dealloc 
+- (void)dealloc
 {
     self.rootViewController = nil;
     self.alert = nil ;
@@ -64,7 +64,7 @@
 // Handlers for events from the SporadicMView
 
 
-- (IBAction)toggleView:(id)sender 
+- (IBAction)toggleView:(id)sender
 {
     [ rootViewController toggleView ];
 }
@@ -82,16 +82,16 @@
     return LARGE_MOVE_DURATION;
 }
 
-- ( void )updateDuration: ( CGFloat ) duration 
+- ( void )updateDuration: ( CGFloat ) duration
 {
     [ self.spview showCurrentPermutationAtDuration: duration ];
-    
+
     if ( [ self.gameModel isSolving ] && [ self.gameModel isIdentity ] && !haveNotedSuccess )
     {
         [ self.ballRingView playSuccessSound ];
         haveNotedSuccess = true ;
     }
-    
+
 }
 
 - ( void ) showCurrentPermutationAfterMove: ( HistoryElement ) e
@@ -139,7 +139,7 @@
                                             message: [ NSString stringWithFormat:alertFormat, verb, comboName ]
                                              target: self
                                      cancelSelector: NULL
-                                         OKSelector: @selector( doSetCombo: ) 
+                                         OKSelector: @selector( doSetCombo: )
                                           parameter: comboNameAsObject ] show ];
 }
 
@@ -147,18 +147,18 @@
 
 - (void)comboSet: ( HistoryElement )comboName
 {
-    if ( [ self.gameModel historyIsEmpty ] 
+    if ( [ self.gameModel historyIsEmpty ]
             && ! [ self.gameModel hasDefinedCombo:  comboName ] )
         return;
-    
+
     if ( [ self.gameModel isSolving ] )
     {
         [ self.ballRingView playComboNotSetSound ];
         return;
     }
-    
+
     [ self.ballRingView playComboSetSound ];
-    if ( self.confirm ) 
+    if ( self.confirm )
         [ self confirmSetCombo: ( id ) comboName ];
     else
         [ self doSetCombo: ( id ) comboName ];
@@ -246,10 +246,10 @@
     [ self updateDuration: LARGE_MOVE_DURATION ];
 }
 
--(void) confirmHome 
+-(void) confirmHome
 {
     [ alert = [ OKCancelAlertView newAlertWithTitle: @"Home!"
-                                         message: @"This will reset " applicationName @" to the home position.\n" 
+                                         message: @"This will reset " applicationName @" to the home position.\n"
                                                   @"Press OK if you want to do this."
                                           target: self
                                   cancelSelector: NULL
@@ -305,17 +305,17 @@
 -(void) confirmShake
 {
     [ alert = [ OKCancelAlertView newAlertWithTitle: @"Shake!"
-                                            message: @"This will create a new " applicationName @" puzzle.\n" 
+                                            message: @"This will create a new " applicationName @" puzzle.\n"
                @"Press OK if you want to do this."
                                              target: self
                                      cancelSelector: @selector( noShake )
                                          OKSelector: @selector( doShake ) ] show ];
-}  
+}
 
 -(void) confirmRestart
 {
-    [ alert = [ OKCancelAlertView newAlertWithTitle: @"Restart!" 
-                                            message: @"This will restart solving this puzzle.\n" 
+    [ alert = [ OKCancelAlertView newAlertWithTitle: @"Restart!"
+                                            message: @"This will restart solving this puzzle.\n"
                @"Press OK if you want to do this."
                                              target: self
                                      cancelSelector: @selector( noRestart )
@@ -325,7 +325,7 @@
 
 -(IBAction) shake: (id)sender
 {
-    [ self.ballRingView playShakeSound ]; 
+    [ self.ballRingView playShakeSound ];
     if ( self.confirm && [self.gameModel isSolving ] )
         [ self confirmShake ];
     else
@@ -377,11 +377,11 @@
         if ( [ self.gameModel hasAnyDefinedCombo ] )
             message = [ message stringByAppendingString: @"All combo moves will be erased!\n" ];
         message = [ message stringByAppendingString: @"Press OK if you want to do this." ];
-        [ alert = [ OKCancelAlertView newAlertWithTitle: @"New Swap!" 
+        [ alert = [ OKCancelAlertView newAlertWithTitle: @"New Swap!"
                                                 message: message
                                                  target: self
                                          cancelSelector: @selector( dontChangeSwap: )
-                                             OKSelector: @selector( doChangeSwap: ) 
+                                             OKSelector: @selector( doChangeSwap: )
                                               parameter: (id)newSwapIndex ] show ] ;
     }
 }

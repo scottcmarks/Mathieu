@@ -16,7 +16,7 @@ const Index nPerms_5_to_6 = 48;
 
 const Rank nPermutations = nPerms_0_to_4 * nPerms_5_to_6;
 
-struct perm_info { 
+struct perm_info {
   perm_info(){};
   perm_info( Index m, Index s )
   : moves(m), steps_plus_one(s)
@@ -25,7 +25,7 @@ struct perm_info {
   {
     return moves < other.moves || moves == other.moves && steps_plus_one < other.steps_plus_one;
   };
-  Index moves; 
+  Index moves;
   Index steps_plus_one;
 };
 typedef struct { Index pinv5; Index pinv6; perm_info perms[ nPerms_5_to_6 ]; } table_group;
@@ -48,7 +48,7 @@ typedef enum
 } dump_result;
 
 typedef enum
-{ 
+{
   map_attach_not_mapped ,
   map_attach_read_only  ,
   map_attach_new        ,
@@ -73,10 +73,10 @@ typedef enum
 } sync_result;
 
 
-class M24PermInfoTable 
+class M24PermInfoTable
 {
 public:
-  M24PermInfoTable( ) 
+  M24PermInfoTable( )
   : table( NULL ),
     table_attachment_type( map_attach_not_mapped )
   { };
@@ -91,7 +91,7 @@ public:
   {
     return (     5 == p5
              ||  6 < p5 && p5 < 15
-             || 15 < p5 && p5 < 18 
+             || 15 < p5 && p5 < 18
              || 18 < p5 )
         && (     6 == p6
              || 15 == p6
@@ -111,7 +111,7 @@ public:
   M24PermInfoTable & deallocate( ) { if ( table ) free( table ) ; table = NULL ; return *this ; } ;
   static const int perm_table_size = nPerms_0_to_4 * sizeof( table_group ) ;
 protected:
-  void _try_move( const MathieuPermutation & p, const MathieuPermutationWithHistory & this_move, 
+  void _try_move( const MathieuPermutation & p, const MathieuPermutationWithHistory & this_move,
                   perm_info & best_perm_info, MathieuPermutationWithHistory & best_move );
   map_attachment_type table_attachment_type;
   table_group * table;

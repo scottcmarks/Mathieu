@@ -47,7 +47,7 @@
 #if TARGET_OS_IPHONE
     [ swapPermutationPicker selectRow: row inComponent: 0 animated: NO ];
 #endif
-}    
+}
 
 - ( void ) willMoveToSuperview: ( View * )superView
 {
@@ -66,8 +66,8 @@
     return [ NSString stringWithFormat: @"#%d  ----  difficulty %d ", row+1, [ self.gameModel difficultyOfSwap:row ] ];
 }
 
--(void) pickerView: (UIPickerView *)pickerView 
-      didSelectRow: (NSInteger) row 
+-(void) pickerView: (UIPickerView *)pickerView
+      didSelectRow: (NSInteger) row
        inComponent: (NSInteger) component
 {
     assert (component == 0);
@@ -76,7 +76,7 @@
 #endif
     currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
     [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
-    [ currentPermutationPreview redraw ]; 
+    [ currentPermutationPreview redraw ];
     pickedSwapIndex =  row;
 }
 
@@ -101,7 +101,7 @@
 #endif  /* TARGET_OS_IPHONE */
 
 
-- (void)dealloc 
+- (void)dealloc
 {
     swapPermutationPicker = nil;
     [super dealloc];

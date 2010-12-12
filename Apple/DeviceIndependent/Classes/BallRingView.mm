@@ -33,26 +33,26 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 {
     if ( self = [ super initWithFrame: CGRect_to_NSRect( frame ) ] )
     {
-        
+
         CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
         _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
-        NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f", 
+        NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
                 (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
         _circleRadius = frameHalfWidth - 2*_ballRadius ;
         _circleCenter = CGPointMake( frameHalfWidth, frameHalfWidth + 1.5*_ballRadius + tagFontSize );
-        
+
         point ballCoordinates[ nBalls ];
         point tagCoordinates [ nBalls ];
         CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
         CGRect frame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
-        
+
         // Do all the geometry
         forAllBalls(i)
         {
             _ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
             _ballCenters[ i ].y = round( ballCoordinates[ i ].y );
         }
-        
+
         // Create and add all the balls
         forAllBalls(i)
         {
@@ -63,9 +63,9 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             [ self addSubview: ballView ];
             _ballViews[ i ] = ballView;
         }
-        
-#if !ICONIC_PICTURE_ONLY        
-        
+
+#if !ICONIC_PICTURE_ONLY
+
         Font * ballFont = [Font systemFontOfSize:ballFontSize ];
 
         // Create and add all the labels (in front of the balls)
@@ -82,11 +82,11 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             [self addSubview:ballLabel ];
             _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
         }
-        
+
         if ( tags )
         {
             Font * tagFont = [Font systemFontOfSize:tagFontSize ];
-            
+
             // Create and add all the little gray labels (next to the balls)
             forAllBalls(i)
             {
@@ -102,7 +102,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
                 [self addSubview:tagLabel ];
             }
         }
-        
+
         _delegate = delegate ;
         if ( delegate )  // only interactive if delegate provided
         {
@@ -111,23 +111,23 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             _swapSound        = [ SoundEffect newSoundEffectWithCaf: @"swap"          ];
             _homeSound        = [ SoundEffect newSoundEffectWithCaf: @"home"          ];
             _shakeSound       = [ SoundEffect newSoundEffectWithCaf: @"shake"         ];
-            //TODO:  make real sound for restart amd combo 
+            //TODO:  make real sound for restart amd combo
             _restartSound     = [ SoundEffect newSoundEffectWithCaf: @"restart"       ];
             _comboSound       = [ SoundEffect newSoundEffectWithCaf: @"combo"         ];
             _comboSetSound    = [ SoundEffect newSoundEffectWithCaf: @"combo_set"     ];
             _comboNotSetSound = [ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ];
             _successSound     = [ SoundEffect newSoundEffectWithCaf: @"success"       ];
             _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
-            
+
             // Not currently spinning
             firstWedgeTouched = -1;
-            
+
             // Not currently doing Swap gesture
             swapGestureStarted = false;
         }
         else
             self.userInteractionEnabled = NO;
-        
+
 #else
     #if TARGET_OS_IPHONE
         self.backgroundColor = [ UIColor blackColor ];
@@ -137,10 +137,10 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     #else
         #error Don't know this platform!
     #endif
-        
-        
-#endif        
-        
+
+
+#endif
+
     }
     return self;
 }
@@ -229,12 +229,12 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     if (! [ self findWedgeAtTouch:touch tolerant:NO
                           asWedge: wedgeAtTouch andTheta: thetaAtTouch ] )
         return ;
-    
+
     if ( ! ( 1 <= wedgeAtTouch && wedgeAtTouch < nBalls ) )
         return;
-    
+
     // Here we might consider whether ball 0 was touched, indicating a desire to swap.
-    
+
     firstWedgeTouched = previousWedgeTouched = lastWedgeTouched = wedgeAtTouch;
     firstThetaTouched = thetaAtTouch;
     [ self.gameModel copyInto: spinStartingPosition ];
@@ -242,7 +242,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 }
 
 
-- (void)  finishedTouching 
+- (void)  finishedTouching
 {
     [ _delegate spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
     firstWedgeTouched = -1 ;
@@ -267,14 +267,14 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
          ballLabel is currently who-knows-where.
          But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.
          It started at _ballCenters[ i ].
-         
+
          */
         point old_center = CGPoint_to_point( _ballCenters[ i ] );
         point center = CGPoint_to_point( _circleCenter );
         point spun = point( polar( old_center - center ).rotate( lastThetaTouched - firstThetaTouched ) ) + center;
         ballLabel.center = CGPointMakeFromPoint( spun );
     }
-    
+
     [ _delegate spinInProgress: [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ] ];
     previousWedgeTouched = lastWedgeTouched ;
     return true;
@@ -322,16 +322,16 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 -( void ) playComboNotSetSound { if ( self.soundEffects ) [ _comboNotSetSound play ]; }
 
 
--( void ) playSuccessSound  
-{ 
-    if ( self.soundEffects ) 
+-( void ) playSuccessSound
+{
+    if ( self.soundEffects )
     {
         if ( self.gameModel.historyLength <= APPLAUSE_THRESHOLD )
             [ _applauseSound play ];
         else
-            [ _successSound  play ]; 
+            [ _successSound  play ];
     }
-}    
+}
 
 #elif TARGET_OS_MAC
 #else
@@ -339,7 +339,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 #endif
 
 
-- (void)dealloc 
+- (void)dealloc
 {
     forAllBalls( i )
     {

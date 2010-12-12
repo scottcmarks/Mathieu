@@ -48,7 +48,7 @@
     [super dealloc];
 }
 
-- (IBAction)dismissHelp:(id)sender 
+- (IBAction)dismissHelp:(id)sender
 {
     [ self.rootViewController toggleView ];
 }

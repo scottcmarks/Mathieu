@@ -61,7 +61,7 @@ const CGFloat circleRadius = 130.0 ;
     //
     // is, amazingly, worse -- it brings up the keyboard!  To avoid that, the
     // history would need to be subclassed to respond NO to canBecomeFirstResponder.
-    //    
+    //
 }
 
 
@@ -72,8 +72,8 @@ const CGFloat circleRadius = 130.0 ;
                             alternateSelector: ( SEL        ) alternateSelector
                                alternateTitle: ( NSString * ) alternateTitle
 {	
-    DualActionButton * button = 
-        [ DualActionButton dualActionButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight) 
+    DualActionButton * button =
+        [ DualActionButton dualActionButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight)
                                               target: self.controller
                                       normalSelector: normalSelector
                                          normalTitle: normalTitle
@@ -87,15 +87,15 @@ const CGFloat circleRadius = 130.0 ;
 - (ComboButton *)createToolbarComboButtonWidth: ( CGFloat    ) width
                                      comboName: ( HistoryElement ) comboName
 {
-    return  [ ComboButton comboButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight) 
+    return  [ ComboButton comboButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight)
                                         target: self.controller
                                      comboName: comboName ] ;
 }
 
 - (DualActionButton *)createToolbarAltButtonWidth: ( CGFloat    ) width
 {
-    return [ [ DualActionButton alloc ] 
-            initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)   
+    return [ [ DualActionButton alloc ]
+            initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)
             target:            self.controller
             normalSelector:    @selector( toggleInverted: )
             normalTitle:       @"Alt"
@@ -124,7 +124,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     self.swapSound     = [ [ SoundEffect alloc ] initWithResource:@"swap"      ofType:@"caf" ];
     self.homeSound     = [ [ SoundEffect alloc ] initWithResource:@"home"      ofType:@"caf" ];
     self.shakeSound    = [ [ SoundEffect alloc ] initWithResource:@"shake"     ofType:@"caf" ];
-    //TODO: make real sound for restart amd combo 
+    //TODO: make real sound for restart amd combo
     self.restartSound  = [ [ SoundEffect alloc ] initWithResource:@"restart"   ofType:@"caf" ];
     self.comboSound    = [ [ SoundEffect alloc ] initWithResource:@"combo"     ofType:@"caf" ];
     self.comboSetSound = [ [ SoundEffect alloc ] initWithResource:@"combo_set" ofType:@"caf" ];
@@ -156,9 +156,9 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         [self addSubview: ballView];
         ballViews[ i ] = ballView;
     }
-    
+
     UIFont * ballFont = [UIFont systemFontOfSize:ballFontSize ];
-    
+
     // Create and add all the labels (in front of the balls)
     forAllBalls(i)
     {
@@ -173,9 +173,9 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         [self addSubview:ballLabel ];
         ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
     }
-    
+
     UIFont * tagFont = [UIFont systemFontOfSize:tagFontSize ];
-    
+
     // Create and add all the little gray labels (next to the balls)
     forAllBalls(i)
     {
@@ -190,10 +190,10 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         tagLabel.text = [NSString stringWithFormat:@"%d", i ];
         [self addSubview:tagLabel ];
     }
-    
+
     // Create and add all the action buttons
-    struct { NSString * normalTitle; SEL normalSelector; 
-             NSString * alternateTitle; SEL alternateSelector; 
+    struct { NSString * normalTitle; SEL normalSelector;
+             NSString * alternateTitle; SEL alternateSelector;
              CGPoint center; CGFloat width; UIButton * * variable; } dualActionButtons[ ] = {
                  { @"Shake", @selector(shake:)    , @"Restart", @selector(restart:)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
                  { @"Home" , @selector(home:)     , nil       , NULL                 , { 268,  34 }, largeActionButtonWidth , NULL         },
@@ -205,7 +205,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     forArray( i, dualActionButtons )
     {
         DualActionButton * dualActionButton =  [ self createActionButtonAt: dualActionButtons[ i ].center
-                                                                     width: dualActionButtons[ i ].width 
+                                                                     width: dualActionButtons[ i ].width
                                                             normalSelector: dualActionButtons[ i ].normalSelector
                                                                normalTitle: dualActionButtons[ i ].normalTitle
                                                          alternateSelector: dualActionButtons[ i ].alternateSelector
@@ -214,8 +214,8 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
             *(dualActionButtons[ i ].variable) = dualActionButton;
         [ self addSubview: dualActionButton ];
     }
-    
-    
+
+
 
     // Create and add the toolbar buttons
     struct { ToolbarButtonType type;
@@ -268,24 +268,24 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
         [ toolbarArray addObject: theToolbarItem ];
     }
     [ toolbar setItems:toolbarArray animated: false];
-    
+
     [ self addSubview: [ self createInfoButton ] ];
 
-    
+
     // Establish invariant between combo definednesses and combo buttons appearance
     for ( HistoryElement c='A'; c<=lastComboButton; c++ )
         [ self setComboButton:c enabled:[ self.gameModel hasDefinedCombo:c ] ];
-    
+
     // Establish invariant between self.invert and the buttons appearance
     // as the buttons are created in the non-inverted state
     // Also, in the current hacked code, the buttons need to be correctly
     // pseudo-disabled (or not) to avoid being inverted while p-d.
     buttonsInverted = false;
     if ( self.invert ) [self setInvertibleButtonsInverted: true ];
-    
+
     // Not currently spinning
     firstWedgeTouched = -1;
-    
+
     // Not currently doing Swap gesture
     swapGestureStarted = false;
 
@@ -330,7 +330,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 
 
--(void) animateButton:( DualActionButton *)button 
+-(void) animateButton:( DualActionButton *)button
           normalTitle:( NSString * )normalTitle
         invertedTitle:( NSString *)invertedTitle
              inverted:( bool ) inverted
@@ -338,7 +338,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     [UIView beginAnimations:nil context:NULL ];
     [UIView setAnimationDuration: BUTTON_INVERSION_DURATION ];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone
-                           forView:button 
+                           forView:button
                              cache:YES];
     button.alternate = inverted;
     [UIView commitAnimations];
@@ -407,7 +407,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 }
 
 
-    
+
 -(void) showCurrentPermutationAtDuration:(CGFloat)duration {
     duration *= ( MAX_ANIMATION_DURATION_FACTOR - self.animationSpeed ) ;
     if ( 0.0 < duration )
@@ -422,9 +422,9 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     }
     if ( 0.0 < duration )
         [UIView commitAnimations];
-    
+
     [ self updateHistoryText ];
-    
+
     undoButton.enabled = ! [ self.gameModel historyIsEmpty ] ;
 }
 
@@ -531,11 +531,11 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
          ballLabel is currently who-knows-where.
          But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.
          It started at ballCenters[ i ].
-		 
+		
          */
         CGPoint oldBallCenter = ballCenters[ i ];
-        point spun = point( polar( point( oldBallCenter.x, oldBallCenter.y) 
-								  - circleCenter ).rotate( lastThetaTouched - firstThetaTouched ) ) 
+        point spun = point( polar( point( oldBallCenter.x, oldBallCenter.y)
+								  - circleCenter ).rotate( lastThetaTouched - firstThetaTouched ) )
 		+ circleCenter;
         ballLabel.center = CGPointMake( spun.x, spun.y );
     }
@@ -576,7 +576,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 		return;
     }
 	
-    if ( firstWedgeTouched == -1 ) 
+    if ( firstWedgeTouched == -1 )
 		return;
 	
     [ self recordTouches:touches ];
@@ -634,14 +634,14 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 -( void ) playRestartSound  { if ( self.soundEffects ) [ restartSound  play ]; }
 -( void ) playComboSound    { if ( self.soundEffects ) [ comboSound    play ]; }
 -( void ) playComboSetSound { if ( self.soundEffects ) [ comboSetSound play ]; }
--( void ) playSuccessSound  
-{ 
-    if ( self.soundEffects ) 
+-( void ) playSuccessSound
+{
+    if ( self.soundEffects )
     {
         if ( self.gameModel.historyLength <= APPLAUSE_THRESHOLD )
             [ applauseSound play ];
         else
-            [ successSound  play ]; 
+            [ successSound  play ];
     }
 }
 

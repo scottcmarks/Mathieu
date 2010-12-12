@@ -67,7 +67,7 @@
 - (IBAction)showHelp:(id)sender {
     if ( self.helpViewController == nil )
         [ self loadHelpViewController ];
-    
+
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: 1.0 ];	
 	[self.rootViewController setAnimationTransition: UIViewAnimationTransitionCurlUp ];

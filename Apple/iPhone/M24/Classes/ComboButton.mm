@@ -22,17 +22,17 @@ static UIImage * comboButtonDisabledImage    ;
 
 + ( void ) initialize
 {
-    comboButtonDisabledImage = [ [ [ UIImage imageNamed: @"ComboButtonDisabled.png" ] 
-                                        stretchableImageWithLeftCapWidth: 12.0 
-                                                            topCapHeight: 0.0 ] 
+    comboButtonDisabledImage = [ [ [ UIImage imageNamed: @"ComboButtonDisabled.png" ]
+                                        stretchableImageWithLeftCapWidth: 12.0
+                                                            topCapHeight: 0.0 ]
                                       retain ] ;
 }
 
-+ ( id ) comboButtonWithFrame: ( CGRect                  ) frame  
++ ( id ) comboButtonWithFrame: ( CGRect                  ) frame
                        target: ( id< ComboButtonTarget > ) target
                     comboName: ( HistoryElement          ) comboName
 {
-    return [ [ [ ComboButton alloc ] initWithFrame: ( CGRect         ) frame  
+    return [ [ [ ComboButton alloc ] initWithFrame: ( CGRect         ) frame
                                             target: ( id             ) target
                                          comboName: ( HistoryElement ) comboName ] autorelease ] ;
 }
@@ -60,7 +60,7 @@ static UIImage * comboButtonDisabledImage    ;
     if ( dis == disabled ) return ;
     if ( dis )
     {
-        if ( alternate ) 
+        if ( alternate )
             [ self setTitle:           normalTitle               forState: UIControlStateNormal ];
         [ self setBackgroundImage: comboButtonDisabledImage  forState: UIControlStateNormal ] ;
     }
@@ -80,16 +80,16 @@ static UIImage * comboButtonDisabledImage    ;
 @synthesize comboName;
 
 
-- (id) initWithFrame: ( CGRect                  ) frame  
+- (id) initWithFrame: ( CGRect                  ) frame
               target: ( id< ComboButtonTarget > ) targ
            comboName: ( HistoryElement          ) m
 {
-    if ( self = [ super initWithFrame: frame  
+    if ( self = [ super initWithFrame: frame
                                target: self
                        normalSelector: @selector( touchUpInside: )
                           normalTitle: [ NSString stringWithFormat: @"%c", m ]
                     alternateSelector: @selector( touchUpInside: )
-                       alternateTitle: [ NSString stringWithFormat: @"%c%C%C", m, superscriptMinus, superscriptOne ] ] ) 
+                       alternateTitle: [ NSString stringWithFormat: @"%c%C%C", m, superscriptMinus, superscriptOne ] ] )
     {
         [ self addTarget: self action: @selector( touchDown: )
                      forControlEvents: UIControlEventTouchDown ];
@@ -103,7 +103,7 @@ static UIImage * comboButtonDisabledImage    ;
 }
 
 
-- (id) initWithFrame: ( CGRect     ) frame  
+- (id) initWithFrame: ( CGRect     ) frame
               target: ( id         ) targ
       normalSelector: ( SEL        ) normalSel
          normalTitle: ( NSString * ) normalTit
@@ -127,9 +127,9 @@ static UIImage * comboButtonDisabledImage    ;
 - ( void ) touchUpInside: ( id ) sender
 {
     if ( ! [ self wasTimerRunning ] ) return ;
-    
-    [ NSObject cancelPreviousPerformRequestsWithTarget:self 
-                                              selector: @selector( timerExpired: ) 
+
+    [ NSObject cancelPreviousPerformRequestsWithTarget:self
+                                              selector: @selector( timerExpired: )
                                                 object: nil ] ;
     if ( alternate )
         [ comboTarget comboInverseInvoked: comboName ];
@@ -147,8 +147,8 @@ static UIImage * comboButtonDisabledImage    ;
 {
     [ timerLock lock ];
     timerRunning = true;
-    [self performSelector: @selector( timerExpired: ) 
-               withObject: nil 
+    [self performSelector: @selector( timerExpired: )
+               withObject: nil
                afterDelay: MACROPRESSTIME ];
     [ timerLock unlock ] ;
 }
