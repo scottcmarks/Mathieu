@@ -20,7 +20,7 @@
     bool invert;
     bool useSpinMessages;
     GameModel * gameModel;
-    
+
 }
 
 @property (nonatomic, retain ) IBOutlet UIWindow *window;

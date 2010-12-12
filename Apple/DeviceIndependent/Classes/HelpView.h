@@ -9,7 +9,7 @@
 #import "Kit.h"
 
 
-@interface HelpView : UIView 
+@interface HelpView : UIView
 {
     IBOutlet UIWebView* helpWebView;
     IBOutlet UIBarButtonItem* backButton;

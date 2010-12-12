@@ -9,7 +9,7 @@
 #import "Kit.h"
 #import "mathieu.h"
 
-@interface BallView : View 
+@interface BallView : View
 {
     int _ballNumber;
 }

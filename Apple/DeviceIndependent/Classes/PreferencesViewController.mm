@@ -55,7 +55,7 @@
     [ viewController release ];
 }
 
-- (IBAction)toggleView:(id)sender 
+- (IBAction)toggleView:(id)sender
 {
     [ self.rootViewController toggleView ];
 }
@@ -64,18 +64,18 @@
 - (IBAction)showHelp:(id)sender {
     if ( self.helpViewController == nil )
         [ self loadHelpViewController ];
-    
+
     [self.rootViewController flipFrom: self to: helpViewController transition: curl ];
-    
+
 }
 
 
 - (IBAction)showSwapPermutations:(id)sender {
     if ( self.swapPermutationsViewController == nil )
         [ self loadSwapPermutationsViewController ];
-    
+
     [self.rootViewController flipFrom: self to: swapPermutationsViewController transition: curl];
-    
+
 }
 
 

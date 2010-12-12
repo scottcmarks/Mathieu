@@ -16,13 +16,13 @@
 
 @class SporadicM24ViewController;
 
-@interface SporadicM24View : UIView // TransitionView 
+@interface SporadicM24View : UIView // TransitionView
 {
 
     SporadicM24ViewController * controller;
     UIToolbar * toolbar;
     UITextView *history;
-    
+
     BallView *ballViews[ nBalls ];
     UILabel *ballLabels[ nBalls ];
     CGPoint ballCenters[ nBalls ];
@@ -36,7 +36,7 @@
     SoundEffect *comboSetSound;
     SoundEffect *successSound;
     SoundEffect *applauseSound;
-    
+
     bool animateBallPops;
     int firstWedgeTouched;
     bool swapGestureStarted ;
@@ -46,7 +46,7 @@
     double lastThetaTouched;
     PermArray spinStartingPosition;
     NSString * historyTextCache;
-    
+
     DualActionButton * shakeButton;
     DualActionButton * altButton;
     DualActionButton * undoButton;
@@ -72,9 +72,9 @@
 
 @property ( nonatomic, retain   ) NSString * historyTextCache;
 
--( void ) updateHistoryText;    
+-( void ) updateHistoryText;
 
--( bool ) findWedgeAtTouch:( UITouch * )touch tolerant: ( bool ) tolerant 
+-( bool ) findWedgeAtTouch:( UITouch * )touch tolerant: ( bool ) tolerant
                                                asWedge: ( Index & ) wedge
                                               andTheta: ( double & ) theta;
 -( void ) animatePopBall:( Index )nBall first:( bool ) first;
