@@ -13,14 +13,13 @@
 #import "SporadicMView.h"
 #import "BallView.h"
 #import "BallRingView.h"
-#import "OKCancelAlertView.h"
+#import "MHAlertView.h"
 #import "Constants.h"
 #import "iPhoneUtilities.h"
 
 @implementation SporadicMViewController
 
 @synthesize rootViewController;
-@synthesize alert;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
@@ -55,7 +54,6 @@
 - (void)dealloc
 {
     self.rootViewController = nil;
-    self.alert = nil ;
     [super dealloc];
 }
 
@@ -135,12 +133,12 @@
     }
     const char * verb = [ self.gameModel historyIsEmpty ] ? "erase" : "change" ;
     NSString * alertFormat = @"This will %s the meaning of %c.\nPress OK if you want to do this." ;
-    [ alert = [ OKCancelAlertView newAlertWithTitle: @"Combo Set!"
-                                            message: [ NSString stringWithFormat:alertFormat, verb, comboName ]
-                                             target: self
-                                     cancelSelector: NULL
-                                         OKSelector: @selector( doSetCombo: )
-                                          parameter: comboNameAsObject ] show ];
+    [ MHAlertView showOKCancelWithTitle: @"Combo Set!"
+                                message: [ NSString stringWithFormat:alertFormat, verb, comboName ]
+                                 target: self
+                         cancelSelector: NULL
+                             OKSelector: @selector( doSetCombo: )
+                              parameter: comboNameAsObject ];
 }
 
 
@@ -248,12 +246,12 @@
 
 -(void) confirmHome
 {
-    [ alert = [ OKCancelAlertView newAlertWithTitle: @"Home!"
-                                         message: @"This will reset " applicationName @" to the home position.\n"
-                                                  @"Press OK if you want to do this."
-                                          target: self
-                                  cancelSelector: NULL
-                                      OKSelector: @selector( doHome ) ] show ];
+    [ MHAlertView  showOKCancelWithTitle: @"Home!"
+                                 message: @"This will reset " applicationName @" to the home position.\n"
+                                          @"Press OK if you want to do this."
+                                  target: self
+                          cancelSelector: NULL
+                              OKSelector: @selector( doHome ) ] ;
 }
 
 -(IBAction) home: (id)sender{
@@ -304,22 +302,22 @@
 
 -(void) confirmShake
 {
-    [ alert = [ OKCancelAlertView newAlertWithTitle: @"Shake!"
-                                            message: @"This will create a new " applicationName @" puzzle.\n"
-               @"Press OK if you want to do this."
-                                             target: self
-                                     cancelSelector: @selector( noShake )
-                                         OKSelector: @selector( doShake ) ] show ];
+    [ MHAlertView showOKCancelWithTitle: @"Shake!"
+                                message: @"This will create a new " applicationName @" puzzle.\n"
+                                         @"Press OK if you want to do this."
+                                 target: self
+                         cancelSelector: @selector( noShake )
+                             OKSelector: @selector( doShake ) ] ;
 }
 
 -(void) confirmRestart
 {
-    [ alert = [ OKCancelAlertView newAlertWithTitle: @"Restart!"
-                                            message: @"This will restart solving this puzzle.\n"
-               @"Press OK if you want to do this."
-                                             target: self
-                                     cancelSelector: @selector( noRestart )
-                                         OKSelector: @selector( doRestart ) ] show ] ;
+    [ MHAlertView showOKCancelWithTitle: @"Restart!"
+                                message: @"This will restart solving this puzzle.\n"
+                                         @"Press OK if you want to do this."
+                                 target: self
+                         cancelSelector: @selector( noRestart )
+                             OKSelector: @selector( doRestart ) ] ;
 }
 
 
@@ -377,12 +375,12 @@
         if ( [ self.gameModel hasAnyDefinedCombo ] )
             message = [ message stringByAppendingString: @"All combo moves will be erased!\n" ];
         message = [ message stringByAppendingString: @"Press OK if you want to do this." ];
-        [ alert = [ OKCancelAlertView newAlertWithTitle: @"New Swap!"
-                                                message: message
-                                                 target: self
-                                         cancelSelector: @selector( dontChangeSwap: )
-                                             OKSelector: @selector( doChangeSwap: )
-                                              parameter: (id)newSwapIndex ] show ] ;
+        [ MHAlertView showOKCancelWithTitle: @"New Swap!"
+                                    message: message
+                                     target: self
+                             cancelSelector: @selector( dontChangeSwap: )
+                                 OKSelector: @selector( doChangeSwap: )
+                                  parameter: (id)newSwapIndex ] ;
     }
 }
 
