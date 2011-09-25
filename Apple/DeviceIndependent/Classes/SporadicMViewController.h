@@ -13,7 +13,6 @@
 #import "BallRingViewDelegate.h"
 
 @class RootViewController ;
-@class OKCancelAlertView  ;
 
 #if TARGET_OS_IPHONE
 @interface SporadicMViewController : UIViewController
@@ -32,11 +31,9 @@
 {
     RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;
-    OKCancelAlertView *  alert              ;
 }
 
-@property ( nonatomic, assign   ) RootViewController * rootViewController;
-@property ( nonatomic, retain   ) OKCancelAlertView *  alert              ;
+@property ( nonatomic, assign   ) RootViewController * rootViewController ;
 
 // Handlers for events from the SporadicMView
 - (IBAction) toggleView     : (id)sender;
