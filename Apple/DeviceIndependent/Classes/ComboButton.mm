@@ -22,10 +22,11 @@ static Image * comboButtonDisabledImage    ;
 
 + ( void ) initialize
 {
-    comboButtonDisabledImage = [ [ [ Image imageNamed: @"ComboButtonDisabled.png" ]
-                                        stretchableImageWithLeftCapWidth: 12.0
-                                                            topCapHeight: 0.0 ]
-                                      retain ] ;
+    if ( self == [ ComboButton class ] )
+        comboButtonDisabledImage = [ [ [ Image imageNamed: @"ComboButtonDisabled.png" ]
+                                            stretchableImageWithLeftCapWidth: 12.0
+                                                                topCapHeight: 0.0 ]
+                                        retain ] ;
 }
 
 + ( id ) comboButtonWithFrame: ( CGRect                  ) frame
