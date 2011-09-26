@@ -32,12 +32,17 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
 // +initialize is invoked before the class receives any other messages, so it
 // is a good place to set up application defaults
-+ (void)initialize {
-    if ( self == [SporadicMAppDelegate class]) {
 
++ ( void ) initialize
+{
+#define INITIALIZE_DEBUG_LEVEL 1
+    if ( self == [ SporadicMAppDelegate class ] )
+    {
+#if INITIALIZE_DEBUG_LEVEL <= DEBUG_LEVEL
         __timestamp__;
+#endif
 
-        initialize_rand( );  //TODO: mach_time?
+        initialize_rand( ) ;
 
         // Register default values for the persistent state.
         // This will be used when the app has never previously terminated.
@@ -45,24 +50,32 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
               registerDefaults: [ NSDictionary
                                       dictionaryWithObjectsAndKeys:
                                       [ NSNumber numberWithFloat: 2.0 ] , SporadicMAnimationSpeedKey ,
-                                      [ NSNumber numberWithBool:true  ] , SporadicMSoundEffectsKey   ,
-                                      [ NSNumber numberWithBool:true  ] , SporadicMConfirmKey        ,
-                                      [ NSNumber numberWithBool:false ] , SporadicMInvertKey         ,
-                                      [ NSNumber numberWithBool:false ] , SporadicMSpinMessagesKey   ,
+                                      [ NSNumber numberWithBool:  YES ] , SporadicMSoundEffectsKey   ,
+                                      [ NSNumber numberWithBool:  YES ] , SporadicMConfirmKey        ,
+                                      [ NSNumber numberWithBool:  NO  ] , SporadicMInvertKey         ,
+                                      [ NSNumber numberWithBool:  NO  ] , SporadicMSpinMessagesKey   ,
                                       // no default gameModel -- nil will map to new game
                                       nil // sentinel for brain-dead C varargs
                                  ]
-        ];
-
-        __timestamp__;
-
+        ] ;
     }
 }
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
-- (void)applicationDidFinishLaunching:(Application *)application
+- ( BOOL ) application: ( Application * ) application didFinishLaunchingWithOptions: ( NSDictionary * ) launchOptions
 {
+#define APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL 1
+    
+#if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
+#endif
+    return YES ;
+}
+
+// Invoked after the application has been launched and initialized but before it has received its first event.
+- ( void ) applicationDidBecomeActive: ( Application * ) application
+{
+#define APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL 1
 
    // Restore application settings
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
@@ -71,18 +84,24 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
     self.confirm         = [ defaults boolForKey: SporadicMConfirmKey        ];
     self.invert          = [ defaults boolForKey: SporadicMInvertKey         ];
 
+#if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
+#endif
 
-    self.gameModel       = [ GameModel createFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
+    self.gameModel       = [ GameModel gameFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
 
+#if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
+#endif
 
     // Set up root view controller
     RootViewController *viewController = [[RootViewController alloc] init];
     self.rootViewController = viewController;
     [viewController release];
 
+#if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
+#endif
 
     // Add the root view controller's view to the window
 #if TARGET_OS_IPHONE
@@ -94,33 +113,54 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 #else
 #error Don't know this platform!
 #endif
-    __timestamp__;
 
+#if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
+    __timestamp__;
+#endif
 }
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed: (Application *)sender
+#if TARGET_OS_MAC
+- ( BOOL ) applicationShouldTerminateAfterLastWindowClosed: ( Application * ) sender
 {
     // return YES to allow the application to terminate when the user closes the last window the application has open
     return YES;
 }
+#endif
 
-// Invoked immediately before the application terminates.
-- (void)applicationWillTerminate:(Application *)application {
-    // Store user's time signature preference, so that it is used the next time the app is launched
+
+// - ( void ) applicationDidEnterBackground: ( Application * ) application
+//
+// Tells the delegate that the application is now in the background.
+//
+// Parameters
+//   application
+//     The singleton application instance.
+//
+- ( void ) applicationDidEnterBackground: ( Application * ) application
+{
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
-    [ defaults setFloat:  self.animationSpeed       forKey:SporadicMAnimationSpeedKey ];
-    [ defaults setBool:   self.soundEffects         forKey:SporadicMSoundEffectsKey   ];
-    [ defaults setBool:   self.confirm              forKey:SporadicMConfirmKey        ];
-    [ defaults setBool:   self.invert               forKey:SporadicMInvertKey         ];
-    [ defaults setObject: [ self.gameModel asData ] forKey:SporadicMGameModelKey      ];
+    [ defaults setFloat:  self.animationSpeed       forKey: SporadicMAnimationSpeedKey ] ;
+    [ defaults setBool:   self.soundEffects         forKey: SporadicMSoundEffectsKey   ] ;
+    [ defaults setBool:   self.confirm              forKey: SporadicMConfirmKey        ] ;
+    [ defaults setBool:   self.invert               forKey: SporadicMInvertKey         ] ;
+    [ defaults setObject: [ self.gameModel data ]   forKey: SporadicMGameModelKey      ] ;
+    [ defaults synchronize ] ;
 }
 
 
-- (void)dealloc {
+// Invoked immediately before the application terminates.
+- ( void ) applicationWillTerminate: ( Application * ) application
+{
+    [ self applicationDidEnterBackground: application ] ;
+}
+
+
+- ( void ) dealloc
+{
 	self.rootViewController = nil ;
     self.window             = nil ;
     self.gameModel          = nil;
-    [super dealloc];
+    [ super dealloc ] ;
 }
 
 
