@@ -303,7 +303,7 @@
 -(void) confirmShake
 {
     [ MHAlertView showOKCancelWithTitle: @"Shake!"
-                                message: @"This will create a new " applicationName @" puzzle.\n"
+                                message: @"This will gameFromData a new " applicationName @" puzzle.\n"
                                          @"Press OK if you want to do this."
                                  target: self
                          cancelSelector: @selector( noShake )

@@ -264,8 +264,8 @@
 		D2AE55AB0FACE47A0093E56B /* ComboButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboButton.h; sourceTree = "<group>"; };
 		D2AE55AC0FACE47A0093E56B /* ComboButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboButton.mm; sourceTree = "<group>"; };
 		D2AE55AD0FACE47A0093E56B /* ComboButtonTargetProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboButtonTargetProtocol.h; sourceTree = "<group>"; };
-		D2AE55AE0FACE47A0093E56B /* GameModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameModel.h; sourceTree = "<group>"; };
-		D2AE55AF0FACE47A0093E56B /* GameModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameModel.mm; sourceTree = "<group>"; };
+		D2AE55AE0FACE47A0093E56B /* GameModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GameModel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D2AE55AF0FACE47A0093E56B /* GameModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = GameModel.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D2AE55B00FACE47A0093E56B /* HelpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpView.h; sourceTree = "<group>"; };
 		D2AE55B10FACE47A0093E56B /* HelpView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HelpView.mm; sourceTree = "<group>"; };
 		D2AE55B20FACE47A0093E56B /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 		D2AE55BE0FACE47A0093E56B /* SporadicMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicMView.h; sourceTree = "<group>"; };
 		D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SporadicMView.mm; sourceTree = "<group>"; };
 		D2AE55C00FACE47A0093E56B /* SporadicMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicMViewController.h; sourceTree = "<group>"; };
-		D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SporadicMViewController.mm; sourceTree = "<group>"; };
+		D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = SporadicMViewController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D2AE55C20FACE47A0093E56B /* SwapPermutationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsView.h; sourceTree = "<group>"; };
 		D2AE55C30FACE47A0093E56B /* SwapPermutationsView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsView.mm; sourceTree = "<group>"; };
 		D2AE55C40FACE47A0093E56B /* SwapPermutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsViewController.h; sourceTree = "<group>"; };

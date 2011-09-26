@@ -46,48 +46,67 @@ using namespace std;
 	return self;
 }
 
--(id) initFromData:(NSData *)data
+-( id ) initFromData: ( NSData * ) data
 {
+#define INITFROMDATA_DEBUG_LEVEL 1
+
+#if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
+    __timestamp__;
+#endif
+    
     // Allow data to be nil
     if ( ! data )
         return [ self init ];
-
-
+    
+#if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
-
-	if ( self = [super init] ) {
-
+#endif
+    
+	if ( ( self = [ super init ] ) ) 
+    {
+        
+#if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
         __timestamp__;
-
+#endif
+        
         stringstream ss;
         const char * bytes = ( const char * ) data.bytes;
         size_t length = data.length;
         ss.write( bytes, length );
-
+        
+#if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
         __timestamp__;
-
+#endif
+        
         currentPermutation  = [ self serializePermutationFrom: ss ];
-
+        
+#if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
         __timestamp__;
-
+#endif
+        
         startingPermutation = [ self serializePermutationFrom: ss ];
 	}
-
+    
+#if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
-
+#endif
+    
 	return self;
 }
 
 
-+ (id)create {
++ ( id ) gameFromData
+{
     return [ [ [ GameModel alloc ] init ] autorelease ];
 }
 
-+(id) createFromData:(NSData *)data {
++ ( id ) gameFromData: ( NSData * ) data 
+{
     return [ [ [ GameModel alloc ] initFromData: data ] autorelease ];
 }
 
--(NSData *)asData{
+-( NSData * ) data
+{
     stringstream ss;
     [ self serializePermutation:currentPermutation  to:ss ];
     [ self serializePermutation:startingPermutation to:ss ];
@@ -95,24 +114,28 @@ using namespace std;
     return [ NSData dataWithBytes: str.c_str( ) length:str.length( ) ];
 }
 
--(int) at: (int)index{
-	return (*currentPermutation)[ index ];
+-( int ) at: ( int )index
+{
+	return ( * currentPermutation )[ index ];
 }
 
--(void) copyInto: (PermArray) pa{
+-( void ) copyInto: (PermArray) pa
+{
     forAllBalls(i) pa[ i ] = ( * currentPermutation )[ i ];
 }
 
--(bool) isIdentity{
-    return (*currentPermutation).is_identity();
+-( bool ) isIdentity
+{
+    return ( * currentPermutation ).is_identity( );
 }
 
--(NSString *) history{
-    const std::wstring history_text = wstr( (*currentPermutation).getHistory() );
+-( NSString * ) history
+{
+    const std::wstring history_text = wstr( ( * currentPermutation ).getHistory() );
     if ( history_text.empty() ) return [ NSString string ];
     size_t history_size = history_text.size( ) ;
     const wchar_t * wchar_history = history_text.c_str( );
-    unichar * uni_history = (unichar *)calloc( history_size, sizeof( unichar ) );
+    unichar * uni_history = ( unichar * ) calloc( history_size, sizeof( unichar ) );
     assert( uni_history );
 
     // The following is a reprehensible hack occasioned by
@@ -125,13 +148,13 @@ using namespace std;
             uni_history[ i ] = '?';
     }
 
-    NSString * result = [ NSString stringWithCharacters:uni_history length:history_size ];
+    NSString * result = [ NSString stringWithCharacters: uni_history length: history_size ];
     free( uni_history );
     return result;
 }
 
 
--(NSString *) cyclesForPermutation: ( const MathieuPermutation & )p
+-( NSString * ) cyclesForPermutation: ( const MathieuPermutation & ) p
 {
     const std::wstring cycles_text = cycles_wstr( p );
     size_t cycles_size = cycles_text.size( ) ;
@@ -155,11 +178,12 @@ using namespace std;
 }
 
 
--(NSString *) cycles{
-    return  [ self cyclesForPermutation: (*currentPermutation).swapPermutation ];
+-(NSString *) cycles
+{
+    return  [ self cyclesForPermutation: ( * currentPermutation ).swapPermutation ];
 }
 
--( NSString * ) cyclesForSwap: (int)nSwap
+-( NSString * ) cyclesForSwap: ( int ) nSwap
 {
     if ( ! ( 0 <= nSwap && nSwap < n_array_elements( MathieuPermutation::swaps ) ) )
         return [ NSString stringWithFormat: @"No such swap %d", nSwap ];
@@ -195,76 +219,84 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
     startingPermutation = p;
 }
 
--(void) reset{
-	(*currentPermutation).reset( );
+-(void) reset
+{
+	( * currentPermutation ).reset( );
     [ self setStartingPermutation: NULL ];
 }
 
--(void) right{
-	(*currentPermutation).right( );
+-(void) right
+{
+	( * currentPermutation ).right( );
 }
 
--(void) left{
-	(*currentPermutation).left( );
+-(void) left
+{
+	( * currentPermutation ).left( );
 }
 
--(void) swap{
-	(*currentPermutation).swap( );
+-(void) swap
+{
+	( * currentPermutation ).swap( );
 }
 
--(void) random{
-	(*currentPermutation).random( );
+-(void) random
+{
+	( * currentPermutation ).random( );
     [ self setStartingPermutation: new MathieuPermutationWithHistory( *currentPermutation ) ];
 }
 
 -(bool) undo: (bool)move move: ( HistoryElement & ) e
 {
-	return (*currentPermutation).maybe_undo( e, move );
+	return ( * currentPermutation ).maybe_undo( e, move );
 }
 
--(void) spin: (int)n{
+-( void ) spin: ( int ) n 
+{
     if ( 0 < n )
-        (*currentPermutation).right( +n );
+        ( * currentPermutation ).right( +n );
     else
-        (*currentPermutation).left ( -n );
+        ( * currentPermutation ).left ( -n );
 }
 
--(void)dealloc{
+-(void)dealloc
+{
     delete currentPermutation;
     [ self setStartingPermutation: NULL ];
     [ super dealloc ];
 }
 
--(void)runCombo:(HistoryElement)c inverted:(bool)inverted {
-    (*currentPermutation).run_macro( c, inverted );
+-( void ) runCombo: ( HistoryElement ) c inverted: ( bool ) inverted 
+{
+    ( * currentPermutation ).run_macro( c, inverted ) ;
 }
 
--(void) setCombo:(HistoryElement)c
+-(void) setCombo: ( HistoryElement ) c
 {
     MathieuPermutationWithHistory comboDef( * currentPermutation );
     if ( startingPermutation )
         as( comboDef ) = as( * startingPermutation ).inverse( ) * as( comboDef );
-    (*currentPermutation).set_macro( c, comboDef );
+    ( * currentPermutation ).set_macro( c, comboDef );
 }
 
 -(void) eraseCombo:(HistoryElement)c
 {
-    (*currentPermutation).erase_macro( c );
+    ( * currentPermutation ).erase_macro( c );
 }
 
 -(void) eraseAllCombos
 {
-    (*currentPermutation).erase_all_macros( );
+    ( * currentPermutation ).erase_all_macros( );
 }
 
 -(bool) hasDefinedCombo:(HistoryElement)c
 {
-    return (*currentPermutation).macro_is_defined( c );
+    return ( * currentPermutation ).macro_is_defined( c );
 }
 
 -(bool) hasAnyDefinedCombo
 {
-    return (*currentPermutation).any_macro_is_defined( );
+    return ( * currentPermutation ).any_macro_is_defined( );
 }
 
 -(bool) isSolving
@@ -274,17 +306,17 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
 
 -(bool) historyIsEmpty
 {
-    return (*currentPermutation).history_is_empty();
+    return ( * currentPermutation ).history_is_empty();
 }
 
 -(bool) historyIsSingleCombo:(HistoryElement)c
 {
-    return (*currentPermutation).history_is_single_macro( c );
+    return ( * currentPermutation ).history_is_single_macro( c );
 }
 
 -(int) historyLength
 {
-    return (*currentPermutation).history_length( );
+    return ( * currentPermutation ).history_length( );
 }
 
 - ( int ) swapIndex
@@ -299,12 +331,12 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
 
 - ( int ) moves
 {
-    return (*currentPermutation).moves( );
+    return ( * currentPermutation ).moves( );
 }
 
 - ( int ) steps
 {
-    return (*currentPermutation).steps( );
+    return ( * currentPermutation ).steps( );
 }
 
 

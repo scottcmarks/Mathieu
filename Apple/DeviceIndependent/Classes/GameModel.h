@@ -19,9 +19,9 @@ typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
 
 -(id) init;
 -(id) initFromData: ( NSData * ) data;
-+(id) create;
-+(id) createFromData: ( NSData * ) data;
--(NSData *) asData;
++(id) gameFromData;
++(id) gameFromData: ( NSData * ) data;
+-(NSData *) data;
 -(int) at: ( int ) index;
 -(void) copyInto:( PermArray ) pa;
 -(bool) isIdentity;
