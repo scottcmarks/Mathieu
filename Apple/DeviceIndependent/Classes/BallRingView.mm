@@ -9,6 +9,9 @@
 #include "view.h"
 
 #import "BallRingView.h"
+
+#import "iPhoneUtilities.h"
+
 #import "SporadicMAppDelegate.h"
 #import "BallView.h"
 #import "SoundEffect.h"
@@ -31,13 +34,23 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 
 - ( id ) initWithFrame:         ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id< BallRingViewDelegate > ) delegate
 {
+#define INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL 1
+
+#if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
+    __timestamp__ ;
+#endif
+
     if ( self = [ super initWithFrame: CGRect_to_NSRect( frame ) ] )
     {
 
         CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
         _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
+        
+#if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
         NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
                 (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
+#endif
+        
         _circleRadius = frameHalfWidth - 2*_ballRadius ;
         _circleCenter = CGPointMake( frameHalfWidth, frameHalfWidth + 1.5*_ballRadius + tagFontSize );
 
