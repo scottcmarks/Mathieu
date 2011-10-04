@@ -15,7 +15,13 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		D220848111FD7735005BDD5D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D220848011FD7735005BDD5D /* iTunesArtwork */; };
+		D20910F71439755100F35429 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D20910F51439755100F35429 /* Icon.png */; };
+		D20910F81439755100F35429 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D20910F61439755100F35429 /* iTunesArtwork */; };
+		D20910FB1439757800F35429 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D20910F91439755C00F35429 /* Icon.png */; };
+		D20910FE143976DD00F35429 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D20910FC143976DD00F35429 /* Default.png */; };
+		D20910FF143976DD00F35429 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D20910FC143976DD00F35429 /* Default.png */; };
+		D2091100143976DD00F35429 /* Default@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D20910FD143976DD00F35429 /* Default@x2.png */; };
+		D2091101143976DD00F35429 /* Default@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D20910FD143976DD00F35429 /* Default@x2.png */; };
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D222B0800FF5937900B2618B /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
@@ -104,7 +110,6 @@
 		D2AE57170FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
 		D2AE57180FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
-		D2AE572D0FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */; };
 		D2AE57760FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
 		D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566B0FACE47B0093E56B /* PreferencesView.xib */; };
@@ -138,7 +143,6 @@
 		D2AE579A0FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
 		D2AE579B0FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE579C0FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
-		D2AE57AB0FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */; };
 		D2AE57F90FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
 		D2AE57FA0FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566B0FACE47B0093E56B /* PreferencesView.xib */; };
@@ -225,9 +229,8 @@
 		D2B7EA7E11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
-		D2CB55661214704B00D822AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CB55651214704B00D822AB /* Default.png */; };
-		D2CB55671214704B00D822AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CB55651214704B00D822AB /* Default.png */; };
-		D2CB55681214704B00D822AB /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CB55651214704B00D822AB /* Default.png */; };
+		D2C92AA914399C6C00578AD0 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C92AA614399C6500578AD0 /* Icon@2x.png */; };
+		D2C92AAB1439AC5E00578AD0 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2C92AAA1439AC5E00578AD0 /* Icon@2x.png */; };
 		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2D897A8142FD19B00626D94 /* MHAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D897A7142FD19B00626D94 /* MHAlertView.m */; };
 		D2D897A9142FD19B00626D94 /* MHAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D897A7142FD19B00626D94 /* MHAlertView.m */; };
@@ -242,7 +245,30 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D220848011FD7735005BDD5D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		D20910D81439736C00F35429 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D20910DA1439736C00F35429 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D20910E11439738600F35429 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D20910E51439753400F35429 /* SporadicM12Icon 512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12Icon 512x512.png"; sourceTree = "<group>"; };
+		D20910E61439753400F35429 /* SporadicM12Icon 512x512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "SporadicM12Icon 512x512.tiff"; sourceTree = "<group>"; };
+		D20910E71439753400F35429 /* SporadicM12Icon Composited.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SporadicM12Icon Composited.xcf"; sourceTree = "<group>"; };
+		D20910E81439753400F35429 /* SporadicM12Icon Highlighted by iPhone.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SporadicM12Icon Highlighted by iPhone.xcf"; sourceTree = "<group>"; };
+		D20910E91439753400F35429 /* SporadicM12Icon_Prerendered.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SporadicM12Icon_Prerendered.xcf; sourceTree = "<group>"; };
+		D20910EA1439753400F35429 /* SporadicM12Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Icon.png; sourceTree = "<group>"; };
+		D20910EB1439753400F35429 /* SporadicM12Icon.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SporadicM12Icon.xcf; sourceTree = "<group>"; };
+		D20910EC1439753400F35429 /* SporadicM12IconLargeForAppSubmission.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SporadicM12IconLargeForAppSubmission.tiff; sourceTree = "<group>"; };
+		D20910ED1439753500F35429 /* SporadicM12LargeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12LargeIcon.png; sourceTree = "<group>"; };
+		D20910EE1439753500F35429 /* SporadicM12LargeIcon.pov */ = {isa = PBXFileReference; lastKnownFileType = text; path = SporadicM12LargeIcon.pov; sourceTree = "<group>"; };
+		D20910EF1439753500F35429 /* SporadicM12LiteIcon_Prerendered.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SporadicM12LiteIcon_Prerendered.xcf; sourceTree = "<group>"; };
+		D20910F01439753500F35429 /* SporadicM12Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Screenshot1.png; sourceTree = "<group>"; };
+		D20910F11439753500F35429 /* SporadicM12Screenshot1.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SporadicM12Screenshot1.tiff; sourceTree = "<group>"; };
+		D20910F21439753600F35429 /* SporadicM12Screenshot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Screenshot2.png; sourceTree = "<group>"; };
+		D20910F31439753600F35429 /* SporadicM12Screenshot2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SporadicM12Screenshot2.tiff; sourceTree = "<group>"; };
+		D20910F41439753600F35429 /* SporadicM12Screenshot3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Screenshot3.png; sourceTree = "<group>"; };
+		D20910F51439755100F35429 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		D20910F61439755100F35429 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		D20910F91439755C00F35429 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		D20910FC143976DD00F35429 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Images/Default.png; sourceTree = "<group>"; };
+		D20910FD143976DD00F35429 /* Default@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@x2.png"; path = "Images/Default@x2.png"; sourceTree = "<group>"; };
 		D222AEFC0FF578C400B2618B /* English */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = English; path = English.lproj/SporadicM12Icon_Prerendered.icns; sourceTree = "<group>"; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -302,13 +328,10 @@
 		D2AE55DA0FACE47A0093E56B /* swap.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = swap.caf; sourceTree = "<group>"; };
 		D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SwapPermutationsView.xib; path = ../../DeviceIndependent/Resources/SwapPermutationsView.xib; sourceTree = "<group>"; };
 		D2AE55ED0FACE47A0093E56B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		D2AE55EF0FACE47A0093E56B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D2AE55F00FACE47A0093E56B /* InfoFree.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoFree.plist; sourceTree = "<group>"; };
 		D2AE55F10FACE47A0093E56B /* M12Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M12Constants.h; sourceTree = "<group>"; };
 		D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12FreeIcon_Prerendered.png; sourceTree = "<group>"; };
 		D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Icon_Prerendered.png; sourceTree = "<group>"; };
 		D2AE55FC0FACE47A0093E56B /* SporadicM12_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicM12_Prefix.pch; sourceTree = "<group>"; };
-		D2AE56490FACE47A0093E56B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2AE564A0FACE47A0093E56B /* M24Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M24Constants.h; sourceTree = "<group>"; };
 		D2AE56510FACE47A0093E56B /* HelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
 		D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM24Icon_Prerendered.png; sourceTree = "<group>"; };
@@ -372,7 +395,8 @@
 		D2AE5CBF0FACEAA80093E56B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		D2B7EA7C11D32AF600BCE169 /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneUtilities.h; sourceTree = "<group>"; };
 		D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPhoneUtilities.m; sourceTree = "<group>"; };
-		D2CB55651214704B00D822AB /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		D2C92AA614399C6500578AD0 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		D2C92AAA1439AC5E00578AD0 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		D2D897A6142FD19B00626D94 /* MHAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHAlertView.h; sourceTree = "<group>"; };
 		D2D897A7142FD19B00626D94 /* MHAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHAlertView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -466,6 +490,35 @@
 			);
 			name = Mathieu;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		D20910D71439736C00F35429 /* Free */ = {
+			isa = PBXGroup;
+			children = (
+				D20910F91439755C00F35429 /* Icon.png */,
+				D2C92AAA1439AC5E00578AD0 /* Icon@2x.png */,
+				D20910D81439736C00F35429 /* Info.plist */,
+			);
+			path = Free;
+			sourceTree = "<group>";
+		};
+		D20910D91439736C00F35429 /* Full */ = {
+			isa = PBXGroup;
+			children = (
+				D2C92AA614399C6500578AD0 /* Icon@2x.png */,
+				D20910F51439755100F35429 /* Icon.png */,
+				D20910DA1439736C00F35429 /* Info.plist */,
+				D20910F61439755100F35429 /* iTunesArtwork */,
+			);
+			path = Full;
+			sourceTree = "<group>";
+		};
+		D20910E01439738600F35429 /* Full */ = {
+			isa = PBXGroup;
+			children = (
+				D20910E11439738600F35429 /* Info.plist */,
+			);
+			path = Full;
 			sourceTree = "<group>";
 		};
 		D25CEB470FBB60360051EB25 /* Frameworks */ = {
@@ -588,7 +641,6 @@
 		D2AE55DC0FACE47A0093E56B /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				D2CB55651214704B00D822AB /* Default.png */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				D2AE55ED0FACE47A0093E56B /* Constants.h */,
 				D2AE55EE0FACE47A0093E56B /* M12 */,
@@ -603,8 +655,8 @@
 		D2AE55EE0FACE47A0093E56B /* M12 */ = {
 			isa = PBXGroup;
 			children = (
-				D2AE55EF0FACE47A0093E56B /* Info.plist */,
-				D2AE55F00FACE47A0093E56B /* InfoFree.plist */,
+				D20910D71439736C00F35429 /* Free */,
+				D20910D91439736C00F35429 /* Full */,
 				D2AE55F10FACE47A0093E56B /* M12Constants.h */,
 				D2AE55F20FACE47A0093E56B /* Resources */,
 				D2AE55FC0FACE47A0093E56B /* SporadicM12_Prefix.pch */,
@@ -623,7 +675,22 @@
 		D2AE55F30FACE47A0093E56B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				D220848011FD7735005BDD5D /* iTunesArtwork */,
+				D20910E51439753400F35429 /* SporadicM12Icon 512x512.png */,
+				D20910E61439753400F35429 /* SporadicM12Icon 512x512.tiff */,
+				D20910E71439753400F35429 /* SporadicM12Icon Composited.xcf */,
+				D20910E81439753400F35429 /* SporadicM12Icon Highlighted by iPhone.xcf */,
+				D20910E91439753400F35429 /* SporadicM12Icon_Prerendered.xcf */,
+				D20910EA1439753400F35429 /* SporadicM12Icon.png */,
+				D20910EB1439753400F35429 /* SporadicM12Icon.xcf */,
+				D20910EC1439753400F35429 /* SporadicM12IconLargeForAppSubmission.tiff */,
+				D20910ED1439753500F35429 /* SporadicM12LargeIcon.png */,
+				D20910EE1439753500F35429 /* SporadicM12LargeIcon.pov */,
+				D20910EF1439753500F35429 /* SporadicM12LiteIcon_Prerendered.xcf */,
+				D20910F01439753500F35429 /* SporadicM12Screenshot1.png */,
+				D20910F11439753500F35429 /* SporadicM12Screenshot1.tiff */,
+				D20910F21439753600F35429 /* SporadicM12Screenshot2.png */,
+				D20910F31439753600F35429 /* SporadicM12Screenshot2.tiff */,
+				D20910F41439753600F35429 /* SporadicM12Screenshot3.png */,
 				D2AE55F90FACE47A0093E56B /* SporadicM12Icon_Prerendered.png */,
 				D2AE55F40FACE47A0093E56B /* SporadicM12FreeIcon_Prerendered.png */,
 			);
@@ -633,7 +700,7 @@
 		D2AE55FD0FACE47A0093E56B /* M24 */ = {
 			isa = PBXGroup;
 			children = (
-				D2AE56490FACE47A0093E56B /* Info.plist */,
+				D20910E01439738600F35429 /* Full */,
 				D2AE564A0FACE47A0093E56B /* M24Constants.h */,
 				D2AE56500FACE47A0093E56B /* Resources */,
 				D2AE56630FACE47A0093E56B /* SporadicM24_Prefix.pch */,
@@ -662,6 +729,8 @@
 		D2AE56690FACE47B0093E56B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D20910FC143976DD00F35429 /* Default.png */,
+				D20910FD143976DD00F35429 /* Default@x2.png */,
 				D2AE566A0FACE47B0093E56B /* MainWindow.xib */,
 				D2AE566B0FACE47B0093E56B /* PreferencesView.xib */,
 				D2AE566C0FACE47B0093E56B /* SporadicMView.xib */,
@@ -1112,7 +1181,6 @@
 				D2AE57170FACE47B0093E56B /* success.caf in Resources */,
 				D2AE57180FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
-				D2AE572D0FACE47B0093E56B /* SporadicM12Icon_Prerendered.png in Resources */,
 				D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */,
 				D2AE57790FACE47B0093E56B /* SporadicMView.xib in Resources */,
@@ -1136,8 +1204,11 @@
 				D2AE5BBD0FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
-				D220848111FD7735005BDD5D /* iTunesArtwork in Resources */,
-				D2CB55661214704B00D822AB /* Default.png in Resources */,
+				D20910F71439755100F35429 /* Icon.png in Resources */,
+				D20910F81439755100F35429 /* iTunesArtwork in Resources */,
+				D20910FF143976DD00F35429 /* Default.png in Resources */,
+				D2091101143976DD00F35429 /* Default@x2.png in Resources */,
+				D2C92AA914399C6C00578AD0 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1182,7 +1253,6 @@
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
-				D2CB55671214704B00D822AB /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,7 +1275,6 @@
 				D2AE579A0FACE47B0093E56B /* success.caf in Resources */,
 				D2AE579B0FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE579C0FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
-				D2AE57AB0FACE47B0093E56B /* SporadicM12FreeIcon_Prerendered.png in Resources */,
 				D2AE57FA0FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */,
 				D2AE57FC0FACE47B0093E56B /* SporadicMView.xib in Resources */,
@@ -1230,7 +1299,10 @@
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
-				D2CB55681214704B00D822AB /* Default.png in Resources */,
+				D20910FB1439757800F35429 /* Icon.png in Resources */,
+				D20910FE143976DD00F35429 /* Default.png in Resources */,
+				D2091100143976DD00F35429 /* Default@x2.png in Resources */,
+				D2C92AAB1439AC5E00578AD0 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1410,7 +1482,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M12/Info.plist;
+				INFOPLIST_FILE = M12/Full/Info.plist;
 				PRODUCT_NAME = SporadicM12;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
@@ -1430,7 +1502,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M12/Info.plist;
+				INFOPLIST_FILE = M12/Full/Info.plist;
 				PRODUCT_NAME = SporadicM12;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
@@ -1450,7 +1522,8 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M24/Info.plist;
+				INFOPLIST_FILE = M24/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = SporadicM24;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1468,7 +1541,8 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M24/Info.plist;
+				INFOPLIST_FILE = M24/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = SporadicM24;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1543,7 +1617,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=1",
 				);
-				INFOPLIST_FILE = M12/InfoFree.plist;
+				INFOPLIST_FILE = M12/Free/Info.plist;
 				PRODUCT_NAME = SporadicM12Free;
 			};
 			name = "Ad Hoc Distribution";
@@ -1559,7 +1633,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M12/Info.plist;
+				INFOPLIST_FILE = M12/Full/Info.plist;
 				PRODUCT_NAME = SporadicM12;
 			};
 			name = "Ad Hoc Distribution";
@@ -1575,7 +1649,8 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M24/Info.plist;
+				INFOPLIST_FILE = M24/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = SporadicM24;
 			};
 			name = "Ad Hoc Distribution";
@@ -1639,7 +1714,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=1",
 				);
-				INFOPLIST_FILE = M12/InfoFree.plist;
+				INFOPLIST_FILE = M12/Free/Info.plist;
 				PRODUCT_NAME = SporadicM12Free;
 			};
 			name = "App Store Distribution";
@@ -1655,7 +1730,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M12/Info.plist;
+				INFOPLIST_FILE = M12/Full/Info.plist;
 				PRODUCT_NAME = SporadicM12;
 			};
 			name = "App Store Distribution";
@@ -1671,7 +1746,8 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=24",
 					"FREE=0",
 				);
-				INFOPLIST_FILE = M24/Info.plist;
+				INFOPLIST_FILE = M24/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = SporadicM24;
 			};
 			name = "App Store Distribution";
@@ -1718,7 +1794,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=1",
 				);
-				INFOPLIST_FILE = M12/InfoFree.plist;
+				INFOPLIST_FILE = M12/Free/Info.plist;
 				PRODUCT_NAME = SporadicM12Free;
 			};
 			name = Debug;
@@ -1734,7 +1810,7 @@
 					"MATHIEU_GROUP_PERMUTATION_SIZE=12",
 					"FREE=1",
 				);
-				INFOPLIST_FILE = M12/InfoFree.plist;
+				INFOPLIST_FILE = M12/Free/Info.plist;
 				PRODUCT_NAME = SporadicM12Free;
 			};
 			name = Release;
