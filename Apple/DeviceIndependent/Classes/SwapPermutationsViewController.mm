@@ -32,15 +32,16 @@
 }
 
 
-- (void) showHelp: (id) sender { [ self.preferencesViewController showHelp: sender ] ; }
+- (void) showHelp { [ self.preferencesViewController showHelp ] ; }
 
 
 #if TARGET_OS_IPHONE
 
 // Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
+{
     // Return YES for supported orientations
-    return YES;
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
 }
 
 //  - (void)didReceiveMemoryWarning {
@@ -57,7 +58,7 @@
     [super dealloc];
 }
 
-- (IBAction)dismissSwapPermutations:(id)sender
+- (IBAction)dismissSwapPermutations
 {
     int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
     if ( newSwapIndex != self.gameModel.swapIndex )
