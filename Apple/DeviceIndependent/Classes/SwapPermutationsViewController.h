@@ -27,7 +27,7 @@
 @property ( nonatomic, assign   )          PreferencesViewController * preferencesViewController ;
 @property ( nonatomic, retain   ) IBOutlet SwapPermutationsView      * swapPermutationsView      ;
 
-- ( IBAction ) dismissSwapPermutations: ( id ) sender;
-- ( IBAction ) showHelp: ( id ) sender;
+- ( IBAction ) dismissSwapPermutations ;
+- ( IBAction ) showHelp ;
 
 @end

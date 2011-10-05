@@ -147,9 +147,9 @@
     return [ [ DualActionButton alloc ]
             initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)
             target:            self.controller
-            normalSelector:    @selector( toggleInverted: )
+            normalSelector:    @selector( toggleInverted )
             normalTitle:       @"Alt"
-            alternateSelector: @selector( toggleInverted: )
+            alternateSelector: @selector( toggleInverted )
             alternateTitle:    @"Alt"  ];
 #elif TARGET_OS_MAC
     return nil;
@@ -164,7 +164,7 @@
 #if TARGET_OS_IPHONE
     button = [ Button buttonWithType:UIButtonTypeInfoDark ] ;
     [ button addTarget: self.controller
-                action: @selector(toggleView:)
+                action: @selector(toggleView)
       forControlEvents: UIControlEventTouchUpInside ];
     button.center = INFO_BUTTON_CENTER;
 #elif TARGET_OS_MAC
@@ -172,7 +172,7 @@
     button = [ [ Button alloc ] init ];
     [ button setButtonType: NSMomentaryLightButton ];
     [ button addTarget: self.controller
-                action: @selector(toggleView:)
+                action: @selector(toggleView)
       forControlEvents: UIControlEventTouchUpInside ];
     button.center = INFO_BUTTON_CENTER;
 #error Don't know this platform!
@@ -214,12 +214,12 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
     struct { NSString * normalTitle; SEL normalSelector;
              NSString * alternateTitle; SEL alternateSelector;
              CGPoint center; CGFloat width; Button * * variable; } dualActionButtons[ ] = {
-                 { @"Shake", @selector(shake:)    , @"Restart", @selector(restart:)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
-                 { @"Home" , @selector(home:)     , nil       , NULL                 , { 268,  34 }, largeActionButtonWidth , NULL         },
-                 { @"Left" , @selector(left:)     , nil       , NULL                 , { 130, 220 }, mediumActionButtonWidth, NULL         },
-                 { @"Swap" , @selector(swap:)     , nil       , NULL                 , { 160, 175 }, mediumActionButtonWidth, NULL         },
-                 { @"Right", @selector(right:)    , nil       , NULL                 , { 190, 220 }, mediumActionButtonWidth, NULL         },
-                 { @"Undo" , @selector(undoStep:) , @"Undo!"  , @selector(undoMove:) , { 289, 360 }, mediumActionButtonWidth, &undoButton  },
+                 { @"Shake", @selector(shake)    , @"Restart", @selector(restart)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
+                 { @"Home" , @selector(home)     , nil       , NULL                , { 268,  34 }, largeActionButtonWidth , NULL         },
+                 { @"Left" , @selector(left)     , nil       , NULL                , { 130, 220 }, mediumActionButtonWidth, NULL         },
+                 { @"Swap" , @selector(swap)     , nil       , NULL                , { 160, 175 }, mediumActionButtonWidth, NULL         },
+                 { @"Right", @selector(right)    , nil       , NULL                , { 190, 220 }, mediumActionButtonWidth, NULL         },
+                 { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 289, 360 }, mediumActionButtonWidth, &undoButton  },
     };
     forArray( i, dualActionButtons )
     {
