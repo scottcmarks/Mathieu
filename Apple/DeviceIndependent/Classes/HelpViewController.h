@@ -27,6 +27,6 @@
 @property ( nonatomic, assign   ) RootViewController *rootViewController;
 @property ( nonatomic, retain   ) IBOutlet HelpView *helpView;
 
-- (IBAction)dismissHelp:(id)sender;
+- ( IBAction ) dismissHelp ;
 
 @end

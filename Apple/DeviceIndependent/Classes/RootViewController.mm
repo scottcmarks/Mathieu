@@ -130,40 +130,41 @@
 
 #if TARGET_OS_IPHONE
 // Called when the accelerometer detects motion; plays the erase sound and redraws the view if the motion is over a threshold.
-- (void) accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)acceleration
+- (void) accelerometer:(UIAccelerometer*)accelerometer didAccelerate: ( UIAcceleration * ) acceleration
 {
-	UIAccelerationValue				length,
-    x,
-    y,
-    z;
+	UIAccelerationValue	length ;
+    UIAccelerationValue	x      ;
+    UIAccelerationValue	y      ;
+    UIAccelerationValue	z      ;
 	
 	//Use a basic high-pass filter to remove the influence of the gravity
 	myAccelerometer[0] = acceleration.x * kFilteringFactor + myAccelerometer[0] * (1.0 - kFilteringFactor);
 	myAccelerometer[1] = acceleration.y * kFilteringFactor + myAccelerometer[1] * (1.0 - kFilteringFactor);
 	myAccelerometer[2] = acceleration.z * kFilteringFactor + myAccelerometer[2] * (1.0 - kFilteringFactor);
 	// Compute values for the three axes of the acceleromater
-	x = acceleration.x - myAccelerometer[0];
-	y = acceleration.y - myAccelerometer[0];
-	z = acceleration.z - myAccelerometer[0];
+	x = acceleration.x - myAccelerometer[ 0 ];
+	y = acceleration.y - myAccelerometer[ 0 ];
+	z = acceleration.z - myAccelerometer[ 0 ];
 	
 	//Compute the intensity of the current acceleration
 	length = sqrt(x * x + y * y + z * z);
 	// If above a given threshold, send the shake message
 	if ( ( kEraseAccelerationThreshold <= length)
-        && (lastShakeTime + kMinEraseInterval < CFAbsoluteTimeGetCurrent() )
+        && (lastShakeTime + kMinEraseInterval < CFAbsoluteTimeGetCurrent( ) )
         && [mainViewController.view superview]
         && ! self.nowHandlingShake )
     {
         self.nowHandlingShake = true;
-		lastShakeTime = CFAbsoluteTimeGetCurrent();
-		[ mainViewController shake: nil ];
+		lastShakeTime = CFAbsoluteTimeGetCurrent( ) ;
+		[ mainViewController shake ];
 	}
 }
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
+{
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
 }
 
 
