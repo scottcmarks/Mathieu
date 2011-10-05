@@ -13,7 +13,6 @@
     Slider * animationSpeedSlider;
     Switch * soundEffectsSwitch;
     Switch * confirmSwitch;
-    Label  * confirmHelp;
     Label  * currentPermutation;
     Label  * currentPermLabel;
     Button * swapsButton;
@@ -24,7 +23,6 @@
 @property( nonatomic, assign ) IBOutlet UISlider * animationSpeedSlider;
 @property( nonatomic, assign ) IBOutlet UISwitch * soundEffectsSwitch;
 @property( nonatomic, assign ) IBOutlet UISwitch * confirmSwitch;
-@property( nonatomic, assign ) IBOutlet UILabel  * confirmHelp;
 @property( nonatomic, assign ) IBOutlet UILabel  * currentPermutation;
 @property( nonatomic, assign ) IBOutlet UILabel  * currentPermLabel;
 @property( nonatomic, assign ) IBOutlet UIButton * swapsButton;

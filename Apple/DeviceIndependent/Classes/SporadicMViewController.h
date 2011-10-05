@@ -36,19 +36,18 @@
 @property ( nonatomic, assign   ) RootViewController * rootViewController ;
 
 // Handlers for events from the SporadicMView
-- (IBAction) toggleView     : (id)sender;
-- (IBAction) toggleInverted : (id)sender;
-- (IBAction) right          : (id)sender;
-- (IBAction) left           : (id)sender;
-- (IBAction) swap           : (id)sender;
-- (IBAction) home           : (id)sender;
-- (IBAction) shake          : (id)sender;
-- (IBAction) undoMove       : (id)sender;
-- (IBAction) undoStep       : (id)sender;
-- (void    ) spinInProgress : (int)wedges;
-- (void    ) spinFinished   : (int)wedges;
-
-- ( void ) setSwapIndex: ( int ) newSwapIndex;
+- ( IBAction ) toggleView     ;
+- ( IBAction ) toggleInverted ;
+- ( IBAction ) right          ;
+- ( IBAction ) left           ;
+- ( IBAction ) swap           ;
+- ( IBAction ) home           ;
+- ( IBAction ) shake          ;
+- ( IBAction ) undoMove       ;
+- ( IBAction ) undoStep       ;
+- ( void     ) spinInProgress : ( int ) wedges       ;
+- ( void     ) spinFinished   : ( int ) wedges       ;
+- ( void     ) setSwapIndex   : ( int ) newSwapIndex ;
 
 
 @end

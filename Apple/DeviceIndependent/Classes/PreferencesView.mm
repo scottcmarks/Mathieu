@@ -33,10 +33,6 @@
 - (CGFloat ) animationSpeed { return animationSpeedSlider.value; }
 
 @synthesize confirmSwitch;
-@synthesize confirmHelp;
-
-
-const CGFloat helpFontSize = 11.0;
 
 @synthesize currentPermutation;
 @synthesize currentPermLabel;
@@ -44,13 +40,6 @@ const CGFloat helpFontSize = 11.0;
 
 - (void) awakeFromNib
 {
-    confirmHelp.font = [ Font systemFontOfSize: helpFontSize ];
-    // TODO: I18n
-    confirmHelp.text = @"When solving, confirm Shake,\n"
-                        "Restart and Home.  Confirm\n"
-                        "combo set or erase of a\n"
-                        "previously-set combo.";
-
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;

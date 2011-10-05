@@ -9,7 +9,7 @@ that are in the same order on both occurrences around the ring:
 basically (A B C A B C) forces crossing, 
 (A B C A C B) allows B and C to be "parallel" and A to go around.
 
-* Need hires icons for iPhone 4+ retina display, possibly for iPad 3+ retina display (or whenever that happens)
+* Need hi-res icons for iPhone 4+ retina display, possibly for iPad 3+ retina display (or whenever that happens)
 
 * home_confirm.png seems to be home_position.png
   All pngs cleaned up
