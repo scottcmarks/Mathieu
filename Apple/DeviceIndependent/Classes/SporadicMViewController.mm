@@ -39,9 +39,10 @@
     haveNotedSuccess = [ self.gameModel isSolving ] && [ self.gameModel isIdentity ];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
+{
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,14 +63,12 @@
 // Handlers for events from the SporadicMView
 
 
-- (IBAction)toggleView:(id)sender
+- (IBAction)toggleView
 {
     [ rootViewController toggleView ];
 }
 
-- (IBAction)toggleInverted:(id)sender{
-    self.invert = !self.invert ;
-}
+- (IBAction)toggleInverted { self.invert = !self.invert ; }
 
 - ( CGFloat ) appropriateDurationForMove: ( HistoryElement ) e
 {
@@ -184,21 +183,24 @@
     [ self combo: comboName inverse: true  ] ;
 }
 
--(IBAction) left: (id)sender{
+-(IBAction) left
+{
     [ self.ballRingView playLeftSound ];
     [ self.gameModel left ];
     self.invert = false ;
     [ self updateDuration: SMALL_MOVE_DURATION ];
 }
 
--(IBAction) swap: (id)sender{
+-( IBAction ) swap
+{
     [ self.ballRingView playSwapSound ];
     [ self.gameModel swap ];
     self.invert = false ;
     [ self updateDuration: LARGE_MOVE_DURATION ];
 }
 
--(IBAction) right: (id)sender{
+-(IBAction) right
+{
     [ self.ballRingView playRightSound ];
     [ self.gameModel right ];
     self.invert = false ;
@@ -217,7 +219,7 @@
     [ self updateDuration: INSTANTANEOUS ];
 }
 
-- (void) swapped { [ self swap: nil ] ; }
+- (void) swapped { [ self swap ] ; }
 
 -( void ) undo: ( bool ) move{
     HistoryElement e;
@@ -232,13 +234,14 @@
 }
 
 
--(IBAction) undoMove: (id)sender { [ self undo: true  ] ; }
+-(IBAction) undoMove  { [ self undo: true  ] ; }
 
 
--(IBAction) undoStep: (id)sender { [ self undo: false ] ; }
+-(IBAction) undoStep  { [ self undo: false ] ; }
 
 
--(void) doHome {
+- ( void ) doHome
+{
     self.invert = false ;
     [ self.gameModel reset ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
@@ -254,7 +257,8 @@
                               OKSelector: @selector( doHome ) ] ;
 }
 
--(IBAction) home: (id)sender{
+-(IBAction) home
+{
     [ self.ballRingView playHomeSound ];
     if ( self.confirm && [self.gameModel isSolving ] )
         [ self confirmHome ];
@@ -293,17 +297,14 @@
 }
 
 
--(void) noRestart
-{
-    self.invert = false ;
-}
+-(void) noRestart { self.invert = false ; }
 
 
 
 -(void) confirmShake
 {
     [ MHAlertView showOKCancelWithTitle: @"Shake!"
-                                message: @"This will gameFromData a new " applicationName @" puzzle.\n"
+                                message: @"This will create a new " applicationName @" puzzle.\n"
                                          @"Press OK if you want to do this."
                                  target: self
                          cancelSelector: @selector( noShake )
@@ -321,7 +322,7 @@
 }
 
 
--(IBAction) shake: (id)sender
+-(IBAction) shake
 {
     [ self.ballRingView playShakeSound ];
     if ( self.confirm && [self.gameModel isSolving ] )
@@ -331,7 +332,7 @@
 }
 
 
--(IBAction) restart: (id)sender
+-(IBAction) restart
 {
     [ self.ballRingView playRestartSound ];
     if ( self.confirm && [self.gameModel isSolving ] )

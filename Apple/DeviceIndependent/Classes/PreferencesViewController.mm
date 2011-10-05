@@ -15,39 +15,29 @@
 #import "SwapPermutationsView.h"
 #import "SwapPermutationsViewController.h"
 
+#import "NSBundle+VersionString.h"
+
 @implementation PreferencesViewController
 
 @synthesize rootViewController;
 @synthesize preferencesView;
 @synthesize helpViewController;
 @synthesize swapPermutationsViewController;
+@synthesize versionStringLabel ;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 
 
-#if TARGET_OS_IPHONE
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-#endif
-
-- (void)dealloc {
-    self.rootViewController = nil;
-    self.helpViewController = nil;
-    self.preferencesView = nil;
-    [super dealloc];
-}
-
-- (void)loadHelpViewController {
+- (void)loadHelpViewController
+{
     HelpViewController *viewController = [[HelpViewController alloc] initWithNibName:@"HelpView" bundle:nil];
     self.helpViewController = viewController;
     viewController.rootViewController = rootViewController;
-    [viewController release];
+    [ viewController release ];
 }
 
-- (void)loadSwapPermutationsViewController {
+- (void)loadSwapPermutationsViewController
+{
     SwapPermutationsViewController *viewController = [[SwapPermutationsViewController alloc] initWithNibName:@"SwapPermutationsView" bundle:nil];
     self.swapPermutationsViewController = viewController;
     viewController.rootViewController = rootViewController;
@@ -55,13 +45,14 @@
     [ viewController release ];
 }
 
-- (IBAction)toggleView:(id)sender
+- ( IBAction )toggleView
 {
     [ self.rootViewController toggleView ];
 }
 
 
-- (IBAction)showHelp:(id)sender {
+- (IBAction)showHelp
+{
     if ( self.helpViewController == nil )
         [ self loadHelpViewController ];
 
@@ -70,7 +61,8 @@
 }
 
 
-- (IBAction)showSwapPermutations:(id)sender {
+- (IBAction)showSwapPermutations
+{
     if ( self.swapPermutationsViewController == nil )
         [ self loadSwapPermutationsViewController ];
 
@@ -79,11 +71,13 @@
 }
 
 
-- (IBAction)animationSpeedChanged:(id)sender {
+- (IBAction)animationSpeedChanged
+{
     self.appDelegate.animationSpeed = preferencesView.animationSpeed ;
 }
 
-- (IBAction)soundEffectsSwitchChanged:(id)sender {
+- (IBAction)soundEffectsSwitchChanged
+{
     self.appDelegate.soundEffects =
 #if TARGET_OS_IPHONE
                                     preferencesView.soundEffectsSwitch.on ;
@@ -94,7 +88,8 @@
 #endif
 }
 
-- (IBAction)confirmSwitchChanged:(id)sender {
+- (IBAction)confirmSwitchChanged
+{
     self.appDelegate.confirm =
 #if TARGET_OS_IPHONE
                                 preferencesView.confirmSwitch.on ;
@@ -106,5 +101,28 @@
 }
 
 
+
+- ( void ) viewDidLoad
+{
+    [ super viewDidLoad ] ;
+    self.versionStringLabel.text = [ NSBundle versionString ] ;
+}
+
+#if TARGET_OS_IPHONE
+// Override to allow orientations other than the default portrait orientation.
+- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
+{
+    // Return YES for supported orientations
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
+}
+#endif
+
+- ( void ) dealloc
+{
+    self.rootViewController = nil;
+    self.helpViewController = nil;
+    self.preferencesView = nil;
+    [ super dealloc ] ;
+}
 
 @end

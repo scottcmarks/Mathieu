@@ -19,18 +19,20 @@
     HelpViewController * helpViewController ;
     SwapPermutationsViewController * swapPermutationsViewController ;
     PreferencesView    * preferencesView    ;
+    UILabel            * versionStringLabel ;
 }
 
 @property ( nonatomic, assign   ) RootViewController * rootViewController ;
 @property ( nonatomic, retain   ) HelpViewController * helpViewController ;
 @property ( nonatomic, retain   ) SwapPermutationsViewController * swapPermutationsViewController ;
 @property ( nonatomic, retain   ) IBOutlet  PreferencesView    * preferencesView    ;
+@property ( nonatomic, assign   ) IBOutlet  UILabel            * versionStringLabel ;
 
-- (IBAction)toggleView:(id)sender;
-- (IBAction)showHelp:(id)sender;
-- (IBAction)showSwapPermutations:(id)sender;
-- (IBAction)animationSpeedChanged:(id)sender;
-- (IBAction)soundEffectsSwitchChanged:(id)sender;
-- (IBAction)confirmSwitchChanged:(id)sender;
+- ( IBAction ) toggleView                 ;
+- ( IBAction ) showHelp                   ;
+- ( IBAction ) showSwapPermutations       ;
+- ( IBAction ) animationSpeedChanged      ;
+- ( IBAction ) soundEffectsSwitchChanged  ;
+- ( IBAction ) confirmSwitchChanged       ;
 
 @end
