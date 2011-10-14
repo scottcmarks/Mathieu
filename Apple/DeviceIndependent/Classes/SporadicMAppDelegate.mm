@@ -69,6 +69,29 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 #if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
 #endif
+    // Set up root view controller
+    RootViewController *viewController = [ RootViewController new ];
+    self.rootViewController = viewController;
+    [ viewController release ] ;
+    
+#if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
+    __timestamp__;
+#endif
+    
+    // Add the root view controller's view to the window
+#if TARGET_OS_IPHONE
+    View * rootView = [ rootViewController view ];
+    [ window_view( window ) addSubview: rootView ];
+#elif TARGET_OS_MAC
+    rootViewController.view = window_view( window );
+    [ rootViewController viewDidLoad ];  // tacky to call this directly?
+#else
+#error Don't know this platform!
+#endif
+    
+#if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
+    __timestamp__;
+#endif
     return YES ;
 }
 
@@ -89,34 +112,13 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 #endif
 
     self.gameModel       = [ GameModel gameFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
+    
+    [ self.rootViewController synchronizeView ] ;
 
 #if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
 #endif
 
-    // Set up root view controller
-    RootViewController *viewController = [[RootViewController alloc] init];
-    self.rootViewController = viewController;
-    [viewController release];
-
-#if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
-    __timestamp__;
-#endif
-
-    // Add the root view controller's view to the window
-#if TARGET_OS_IPHONE
-    View * rootView = [ rootViewController view ];
-    [ window_view( window ) addSubview: rootView ];
-#elif TARGET_OS_MAC
-    rootViewController.view = window_view( window );
-    [ rootViewController viewDidLoad ];  // tacky to call this directly?
-#else
-#error Don't know this platform!
-#endif
-
-#if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
-    __timestamp__;
-#endif
 }
 
 #if TARGET_OS_MAC

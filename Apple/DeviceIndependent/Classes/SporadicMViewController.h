@@ -48,6 +48,6 @@
 - ( void     ) spinInProgress : ( int ) wedges       ;
 - ( void     ) spinFinished   : ( int ) wedges       ;
 - ( void     ) setSwapIndex   : ( int ) newSwapIndex ;
-
+- ( void     ) synchronizeView ;
 
 @end
