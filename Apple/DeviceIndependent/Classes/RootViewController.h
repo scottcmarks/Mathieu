@@ -55,4 +55,7 @@ typedef enum
                to: ( ViewController * ) newViewController
        transition: ( RootViewControllerTransition ) transition;
 
+- ( void ) synchronizeView ;
+
+
 @end

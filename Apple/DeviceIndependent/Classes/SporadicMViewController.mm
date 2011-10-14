@@ -386,4 +386,9 @@
 }
 
 
+- ( void     ) synchronizeView
+{
+    [ self.spview showCurrentPermutationAtDuration: INSTANTANEOUS ] ;
+}
+
 @end
