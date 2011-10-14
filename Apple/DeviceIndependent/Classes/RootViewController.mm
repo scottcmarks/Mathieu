@@ -101,6 +101,9 @@
 }
 
 
+- ( void ) synchronizeView { [ self.mainViewController synchronizeView ] ; }
+
+
 - (void)toggleView
 {	
     // This method is called when the info or Done button is pressed.
