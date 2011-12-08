@@ -1511,6 +1511,7 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M12/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
@@ -1531,6 +1532,7 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M12/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
@@ -1581,14 +1583,17 @@
 			buildSettings = {
 				ADDITIONAL_SDKS = "";
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				ONLY_ACTIVE_ARCH = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -1601,13 +1606,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1619,14 +1627,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "25515472-BBFF-4BAC-A9DC-D7502A499168";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01BD72F5-FDB2-4538-BA9D-EA55751CE3BF";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
@@ -1646,7 +1657,9 @@
 					"FREE=1",
 				);
 				INFOPLIST_FILE = M12/Free/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12Free;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Ad Hoc Distribution";
 		};
@@ -1662,6 +1675,7 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M12/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12;
 			};
 			name = "Ad Hoc Distribution";
@@ -1716,14 +1730,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLY_RULES_IN_COPY_FILES = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Magnolia Heights Research and Development.";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "741E4AEB-69A4-4A10-8F7A-725641F06DB7";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B7780FD6-C425-4970-BABB-479FEE6C584F";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../../../Toolbox/**";
@@ -1743,7 +1760,9 @@
 					"FREE=1",
 				);
 				INFOPLIST_FILE = M12/Free/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12Free;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "App Store Distribution";
 		};
@@ -1759,6 +1778,7 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M12/Full/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12;
 			};
 			name = "App Store Distribution";
@@ -1823,7 +1843,9 @@
 					"FREE=1",
 				);
 				INFOPLIST_FILE = M12/Free/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12Free;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1839,7 +1861,9 @@
 					"FREE=1",
 				);
 				INFOPLIST_FILE = M12/Free/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PRODUCT_NAME = SporadicM12Free;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
