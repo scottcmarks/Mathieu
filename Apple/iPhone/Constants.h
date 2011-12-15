@@ -86,7 +86,6 @@
         #else
             #define lastComboButton       'E'
         #endif
-        #define INFO_BUTTON_CENTER CGPointMake( 32.0 , 320.0 )
     #endif
     #define simpleButtonSmallFontSize  13.0
     #define simpleButtonLargeFontSize  16.0

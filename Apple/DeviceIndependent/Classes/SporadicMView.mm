@@ -161,6 +161,8 @@
 - ( ComboButton * ) createInfoButton
 {
     ComboButton * button;
+#define INFO_BUTTON_CENTER ( DEVICE_IS_IPAD ? CGPointMake( 76.8 , 786 ) : CGPointMake( 32.0 , 320.0 ) )
+
 #if TARGET_OS_IPHONE
     button = [ Button buttonWithType:UIButtonTypeInfoDark ] ;
     [ button addTarget: self.controller
@@ -184,8 +186,48 @@
 
 typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
+typedef struct { NSString * normalTitle; SEL normalSelector;
+                NSString * alternateTitle; SEL alternateSelector;
+                CGPoint center; CGFloat width; Button * * variable; } ButtonDescription ;
+
 - (void) awakeFromNib
 {
+    
+    ButtonDescription dualActionButtons_iPhone[ ] =
+    {
+        { @"Shake", @selector(shake)    , @"Restart", @selector(restart)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
+        { @"Home" , @selector(home)     , nil       , NULL                , { 268,  34 }, largeActionButtonWidth , NULL         },
+        { @"Left" , @selector(left)     , nil       , NULL                , { 130, 220 }, mediumActionButtonWidth, NULL         },
+        { @"Swap" , @selector(swap)     , nil       , NULL                , { 160, 175 }, mediumActionButtonWidth, NULL         },
+        { @"Right", @selector(right)    , nil       , NULL                , { 190, 220 }, mediumActionButtonWidth, NULL         },
+        { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 289, 360 }, mediumActionButtonWidth, &undoButton  },
+    } ;
+    
+    ButtonDescription dualActionButtons_iPad[ ] =
+    {
+        { @"Shake", @selector(shake)    , @"Restart", @selector(restart)  , { 100,  74 }, largeActionButtonWidth , &shakeButton },
+        { @"Home" , @selector(home)     , nil       , NULL                , { 634,  74 }, largeActionButtonWidth , NULL         },
+        { @"Left" , @selector(left)     , nil       , NULL                , { 312, 480 }, mediumActionButtonWidth, NULL         },
+        { @"Swap" , @selector(swap)     , nil       , NULL                , { 384, 382 }, mediumActionButtonWidth, NULL         },
+        { @"Right", @selector(right)    , nil       , NULL                , { 456, 480 }, mediumActionButtonWidth, NULL         },
+        { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 694, 786 }, mediumActionButtonWidth, &undoButton  },
+    } ;
+    
+#if TARGET_OS_IPHONE
+    ButtonDescription dualActionButtons[ 6 ] ;
+    if ( DEVICE_IS_IPAD )
+        forArray( i , dualActionButtons_iPad )
+            dualActionButtons[ i ] = dualActionButtons_iPad[ i ] ;
+    else
+        forArray( i , dualActionButtons_iPhone )
+            dualActionButtons[ i ] = dualActionButtons_iPhone[ i ] ;
+#elif TARGET_OS_MAC
+#error Haven't defined action button description array!
+#else
+#error Don't know this platform!
+#endif
+
+    
 #if TARGET_OS_IPHONE
     CGRect frame = self.frame ;
 #elif TARGET_OS_MAC
@@ -205,22 +247,12 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
 
 #if !ICONIC_PICTURE_ONLY
 
-	history.font = [Font systemFontOfSize:historyFontSize ];
+	history.font = [ Font systemFontOfSize: historyFontSize ];
     self.historyTextCache = @"";
-    moves.font = [ Font systemFontOfSize:movesFontSize ];
-    moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
+    moves.font = [ Font systemFontOfSize: movesFontSize ];
+    moves.text = [ NSString stringWithFormat: @"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
 
      // Create and add all the action buttons
-    struct { NSString * normalTitle; SEL normalSelector;
-             NSString * alternateTitle; SEL alternateSelector;
-             CGPoint center; CGFloat width; Button * * variable; } dualActionButtons[ ] = {
-                 { @"Shake", @selector(shake)    , @"Restart", @selector(restart)  , {  42,  34 }, largeActionButtonWidth , &shakeButton },
-                 { @"Home" , @selector(home)     , nil       , NULL                , { 268,  34 }, largeActionButtonWidth , NULL         },
-                 { @"Left" , @selector(left)     , nil       , NULL                , { 130, 220 }, mediumActionButtonWidth, NULL         },
-                 { @"Swap" , @selector(swap)     , nil       , NULL                , { 160, 175 }, mediumActionButtonWidth, NULL         },
-                 { @"Right", @selector(right)    , nil       , NULL                , { 190, 220 }, mediumActionButtonWidth, NULL         },
-                 { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 289, 360 }, mediumActionButtonWidth, &undoButton  },
-    };
     forArray( i, dualActionButtons )
     {
 #if TARGET_OS_IPHONE
@@ -234,6 +266,7 @@ typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
             *(dualActionButtons[ i ].variable) = dualActionButton;
         [ self addSubview: dualActionButton ];
 #elif TARGET_OS_MAC
+#error Haven't coded setup of action buttons!
 #else
 #error Don't know this platform!
 #endif
