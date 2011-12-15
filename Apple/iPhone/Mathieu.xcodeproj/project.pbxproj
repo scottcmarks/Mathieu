@@ -15,6 +15,14 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		D2017AAF1497D14E003DA78F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */; };
+		D2017AB01497D14E003DA78F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */; };
+		D2017AB11497D14E003DA78F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */; };
+		D2017AB31497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */; };
+		D2017AB41497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */; };
+		D2017AB51497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */; };
+		D2017AB71497EB46003DA78F /* PreferencesView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB61497EB46003DA78F /* PreferencesView-iPad.xib */; };
+		D2017AB91497F07D003DA78F /* HelpView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB81497F07D003DA78F /* HelpView-iPad.xib */; };
 		D204A266143B7B44005E4A82 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A261143B7B44005E4A82 /* Icon-72.png */; };
 		D204A267143B7B44005E4A82 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A262143B7B44005E4A82 /* Icon-Small-50.png */; };
 		D204A268143B7B44005E4A82 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A263143B7B44005E4A82 /* Icon-Small.png */; };
@@ -258,6 +266,10 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SporadicMView-iPad.xib"; sourceTree = "<group>"; };
+		D2017AB61497EB46003DA78F /* PreferencesView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "PreferencesView-iPad.xib"; sourceTree = "<group>"; };
+		D2017AB81497F07D003DA78F /* HelpView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "HelpView-iPad.xib"; sourceTree = "<group>"; };
 		D204A261143B7B44005E4A82 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		D204A262143B7B44005E4A82 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		D204A263143B7B44005E4A82 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
@@ -502,6 +514,15 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		D2017AAD1497D14E003DA78F /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */,
+				D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */,
+			);
+			path = iPad;
+			sourceTree = "<group>";
+		};
 		D204A27A143BA851005E4A82 /* NSBundle+VersionString */ = {
 			isa = PBXGroup;
 			children = (
@@ -725,9 +746,11 @@
 		D2AE56500FACE47A0093E56B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D2017AB81497F07D003DA78F /* HelpView-iPad.xib */,
 				D2AE56510FACE47A0093E56B /* HelpView.xib */,
 				D2AE56520FACE47A0093E56B /* Images */,
 				D2AE56600FACE47A0093E56B /* PreferencesView.xib */,
+				D2017AB61497EB46003DA78F /* PreferencesView-iPad.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -743,6 +766,7 @@
 		D2AE56690FACE47B0093E56B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D2017AAD1497D14E003DA78F /* iPad */,
 				D204A274143B7D3F005E4A82 /* Default.png */,
 				D204A275143B7D3F005E4A82 /* Default@x2.png */,
 				D2AE566A0FACE47B0093E56B /* MainWindow.xib */,
@@ -1228,6 +1252,8 @@
 				D204A273143B7B63005E4A82 /* Icon-Small@2x.png in Resources */,
 				D204A277143B7D3F005E4A82 /* Default.png in Resources */,
 				D204A279143B7D3F005E4A82 /* Default@x2.png in Resources */,
+				D2017AB01497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
+				D2017AB41497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1272,6 +1298,10 @@
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
+				D2017AB11497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
+				D2017AB51497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
+				D2017AB71497EB46003DA78F /* PreferencesView-iPad.xib in Resources */,
+				D2017AB91497F07D003DA78F /* HelpView-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1327,6 +1357,8 @@
 				D204A26A143B7B44005E4A82 /* iTunesArtwork in Resources */,
 				D204A276143B7D3F005E4A82 /* Default.png in Resources */,
 				D204A278143B7D3F005E4A82 /* Default@x2.png in Resources */,
+				D2017AAF1497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
+				D2017AB31497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1553,7 +1585,7 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M24/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = SporadicM24;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1572,9 +1604,9 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M24/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = SporadicM24;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1692,8 +1724,9 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M24/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = SporadicM24;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Ad Hoc Distribution";
 		};
@@ -1795,8 +1828,9 @@
 					"FREE=0",
 				);
 				INFOPLIST_FILE = M24/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = SporadicM24;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "App Store Distribution";
 		};
