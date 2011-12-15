@@ -11,6 +11,7 @@
 #import "SporadicMViewController.h"
 #import "PreferencesViewController.h"
 #import "Constants.h"
+#import "iPhoneUtilities.h"
 
 @implementation RootViewController
 
@@ -26,16 +27,20 @@
 // SporadicMView* for the common superclass.  Slightly too much C12H22O11 for $0.10 at the moment.
 // Also, code might fork as MVC persistent state acquires things the PVC doesn't know about.
 
-- (void)loadPreferencesViewController {
-    PreferencesViewController *viewController = [[PreferencesViewController alloc] initWithNibName:@"PreferencesView" bundle:nil];
+- (void)loadPreferencesViewController
+{
+    NSString * nibName = DEVICE_IS_IPAD ? @"PreferencesView-iPad" : @"PreferencesView" ;
+    PreferencesViewController *viewController = [[PreferencesViewController alloc] initWithNibName: nibName bundle:nil];
     self.preferencesViewController = viewController;
     viewController.rootViewController = self;
     [viewController release];
 }
 
 
-- (void)loadMainViewController {
-    SporadicMViewController *viewController = [[SporadicMViewController alloc] initWithNibName:@"SporadicMView" bundle:nil];
+- (void)loadMainViewController
+{
+    NSString * nibName = DEVICE_IS_IPAD ? @"SporadicMView-iPad" : @"SporadicMView" ;
+    SporadicMViewController *viewController = [[SporadicMViewController alloc] initWithNibName: nibName bundle:nil];
     self.mainViewController = viewController;
     viewController.rootViewController = self;
     [viewController release];
