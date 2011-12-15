@@ -16,6 +16,7 @@
 #import "SwapPermutationsViewController.h"
 
 #import "NSBundle+VersionString.h"
+#import "iPhoneUtilities.h"
 
 @implementation PreferencesViewController
 
@@ -30,7 +31,8 @@
 
 - (void)loadHelpViewController
 {
-    HelpViewController *viewController = [[HelpViewController alloc] initWithNibName:@"HelpView" bundle:nil];
+    NSString * nibName = DEVICE_IS_IPAD ? @"HelpView-iPad" : @"HelpView" ;
+    HelpViewController *viewController = [[HelpViewController alloc] initWithNibName: nibName bundle:nil];
     self.helpViewController = viewController;
     viewController.rootViewController = rootViewController;
     [ viewController release ];
