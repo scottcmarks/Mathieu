@@ -6,7 +6,7 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 #import "GameModel.h"
 #import "SporadicMView.h"
 #import "ComboButtonTargetProtocol.h"
@@ -14,13 +14,13 @@
 
 @class RootViewController ;
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 @interface SporadicMViewController : UIViewController
                                                     < UITextFieldDelegate,
                                                       UIAlertViewDelegate,
                                                       ComboButtonTarget,
                                                       BallRingViewDelegate >
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
 @interface SporadicMViewController : NSViewController
                                                     < ComboButtonTarget,
                                                       BallRingViewDelegate >
@@ -43,6 +43,7 @@
 - ( IBAction ) swap           ;
 - ( IBAction ) home           ;
 - ( IBAction ) shake          ;
+- ( IBAction ) restart        ;
 - ( IBAction ) undoMove       ;
 - ( IBAction ) undoStep       ;
 - ( void     ) spinInProgress : ( int ) wedges       ;

@@ -334,17 +334,15 @@ public:
         {
             MathieuPermutation & p=m;  // so that we hack the perm and its history separately
             History & h=m.history;
-            if ( h.macro_is_defined( c ) )
-                if ( inverted )
-                {
+            if ( h.macro_is_defined( c ) ) {
+                if ( inverted ) {
                     p /= h.macros[ c ];
                     h /= c;
-                }
-                else
-                {
+                } else {
                     p *= h.macros[ c ];
                     h *= c;
                 }
+            }
             return m;
         };
     protected:
@@ -626,7 +624,7 @@ public:
     History getHistory( ) const { return history ; } ;
     bool history_is_empty( ) const { return history.empty( ) ; } ;
     bool history_is_single_macro( HistoryElement e ) { return history.size( ) == 1 && history[ 0 ] == e ; } ;
-    int history_length( ) { return history.size( ) ; } ;
+    int history_length( ) { return (int)history.size( ) ; } ;
 
     MathieuPermutationWithHistory & run( const History& additional_history )
     {

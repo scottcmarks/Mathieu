@@ -9,29 +9,34 @@
 #include "view.h"
 #import "SporadicMAppDelegate.h"
 #import "RootViewController.h"
+#import "AppleModalAlert.h"
 #import "SporadicMViewController.h"
 #import "SporadicMView.h"
 #import "BallView.h"
 #import "BallRingView.h"
-#import "MHAlertView.h"
 #import "Constants.h"
 #import "iPhoneUtilities.h"
+
+@interface SporadicMViewController()
+@property (nonatomic, strong, readwrite) IBOutlet SporadicMView * spview;
+@end
 
 @implementation SporadicMViewController
 
 @synthesize rootViewController;
+@synthesize spview;
+
+- ( BallRingView * ) ballRingView { return self.spview.ballRingView; }
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
-- ( SporadicMView *) spview { return (SporadicMView *) self.view ; }
-- ( BallRingView * ) ballRingView { return self.spview.ballRingView; }
 
 - ( bool ) confirm { return self.appDelegate.confirm; }
 - ( bool ) invert  { return self.appDelegate.invert; }
 - ( void ) setInvert:(bool)inverted { [ self.spview setInvertibleButtonsInverted: ( self.appDelegate.invert = inverted ) ]; }
 
 // Framework-generated messages
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 
 // Implement viewDidLoad to do additional setup after loading the view.
 - (void)viewDidLoad {
@@ -39,22 +44,25 @@
     haveNotedSuccess = [ self.gameModel isSolving ] && [ self.gameModel isIdentity ];
 }
 
+#if TARGET_IOS && OVERRIDE_DEPRECATED
 - ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
 {
     // Return YES for supported orientations
     return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
 }
+#endif // TARGET_IOS && OVERRIDE_DEPRECATED
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
 
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 
 - (void)dealloc
 {
     self.rootViewController = nil;
+    self.spview = nil;
     [super dealloc];
 }
 
@@ -109,9 +117,8 @@
 }
 
 
-- (void)doSetCombo: ( id ) comboNameAsObject
+- (void)doSetCombo: ( HistoryElement ) comboName
 {
-    HistoryElement comboName = ( int ) comboNameAsObject ;
     self.invert = false;
     if ( [ self.gameModel historyIsEmpty ] )
         [ self.gameModel eraseCombo: comboName ];
@@ -120,24 +127,22 @@
     [ self.spview setComboButton:comboName enabled: [ self.gameModel hasDefinedCombo:comboName ] ];
 }
 
--(void) confirmSetCombo: ( id ) comboNameAsObject
+-(void) confirmSetCombo: ( HistoryElement ) comboName
 {
-    HistoryElement comboName = ( int ) comboNameAsObject ;
     if ( ! [ self.gameModel hasDefinedCombo:      comboName ]   // Don't confirm if no definition, or
         || [ self.gameModel historyIsSingleCombo: comboName ]  // if just setting to force expand
        )
     {
-        [ self doSetCombo: comboNameAsObject ];
+        [ self doSetCombo: comboName ];
         return ;
     }
-    const char * verb = [ self.gameModel historyIsEmpty ] ? "erase" : "change" ;
-    NSString * alertFormat = @"This will %s the meaning of %c.\nPress OK if you want to do this." ;
-    [ MHAlertView showOKCancelWithTitle: @"Combo Set!"
-                                message: [ NSString stringWithFormat:alertFormat, verb, comboName ]
-                                 target: self
-                         cancelSelector: NULL
-                             OKSelector: @selector( doSetCombo: )
-                              parameter: comboNameAsObject ];
+    NSString * verb = self.gameModel.historyIsEmpty ? @"erase" : @"change" ;
+    NSString * alertFormat = @"This will %@ the meaning of %c.\nPress OK if you want to do this." ;
+    [ AppleModalAlert alertOKCancel:[ NSString stringWithFormat:alertFormat, verb, (char)comboName ]
+                              title:@"Combo Set!"
+                       continuation:^(bool confirmed) {
+                           if (confirmed) [self doSetCombo: comboName];
+                       }];
 }
 
 
@@ -156,9 +161,9 @@
 
     [ self.ballRingView playComboSetSound ];
     if ( self.confirm )
-        [ self confirmSetCombo: ( id ) comboName ];
+        [ self confirmSetCombo:comboName ];
     else
-        [ self doSetCombo: ( id ) comboName ];
+        [ self doSetCombo:comboName ];
 }
 
 
@@ -249,12 +254,10 @@
 
 -(void) confirmHome
 {
-    [ MHAlertView  showOKCancelWithTitle: @"Home!"
-                                 message: @"This will reset " applicationName @" to the home position.\n"
-                                          @"Press OK if you want to do this."
-                                  target: self
-                          cancelSelector: NULL
-                              OKSelector: @selector( doHome ) ] ;
+    [ AppleModalAlert alertOKCancel:@"This will reset " applicationName @" to the home position.\n"
+     @"Press OK if you want to do this." title:@"Home!" continuation:^(bool confirmed) {
+         if (confirmed) [self doHome];
+     }];
 }
 
 -(IBAction) home
@@ -271,17 +274,17 @@
     self.invert = false ;
     [ self.gameModel random ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
     self.rootViewController.nowHandlingShake = false;
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
     haveNotedSuccess = false;
 }
 
 
 -(void) noShake{
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
     self.rootViewController.nowHandlingShake = false;
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 }
 
 
@@ -291,9 +294,9 @@
     if ( [ self.gameModel isSolving ] )
         [ self.gameModel revert ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
     self.rootViewController.nowHandlingShake = false;
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 }
 
 
@@ -303,29 +306,29 @@
 
 -(void) confirmShake
 {
-    [ MHAlertView showOKCancelWithTitle: @"Shake!"
-                                message: @"This will create a new " applicationName @" puzzle.\n"
-                                         @"Press OK if you want to do this."
-                                 target: self
-                         cancelSelector: @selector( noShake )
-                             OKSelector: @selector( doShake ) ] ;
+    [ AppleModalAlert alertOKCancel:@"This will create a new " applicationName @" puzzle.\n"
+                                    @"Press OK if you want to do this."
+                              title:@"Shake!"
+                       continuation:^(bool confirmed) {
+                           if (confirmed) [self doShake]; else [self noShake];
+     }];
 }
 
 -(void) confirmRestart
 {
-    [ MHAlertView showOKCancelWithTitle: @"Restart!"
-                                message: @"This will restart solving this puzzle.\n"
-                                         @"Press OK if you want to do this."
-                                 target: self
-                         cancelSelector: @selector( noRestart )
-                             OKSelector: @selector( doRestart ) ] ;
+    [ AppleModalAlert alertOKCancel:(NSString *)@"This will restart solving this puzzle.\n"
+                                                @"Press OK if you want to do this."
+                              title:@"Restart!"
+                       continuation:^(bool confirmed) {
+                           if (confirmed) [self doRestart] ; else [self noRestart ];
+                       }];
 }
 
 
 -(IBAction) shake
 {
     [ self.ballRingView playShakeSound ];
-    if ( self.confirm && [self.gameModel isSolving ] )
+    if ( self.confirm && self.gameModel.isSolving )
         [ self confirmShake ];
     else
         [ self doShake ];
@@ -335,7 +338,7 @@
 -(IBAction) restart
 {
     [ self.ballRingView playRestartSound ];
-    if ( self.confirm && [self.gameModel isSolving ] )
+    if ( self.confirm && self.gameModel.isSolving )
         [ self confirmRestart ];
     else
         [ self doRestart ];
@@ -343,7 +346,7 @@
 
 
 
--( void ) doChangeSwap: (int) newSwapIndex
+-( void ) doChangeSwap:(int) newSwapIndex
 {
     self.gameModel.swapIndex = newSwapIndex;
     [ self.gameModel reset ];
@@ -355,7 +358,7 @@
 }
 
 
--( void ) dontChangeSwap: (int) newSwapIndex
+-( void ) dontChangeSwap
 {
     [ BallView setColorsForSwapPermutation: MathieuPermutation::swapPermutation ];
     [ self.rootViewController toggleView ];
@@ -365,7 +368,7 @@
 -( void ) setSwapIndex: ( int ) newSwapIndex
 {
     if ( newSwapIndex == self.gameModel.swapIndex )
-        [ self dontChangeSwap: nil ];
+        [ self dontChangeSwap ];
     else
     {
         NSString * message = @"This will change the meaning of Swap.\n" ;
@@ -376,12 +379,14 @@
         if ( [ self.gameModel hasAnyDefinedCombo ] )
             message = [ message stringByAppendingString: @"All combo moves will be erased!\n" ];
         message = [ message stringByAppendingString: @"Press OK if you want to do this." ];
-        [ MHAlertView showOKCancelWithTitle: @"New Swap!"
-                                    message: message
-                                     target: self
-                             cancelSelector: @selector( dontChangeSwap: )
-                                 OKSelector: @selector( doChangeSwap: )
-                                  parameter: (id)newSwapIndex ] ;
+        [ AppleModalAlert alertOKCancel:message
+                                  title:@"New Swap!"
+                           continuation:^(bool confirmed) {
+                               if (confirmed)
+                                   [ self doChangeSwap:newSwapIndex];
+                               else
+                                   [ self dontChangeSwap ];
+                           }];
     }
 }
 

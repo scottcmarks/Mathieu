@@ -23,7 +23,6 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 @implementation SporadicMAppDelegate
 
 @synthesize window;
-@synthesize rootViewController;
 @synthesize animationSpeed;
 @synthesize soundEffects;
 @synthesize confirm;
@@ -65,29 +64,34 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 - ( BOOL ) application: ( Application * ) application didFinishLaunchingWithOptions: ( NSDictionary * ) launchOptions
 {
 #define APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL 1
-    
+
+#if OLD_PRESENTATION_LAYER
 #if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
 #endif
     // Set up root view controller
     RootViewController *viewController = [ RootViewController new ];
-    self.rootViewController = viewController;
+    self.window.rootViewController = viewController;
     [ viewController release ] ;
-    
 #if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
 #endif
     
     // Add the root view controller's view to the window
-#if TARGET_OS_IPHONE
-    View * rootView = [ rootViewController view ];
+#if TARGET_IOS
+    View * rootView = [ viewController view ];
     [ window_view( window ) addSubview: rootView ];
-#elif TARGET_OS_MAC
-    rootViewController.view = window_view( window );
-    [ rootViewController viewDidLoad ];  // tacky to call this directly?
+#elif TARGET_MACOS
+    viewController.view = window_view( window );
+    [ viewController viewDidLoad ];  // tacky to call this directly?
 #else
 #error Don't know this platform!
 #endif
+
+#else // OLD_PRESENTATION_LAYER
+#endif // OLD_PRESENTATION_LAYER
+    
+
     
 #if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
@@ -113,7 +117,10 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
     self.gameModel       = [ GameModel gameFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
     
-    [ self.rootViewController synchronizeView ] ;
+#if OLD_PRESENTATION_LAYER
+    [ ((RootViewController *)self.window.rootViewController) synchronizeView ] ;
+#else // OLD_PRESENTATION_LAYER
+#endif // OLD_PRESENTATION_LAYER
 
 #if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
@@ -121,7 +128,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
 }
 
-#if TARGET_OS_MAC
+#if TARGET_MACOS
 - ( BOOL ) applicationShouldTerminateAfterLastWindowClosed: ( Application * ) sender
 {
     // return YES to allow the application to terminate when the user closes the last window the application has open
@@ -159,7 +166,6 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
 - ( void ) dealloc
 {
-	self.rootViewController = nil ;
     self.window             = nil ;
     self.gameModel          = nil;
     [ super dealloc ] ;
