@@ -35,7 +35,7 @@
 - (void) showHelp { [ self.preferencesViewController showHelp ] ; }
 
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS && OVERRIDE_DEPRECATED
 
 // Override to allow orientations other than the default portrait orientation.
 - ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation

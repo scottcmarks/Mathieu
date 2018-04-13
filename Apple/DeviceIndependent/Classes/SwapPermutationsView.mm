@@ -17,7 +17,7 @@
 
 @synthesize currentPermutation        ;
 @synthesize pickedSwapIndex           ;
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 @synthesize navigationBar             ;
 @synthesize swapPermutationPicker     ;
 #endif
@@ -26,7 +26,8 @@
 
 - (void) awakeFromNib
 {
-#if TARGET_OS_IPHONE
+    [super awakeFromNib];
+#if TARGET_IOS
     navigationBar.title       = fullAppName ;
 #endif
     currentPermutationPreview = [ BallRingView ballRingViewWithFrame: CGRectMake( 101, 44, 118, 118 )
@@ -44,7 +45,7 @@
 #else
     int row = pickedSwapIndex ;
 #endif
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
     [ swapPermutationPicker selectRow: row inComponent: 0 animated: NO ];
 #endif
 }
@@ -54,7 +55,7 @@
     if ( superView ) [ self synchronize ] ;
 }
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 
 // UIPickerViewDelegate methods
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
@@ -63,7 +64,8 @@
 #if FREE
     row = ( row == 0 ? 1 : 24 );
 #endif
-    return [ NSString stringWithFormat: @"#%d  ----  difficulty %d ", row+1, [ self.gameModel difficultyOfSwap:row ] ];
+    return [ NSString stringWithFormat: @"#%ld  ----  difficulty %d ", (long)(row+1),
+            [ self.gameModel difficultyOfSwap:(int)row ] ];
 }
 
 -(void) pickerView: (UIPickerView *)pickerView
@@ -74,10 +76,10 @@
 #if FREE
     row = ( row == 0 ? 1 : 24 );
 #endif
-    currentPermutation.text = [ self.gameModel cyclesForSwap:row ];
+    currentPermutation.text = [ self.gameModel cyclesForSwap:(int)row ];
     [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
     [ currentPermutationPreview redraw ];
-    pickedSwapIndex =  row;
+    pickedSwapIndex = (int)row;
 }
 
 
@@ -98,7 +100,7 @@
     return 0;
 }
 
-#endif  /* TARGET_OS_IPHONE */
+#endif  /* TARGET_IOS */
 
 
 - (void)dealloc

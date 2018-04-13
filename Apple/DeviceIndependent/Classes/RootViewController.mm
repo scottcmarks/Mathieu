@@ -17,9 +17,9 @@
 
 @synthesize mainViewController;
 @synthesize preferencesViewController;
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 @synthesize nowHandlingShake;
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 
 // TODO:  Factor out common code.
 // This might require invention of a common superclass for PV controller and mainview controller.
@@ -56,14 +56,16 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     [self.view addSubview:self.mainViewController.view];
 	
-#if TARGET_OS_IPHONE
+#if TARGET_IOS && USE_DEPRECATED_ACCELEROMETER_METHODS
 	//Configure and enable the accelerometer
 	[[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / kAccelerometerFrequency)];
 	[[UIAccelerometer sharedAccelerometer] setDelegate:self];
     self.nowHandlingShake = false;
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 	
 }
 
@@ -72,7 +74,7 @@
                to:( ViewController * )newViewController
       transition: (RootViewControllerTransition) transition
 {
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
     UIViewAnimationTransition uitransition;
     switch ( transition )
     {
@@ -95,14 +97,14 @@
                              cache:YES];
     [newViewController viewWillAppear:YES];
     [oldViewController viewWillDisappear:YES];
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
     [oldViewController.view removeFromSuperview];
     [self.view addSubview:newViewController.view];
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
     [oldViewController viewDidDisappear:YES];
     [newViewController viewDidAppear:YES];
     [View commitAnimations];
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 }
 
 
@@ -136,8 +138,9 @@
 }
 
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 // Called when the accelerometer detects motion; plays the erase sound and redraws the view if the motion is over a threshold.
+#if USE_DEPRECATED_ACCELEROMETER_METHODS
 - (void) accelerometer:(UIAccelerometer*)accelerometer didAccelerate: ( UIAcceleration * ) acceleration
 {
 	UIAccelerationValue	length ;
@@ -167,13 +170,22 @@
 		[ mainViewController shake ];
 	}
 }
+#endif // USE_DEPRECATED_ACCELEROMETER_METHODS
+
+- ( void ) motionEnded: ( UIEventSubtype ) motion withEvent: ( UIEvent * ) event {
+    if ( motion == UIEventSubtypeMotionShake ) {
+        [ mainViewController shake ];
+    }
+}
 
 
+#if TARGET_IOS && OVERRIDE_DEPRECATED
 - ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
 {
     // Return YES for supported orientations
     return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
 }
+#endif // TARGET_IOS && OVERRIDE_DEPRECATED
 
 
 - (void)didReceiveMemoryWarning {
@@ -181,7 +193,7 @@
     // Release anything that's not essential, such as cached data
 }
 
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 
 
 

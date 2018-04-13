@@ -6,25 +6,25 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 
 @class SporadicMViewController;
 @class PreferencesViewController;
 @class GameModel;
 
-@interface RootViewController : ViewController
-#if TARGET_OS_IPHONE
+@interface RootViewController : AppleViewController
+#if TARGET_IOS
                                                 <UIAccelerometerDelegate>
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 {
     SporadicMViewController *mainViewController;
     PreferencesViewController *preferencesViewController;
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 	UIAccelerationValue	myAccelerometer[3];
     CFTimeInterval		lastShakeTime;
     bool                nowHandlingShake;
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
 #else
 #error Don't know this platform!
 #endif
@@ -32,15 +32,15 @@
 
 @property ( nonatomic, retain ) SporadicMViewController *mainViewController;
 @property ( nonatomic, retain ) PreferencesViewController *preferencesViewController;
-#if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#if TARGET_IOS
+#elif TARGET_MACOS
 #else
 #error Don't know this platform!
 #endif
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 @property ( nonatomic         ) bool nowHandlingShake;
-#endif /* TARGET_OS_IPHONE */
+#endif /* TARGET_IOS */
 
 - ( void ) setSwapIndex: ( int ) newSwapIndex;
 
@@ -51,8 +51,8 @@ typedef enum
     flip,
     flop
 } RootViewControllerTransition;
-- (void) flipFrom: ( ViewController * ) oldViewController
-               to: ( ViewController * ) newViewController
+- (void) flipFrom: ( AppleViewController * ) oldViewController
+               to: ( AppleViewController * ) newViewController
        transition: ( RootViewControllerTransition ) transition;
 
 - ( void ) synchronizeView ;

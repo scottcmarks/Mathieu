@@ -6,7 +6,7 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 
 @class BallRingView;
 @class ComboButton;
@@ -17,7 +17,7 @@
 {
 
     SporadicMViewController * controller;
-    Label * moves;
+    AppleLabel * moves;
     NSTimer * historyTextUpdatingTimer;
     BallRingView * ballRingView;
 
@@ -27,28 +27,14 @@
     DualActionButton * altButton;
     DualActionButton * undoButton;
     bool buttonsInverted;
-#if TARGET_OS_IPHONE
-    UITextView * history;
-    UIToolbar  * toolbar;
-#elif TARGET_OS_MAC
-    NSTextField * history;
-    NSToolbar   * toolbar;
-#else
-#error Don't know this platform!
-#endif
+    AppleTextView * history;
+    AppleToolbar  * toolbar;
 }
 
 
-#if TARGET_OS_IPHONE
-@property ( nonatomic, assign   ) IBOutlet UIToolbar  * toolbar;
-@property ( nonatomic, assign   ) IBOutlet UITextView * history;
-#elif TARGET_OS_MAC
-@property ( nonatomic, assign   )          NSToolbar   * toolbar;
-@property ( nonatomic, assign   )          NSTextField * history;
-#else
-#error Don't know this platform!
-#endif
-@property ( nonatomic, assign   ) IBOutlet Label                   * moves;
+@property ( nonatomic, assign   ) IBOutlet AppleToolbar  * toolbar;
+@property ( nonatomic, assign   ) IBOutlet AppleTextView * history;
+@property ( nonatomic, assign   ) IBOutlet AppleLabel              * moves;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
 @property ( nonatomic, assign   ) IBOutlet BallRingView            * ballRingView;
 @property ( nonatomic, retain   )          NSTimer                 * historyTextUpdatingTimer;

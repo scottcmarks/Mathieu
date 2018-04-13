@@ -28,7 +28,8 @@
     [ helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];
 }
 
-- (void) awakeFromNib{
+- (void) awakeFromNib {
+    [super awakeFromNib];
     NSBundle *main = [NSBundle mainBundle];
     NSString *path = [ main bundlePath];
     baseURL = [ [ NSURL fileURLWithPath: path isDirectory:YES ] retain ];
