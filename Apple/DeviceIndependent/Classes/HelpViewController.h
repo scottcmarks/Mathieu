@@ -6,15 +6,15 @@
 //  Copyright 2009 Magnolia Heights Research and Development.  All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 
 #import "RootViewController.h"
 #import "HelpView.h"
 
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 @interface HelpViewController : UIViewController <UIWebViewDelegate>
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
 @interface HelpViewController : NSViewController
 #else
 #error Don't know this platform!

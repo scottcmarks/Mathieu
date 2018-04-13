@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>SporadicM24Icon_Prerendered.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.magnoliaheights.${PRODUCT_NAME:identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

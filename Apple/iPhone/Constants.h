@@ -49,10 +49,11 @@
 #define historyFontSize       13.0
 #define movesFontSize         13.0
 #if FREE
-#define fullAppName applicationName @" Free"
+#define fullAppNameString applicationName @" Free"
 #else
-#define fullAppName applicationName
+#define fullAppNameString applicationName
 #endif
+#define fullAppName NSLocalizedString(fullAppNameString, @"App Name")
 
 // Apple user interface recommendation
 #define TOUCH_SPOT_SIZE       44.0
