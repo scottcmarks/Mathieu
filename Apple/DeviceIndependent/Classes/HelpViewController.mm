@@ -26,7 +26,7 @@
 }
 
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS && OVERRIDE_DEPRECATED
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -57,7 +57,7 @@
 
 - (void)webViewDidStartLoad:(WebView *)webView
 {
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 	// starting the load, show the activity indicator in the status bar
 	[Application sharedApplication].networkActivityIndicatorVisible = YES;
 #endif
@@ -65,7 +65,7 @@
 
 - (void)webViewDidFinishLoad:(WebView *)webView
 {
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 	// finished loading, hide the activity indicator in the status bar
 	[Application sharedApplication].networkActivityIndicatorVisible = NO;
 #endif
@@ -74,7 +74,7 @@
 
 - (void)webView:(WebView *)webView didFailLoadWithError:(NSError *)error
 {
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 	// load error, hide the activity indicator in the status bar
 	[Application sharedApplication].networkActivityIndicatorVisible = NO;
 #endif

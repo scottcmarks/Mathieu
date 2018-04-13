@@ -29,6 +29,12 @@
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 
 
+-(IBAction) done:(id)sender
+{
+#pragma unused(sender)
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)loadHelpViewController
 {
     NSString * nibName = DEVICE_IS_IPAD ? @"HelpView-iPad" : @"HelpView" ;
@@ -81,9 +87,9 @@
 - (IBAction)soundEffectsSwitchChanged
 {
     self.appDelegate.soundEffects =
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
                                     preferencesView.soundEffectsSwitch.on ;
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
                                     preferencesView.soundEffectsSwitch.state != 0 ;
 #else
 #error Don't know this platform!
@@ -93,9 +99,9 @@
 - (IBAction)confirmSwitchChanged
 {
     self.appDelegate.confirm =
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
                                 preferencesView.confirmSwitch.on ;
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
                                 preferencesView.confirmSwitch.state != 0 ;
 #else
 #error Don't know this platform!
@@ -110,7 +116,7 @@
     self.versionStringLabel.text = [ NSBundle versionString ] ;
 }
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS && OVERRIDE_DEPRECATED
 // Override to allow orientations other than the default portrait orientation.
 - ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
 {
@@ -124,6 +130,7 @@
     self.rootViewController = nil;
     self.helpViewController = nil;
     self.preferencesView = nil;
+    self.swapPermutationsViewController = nil;
     [ super dealloc ] ;
 }
 

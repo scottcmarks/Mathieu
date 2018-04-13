@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>${TARGET_NAME}Icon_Prerendered.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.magnoliaheights.${TARGET_NAME:identifier}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -29,7 +29,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2009 Magnolia Heights Research and Development</string>
+	<string>© 2009-2017 Magnolia Heights Research and Development</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>NSMainNibFile~ipad</key>

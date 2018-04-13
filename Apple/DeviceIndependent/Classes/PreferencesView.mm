@@ -15,7 +15,7 @@
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 @synthesize navigationBar;
 #endif
 
@@ -40,6 +40,7 @@
 
 - (void) awakeFromNib
 {
+    [super awakeFromNib];
     animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
@@ -47,7 +48,7 @@
     swapsButton.hidden         = bigBalls                         ;
     currentPermutation.hidden  = bigBalls                         ;
     currentPermLabel.hidden    = bigBalls                         ;
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 	navigationBar.title        = fullAppName                      ;
 #endif
 }

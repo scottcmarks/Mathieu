@@ -89,7 +89,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
                 return nil;
             ballLabel.center = _ballCenters[ i ];
             ballLabel.font = ballFont;
-            ballLabel.textAlignment = UITextAlignmentCenter;
+            ballLabel.textAlignment = NSTextAlignmentCenter;
             ballLabel.backgroundColor = [ UIColor clearColor ];
             ballLabel.text = [NSString stringWithFormat:@"%d", i ];
             [self addSubview:ballLabel ];
@@ -108,9 +108,9 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
                     return nil;
                 tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
                 tagLabel.font = tagFont;
-                tagLabel.textAlignment = UITextAlignmentCenter;
+                tagLabel.textAlignment = NSTextAlignmentCenter;
                 tagLabel.backgroundColor = [ UIColor clearColor ];
-                tagLabel.textColor = [ UIColor colorWithWhite:0.0 alpha:0.25 ];
+                tagLabel.textColor = [ UIColor colorWithWhite:1.0 alpha:0.33 ];
                 tagLabel.text = [NSString stringWithFormat:@"%d", i ];
                 [self addSubview:tagLabel ];
             }
@@ -142,11 +142,13 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             self.userInteractionEnabled = NO;
 
 #else
-    #if TARGET_OS_IPHONE
+    #if TARGET_IOS
+#if CONSTRUCT_PROGRAMMATICALLY
         self.backgroundColor = [ UIColor blackColor ];
+#endif // CONSTRUCT_PROGRAMMATICALLY
         self.opaque = YES;
         self.userInteractionEnabled = NO;
-    #elif TARGET_OS_MAC
+    #elif TARGET_MACOS
     #else
         #error Don't know this platform!
     #endif
@@ -173,7 +175,7 @@ forAllBalls(i)
     }
 }
 
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 
 - (bool) findWedgeAtTouch:(UITouch *)touch tolerant: ( bool ) tolerant
                   asWedge: ( Index & ) wedge
@@ -346,7 +348,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     }
 }
 
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
 #else
 #error Don't know this platform!
 #endif

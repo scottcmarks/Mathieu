@@ -90,7 +90,7 @@ static Image * comboButtonDisabledImage    ;
                        normalSelector: @selector( touchUpInside: )
                           normalTitle: [ NSString stringWithFormat: @"%c", m ]
                     alternateSelector: @selector( touchUpInside: )
-                       alternateTitle: [ NSString stringWithFormat: @"%c%C%C", m, superscriptMinus, superscriptOne ] ] )
+                       alternateTitle: [ NSString stringWithFormat: @"%c%C%C", m, (unichar)superscriptMinus, (unichar)superscriptOne ] ] )
     {
         [ self addTarget: self action: @selector( touchDown: )
                      forControlEvents: UIControlEventTouchDown ];
@@ -155,8 +155,8 @@ static Image * comboButtonDisabledImage    ;
 }
 
 - (void)dealloc {
-    [super dealloc];
     [ timerLock release ] ;
+    [super dealloc];
 }
 
 

@@ -6,7 +6,7 @@
 //  Copyright 2009 Magnolia Heights Research and Development.  All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 
 @class RootViewController;
 @class PreferencesViewController;
@@ -14,7 +14,7 @@
 
 
 @interface SwapPermutationsViewController : UIViewController
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 //                                                           <UIWebViewDelegate>
 #endif
 {
