@@ -6,7 +6,7 @@
 //  Copyright 2009 Magnolia Heights R & D. All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 
 #import "GameModel.h"
 #import "BallRingViewDelegate.h"
@@ -49,7 +49,7 @@
 
 - ( void ) moveLabels;
 - ( void ) redraw;
-#if TARGET_OS_IPHONE
+#if TARGET_IOS
 - ( void ) playRightSound       ;
 - ( void ) playLeftSound        ;
 - ( void ) playSwapSound        ;
@@ -60,7 +60,7 @@
 - ( void ) playComboSetSound    ;
 - ( void ) playComboNotSetSound ;
 - ( void ) playSuccessSound     ;
-#elif TARGET_OS_MAC
+#elif TARGET_MACOS
 #else
 #error Don't know this platform!
 #endif

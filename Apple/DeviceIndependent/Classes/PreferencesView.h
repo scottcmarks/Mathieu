@@ -6,27 +6,27 @@
 //  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import "Kit.h"
+#include "Apple Cross-platform.h"
 
 @interface PreferencesView : UIView
 {
-    Slider * animationSpeedSlider;
-    Switch * soundEffectsSwitch;
-    Switch * confirmSwitch;
-    Label  * currentPermutation;
-    Label  * currentPermLabel;
-    Button * swapsButton;
-#if TARGET_OS_IPHONE
+    AppleSlider * animationSpeedSlider;
+    AppleSwitch * soundEffectsSwitch;
+    AppleSwitch * confirmSwitch;
+    AppleLabel  * currentPermutation;
+    AppleLabel  * currentPermLabel;
+    AppleButton * swapsButton;
+#if TARGET_IOS
 	UINavigationItem * navigationBar;
 #endif
 }
-@property( nonatomic, assign ) IBOutlet UISlider * animationSpeedSlider;
-@property( nonatomic, assign ) IBOutlet UISwitch * soundEffectsSwitch;
-@property( nonatomic, assign ) IBOutlet UISwitch * confirmSwitch;
-@property( nonatomic, assign ) IBOutlet UILabel  * currentPermutation;
-@property( nonatomic, assign ) IBOutlet UILabel  * currentPermLabel;
-@property( nonatomic, assign ) IBOutlet UIButton * swapsButton;
-#if TARGET_OS_IPHONE
+@property( nonatomic, assign ) IBOutlet AppleSlider * animationSpeedSlider;
+@property( nonatomic, assign ) IBOutlet AppleSwitch * soundEffectsSwitch;
+@property( nonatomic, assign ) IBOutlet AppleSwitch * confirmSwitch;
+@property( nonatomic, assign ) IBOutlet AppleLabel  * currentPermutation;
+@property( nonatomic, assign ) IBOutlet AppleLabel  * currentPermLabel;
+@property( nonatomic, assign ) IBOutlet AppleButton * swapsButton;
+#if TARGET_IOS
 @property( nonatomic, assign ) IBOutlet UINavigationItem * navigationBar;
 #endif
 @property /* dynamic */           CGFloat animationSpeed;
