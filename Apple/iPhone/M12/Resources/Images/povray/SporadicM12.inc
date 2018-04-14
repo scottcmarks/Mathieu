@@ -38,6 +38,7 @@ camera {
 #declare LIGHT_HARD_ORANGE  = rgb<  255, 153,  51 > / 255 ;
 #declare PALE_DULL_PINK     = rgb<  255, 153, 204 > / 255 ;
 #declare RED                = rgb<  255,   0,   0 > / 255 ;
+#declare DARK_HARD_RED                = rgb<  204,   0,   0 > / 255 ;
 #declare MAGENTA            = rgb<  255,   0, 255 > / 255 ;
 #declare DARK_HARD_ORANGE   = rgb<  204, 102,   0 > / 255 ;
 #declare LIGHT_HARD_VIOLET  = rgb<  187,  84, 255 > / 255 ;
@@ -56,10 +57,10 @@ camera {
   LIGHT_BLUE_AZURE  ,
   YELLOW            ,
   DARK_HARD_GREEN   ,
-  RED               ,
+  DARK_HARD_RED               ,
   YELLOW            ,
   DARK_HARD_GREEN   ,
-  RED
+  DARK_HARD_RED
 }
 #declare turbulences = array[NBalls]
 {
@@ -115,11 +116,12 @@ camera {
 #end
 
 #macro Ball(N)
-sphere { y, 1
+sphere { <0,0,0>, 1
          texture{ Polished_Chrome }
          Pigment(N)
          finish{ phong 0.0 brilliance 5}
-         rotate 360*clock*y  // for animation
+         rotate 360*clock*z  // for animation
+         translate 1*y
        }
 #end
 
