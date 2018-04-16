@@ -26,10 +26,10 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2009-2017 Magnolia Heights Research and Development</string>
-	<key>NSMainNibFile</key>
-	<string>MainWindow</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>SporadicM12</string>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UISupportedInterfaceOrientations</key>

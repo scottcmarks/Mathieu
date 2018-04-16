@@ -77,7 +77,20 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             _ballViews[ i ] = ballView;
         }
 
-#if !ICONIC_PICTURE_ONLY
+#if ICONIC_PICTURE_ONLY
+
+    #if TARGET_IOS
+        #if CONSTRUCT_PROGRAMMATICALLY
+                self.backgroundColor = [ UIColor blackColor ];
+        #endif // CONSTRUCT_PROGRAMMATICALLY
+            self.opaque = YES;
+            self.userInteractionEnabled = NO;
+    #elif TARGET_MACOS
+    #else
+        #error Don't know this platform!
+    #endif
+        
+#else // !ICONIC_PICTURE_ONLY
 
         Font * ballFont = [Font systemFontOfSize:ballFontSize ];
 
@@ -139,22 +152,13 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
             swapGestureStarted = false;
         }
         else
+        {
             self.userInteractionEnabled = NO;
+        }
+        
+        self.backgroundColor = [ UIColor yellowColor ];   // <<<-------- DEBUGGING
 
-#else
-    #if TARGET_IOS
-#if CONSTRUCT_PROGRAMMATICALLY
-        self.backgroundColor = [ UIColor blackColor ];
-#endif // CONSTRUCT_PROGRAMMATICALLY
-        self.opaque = YES;
-        self.userInteractionEnabled = NO;
-    #elif TARGET_MACOS
-    #else
-        #error Don't know this platform!
-    #endif
-
-
-#endif
+#endif // !ICONIC_PICTURE_ONLY
 
     }
     return self;
