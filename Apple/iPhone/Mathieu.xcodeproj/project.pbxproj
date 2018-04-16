@@ -31,11 +31,13 @@
 		D204A27E143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D204A27F143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D204A280143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
+		D2073BC22083FD8B00EF9B71 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */; };
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D23B2FE91FC9D941009CD6BD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FE81FC9D941009CD6BD /* Images.xcassets */; };
 		D23B2FEF1FC9E3F4009CD6BD /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */; };
 		D23B2FF01FC9E56B009CD6BD /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */; };
+		D24B1E5420851DA3007A13BA /* SporadicM12 free 355x355@2.png in Resources */ = {isa = PBXBuildFile; fileRef = D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEB480FBB610D0051EB25 /* WebKit.framework */; };
@@ -269,6 +271,7 @@
 		D204A275143B7D3F005E4A82 /* Default@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@x2.png"; sourceTree = "<group>"; };
 		D204A27B143BA851005E4A82 /* NSBundle+VersionString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+VersionString.h"; sourceTree = "<group>"; };
 		D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+VersionString.m"; sourceTree = "<group>"; };
+		D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D20910D81439736C00F35429 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D20910DA1439736C00F35429 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D20910E11439738600F35429 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -289,6 +292,7 @@
 		D23B2FE81FC9D941009CD6BD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D23B2FEC1FC9D9F2009CD6BD /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
 		D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 free 355x355@2.png"; sourceTree = "<group>"; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -542,6 +546,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */,
 				8C1B87BD0F68452900F359D6 /* Mathieu */,
 				D2AE58210FACE81D0093E56B /* Toolbox */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -777,6 +782,7 @@
 		D2AE55F20FACE47A0093E56B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */,
 				D2AE55F30FACE47A0093E56B /* Images */,
 			);
 			path = Resources;
@@ -855,7 +861,6 @@
 				D2AE566B0FACE47B0093E56B /* PreferencesView.xib */,
 				D2AE566C0FACE47B0093E56B /* SporadicMView.xib */,
 				D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */,
-				D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */,
 				D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */,
 			);
 			path = Resources;
@@ -1169,6 +1174,7 @@
 		D2B5996120819C4800FB4403 /* povray */ = {
 			isa = PBXGroup;
 			children = (
+				D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */,
 				D2B5996220819C4800FB4403 /* SporadicM12.pov */,
 				D2B5996320819C4800FB4403 /* SporadicM12.inc */,
 				D2B5996420819C4800FB4403 /* SporadicM12 3000x3000.png */,
@@ -1434,6 +1440,7 @@
 				D2AE56890FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D2AE568B0FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE568C0FACE47B0093E56B /* combo.caf in Resources */,
+				D2073BC22083FD8B00EF9B71 /* Default-568h@2x.png in Resources */,
 				D2FDA87A1FC779F700603E02 /* SporadicMView.xib in Resources */,
 				D2AE568D0FACE47B0093E56B /* combo_not_set.caf in Resources */,
 				D2AE568E0FACE47B0093E56B /* combo_set.caf in Resources */,
@@ -1511,6 +1518,7 @@
 				D2AE5C0C0FACE9BB0093E56B /* Application Description.txt in Resources */,
 				D2AE5C0D0FACE9BB0093E56B /* buttons.html in Resources */,
 				D2AE5C0E0FACE9BB0093E56B /* combo_buttons.html in Resources */,
+				D24B1E5420851DA3007A13BA /* SporadicM12 free 355x355@2.png in Resources */,
 				D2AE5C0F0FACE9BB0093E56B /* error.html in Resources */,
 				D2AE5C100FACE9BB0093E56B /* hints.html in Resources */,
 				D2AE5C330FACE9BB0093E56B /* index.html in Resources */,
