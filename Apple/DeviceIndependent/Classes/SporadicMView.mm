@@ -218,20 +218,19 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
         { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 694, 806 }, mediumActionButtonWidth, &undoButton  },
     } ;
     
-#if TARGET_IOS
-    ButtonDescription dualActionButtons[ 6 ] ;
-    if ( DEVICE_IS_IPAD )
-        forArray( i , dualActionButtons_iPad )
-            dualActionButtons[ i ] = dualActionButtons_iPad[ i ] ;
-    else
-        forArray( i , dualActionButtons_iPhone )
-            dualActionButtons[ i ] = dualActionButtons_iPhone[ i ] ;
-#elif TARGET_MACOS
-#error Haven't defined action button description array!
-#else
-#error Don't know this platform!
-#endif
-
+    #if TARGET_IOS
+        ButtonDescription dualActionButtons[ 6 ] ;
+        if ( DEVICE_IS_IPAD )
+            forArray( i , dualActionButtons_iPad )
+                dualActionButtons[ i ] = dualActionButtons_iPad[ i ] ;
+        else
+            forArray( i , dualActionButtons_iPhone )
+                dualActionButtons[ i ] = dualActionButtons_iPhone[ i ] ;
+    #elif TARGET_MACOS
+        #error Haven't defined action button description array!
+    #else
+        #error Don't know this platform!
+    #endif
 #endif // -CONSTRUCT_PROGRAMMATICALLY
 
 #if TARGET_IOS
@@ -244,8 +243,8 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 #endif
     CGFloat ballRingFrameSize = min ( CGRectGetWidth( frame ),
                                       CGRectGetHeight( frame ) );
-    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( CGRectGetMinX( frame ),
-                                                                     CGRectGetMinY( frame ),
+    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( 0, // CGRectGetMinX( frame ),
+                                                                     0, // CGRectGetMinY( frame ),
                                                                      ballRingFrameSize, ballRingFrameSize )
                                                    tags: YES
                                                delegate: self.controller ];
@@ -400,15 +399,15 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 
 #else
     #if TARGET_IOS
-        history.hidden = YES;
-        moves.hidden = YES;
-        toolbar.hidden = YES;
-#if CONSTRUCT_PROGRAMMATICALLY
-        self.backgroundColor = [ UIColor blackColor ];
-#endif // CONSTRUCT_PROGRAMMATICALLY
+        history.hidden = NO;
+        moves.hidden = NO;
+        toolbar.hidden = NO;
+        #if CONSTRUCT_PROGRAMMATICALLY
+            self.backgroundColor = [ UIColor blackColor ];
+        #endif // CONSTRUCT_PROGRAMMATICALLY
     #elif TARGET_MACOS
     #else
-    #error Don't know this platform!
+        #error Don't know this platform!
     #endif
 
 #endif
