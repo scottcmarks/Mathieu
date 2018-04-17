@@ -43,15 +43,15 @@
                         <constraints>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="hCI-7Z-0Je" secondAttribute="leading" id="8fI-YT-cTe"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="bottom" constant="-80" id="HrV-r9-XoM"/>
-                            <constraint firstItem="obG-Y5-kRd" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" constant="-10" id="Nw4-E2-EX8"/>
-                            <constraint firstItem="hCI-7Z-0Je" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" constant="-10" id="QE2-ft-CI1"/>
+                            <constraint firstItem="obG-Y5-kRd" firstAttribute="trailing" secondItem="n7I-Yh-cgT" secondAttribute="trailing" constant="-10" id="Nw4-E2-EX8"/>
+                            <constraint firstItem="hCI-7Z-0Je" firstAttribute="trailing" secondItem="n7I-Yh-cgT" secondAttribute="trailing" constant="-10" id="QE2-ft-CI1"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="hCI-7Z-0Je" secondAttribute="bottom" constant="60" id="RgK-ns-f2G"/>
-                            <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="10" id="SYM-bk-85U"/>
-                            <constraint firstItem="hCI-7Z-0Je" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="40" id="Y8T-VH-jMx"/>
-                            <constraint firstItem="hCI-7Z-0Je" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="10" id="myu-8U-7Kc"/>
+                            <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="n7I-Yh-cgT" secondAttribute="leading" constant="10" id="SYM-bk-85U"/>
+                            <constraint firstItem="hCI-7Z-0Je" firstAttribute="top" secondItem="n7I-Yh-cgT" secondAttribute="top" constant="40" id="Y8T-VH-jMx"/>
+                            <constraint firstItem="hCI-7Z-0Je" firstAttribute="leading" secondItem="n7I-Yh-cgT" secondAttribute="leading" constant="10" id="myu-8U-7Kc"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="trailing" secondItem="hCI-7Z-0Je" secondAttribute="trailing" id="s1X-F5-Vbz"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <viewLayoutGuide key="safeArea" id="n7I-Yh-cgT"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
