@@ -233,22 +233,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     #endif
 #endif // -CONSTRUCT_PROGRAMMATICALLY
 
-#if TARGET_IOS
-    CGRect frame = self.ballRingViewContainerView.frame ;
-#elif TARGET_MACOS
-    NSRect NSframe = self.ballRingViewContainerView.frame;
-    CGRect frame = NSRect_to_CGRect( NSframe );
-#else
-#error Don't know this platform!
-#endif
-    CGFloat ballRingFrameSize = min ( CGRectGetWidth( frame ),
-                                      CGRectGetHeight( frame ) );
-    ballRingView = [ BallRingView ballRingViewWithFrame: CGRectMake( 0, // CGRectGetMinX( frame ),
-                                                                     0, // CGRectGetMinY( frame ),
-                                                                     ballRingFrameSize, ballRingFrameSize )
-                                                   tags: YES
-                                               delegate: self.controller ];
-    [ self.ballRingViewContainerView addSubview: ( View *) ballRingView ];
+    self.ballRingView.delegate = self.controller;
 
 #if CONSTRUCT_PROGRAMMATICALLY
 #if !ICONIC_PICTURE_ONLY

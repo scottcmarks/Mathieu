@@ -19,10 +19,13 @@ const wchar_t superscriptOne   = 0x00B9;
 extern const std::wstring superscriptMinusOneString;
 
 extern void CalculateBallCoordinates( const point & circleCenter,
-                                      const double circleRadius,
-                                      const double ballRadius,
-                                      point ballCoordinates[ nBalls ],
-                                      point tagCoordinates[ nBalls ] );
+                                     const double circleRadius,
+                                     const double ballRadius,
+                                     point ballCoordinates[ nBalls ]);
+extern void CalculateTagCoordinates( const point & circleCenter,
+                                     const double circleRadius,
+                                     const double ballRadius,
+                                     point tagCoordinates[ nBalls ] );
 
 extern bool FindBallWedge( const point probe,
                            const point circleCenter, const double innerCircleRadius, const double outerCircleRadius,

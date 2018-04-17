@@ -44,9 +44,8 @@
     //  bool animateBallPops;
 }
 
-+ ( id ) ballRingViewWithFrame: ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id < BallRingViewDelegate > ) delegate ;
-- ( id ) initWithFrame:         ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id < BallRingViewDelegate > ) delegate ;
-
++ ( __nonnull instancetype ) ballRingViewWithFrame: ( CGRect ) frame ;
+- ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate ;
 - ( void ) moveLabels;
 - ( void ) redraw;
 #if TARGET_IOS

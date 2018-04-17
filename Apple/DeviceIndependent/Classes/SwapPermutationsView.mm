@@ -30,9 +30,7 @@
 #if TARGET_IOS
     navigationBar.title       = fullAppName ;
 #endif
-    currentPermutationPreview = [ BallRingView ballRingViewWithFrame: CGRectMake( 101, 44, 118, 118 )
-                                                                tags: NO
-                                                            delegate: nil ] ;
+    currentPermutationPreview = [ BallRingView ballRingViewWithFrame: CGRectMake( 101, 44, 118, 118 ) ] ;
     [ self addSubview:currentPermutationPreview ];
 }
 
