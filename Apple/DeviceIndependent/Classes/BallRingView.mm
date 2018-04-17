@@ -24,146 +24,149 @@
 - ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 
 
-+ ( id ) ballRingViewWithFrame: ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id< BallRingViewDelegate > ) delegate
++ ( id ) ballRingViewWithFrame: ( CGRect ) frame
 {
-    return [ [ self alloc ] initWithFrame:frame tags:tags delegate: delegate ] ;
+    return [ [ self alloc ] initWithFrame:frame ] ;
 }
 
 inline point CGPoint_to_point( CGPoint p ) { return point( p.x, p.y ); }
 inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) ; }
 
-- ( id ) initWithFrame:         ( CGRect ) frame tags: ( BOOL ) tags delegate: ( id< BallRingViewDelegate > ) delegate
-{
-#define INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL 1
 
+- ( void ) setupForFrame:( CGRect ) frame {
+    
+    CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
+    _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
+    
 #if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
-    __timestamp__ ;
+    NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
+          (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
 #endif
-
-    if ( self = [ super initWithFrame: CGRect_to_NSRect( frame ) ] )
+    
+    _circleRadius = frameHalfWidth - 2*_ballRadius ;
+    _circleCenter = CGPointMake( CGRectGetMidX( frame ), CGRectGetMidY( frame )+ 0.5*_ballRadius + tagFontSize );
+    
+    point ballCoordinates[ nBalls ];
+    CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates);   //fills array with coordinates for the center of the ball
+    CGRect ballFrame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
+    
+    // Do all the geometry
+    forAllBalls(i)
     {
-
-        CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
-        _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
-        
-#if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
-        NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
-                (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
-#endif
-        
-        _circleRadius = frameHalfWidth - 2*_ballRadius ;
-        _circleCenter = CGPointMake( frameHalfWidth, frameHalfWidth + 1.5*_ballRadius + tagFontSize );
-
-        point ballCoordinates[ nBalls ];
-        point tagCoordinates [ nBalls ];
-        CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates, tagCoordinates);   //fills array with coordinates for the center of the ball
-        CGRect frame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
-
-        // Do all the geometry
-        forAllBalls(i)
-        {
-            _ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
-            _ballCenters[ i ].y = round( ballCoordinates[ i ].y );
-        }
-
-        // Create and add all the balls
-        forAllBalls(i)
-        {
-            BallView *ballView = [ BallView ballViewWithFrame: frame ballNumber: i ] ;      //TODO: if we're allocating all of these don't we need to release them? (keep track?)
-            if (! ballView )
-                return nil;
-            ballView.center = _ballCenters[ i ];
-            [ self addSubview: ballView ];
-            _ballViews[ i ] = ballView;
-        }
-
+        _ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
+        _ballCenters[ i ].y = round( ballCoordinates[ i ].y );
+    }
+    
+    // Create and add all the balls
+    forAllBalls(i)
+    {
+        BallView *ballView = [ BallView ballViewWithFrame: ballFrame ballNumber: i ] ;      //TODO: if we're allocating all of these don't we need to release them? (keep track?)
+        assert(ballView);
+        ballView.center = _ballCenters[ i ];
+        [ self addSubview: ballView ];
+        _ballViews[ i ] = ballView;
+    }
+    
 #if ICONIC_PICTURE_ONLY
-
+    
     #if TARGET_IOS
         #if CONSTRUCT_PROGRAMMATICALLY
-                self.backgroundColor = [ UIColor blackColor ];
+            self.backgroundColor = [ UIColor blackColor ];
         #endif // CONSTRUCT_PROGRAMMATICALLY
-            self.opaque = YES;
-            self.userInteractionEnabled = NO;
+        self.opaque = YES;
+        self.userInteractionEnabled = NO;
     #elif TARGET_MACOS
     #else
         #error Don't know this platform!
     #endif
-        
+    
 #else // !ICONIC_PICTURE_ONLY
-
-        Font * ballFont = [Font systemFontOfSize:ballFontSize ];
-
-        // Create and add all the labels (in front of the balls)
-        forAllBalls(i)
-        {
-            Label * ballLabel = [ [ Label alloc ] initWithFrame: frame ];
-            if (! ballLabel )
-                return nil;
-            ballLabel.center = _ballCenters[ i ];
-            ballLabel.font = ballFont;
-            ballLabel.textAlignment = NSTextAlignmentCenter;
-            ballLabel.backgroundColor = [ UIColor clearColor ];
-            ballLabel.text = [NSString stringWithFormat:@"%d", i ];
-            [self addSubview:ballLabel ];
-            _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
-        }
-
-        if ( tags )
-        {
-            Font * tagFont = [Font systemFontOfSize:tagFontSize ];
-
-            // Create and add all the little gray labels (next to the balls)
-            forAllBalls(i)
-            {
-                Label * tagLabel = [ [ Label alloc ] initWithFrame: frame ];
-                if (! tagLabel )
-                    return nil;
-                tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
-                tagLabel.font = tagFont;
-                tagLabel.textAlignment = NSTextAlignmentCenter;
-                tagLabel.backgroundColor = [ UIColor clearColor ];
-                tagLabel.textColor = [ UIColor colorWithWhite:1.0 alpha:0.33 ];
-                tagLabel.text = [NSString stringWithFormat:@"%d", i ];
-                [self addSubview:tagLabel ];
-            }
-        }
-
-        _delegate = delegate ;
-        if ( delegate )  // only interactive if delegate provided
-        {
-            _rightSound       = [ SoundEffect newSoundEffectWithCaf: @"right"         ];
-            _leftSound        = [ SoundEffect newSoundEffectWithCaf: @"left"          ];
-            _swapSound        = [ SoundEffect newSoundEffectWithCaf: @"swap"          ];
-            _homeSound        = [ SoundEffect newSoundEffectWithCaf: @"home"          ];
-            _shakeSound       = [ SoundEffect newSoundEffectWithCaf: @"shake"         ];
-            //TODO:  make real sound for restart amd combo
-            _restartSound     = [ SoundEffect newSoundEffectWithCaf: @"restart"       ];
-            _comboSound       = [ SoundEffect newSoundEffectWithCaf: @"combo"         ];
-            _comboSetSound    = [ SoundEffect newSoundEffectWithCaf: @"combo_set"     ];
-            _comboNotSetSound = [ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ];
-            _successSound     = [ SoundEffect newSoundEffectWithCaf: @"success"       ];
-            _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
-
-            // Not currently spinning
-            firstWedgeTouched = -1;
-
-            // Not currently doing Swap gesture
-            swapGestureStarted = false;
-        }
-        else
-        {
-            self.userInteractionEnabled = NO;
-        }
-        
-        self.backgroundColor = [ UIColor yellowColor ];   // <<<-------- DEBUGGING
-
-#endif // !ICONIC_PICTURE_ONLY
-
+    
+    Font * ballFont = [Font systemFontOfSize:ballFontSize ];
+    
+    // Create and add all the labels (in front of the balls)
+    forAllBalls(i)
+    {
+        Label * ballLabel = [ [ Label alloc ] initWithFrame: frame ];
+        assert(ballLabel );
+        ballLabel.center = _ballCenters[ i ];
+        ballLabel.font = ballFont;
+        ballLabel.textAlignment = NSTextAlignmentCenter;
+        ballLabel.backgroundColor = [ UIColor clearColor ];
+        ballLabel.text = [NSString stringWithFormat:@"%d", i ];
+        [self addSubview:ballLabel ];
+        _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
     }
+#endif // !ICONIC_PICTURE_ONLY
+}
+
+
+- ( void ) setupForFrame:( CGRect ) frame delegate: ( id< BallRingViewDelegate > __nonnull) delegate     {
+    
+    [self setupForFrame:frame];
+    Font * tagFont = [Font systemFontOfSize:tagFontSize ];
+    point tagCoordinates [ nBalls ];
+    CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
+    
+    // Create and add all the little gray labels (next to the balls)
+    forAllBalls(i)
+    {
+        Label * tagLabel = [ [ Label alloc ] initWithFrame: frame ];
+        assert (tagLabel );
+        tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
+        tagLabel.font = tagFont;
+        tagLabel.textAlignment = NSTextAlignmentCenter;
+        tagLabel.backgroundColor = [ UIColor clearColor ];
+        tagLabel.textColor = [ UIColor colorWithWhite:1.0 alpha:0.33 ];
+        tagLabel.text = [NSString stringWithFormat:@"%d", i ];
+        [self addSubview:tagLabel ];
+    }
+
+    _delegate = delegate ;
+    _rightSound       = [ SoundEffect newSoundEffectWithCaf: @"right"         ];
+    _leftSound        = [ SoundEffect newSoundEffectWithCaf: @"left"          ];
+    _swapSound        = [ SoundEffect newSoundEffectWithCaf: @"swap"          ];
+    _homeSound        = [ SoundEffect newSoundEffectWithCaf: @"home"          ];
+    _shakeSound       = [ SoundEffect newSoundEffectWithCaf: @"shake"         ];
+    //TODO:  make real sound for restart amd combo
+    _restartSound     = [ SoundEffect newSoundEffectWithCaf: @"restart"       ];
+    _comboSound       = [ SoundEffect newSoundEffectWithCaf: @"combo"         ];
+    _comboSetSound    = [ SoundEffect newSoundEffectWithCaf: @"combo_set"     ];
+    _comboNotSetSound = [ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ];
+    _successSound     = [ SoundEffect newSoundEffectWithCaf: @"success"       ];
+    _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
+    
+    // Not currently spinning
+    firstWedgeTouched = -1;
+    
+    // Not currently doing Swap gesture
+    swapGestureStarted = false;
+    self.userInteractionEnabled = YES;
+}
+
+- ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate {
+    _delegate = delegate;
+}
+
+
+- ( id ) initWithFrame:         ( CGRect ) frame
+{
+#define INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL 1
+    
+#if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
+    __timestamp__ ;
+#endif
+    self = [ super initWithFrame: CGRect_to_NSRect( frame ) ];
     return self;
 }
 
+
+- ( void ) layoutSubviews {
+    if (_delegate)
+        [self setupForFrame:self.frame delegate:_delegate];
+    else
+        [self setupForFrame:self.frame];
+}
 
 - ( void ) redraw
 {

@@ -18,25 +18,37 @@ using namespace std;
 
 const double delta_theta= (2 * M_PI)/(nBalls -1);
 
+#define Ball0RadiusOffset (2.5 * ballRadius)
 void CalculateBallCoordinates( const point & circleCenter,
-                               const double circleRadius,
-                               const double ballRadius,
-                               point ballCoordinates[ nBalls ],
-                               point tagCoordinates[ nBalls ] )
+                              const double circleRadius,
+                              const double ballRadius,
+                              point ballCoordinates[ nBalls ])
 {
-    ballCoordinates[ 0 ] = circleCenter - point(                0, circleRadius + 2.25 * ballRadius );
-    #if defined( TOP_TAG_ON_THE_LEFT )
-        tagCoordinates[ 0 ]  = circleCenter - point( +1.5 * ballRadius, circleRadius + 2.25 * ballRadius );
-    #elif defined( TOP_TAG_ON_THE_RIGHT )
-        tagCoordinates[ 0 ]  = circleCenter - point( -1.5 * ballRadius, circleRadius + 2.25 * ballRadius );
-    #else /* TOP_TAG_ON_THE_TOP */
-        tagCoordinates[ 0 ]  = circleCenter - point(                 0, circleRadius + 2.25 * ballRadius + 1.5 * ballRadius) ;
-    #endif
+    ballCoordinates[ 0 ] = circleCenter - point(                0, circleRadius + Ball0RadiusOffset );
     for (Index i = 1; i < nBalls; i++)
     {
         double theta = delta_theta * ( i - 1 ) - M_PI_2 ;
-        ballCoordinates[ i ] = point( polar( circleRadius,                    theta ) ) + circleCenter;
-        tagCoordinates[ i ]  = point( polar( circleRadius - 1.5 * ballRadius, theta ) ) + circleCenter;
+        ballCoordinates[ i ] = point( polar( circleRadius            , theta ) ) + circleCenter;
+    }
+}
+
+#define TagOffset (1.5 * ballRadius)
+void CalculateTagCoordinates( const point & circleCenter,
+                              const double circleRadius,
+                              const double ballRadius,
+                              point tagCoordinates[ nBalls ] )
+{
+#if defined( TOP_TAG_ON_THE_LEFT )
+    tagCoordinates[ 0 ]  = circleCenter - point( +TagOffset, circleRadius + Ball0RadiusOffset );
+#elif defined( TOP_TAG_ON_THE_RIGHT )
+    tagCoordinates[ 0 ]  = circleCenter - point( -TagOffset, circleRadius + Ball0RadiusOffset );
+#else /* TOP_TAG_ON_THE_TOP */
+    tagCoordinates[ 0 ]  = circleCenter - point(          0, circleRadius + Ball0RadiusOffset + TagOffset) ;
+#endif
+    for (Index i = 1; i < nBalls; i++)
+    {
+        double theta = delta_theta * ( i - 1 ) - M_PI_2 ;
+        tagCoordinates[ i ]  = point( polar( circleRadius - TagOffset, theta ) ) + circleCenter;
     }
 }
 
