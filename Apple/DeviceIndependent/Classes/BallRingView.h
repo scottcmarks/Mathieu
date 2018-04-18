@@ -21,6 +21,7 @@
     CGFloat   _ballRadius;
     BallView * _ballViews[ nBalls ];
     Label *_ballLabels[ nBalls ];
+    Label *_tagLabels[ nBalls ];
     CGPoint _ballCenters[ nBalls ];
     SoundEffect * _rightSound;
     SoundEffect * _leftSound;
