@@ -233,6 +233,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     #endif
 #endif // -CONSTRUCT_PROGRAMMATICALLY
 
+    //DEBUG  [self.ballRingView createEverythingButDontWorryAboutLayout];
     self.ballRingView.delegate = self.controller;
 
 #if CONSTRUCT_PROGRAMMATICALLY
