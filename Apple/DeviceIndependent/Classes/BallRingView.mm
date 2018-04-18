@@ -100,29 +100,36 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 #endif // !ICONIC_PICTURE_ONLY
 }
 
-
-- ( void ) setupForFrame:( CGRect ) frame delegate: ( id< BallRingViewDelegate > __nonnull) delegate     {
-    
-    [self setupForFrame:frame];
+- ( void ) createTagsForFrame:(CGRect)frame {
     Font * tagFont = [Font systemFontOfSize:tagFontSize ];
-    point tagCoordinates [ nBalls ];
-    CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
-    
     // Create and add all the little gray labels (next to the balls)
     forAllBalls(i)
     {
         Label * tagLabel = [ [ Label alloc ] initWithFrame: frame ];
         assert (tagLabel );
-        tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
         tagLabel.font = tagFont;
         tagLabel.textAlignment = NSTextAlignmentCenter;
         tagLabel.backgroundColor = [ UIColor clearColor ];
         tagLabel.textColor = [ UIColor colorWithWhite:1.0 alpha:0.33 ];
         tagLabel.text = [NSString stringWithFormat:@"%d", i ];
+        _tagLabels[i] = tagLabel;
         [self addSubview:tagLabel ];
     }
+}
 
-    _delegate = delegate ;
+- ( void ) layoutTagsForFrame:(CGRect)frame {
+    point tagCoordinates [ nBalls ];
+    CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
+    forAllBalls(i)
+    {
+        Label * tagLabel = _tagLabels[i];
+        assert (tagLabel );
+        tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
+        [self addSubview:tagLabel ];
+    }
+}
+
+- (void) setupSounds {
     _rightSound       = [ SoundEffect newSoundEffectWithCaf: @"right"         ];
     _leftSound        = [ SoundEffect newSoundEffectWithCaf: @"left"          ];
     _swapSound        = [ SoundEffect newSoundEffectWithCaf: @"swap"          ];
@@ -135,13 +142,26 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     _comboNotSetSound = [ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ];
     _successSound     = [ SoundEffect newSoundEffectWithCaf: @"success"       ];
     _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
-    
+}
+
+- (void) initializeInteractionWithDelegate: ( id< BallRingViewDelegate > __nonnull) delegate {
+    _delegate = delegate ;
+
     // Not currently spinning
     firstWedgeTouched = -1;
     
     // Not currently doing Swap gesture
     swapGestureStarted = false;
     self.userInteractionEnabled = YES;
+}
+
+- ( void ) setupForFrame:( CGRect ) frame delegate: ( id< BallRingViewDelegate > __nonnull) delegate     {
+    
+    [self setupForFrame:frame];
+    [self createTagsForFrame:frame];
+    [self layoutTagsForFrame:frame];
+    [self setupSounds];
+    [self initializeInteractionWithDelegate:delegate];
 }
 
 - ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate {
