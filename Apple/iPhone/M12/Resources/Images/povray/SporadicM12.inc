@@ -25,7 +25,7 @@ camera {
   orthographic
   right x
   up y
-  scale 17
+  scale 15.5
   look_at 0
   location y
 }
@@ -52,14 +52,14 @@ camera {
   WHITE             ,
   WHITE             ,
   LIGHT_BLUE_AZURE  ,
-  LIGHT_HARD_ORANGE ,
-  LIGHT_HARD_ORANGE ,
   LIGHT_BLUE_AZURE  ,
+  LIGHT_HARD_ORANGE ,
   YELLOW            ,
   DARK_HARD_GREEN   ,
   DARK_HARD_RED               ,
-  YELLOW            ,
+  LIGHT_HARD_ORANGE ,
   DARK_HARD_GREEN   ,
+  YELLOW            ,
   DARK_HARD_RED
 }
 #declare turbulences = array[NBalls]
@@ -129,13 +129,13 @@ sphere { <0,0,0>, 1
   object
   {
     #if (N=0)
-      object{ Ball(0) translate 8*z }
+      object{ Ball(0) translate 8.1*z }
     #else
       object{ Ball(N) translate 5.5*z
 	              rotate 360/(NBalls-1)*(N-1)*y
             }
     #end
-    translate -1.25*z
+    translate -1.45*z
   }
 #end
 
