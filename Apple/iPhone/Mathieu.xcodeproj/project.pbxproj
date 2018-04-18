@@ -769,7 +769,6 @@
 		D2AE55EE0FACE47A0093E56B /* M12 */ = {
 			isa = PBXGroup;
 			children = (
-				D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */,
 				D20910D71439736C00F35429 /* Free */,
 				D20910D91439736C00F35429 /* Full */,
 				D2AE55F10FACE47A0093E56B /* M12Constants.h */,
@@ -782,6 +781,7 @@
 		D2AE55F20FACE47A0093E56B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */,
 				D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */,
 				D2AE55F30FACE47A0093E56B /* Images */,
 			);
