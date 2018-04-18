@@ -458,13 +458,10 @@
 		D2B5998520819C4800FB4403 /* Sphere25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sphere25.png; sourceTree = "<group>"; };
 		D2B5998620819C4800FB4403 /* Sphere.mpeg */ = {isa = PBXFileReference; lastKnownFileType = video.mpeg; path = Sphere.mpeg; sourceTree = "<group>"; };
 		D2B5998720819C4800FB4403 /* Sphere.pov */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sphere.pov; sourceTree = "<group>"; };
-		D2B5998820819C4800FB4403 /* SporadicM12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12.png; sourceTree = "<group>"; };
 		D2B5998920819C4800FB4403 /* Text.pov */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Text.pov; sourceTree = "<group>"; };
-		D2B5998A20819C4800FB4403 /* textdemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textdemo.png; sourceTree = "<group>"; };
 		D2B5998B20819C4800FB4403 /* SporadicM12 free 4000x4000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 free 4000x4000.png"; sourceTree = "<group>"; };
 		D2B5998C20819C4800FB4403 /* textdemo.pov */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = textdemo.pov; sourceTree = "<group>"; };
 		D2B5998D20819C4800FB4403 /* Sphere.mpeg */ = {isa = PBXFileReference; lastKnownFileType = video.mpeg; path = Sphere.mpeg; sourceTree = "<group>"; };
-		D2B5998E20819C4800FB4403 /* Text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Text.png; sourceTree = "<group>"; };
 		D2B5998F20819C4800FB4403 /* Sphere.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sphere.ini; sourceTree = "<group>"; };
 		D2B5999020819C4800FB4403 /* SporadicM12 1200x1200.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 1200x1200.png"; sourceTree = "<group>"; };
 		D2B5999120819C4800FB4403 /* SporadicM12 114x114.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SporadicM12 114x114.xcf"; sourceTree = "<group>"; };
@@ -1184,11 +1181,8 @@
 				D2B5998720819C4800FB4403 /* Sphere.pov */,
 				D2B5998F20819C4800FB4403 /* Sphere.ini */,
 				D2B5998D20819C4800FB4403 /* Sphere.mpeg */,
-				D2B5998820819C4800FB4403 /* SporadicM12.png */,
 				D2B5998920819C4800FB4403 /* Text.pov */,
-				D2B5998A20819C4800FB4403 /* textdemo.png */,
 				D2B5998C20819C4800FB4403 /* textdemo.pov */,
-				D2B5998E20819C4800FB4403 /* Text.png */,
 			);
 			path = povray;
 			sourceTree = "<group>";
