@@ -87,7 +87,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     // Create and add all the labels (in front of the balls)
     forAllBalls(i)
     {
-        Label * ballLabel = [ [ Label alloc ] initWithFrame: frame ];
+        Label * ballLabel = [ [ Label alloc ] initWithFrame: ballFrame ];
         assert(ballLabel );
         ballLabel.center = _ballCenters[ i ];
         ballLabel.font = ballFont;
@@ -103,9 +103,10 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 - ( void ) createTagsForFrame:(CGRect)frame {
     Font * tagFont = [Font systemFontOfSize:tagFontSize ];
     // Create and add all the little gray labels (next to the balls)
+    CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
     forAllBalls(i)
     {
-        Label * tagLabel = [ [ Label alloc ] initWithFrame: frame ];
+        Label * tagLabel = [ [ Label alloc ] initWithFrame: tagLabelFrame ];
         assert (tagLabel );
         tagLabel.font = tagFont;
         tagLabel.textAlignment = NSTextAlignmentCenter;
@@ -125,7 +126,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         Label * tagLabel = _tagLabels[i];
         assert (tagLabel );
         tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
-        [self addSubview:tagLabel ];
     }
 }
 
@@ -215,11 +215,11 @@ forAllBalls(i)
 }
 
 - (bool) touch:(UITouch *)touch onBall:( Index )nBall{
-    CGRect ballZeroRect = CGRectMake( _ballCenters[ nBall ].x-TOUCH_SPOT_SIZE/2,
-                                     _ballCenters[ nBall ].y-TOUCH_SPOT_SIZE/2,
-                                     TOUCH_SPOT_SIZE, TOUCH_SPOT_SIZE );
+    CGRect ballTouchRect = CGRectMake( _ballCenters[ nBall ].x-TOUCH_SPOT_SIZE/2,
+                                       _ballCenters[ nBall ].y-TOUCH_SPOT_SIZE/2,
+                                       TOUCH_SPOT_SIZE, TOUCH_SPOT_SIZE );
     CGPoint touchPoint = [ touch locationInView: self ];
-    return CGRectContainsPoint(ballZeroRect, touchPoint );
+    return CGRectContainsPoint(ballTouchRect, touchPoint );
 }
 
 
