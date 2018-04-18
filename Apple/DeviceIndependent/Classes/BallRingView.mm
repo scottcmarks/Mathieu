@@ -24,64 +24,26 @@
 - ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 
 
-+ ( id ) ballRingViewWithFrame: ( CGRect ) frame
++ ( instancetype ) ballRingViewWithFrame: ( CGRect ) frame
 {
-    return [ [ self alloc ] initWithFrame:frame ] ;
+    return [ [ [ self alloc ] initWithFrame:frame ] autorelease ];
 }
 
 inline point CGPoint_to_point( CGPoint p ) { return point( p.x, p.y ); }
 inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) ; }
 
-
-- ( void ) setupForFrame:( CGRect ) frame {
-    
-    CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
-    _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
-    
-#if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
-    NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
-          (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
-#endif
-    
-    _circleRadius = frameHalfWidth - 2*_ballRadius ;
-    _circleCenter = CGPointMake( CGRectGetMidX( frame ), CGRectGetMidY( frame )+ 0.5*_ballRadius + tagFontSize );
-    
-    point ballCoordinates[ nBalls ];
-    CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates);   //fills array with coordinates for the center of the ball
+- (void ) createBallsAndLabels {
     CGRect ballFrame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
-    
-    // Do all the geometry
-    forAllBalls(i)
-    {
-        _ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
-        _ballCenters[ i ].y = round( ballCoordinates[ i ].y );
-    }
-    
     // Create and add all the balls
     forAllBalls(i)
     {
         BallView *ballView = [ BallView ballViewWithFrame: ballFrame ballNumber: i ] ;      //TODO: if we're allocating all of these don't we need to release them? (keep track?)
         assert(ballView);
-        ballView.center = _ballCenters[ i ];
         [ self addSubview: ballView ];
         _ballViews[ i ] = ballView;
     }
     
-#if ICONIC_PICTURE_ONLY
-    
-    #if TARGET_IOS
-        #if CONSTRUCT_PROGRAMMATICALLY
-            self.backgroundColor = [ UIColor blackColor ];
-        #endif // CONSTRUCT_PROGRAMMATICALLY
-        self.opaque = YES;
-        self.userInteractionEnabled = NO;
-    #elif TARGET_MACOS
-    #else
-        #error Don't know this platform!
-    #endif
-    
-#else // !ICONIC_PICTURE_ONLY
-    
+#if !ICONIC_PICTURE_ONLY
     Font * ballFont = [Font systemFontOfSize:ballFontSize ];
     
     // Create and add all the labels (in front of the balls)
@@ -89,7 +51,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     {
         Label * ballLabel = [ [ Label alloc ] initWithFrame: ballFrame ];
         assert(ballLabel );
-        ballLabel.center = _ballCenters[ i ];
         ballLabel.font = ballFont;
         ballLabel.textAlignment = NSTextAlignmentCenter;
         ballLabel.backgroundColor = [ UIColor clearColor ];
@@ -98,9 +59,60 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
     }
 #endif // !ICONIC_PICTURE_ONLY
+    
+    
+
 }
 
-- ( void ) createTagsForFrame:(CGRect)frame {
+- (void ) layoutBallsAndLabelsForFrame: ( CGRect ) frame {
+    CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
+    _circleRadius = frameHalfWidth - 2*_ballRadius ;
+    _circleCenter = CGPointMake( CGRectGetMidX( frame ), CGRectGetMidY( frame )+ 0.5*_ballRadius + tagFontSize );
+    
+    point ballCoordinates[ nBalls ];
+    CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates);   //fills array with coordinates for the center of the ball
+    
+    // Do all the geometry
+    forAllBalls(i)
+    {
+        _ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
+        _ballCenters[ i ].y = round( ballCoordinates[ i ].y );
+    }
+    
+    // Position all the balls
+    forAllBalls(i)
+    {
+        BallView *ballView = _ballViews[ i ];
+        assert(ballView);
+        ballView.center = _ballCenters[ i ];
+    }
+    
+#if ICONIC_PICTURE_ONLY
+    
+#if TARGET_IOS
+#if CONSTRUCT_PROGRAMMATICALLY
+    self.backgroundColor = [ UIColor blackColor ];
+#endif // CONSTRUCT_PROGRAMMATICALLY
+    self.opaque = YES;
+    self.userInteractionEnabled = NO;
+#elif TARGET_MACOS
+#else
+#error Don't know this platform!
+#endif
+    
+#else // !ICONIC_PICTURE_ONLY
+    
+    // Position the ball labels
+    forAllBalls(i)
+    {
+        Label * ballLabel = _ballLabels[ i ];
+        assert(ballLabel );
+        ballLabel.center = _ballCenters[ i ];
+    }
+#endif // !ICONIC_PICTURE_ONLY
+}
+
+- ( void ) createTags {
     Font * tagFont = [Font systemFontOfSize:tagFontSize ];
     // Create and add all the little gray labels (next to the balls)
     CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
@@ -144,8 +156,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
 }
 
-- (void) initializeInteractionWithDelegate: ( id< BallRingViewDelegate > __nonnull) delegate {
-    _delegate = delegate ;
+- (void) initializeInteraction {
 
     // Not currently spinning
     firstWedgeTouched = -1;
@@ -153,15 +164,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     // Not currently doing Swap gesture
     swapGestureStarted = false;
     self.userInteractionEnabled = YES;
-}
-
-- ( void ) setupForFrame:( CGRect ) frame delegate: ( id< BallRingViewDelegate > __nonnull) delegate     {
-    
-    [self setupForFrame:frame];
-    [self createTagsForFrame:frame];
-    [self layoutTagsForFrame:frame];
-    [self setupSounds];
-    [self initializeInteractionWithDelegate:delegate];
 }
 
 - ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate {
@@ -180,12 +182,31 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     return self;
 }
 
+-(void) createSubviews {
+    [self createBallsAndLabels ];
+    
+    if (_delegate) {
+        [self createTags];
+        [self setupSounds];
+        [self initializeInteraction];
+    }
+}
 
 - ( void ) layoutSubviews {
-    if (_delegate)
-        [self setupForFrame:self.frame delegate:_delegate];
-    else
-        [self setupForFrame:self.frame];
+    CGFloat frameHalfWidth = CGRectGetWidth ( self.frame )/2;
+    _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
+    
+#if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
+    NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
+          (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
+#endif
+    
+    [self createSubviews];
+    
+    [self layoutBallsAndLabelsForFrame: self.frame];
+    if (_delegate) {
+        [self layoutTagsForFrame:self.frame];
+    }
 }
 
 - ( void ) redraw
