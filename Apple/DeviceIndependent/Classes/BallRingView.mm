@@ -32,8 +32,10 @@
 inline point CGPoint_to_point( CGPoint p ) { return point( p.x, p.y ); }
 inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) ; }
 
+#define NOMINALBALLRADIUS 20
+
 - (void ) createBallsAndLabels {
-    CGRect ballFrame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
+    CGRect ballFrame = CGRectMake ( 0.0, 0.0, NOMINALBALLRADIUS*2, NOMINALBALLRADIUS*2 );
     // Create and add all the balls
     forAllBalls(i)
     {
@@ -66,6 +68,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 
 - (void ) layoutBallsAndLabelsForFrame: ( CGRect ) frame {
     CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
+    CGRect ballFrame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
     _circleRadius = frameHalfWidth - 2*_ballRadius ;
     _circleCenter = CGPointMake( CGRectGetMidX( frame ), CGRectGetMidY( frame )+ 0.5*_ballRadius + tagFontSize );
     
@@ -84,6 +87,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     {
         BallView *ballView = _ballViews[ i ];
         assert(ballView);
+        ballView.frame = ballFrame;
         ballView.center = _ballCenters[ i ];
     }
     
@@ -107,15 +111,17 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     {
         Label * ballLabel = _ballLabels[ i ];
         assert(ballLabel );
+        ballLabel.frame = ballFrame;
         ballLabel.center = _ballCenters[ i ];
     }
 #endif // !ICONIC_PICTURE_ONLY
 }
 
+
 - ( void ) createTags {
     Font * tagFont = [Font systemFontOfSize:tagFontSize ];
     // Create and add all the little gray labels (next to the balls)
-    CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
+    CGRect tagLabelFrame = CGRectMake(0, 0, NOMINALBALLRADIUS, NOMINALBALLRADIUS);
     forAllBalls(i)
     {
         Label * tagLabel = [ [ Label alloc ] initWithFrame: tagLabelFrame ];
@@ -133,10 +139,12 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 - ( void ) layoutTagsForFrame:(CGRect)frame {
     point tagCoordinates [ nBalls ];
     CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
+    CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
     forAllBalls(i)
     {
         Label * tagLabel = _tagLabels[i];
         assert (tagLabel );
+        tagLabel.frame = tagLabelFrame;
         tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
     }
 }
@@ -193,6 +201,8 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 }
 
 - ( void ) layoutSubviews {
+    [self createSubviews];
+    
     CGFloat frameHalfWidth = CGRectGetWidth ( self.frame )/2;
     _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
     
@@ -200,8 +210,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
           (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
 #endif
-    
-    [self createSubviews];
     
     [self layoutBallsAndLabelsForFrame: self.frame];
     if (_delegate) {
