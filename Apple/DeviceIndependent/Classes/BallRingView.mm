@@ -8,13 +8,14 @@
 
 #include "view.h"
 
-#import "BallRingView.h"
 
 #import "iPhoneUtilities.h"
 
 #import "SporadicMAppDelegate.h"
 #import "BallView.h"
 #import "SoundEffect.h"
+
+#import "BallRingView.h"
 
 
 @implementation BallRingView
@@ -319,9 +320,11 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 {
     Index wedgeAtTouch = 0 ;
     double thetaAtTouch = 0.0 ;
+    NSLog(@"startedTouching");
     if ( [ self touch:touch onBall: 0 ] )
     {
         swapGestureStarted = true;
+        NSLog(@"startedTouching -- swapGestureStarted = true");
         return ;
     }
     swapGestureStarted = false;
