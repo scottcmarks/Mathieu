@@ -47,6 +47,7 @@
 
 + ( __nonnull instancetype ) ballRingViewWithFrame: ( CGRect ) frame ;
 - ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate ;
+- ( void ) createSubviews;
 - ( void ) moveLabels;
 - ( void ) redraw;
 #if TARGET_IOS

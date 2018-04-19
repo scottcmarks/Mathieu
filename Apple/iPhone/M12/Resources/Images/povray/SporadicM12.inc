@@ -25,7 +25,7 @@ camera {
   orthographic
   right x
   up y
-  scale 15.5
+  scale 15.4
   look_at 0
   location y
 }
