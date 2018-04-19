@@ -45,18 +45,12 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
         // Register default values for the persistent state.
         // This will be used when the app has never previously terminated.
-        [ [ NSUserDefaults standardUserDefaults ]
-              registerDefaults: [ NSDictionary
-                                      dictionaryWithObjectsAndKeys:
-                                      [ NSNumber numberWithFloat: 2.0 ] , SporadicMAnimationSpeedKey ,
-                                      [ NSNumber numberWithBool:  YES ] , SporadicMSoundEffectsKey   ,
-                                      [ NSNumber numberWithBool:  YES ] , SporadicMConfirmKey        ,
-                                      [ NSNumber numberWithBool:  NO  ] , SporadicMInvertKey         ,
-                                      [ NSNumber numberWithBool:  NO  ] , SporadicMSpinMessagesKey   ,
-                                      // no default gameModel -- nil will map to new game
-                                      nil // sentinel for brain-dead C varargs
-                                 ]
-        ] ;
+        [ [ NSUserDefaults standardUserDefaults ] registerDefaults: @{SporadicMAnimationSpeedKey : @2.0,
+                                                                      SporadicMSoundEffectsKey   : @YES,
+                                                                      SporadicMConfirmKey        : @NO, // @YES, // DEBUG  // TODO
+                                                                      SporadicMInvertKey         : @NO,
+                                                                      SporadicMSpinMessagesKey   : @NO
+                                                                     } ];
     }
 }
 
