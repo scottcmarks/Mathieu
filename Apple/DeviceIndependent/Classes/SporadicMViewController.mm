@@ -306,12 +306,14 @@
 
 -(void) confirmShake
 {
+    void(^continuation)(bool) = ^(bool confirmed) {
+        if (confirmed) [self doShake]; else [self noShake];
+    };
+    NSLog(@"confirmShake - continuation=0x%016lX", (size_t)(void *)continuation);
     [ AppleModalAlert alertOKCancel:@"This will create a new " applicationName @" puzzle.\n"
-                                    @"Press OK if you want to do this."
-                              title:@"Shake!"
-                       continuation:^(bool confirmed) {
-                           if (confirmed) [self doShake]; else [self noShake];
-     }];
+      @"Press OK if you want to do this."
+                               title:@"Shake!"
+                        continuation:continuation] ;
 }
 
 -(void) confirmRestart
