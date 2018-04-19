@@ -235,6 +235,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 
     //DEBUG  [self.ballRingView createEverythingButDontWorryAboutLayout];
     self.ballRingView.delegate = self.controller;
+    [self.ballRingView createSubviews];
 
 #if CONSTRUCT_PROGRAMMATICALLY
 #if !ICONIC_PICTURE_ONLY
