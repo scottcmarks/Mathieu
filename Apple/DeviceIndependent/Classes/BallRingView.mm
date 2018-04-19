@@ -35,8 +35,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 
 #define NOMINALBALLRADIUS 20
 
-#define TRYDOINGEVERYTHINGINLAYOUT 1
-
 - (void ) createBallsAndLabels {
     CGRect ballFrame = CGRectMake ( 0.0, 0.0, NOMINALBALLRADIUS*2, NOMINALBALLRADIUS*2 );
     // Create and add all the balls
@@ -49,21 +47,12 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     }
     
 #if !ICONIC_PICTURE_ONLY
-#if !TRYDOINGEVERYTHINGINLAYOUT
-    Font * ballFont = [Font systemFontOfSize:ballFontSize ];
-#endif // !TRYDOINGEVERYTHINGINLAYOUT
 
     // Create and add all the labels (in front of the balls)
     forAllBalls(i)
     {
         Label * ballLabel = [ [ Label alloc ] initWithFrame: ballFrame ];
         assert(ballLabel );
-#if !TRYDOINGEVERYTHINGINLAYOUT
-        ballLabel.font = ballFont;
-        ballLabel.textAlignment = NSTextAlignmentCenter;
-        ballLabel.backgroundColor = [ UIColor clearColor ];
-        ballLabel.text = [NSString stringWithFormat:@"%d", i ];
-#endif // !TRYDOINGEVERYTHINGINLAYOUT
         [self addSubview:ballLabel ];
         _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
     }
@@ -113,9 +102,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     
 #else // !ICONIC_PICTURE_ONLY
     
-#if TRYDOINGEVERYTHINGINLAYOUT
     Font * ballFont = [Font systemFontOfSize:ballFontSize ];
-#endif // TRYDOINGEVERYTHINGINLAYOUT
     // Position the ball labels
     forAllBalls(i)
     {
@@ -123,21 +110,17 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         assert(ballLabel );
         ballLabel.frame = ballFrame;
         ballLabel.center = _ballCenters[ i ];
-#if TRYDOINGEVERYTHINGINLAYOUT
         ballLabel.font = ballFont;
         ballLabel.textAlignment = NSTextAlignmentCenter;
+        ballLabel.textColor = [ UIColor colorWithWhite:0.1667 alpha:1.0 ];
         ballLabel.backgroundColor = [ UIColor clearColor ];
         ballLabel.text = [NSString stringWithFormat:@"%d", i ];
-#endif // TRYDOINGEVERYTHINGINLAYOUT
     }
 #endif // !ICONIC_PICTURE_ONLY
 }
 
 
 - ( void ) createTags {
-#if !TRYDOINGEVERYTHINGINLAYOUT
-    Font * tagFont = [Font systemFontOfSize:tagFontSize ];
-#endif // !TRYDOINGEVERYTHINGINLAYOUT
     // Create and add all the little gray labels (next to the balls)
     CGRect tagLabelFrame = CGRectMake(0, 0, NOMINALBALLRADIUS, NOMINALBALLRADIUS);
     forAllBalls(i)
@@ -146,13 +129,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         assert (tagLabel );
         _tagLabels[i] = tagLabel;
         [self addSubview:tagLabel ];
-#if !TRYDOINGEVERYTHINGINLAYOUT
-        tagLabel.font = tagFont;
-        tagLabel.textAlignment = NSTextAlignmentCenter;
-        tagLabel.backgroundColor = [ UIColor clearColor ];
-        tagLabel.textColor = [ UIColor colorWithWhite:1.0 alpha:0.33 ];
-        tagLabel.text = [NSString stringWithFormat:@"%d", i ];
-#endif // !TRYDOINGEVERYTHINGINLAYOUT
     }
 }
 
@@ -160,22 +136,18 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     point tagCoordinates [ nBalls ];
     CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
     CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
-#if TRYDOINGEVERYTHINGINLAYOUT
     Font * tagFont = [Font systemFontOfSize:tagFontSize ];
-#endif // !TRYDOINGEVERYTHINGINLAYOUT
     forAllBalls(i)
     {
         Label * tagLabel = _tagLabels[i];
         assert (tagLabel );
         tagLabel.frame = tagLabelFrame;
         tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
-#if TRYDOINGEVERYTHINGINLAYOUT
         tagLabel.font = tagFont;
         tagLabel.textAlignment = NSTextAlignmentCenter;
         tagLabel.backgroundColor = [ UIColor clearColor ];
         tagLabel.textColor = [ UIColor colorWithWhite:1.0 alpha:0.33 ];
         tagLabel.text = [NSString stringWithFormat:@"%d", i ];
-#endif // TRYDOINGEVERYTHINGINLAYOUT
     }
 }
 
@@ -318,20 +290,18 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 
 - (void)startedTouching: (UITouch *)touch
 {
-    Index wedgeAtTouch = 0 ;
-    double thetaAtTouch = 0.0 ;
-    NSLog(@"startedTouching");
     if ( [ self touch:touch onBall: 0 ] )
     {
         swapGestureStarted = true;
-        NSLog(@"startedTouching -- swapGestureStarted = true");
         return ;
     }
+
     swapGestureStarted = false;
+    Index wedgeAtTouch = 0 ;
+    double thetaAtTouch = 0.0 ;
     if (! [ self findWedgeAtTouch:touch tolerant:NO
                           asWedge: wedgeAtTouch andTheta: thetaAtTouch ] )
         return ;
-
     if ( ! ( 1 <= wedgeAtTouch && wedgeAtTouch < nBalls ) )
         return;
 
@@ -390,6 +360,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *) event {
     if ( swapGestureStarted )
         return ;
+    
     UITouch * touch = [ touches anyObject ];
     if ( firstWedgeTouched == - 1 )
     {
@@ -408,7 +379,8 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
         swapGestureStarted = false;
         return;
     }
-    if ( firstWedgeTouched == -1 ) return;
+    if ( firstWedgeTouched == -1 )
+        return;
     if ( [ self recordTouch: touch ] )
         [ self finishedTouching ];
 }
