@@ -146,6 +146,11 @@
                                     <constraint firstItem="J1r-ze-uZH" firstAttribute="leading" secondItem="Amk-zV-h6e" secondAttribute="leading" id="3Mc-js-YaH"/>
                                     <constraint firstItem="J1r-ze-uZH" firstAttribute="top" secondItem="Amk-zV-h6e" secondAttribute="top" id="9Ui-Za-eaw"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="J1r-ze-uZH"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <constraints>
