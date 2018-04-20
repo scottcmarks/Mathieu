@@ -6,7 +6,7 @@
  *  SporadicM24
  *
  *  Created by Scott Marks on 3/10/09.
- *  Copyright 2009 Magnolia Heights R&D. All rights reserved.
+ *  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
  *
  */
 

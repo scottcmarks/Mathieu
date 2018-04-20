@@ -2,8 +2,8 @@
 //  main.m
 //  Mathieu
 //
-//  Created by Jackie Marks on 10/14/08.
-//  Copyright Magnolia Heights Research and Development 2009. All rights reserved.
+//  Created by Scott Marks on 10/14/08.
+//  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "SporadicMAppDelegate.h"

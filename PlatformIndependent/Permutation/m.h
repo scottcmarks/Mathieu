@@ -5,7 +5,7 @@
  *  SporadicM
  *
  *  Created by Scott Marks on 4/4/09.
- *  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
+ *  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
  *
  */
 

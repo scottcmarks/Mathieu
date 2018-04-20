@@ -2,8 +2,8 @@
 //  SporadicMView.mm
 //  SporadicM
 //
-//  Created by Jackie Marks on 12/15/08.
-//  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
+//  Created by Scott Marks on 12/15/08.
+//  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "Kit.h"
@@ -51,7 +51,7 @@
 };
 @end
 
-#endif
+#endif //  TARGET_MACOS & ! TARGET_IOS
 
 @interface SporadicMView ()
 @property ( nonatomic, strong, readwrite ) IBOutlet UIView * ballRingViewContainerView;
@@ -237,8 +237,8 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     self.ballRingView.delegate = self.controller;
     [self.ballRingView createSubviews];
 
-#if CONSTRUCT_PROGRAMMATICALLY
 #if !ICONIC_PICTURE_ONLY
+#if CONSTRUCT_PROGRAMMATICALLY
 
 	history.font = [ Font systemFontOfSize: historyFontSize ];
     self.historyTextCache = @"";
@@ -262,7 +262,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 #error Haven't coded setup of action buttons!
 #else
 #error Don't know this platform!
-#endif
+#endif // TARGET_IOS or TARGET_MACOS
     }
 
 
@@ -277,7 +277,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
                { comboButton  ,  @"A"  , comboButtonWidth },
 #if FREE
                { flexibleSpace                            },
-#endif
+#endif // FREE
 
                { comboButton  ,  @"B"  , comboButtonWidth },
 #if !FREE
@@ -285,8 +285,8 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
                { comboButton  ,  @"D"  , comboButtonWidth },
     #if !defined( infoInToolbar )
                { comboButton  ,  @"E"  , comboButtonWidth },
-    #endif
-#endif
+    #endif // !defined( infoInToolbar )
+#endif // !FREE
                { flexibleSpace                            },
                { invButton    ,  @"Alt", altButtonWidth   },
                { flexibleSpace                            },
@@ -313,7 +313,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
                 theToolbarItem = [ theToolbarItem initWithItemIdentifier: NSToolbarFlexibleSpaceItemIdentifier ];
 #else
 #error Don't know this platform!
-#endif
+#endif // TARGET_IOS or TARGET_MACOS
                 break;
 
             case comboButton: {
@@ -327,7 +327,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
                 [ theToolbarItem setView: toolbarButton ];
 #else
 #error Don't know this platform!
-#endif
+#endif // TARGET_IOS or TARGET_MACOS
                 break;
             }
             case invButton: {
@@ -340,7 +340,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
                 [ theToolbarItem setView: toolbarButton ];
 #else
 #error Don't know this platform!
-#endif
+#endif // TARGET_IOS or TARGET_MACOS
                 altButton = toolbarButton ;
                 break;
             }
@@ -355,7 +355,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     NSLog(@"Don't yet build the toolbar");
 #else
 #error Don't know this platform!
-#endif
+#endif // TARGET_IOS or TARGET_MACOS
 
     [ self addSubview: [ self createInfoButton ] ];
 #endif // CONSTRUCT_PROGRAMMATICALLY
@@ -384,7 +384,8 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
                                                             repeats:YES ];
     [ [ NSRunLoop currentRunLoop ] addTimer:self.historyTextUpdatingTimer forMode: NSDefaultRunLoopMode];
 
-#else
+#else // !ICONIC_PICTURE_ONLY
+
     #if TARGET_IOS
         history.hidden = NO;
         moves.hidden = NO;
@@ -395,9 +396,10 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     #elif TARGET_MACOS
     #else
         #error Don't know this platform!
-    #endif
+    #endif // TARGET_IOS or TARGET_MACOS
 
-#endif
+#endif // !ICONIC_PICTURE_ONLY
+
 }
 
 
