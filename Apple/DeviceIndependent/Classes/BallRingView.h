@@ -3,7 +3,7 @@
 //  Mathieu
 //
 //  Created by Scott Marks on 3/31/09.
-//  Copyright 2009 Magnolia Heights R & D. All rights reserved.
+//  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #include "Apple Cross-platform.h"

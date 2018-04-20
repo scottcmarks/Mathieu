@@ -3,7 +3,7 @@
 //  Mathieu
 //
 //  Created by Scott Marks on 3/30/09.
-//  Copyright 2009 Magnolia Heights R & D. All rights reserved.
+//  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #include "Apple Cross-platform.h"
@@ -28,7 +28,8 @@ else
 
 @property( nonatomic, readonly )          int               pickedSwapIndex                ;
 #if TARGET_IOS
-@property( nonatomic, assign   ) IBOutlet UILabel         * currentPermutation             ;
+@property( nonatomic, assign   ) IBOutlet UILabel          * currentPermutation            ;
+@property( nonatomic, assign   ) IBOutlet BallRingView     * currentPermutationPreview     ;
 @property( nonatomic, assign   ) IBOutlet UIPickerView     * swapPermutationPicker         ;
 @property( nonatomic, assign   ) IBOutlet UINavigationItem * navigationBar                 ;
 #endif
