@@ -20,13 +20,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="SporadicM12 free 355x355@2.png" translatesAutoresizingMaskIntoConstraints="NO" id="hCI-7Z-0Je">
-                                <rect key="frame" x="10" y="60" width="355" height="355"/>
+                                <rect key="frame" x="0.0" y="60" width="375" height="375"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="hCI-7Z-0Je" secondAttribute="height" multiplier="1:1" id="e23-BL-MVa"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sporadic M₁₂" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="10" y="475" width="355" height="43"/>
+                                <rect key="frame" x="0.0" y="495" width="375" height="43"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -60,6 +60,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SporadicM12 free 355x355@2.png" width="1000" height="1000"/>
+        <image name="SporadicM12 free 355x355@2.png" width="710" height="710"/>
     </resources>
 </document>

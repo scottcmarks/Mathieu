@@ -6,14 +6,14 @@
  *  SporadicM12
  *
  *  Created by Scott Marks on 3/10/09.
- *  Copyright 2009 Magnolia Heights R&D. All rights reserved.
+ *  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
  *
  */
 
 
 // These are fiddly program parameters.
 #define MBallRadiusRatio  0.137500
-#define applicationName               @"M12"
+#define applicationName               @"M₁₂"
 
 #define BALL_COLORS \
 WHITE             , \

@@ -2,8 +2,8 @@
 //  GameModel.h
 //  SporadicM
 //
-//  Created by Jackie Marks on 10/22/08.
-//  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
+//  Created by Scott Marks on 10/22/08.
+//  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "Kit.h"
