@@ -2,8 +2,8 @@
 //  RootViewController.h
 //  Top-level view controller in the SporadicSporadicM12 application
 //
-//  Created by Jackie Marks on 12/15/08.
-//  Copyright 2009 Magnolia Heights Research and Development. All rights reserved.
+//  Created by Scott Marks on 12/15/08.
+//  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #include "Apple Cross-platform.h"

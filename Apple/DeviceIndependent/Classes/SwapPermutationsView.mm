@@ -3,7 +3,7 @@
 //  Mathieu
 //
 //  Created by Scott Marks on 3/30/09.
-//  Copyright 2009 Magnolia Heights R & D. All rights reserved.
+//  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "SwapPermutationsView.h"
@@ -16,6 +16,7 @@
 @implementation SwapPermutationsView
 
 @synthesize currentPermutation        ;
+@synthesize currentPermutationPreview ;
 @synthesize pickedSwapIndex           ;
 #if TARGET_IOS
 @synthesize navigationBar             ;
@@ -30,8 +31,7 @@
 #if TARGET_IOS
     navigationBar.title       = fullAppName ;
 #endif
-    currentPermutationPreview = [ BallRingView ballRingViewWithFrame: CGRectMake( 101, 44, 118, 118 ) ] ;
-    [ self addSubview:currentPermutationPreview ];
+    [currentPermutationPreview createSubviews];
 }
 
 - ( void ) synchronize
