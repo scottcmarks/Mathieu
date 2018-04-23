@@ -11,30 +11,33 @@
 @class BallRingView;
 @class ComboButton;
 @class SporadicMViewController;
-@class DualActionButton;
+@class UIDualButton;
 @class GameModel;
 @interface SporadicMView : UIView // TransitionView
 {
 
     SporadicMViewController * controller;
     AppleLabel * moves;
+    AppleTextView * history;
+    AppleToolbar  * toolbar;
     NSTimer * historyTextUpdatingTimer;
     BallRingView * ballRingView;
 
     NSString * historyTextCache;
 
-    DualActionButton * shakeButton;
-    DualActionButton * altButton;
-    DualActionButton * undoButton;
+    UIDualButton * shakeButton;
+    UIDualButton * altButton;
+    UIDualButton * undoButton;
     bool buttonsInverted;
-    AppleTextView * history;
-    AppleToolbar  * toolbar;
 }
 
 
-@property ( nonatomic, assign   ) IBOutlet AppleToolbar  * toolbar;
-@property ( nonatomic, assign   ) IBOutlet AppleTextView * history;
 @property ( nonatomic, assign   ) IBOutlet AppleLabel              * moves;
+@property ( nonatomic, assign   ) IBOutlet AppleTextView * history;
+@property ( nonatomic, assign   ) IBOutlet AppleToolbar  * toolbar;
+@property ( nonatomic, assign   ) IBOutlet UIDualButton  * shakeButton;
+@property ( nonatomic, assign   ) IBOutlet UIDualButton  * altButton;
+@property ( nonatomic, assign   ) IBOutlet UIDualButton  * undoButton;
 @property ( nonatomic, assign   ) IBOutlet SporadicMViewController * controller;
 @property ( nonatomic, assign   ) IBOutlet BallRingView            * ballRingView;
 @property ( nonatomic, retain   )          NSTimer                 * historyTextUpdatingTimer;
