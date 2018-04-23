@@ -11,11 +11,12 @@
 #import "Constants.h"
 #import "Utilities.h"
 #import "iPhoneUtilities.h"
-#import "SporadicMView.h"
 #import "SporadicMViewController.h"
 #import "SporadicMAppDelegate.h"
-#import "ComboButton.h"
+#import "UIDualButton.h"
+#import "ComboBarButton.h"
 #import "BallRingView.h"
+#import "SporadicMView.h"
 
 #if TARGET_MACOS & ! TARGET_IOS
 
@@ -58,9 +59,12 @@
 @end
 
 @implementation SporadicMView
-@synthesize toolbar;
-@synthesize history;
 @synthesize moves;
+@synthesize history;
+@synthesize toolbar;
+@synthesize shakeButton;
+@synthesize altButton;
+@synthesize undoButton;
 @synthesize controller;
 @synthesize historyTextUpdatingTimer;
 @synthesize ballRingViewContainerView;
@@ -103,6 +107,7 @@
     [ self updateHistoryText ];
 }
 
+#if CONSTRUCT_PROGRAMMATICALLY
 - ( DualActionButton * ) createActionButtonAt: ( CGPoint    ) center
                                         width: ( CGFloat    ) width
                                normalSelector: ( SEL        ) normalSelector
@@ -130,11 +135,11 @@
 }
 
 
-- (ComboButton *)createToolbarComboButtonWidth: ( CGFloat    ) width
+- (ComboBarButton *)createToolbarComboBarButtonWidth: ( CGFloat    ) width
                                      comboName: ( HistoryElement ) comboName
 {
 #if TARGET_IOS
-    return  [ ComboButton comboButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight)
+    return  [ ComboBarButton ComboBarButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight)
                                         target: self.controller
                                      comboName: comboName ] ;
 #elif TARGET_MACOS
@@ -186,12 +191,12 @@
     return button;
 }
 
-
-typedef enum{ flexibleSpace=1, comboButton=2, invButton=3 } ToolbarButtonType;
+typedef enum{ flexibleSpace=1, ComboBarButton=2, invButton=3 } ToolbarButtonType;
 
 typedef struct { NSString * normalTitle; SEL normalSelector;
                 NSString * alternateTitle; SEL alternateSelector;
                 CGPoint center; CGFloat width; DualActionButton * * variable; } ButtonDescription ;
+#endif // CONSTRUCT_PROGRAMMATICALLY
 
 - (void) awakeFromNib
 {
@@ -274,17 +279,17 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
            } toolbarButtons[ ] =
            {
                { flexibleSpace                            },
-               { comboButton  ,  @"A"  , comboButtonWidth },
+               { ComboBarButton  ,  @"A"  , ComboBarButtonWidth },
 #if FREE
                { flexibleSpace                            },
 #endif // FREE
 
-               { comboButton  ,  @"B"  , comboButtonWidth },
+               { ComboBarButton  ,  @"B"  , ComboBarButtonWidth },
 #if !FREE
-               { comboButton  ,  @"C"  , comboButtonWidth },
-               { comboButton  ,  @"D"  , comboButtonWidth },
+               { ComboBarButton  ,  @"C"  , ComboBarButtonWidth },
+               { ComboBarButton  ,  @"D"  , ComboBarButtonWidth },
     #if !defined( infoInToolbar )
-               { comboButton  ,  @"E"  , comboButtonWidth },
+               { ComboBarButton  ,  @"E"  , ComboBarButtonWidth },
     #endif // !defined( infoInToolbar )
 #endif // !FREE
                { flexibleSpace                            },
@@ -316,8 +321,8 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 #endif // TARGET_IOS or TARGET_MACOS
                 break;
 
-            case comboButton: {
-                ComboButton * toolbarButton = [ self createToolbarComboButtonWidth: toolbarButtons[ i ].width
+            case ComboBarButton: {
+                ComboBarButton * toolbarButton = [ self createToolbarComboBarButtonWidth: toolbarButtons[ i ].width
                                                                          comboName: [ toolbarButtons[ i ].title characterAtIndex: 0] ];
                 theToolbarItem = [ToolbarButtonItem alloc];
 #if TARGET_IOS
@@ -410,14 +415,14 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     undoButton.alternate = inverted;
 }
 
--( void ) setComboButtonsInverted: ( bool ) inverted
+-( void ) setComboBarButtonsInverted: ( bool ) inverted
 {
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
     ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
-        if ( item.tag == (int)comboButton )
+        if ( [ item isKindOfClass:ComboBarButton.class ] )
         {
-            ComboButton * button = (ComboButton *)item.customView;
+            ComboBarButton * button = (ComboBarButton *)item.customView;
             button.alternate = inverted;
         }
 }
@@ -434,7 +439,7 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 {
     if ( buttonsInverted == inverted ) return;
     [ self setActionButtonsInverted: inverted ];
-    [ self setComboButtonsInverted:  inverted ];
+    [ self setComboBarButtonsInverted:  inverted ];
     [ self setAltButtonInverted:     inverted ];
     buttonsInverted = inverted;
 }
@@ -445,9 +450,9 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
     ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
-        if ( item.tag == (int)comboButton )
+        if ( [ item.customView isKindOfClass:ComboBarButton.class ] )
         {
-            ComboButton * button = ( ComboButton * )item.customView;
+            ComboBarButton * button = ( ComboBarButton * )item.customView;
             if ( c == button.comboName )
                 button.disabled = !enabled;
         }
@@ -458,10 +463,10 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
     ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
-        if ( item.tag == (int)comboButton )
+        if ( [ item.customView isKindOfClass:ComboBarButton.class ] )
         {
-            ComboButton * button = ( ComboButton * )item.customView;
-            button.disabled = true;
+            ComboBarButton * button = ( ComboBarButton * )item.customView;
+            button.disabled = YES;
         }
 }
 
