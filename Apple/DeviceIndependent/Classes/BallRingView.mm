@@ -90,9 +90,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 #if ICONIC_PICTURE_ONLY
     
 #if TARGET_IOS
-#if CONSTRUCT_PROGRAMMATICALLY
-    self.backgroundColor = [ UIColor blackColor ];
-#endif // CONSTRUCT_PROGRAMMATICALLY
     self.opaque = YES;
     self.userInteractionEnabled = NO;
 #elif TARGET_MACOS

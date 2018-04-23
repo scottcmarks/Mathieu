@@ -138,7 +138,7 @@
                                         </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CrQ-cU-RZd"/>
-                                    <barButtonItem title="C Item" style="plain" id="PfA-zL-3PP">
+                                    <barButtonItem enabled="NO" title="C Item" style="plain" id="PfA-zL-3PP">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EVs-ND-JVH" customClass="ComboBarButton">
                                             <rect key="frame" x="150" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -152,7 +152,7 @@
                                         </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="D1N-74-MkX"/>
-                                    <barButtonItem title="D Item" style="plain" id="WaN-4g-JWv">
+                                    <barButtonItem enabled="NO" title="D Item" style="plain" id="WaN-4g-JWv">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nmR-c4-n8E" customClass="ComboBarButton">
                                             <rect key="frame" x="215" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -166,7 +166,7 @@
                                         </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="33V-zJ-SYF"/>
-                                    <barButtonItem title="E Item" style="plain" id="4u4-Yp-ia5">
+                                    <barButtonItem enabled="NO" title="E Item" style="plain" id="4u4-Yp-ia5">
                                         <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LQj-dX-TXc" customClass="ComboBarButton">
                                             <rect key="frame" x="280" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -250,6 +250,17 @@
                             <constraint firstItem="Bzv-tM-2NG" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" constant="-10" id="xbg-UL-5NR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vWy-B6-T80"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Amk-zV-h6e"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="4cp-TQ-E0O"/>
+                                <exclude reference="QWz-Zv-U9c"/>
+                                <exclude reference="UlU-Fa-Vca"/>
+                                <exclude reference="Umi-Sf-12w"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <outlet property="ballRingView" destination="Skb-lI-pNA" id="PA8-f3-O6E"/>
                             <outlet property="ballRingViewContainerView" destination="IYw-Zt-vdt" id="qkO-YM-1Q7"/>

@@ -22,15 +22,6 @@
     NSLock *       timerLock             ;
 }
 
-// Convenience method -- return button has been autoreleased
-+ ( id ) comboButtonWithFrame: ( CGRect                  ) frame
-                       target: ( id< ComboButtonTarget > ) target
-                    comboName: ( HistoryElement          ) comboName ;
-
-// Initializer used by above convenience method
-- (id) initWithFrame: ( CGRect                  ) frame
-              target: ( id< ComboButtonTarget > ) target
-           comboName: ( HistoryElement          ) comboName ;
 
 @property ( readonly ) HistoryElement comboName;
 
