@@ -44,8 +44,10 @@
 - ( IBAction ) home           ;
 - ( IBAction ) shake          ;
 - ( IBAction ) restart        ;
+- ( IBAction ) shakeOrRestart ;
 - ( IBAction ) undoMove       ;
 - ( IBAction ) undoStep       ;
+- ( IBAction ) undoStepOrMove ;
 - ( void     ) spinInProgress : ( int ) wedges       ;
 - ( void     ) spinFinished   : ( int ) wedges       ;
 - ( void     ) setSwapIndex   : ( int ) newSwapIndex ;
