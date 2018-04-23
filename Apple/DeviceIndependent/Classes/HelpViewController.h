@@ -8,7 +8,6 @@
 
 #include "Apple Cross-platform.h"
 
-#import "RootViewController.h"
 #import "HelpView.h"
 
 
@@ -20,11 +19,9 @@
 #error Don't know this platform!
 #endif
 {
-    RootViewController *rootViewController;
     HelpView* helpView;
 }
 
-@property ( nonatomic, assign   ) RootViewController *rootViewController;
 @property ( nonatomic, retain   ) IBOutlet HelpView *helpView;
 
 - ( IBAction ) dismissHelp ;

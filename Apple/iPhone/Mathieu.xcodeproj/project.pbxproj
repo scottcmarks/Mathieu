@@ -53,6 +53,7 @@
 		D27097BC0FB67B0C00E7B5FA /* m12.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5A980FACE9BB0093E56B /* m12.cc */; };
 		D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5AEC0FACE9BB0093E56B /* view.cc */; };
 		D27097CE0FB67B8200E7B5FA /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58870FACE81D0093E56B /* point.cc */; };
+		D273C090208E9758001A4CAD /* SporadicM12 free.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D273C08F208E9758001A4CAD /* SporadicM12 free.storyboard */; };
 		D276FF25208BDAC200754F7E /* ComboBarButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D276FF24208BDAC200754F7E /* ComboBarButton.mm */; };
 		D276FF26208BDAC200754F7E /* ComboBarButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D276FF24208BDAC200754F7E /* ComboBarButton.mm */; };
 		D276FF27208BDAC200754F7E /* ComboBarButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D276FF24208BDAC200754F7E /* ComboBarButton.mm */; };
@@ -62,13 +63,12 @@
 		D276FF30208CE30B00754F7E /* UIDualButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2F208CE30B00754F7E /* UIDualButton.m */; };
 		D276FF31208CE30B00754F7E /* UIDualButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2F208CE30B00754F7E /* UIDualButton.m */; };
 		D276FF32208CE30B00754F7E /* UIDualButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2F208CE30B00754F7E /* UIDualButton.m */; };
-		D27B1453208A752200ED3598 /* ComboBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */; };
-		D27B1454208A752200ED3598 /* ComboBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */; };
-		D27B1455208A752200ED3598 /* ComboBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */; };
+		D27B1453208A752200ED3598 /* AltButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* AltButton.mm */; };
+		D27B1454208A752200ED3598 /* AltButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* AltButton.mm */; };
+		D27B1455208A752200ED3598 /* AltButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* AltButton.mm */; };
 		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
-		D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2982799208DB51300266ED5 /* SporadicM12 free 355x355.png in Resources */ = {isa = PBXBuildFile; fileRef = D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */; };
@@ -78,13 +78,11 @@
 		D29CC5B6207A8B430006336A /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEC1FC9D9F2009CD6BD /* AppIcon.xcassets */; };
 		D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56760FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
-		D2AE56770FACE47B0093E56B /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AC0FACE47A0093E56B /* ComboButton.mm */; };
 		D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D2AE56790FACE47B0093E56B /* HelpView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B10FACE47A0093E56B /* HelpView.mm */; };
 		D2AE567A0FACE47B0093E56B /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
 		D2AE567C0FACE47B0093E56B /* PreferencesView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B70FACE47A0093E56B /* PreferencesView.mm */; };
 		D2AE567D0FACE47B0093E56B /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
-		D2AE567E0FACE47B0093E56B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D2AE567F0FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2AE56800FACE47B0093E56B /* SporadicMView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */; };
 		D2AE56810FACE47B0093E56B /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
@@ -112,13 +110,11 @@
 		D2AE56F40FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE56F80FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56F90FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
-		D2AE56FA0FACE47B0093E56B /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AC0FACE47A0093E56B /* ComboButton.mm */; };
 		D2AE56FB0FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D2AE56FC0FACE47B0093E56B /* HelpView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B10FACE47A0093E56B /* HelpView.mm */; };
 		D2AE56FD0FACE47B0093E56B /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
 		D2AE56FF0FACE47B0093E56B /* PreferencesView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B70FACE47A0093E56B /* PreferencesView.mm */; };
 		D2AE57000FACE47B0093E56B /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
-		D2AE57010FACE47B0093E56B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D2AE57020FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2AE57030FACE47B0093E56B /* SporadicMView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */; };
 		D2AE57040FACE47B0093E56B /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
@@ -145,13 +141,11 @@
 		D2AE57790FACE47B0093E56B /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
 		D2AE577B0FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE577C0FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
-		D2AE577D0FACE47B0093E56B /* ComboButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AC0FACE47A0093E56B /* ComboButton.mm */; };
 		D2AE577E0FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D2AE577F0FACE47B0093E56B /* HelpView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B10FACE47A0093E56B /* HelpView.mm */; };
 		D2AE57800FACE47B0093E56B /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
 		D2AE57820FACE47B0093E56B /* PreferencesView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B70FACE47A0093E56B /* PreferencesView.mm */; };
 		D2AE57830FACE47B0093E56B /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
-		D2AE57840FACE47B0093E56B /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D2AE57850FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2AE57860FACE47B0093E56B /* SporadicMView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */; };
 		D2AE57870FACE47B0093E56B /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
@@ -175,8 +169,6 @@
 		D2AE57F90FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
 		D2AE57FA0FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566B0FACE47B0093E56B /* PreferencesView.xib */; };
-		D2AE58D10FACE81D0093E56B /* DualActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58270FACE81D0093E56B /* DualActionButton.m */; };
-		D2AE58D20FACE81D0093E56B /* SimpleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE582A0FACE81D0093E56B /* SimpleButton.m */; };
 		D2AE58D30FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */; };
 		D2AE58DD0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58370FACE81D0093E56B /* SimpleBluishButtonNormal.png */; };
 		D2AE58DE0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58380FACE81D0093E56B /* SimpleButtonHighlighted.png */; };
@@ -189,8 +181,6 @@
 		D2AE590E0FACE81D0093E56B /* SporadicGamesLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE587E0FACE81D0093E56B /* SporadicGamesLogo.png */; };
 		D2AE59150FACE81D0093E56B /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58870FACE81D0093E56B /* point.cc */; };
 		D2AE59160FACE81D0093E56B /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
-		D2AE59500FACE81D0093E56B /* DualActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58270FACE81D0093E56B /* DualActionButton.m */; };
-		D2AE59510FACE81D0093E56B /* SimpleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE582A0FACE81D0093E56B /* SimpleButton.m */; };
 		D2AE59520FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */; };
 		D2AE595C0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58370FACE81D0093E56B /* SimpleBluishButtonNormal.png */; };
 		D2AE595D0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58380FACE81D0093E56B /* SimpleButtonHighlighted.png */; };
@@ -203,8 +193,6 @@
 		D2AE598D0FACE81D0093E56B /* SporadicGamesLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE587E0FACE81D0093E56B /* SporadicGamesLogo.png */; };
 		D2AE59940FACE81D0093E56B /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58870FACE81D0093E56B /* point.cc */; };
 		D2AE59950FACE81D0093E56B /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
-		D2AE59CF0FACE81D0093E56B /* DualActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58270FACE81D0093E56B /* DualActionButton.m */; };
-		D2AE59D00FACE81D0093E56B /* SimpleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2AE582A0FACE81D0093E56B /* SimpleButton.m */; };
 		D2AE59D10FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */; };
 		D2AE59DB0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58370FACE81D0093E56B /* SimpleBluishButtonNormal.png */; };
 		D2AE59DC0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58380FACE81D0093E56B /* SimpleButtonHighlighted.png */; };
@@ -310,14 +298,15 @@
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D273C08F208E9758001A4CAD /* SporadicM12 free.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SporadicM12 free.storyboard"; sourceTree = "<group>"; };
 		D276FF24208BDAC200754F7E /* ComboBarButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboBarButton.mm; sourceTree = "<group>"; };
 		D276FF28208BDAE800754F7E /* ComboBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboBarButton.h; sourceTree = "<group>"; };
 		D276FF29208CE17A00754F7E /* UIMultiButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMultiButton.h; sourceTree = "<group>"; };
 		D276FF2A208CE17A00754F7E /* UIMultiButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIMultiButton.m; sourceTree = "<group>"; };
 		D276FF2E208CE30B00754F7E /* UIDualButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIDualButton.h; sourceTree = "<group>"; };
 		D276FF2F208CE30B00754F7E /* UIDualButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIDualButton.m; sourceTree = "<group>"; };
-		D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboBarButtonItem.mm; sourceTree = "<group>"; };
-		D27B1456208A754B00ED3598 /* ComboBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboBarButtonItem.h; sourceTree = "<group>"; };
+		D27B1452208A752200ED3598 /* AltButton.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AltButton.mm; sourceTree = "<group>"; };
+		D27B1456208A754B00ED3598 /* AltButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AltButton.h; sourceTree = "<group>"; };
 		D27C7B950FB21B9400ECAE6F /* SporadicM12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27C7C1D0FB2202700ECAE6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D27C7C1E0FB2202700ECAE6F /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -338,8 +327,6 @@
 		D2AE55A80FACE47A0093E56B /* BallRingViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallRingViewDelegate.h; sourceTree = "<group>"; };
 		D2AE55A90FACE47A0093E56B /* BallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallView.h; sourceTree = "<group>"; };
 		D2AE55AA0FACE47A0093E56B /* BallView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallView.mm; sourceTree = "<group>"; };
-		D2AE55AB0FACE47A0093E56B /* ComboButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboButton.h; sourceTree = "<group>"; };
-		D2AE55AC0FACE47A0093E56B /* ComboButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboButton.mm; sourceTree = "<group>"; };
 		D2AE55AD0FACE47A0093E56B /* ComboButtonTargetProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboButtonTargetProtocol.h; sourceTree = "<group>"; };
 		D2AE55AE0FACE47A0093E56B /* GameModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GameModel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D2AE55AF0FACE47A0093E56B /* GameModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = GameModel.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -351,8 +338,6 @@
 		D2AE55B70FACE47A0093E56B /* PreferencesView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferencesView.mm; sourceTree = "<group>"; };
 		D2AE55B80FACE47A0093E56B /* PreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesViewController.h; sourceTree = "<group>"; };
 		D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PreferencesViewController.mm; sourceTree = "<group>"; };
-		D2AE55BA0FACE47A0093E56B /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		D2AE55BB0FACE47A0093E56B /* RootViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RootViewController.mm; sourceTree = "<group>"; };
 		D2AE55BC0FACE47A0093E56B /* SporadicMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicMAppDelegate.h; sourceTree = "<group>"; };
 		D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SporadicMAppDelegate.mm; sourceTree = "<group>"; };
 		D2AE55BE0FACE47A0093E56B /* SporadicMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicMView.h; sourceTree = "<group>"; };
@@ -392,11 +377,7 @@
 		D2AE566B0FACE47B0093E56B /* PreferencesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesView.xib; sourceTree = "<group>"; };
 		D2AE566C0FACE47B0093E56B /* SporadicMView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SporadicMView.xib; sourceTree = "<group>"; };
 		D2AE58250FACE81D0093E56B /* CanDisableButtonProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanDisableButtonProtocol.h; sourceTree = "<group>"; };
-		D2AE58260FACE81D0093E56B /* DualActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DualActionButton.h; sourceTree = "<group>"; };
-		D2AE58270FACE81D0093E56B /* DualActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DualActionButton.m; sourceTree = "<group>"; };
 		D2AE58280FACE81D0093E56B /* DualActionButtonProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DualActionButtonProtocol.h; sourceTree = "<group>"; };
-		D2AE58290FACE81D0093E56B /* SimpleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleButton.h; sourceTree = "<group>"; };
-		D2AE582A0FACE81D0093E56B /* SimpleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleButton.m; sourceTree = "<group>"; };
 		D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DualActionButtonAlternate.png; sourceTree = "<group>"; };
 		D2AE58370FACE81D0093E56B /* SimpleBluishButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleBluishButtonNormal.png; sourceTree = "<group>"; };
 		D2AE58380FACE81D0093E56B /* SimpleButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleButtonHighlighted.png; sourceTree = "<group>"; };
@@ -775,10 +756,10 @@
 		D2AE55DC0FACE47A0093E56B /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */,
-				D276FF24208BDAC200754F7E /* ComboBarButton.mm */,
-				D27B1456208A754B00ED3598 /* ComboBarButtonItem.h */,
+				D27B1456208A754B00ED3598 /* AltButton.h */,
+				D27B1452208A752200ED3598 /* AltButton.mm */,
 				D276FF28208BDAE800754F7E /* ComboBarButton.h */,
+				D276FF24208BDAC200754F7E /* ComboBarButton.mm */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				D2AE55ED0FACE47A0093E56B /* Constants.h */,
 				D2AE55EE0FACE47A0093E56B /* M12 */,
@@ -807,6 +788,7 @@
 			children = (
 				D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */,
 				D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */,
+				D273C08F208E9758001A4CAD /* SporadicM12 free.storyboard */,
 				D2AE55F30FACE47A0093E56B /* Images */,
 			);
 			path = Resources;
@@ -893,8 +875,6 @@
 		D2AE58140FACE4AC0093E56B /* Application Control */ = {
 			isa = PBXGroup;
 			children = (
-				D2AE55BA0FACE47A0093E56B /* RootViewController.h */,
-				D2AE55BB0FACE47A0093E56B /* RootViewController.mm */,
 				D2AE55BC0FACE47A0093E56B /* SporadicMAppDelegate.h */,
 				D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */,
 			);
@@ -918,8 +898,6 @@
 				D2AE55A80FACE47A0093E56B /* BallRingViewDelegate.h */,
 				D2AE55A90FACE47A0093E56B /* BallView.h */,
 				D2AE55AA0FACE47A0093E56B /* BallView.mm */,
-				D2AE55AB0FACE47A0093E56B /* ComboButton.h */,
-				D2AE55AC0FACE47A0093E56B /* ComboButton.mm */,
 				D2AE55AD0FACE47A0093E56B /* ComboButtonTargetProtocol.h */,
 				D2AE55BE0FACE47A0093E56B /* SporadicMView.h */,
 				D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */,
@@ -985,11 +963,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AE58250FACE81D0093E56B /* CanDisableButtonProtocol.h */,
-				D2AE58260FACE81D0093E56B /* DualActionButton.h */,
-				D2AE58270FACE81D0093E56B /* DualActionButton.m */,
 				D2AE58280FACE81D0093E56B /* DualActionButtonProtocol.h */,
-				D2AE58290FACE81D0093E56B /* SimpleButton.h */,
-				D2AE582A0FACE81D0093E56B /* SimpleButton.m */,
 				D276FF29208CE17A00754F7E /* UIMultiButton.h */,
 				D276FF2A208CE17A00754F7E /* UIMultiButton.m */,
 				D276FF2E208CE30B00754F7E /* UIDualButton.h */,
@@ -1555,6 +1529,7 @@
 				D2AE5C370FACE9BB0093E56B /* swap_permutations.html in Resources */,
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
+				D273C090208E9758001A4CAD /* SporadicM12 free.storyboard in Resources */,
 				D2B5995E20815A4600FB4403 /* Launch Screen.storyboard in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
 				D204A276143B7D3F005E4A82 /* Default.png in Resources */,
@@ -1584,13 +1559,11 @@
 			files = (
 				D2AE56F80FACE47B0093E56B /* BallRingView.mm in Sources */,
 				D2AE56F90FACE47B0093E56B /* BallView.mm in Sources */,
-				D2AE56FA0FACE47B0093E56B /* ComboButton.mm in Sources */,
 				D2AE56FB0FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56FC0FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE56FD0FACE47B0093E56B /* HelpViewController.mm in Sources */,
 				D2AE56FF0FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE57000FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
-				D2AE57010FACE47B0093E56B /* RootViewController.mm in Sources */,
 				D2AE57020FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */,
 				D2AE57030FACE47B0093E56B /* SporadicMView.mm in Sources */,
 				D2AE57040FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
@@ -1598,10 +1571,8 @@
 				D2AE57060FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D2AE57760FACE47B0093E56B /* main.mm in Sources */,
 				D276FF2C208CE17A00754F7E /* UIMultiButton.m in Sources */,
-				D2AE59500FACE81D0093E56B /* DualActionButton.m in Sources */,
-				D2AE59510FACE81D0093E56B /* SimpleButton.m in Sources */,
 				D2AE59690FACE81D0093E56B /* SoundEffect.m in Sources */,
-				D27B1454208A752200ED3598 /* ComboBarButtonItem.mm in Sources */,
+				D27B1454208A752200ED3598 /* AltButton.mm in Sources */,
 				D2AE59940FACE81D0093E56B /* point.cc in Sources */,
 				D276FF31208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59950FACE81D0093E56B /* rand_utils.c in Sources */,
@@ -1619,13 +1590,11 @@
 			files = (
 				D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */,
 				D2AE56760FACE47B0093E56B /* BallView.mm in Sources */,
-				D2AE56770FACE47B0093E56B /* ComboButton.mm in Sources */,
 				D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56790FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE567A0FACE47B0093E56B /* HelpViewController.mm in Sources */,
 				D2AE567C0FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE567D0FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
-				D2AE567E0FACE47B0093E56B /* RootViewController.mm in Sources */,
 				D2AE567F0FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */,
 				D2AE56800FACE47B0093E56B /* SporadicMView.mm in Sources */,
 				D2AE56810FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
@@ -1633,10 +1602,8 @@
 				D2AE56830FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D2AE56F30FACE47B0093E56B /* main.mm in Sources */,
 				D276FF2D208CE17A00754F7E /* UIMultiButton.m in Sources */,
-				D2AE58D10FACE81D0093E56B /* DualActionButton.m in Sources */,
-				D2AE58D20FACE81D0093E56B /* SimpleButton.m in Sources */,
 				D2AE58EA0FACE81D0093E56B /* SoundEffect.m in Sources */,
-				D27B1455208A752200ED3598 /* ComboBarButtonItem.mm in Sources */,
+				D27B1455208A752200ED3598 /* AltButton.mm in Sources */,
 				D2AE59150FACE81D0093E56B /* point.cc in Sources */,
 				D276FF32208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59160FACE81D0093E56B /* rand_utils.c in Sources */,
@@ -1655,13 +1622,11 @@
 				D29CC5B3207A5EE20006336A /* LockImages.mm in Sources */,
 				D2AE577B0FACE47B0093E56B /* BallRingView.mm in Sources */,
 				D2AE577C0FACE47B0093E56B /* BallView.mm in Sources */,
-				D2AE577D0FACE47B0093E56B /* ComboButton.mm in Sources */,
 				D2AE577E0FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE577F0FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE57800FACE47B0093E56B /* HelpViewController.mm in Sources */,
 				D2AE57820FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE57830FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
-				D2AE57840FACE47B0093E56B /* RootViewController.mm in Sources */,
 				D2AE57850FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */,
 				D2AE57860FACE47B0093E56B /* SporadicMView.mm in Sources */,
 				D2AE57870FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
@@ -1669,10 +1634,8 @@
 				D276FF25208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE57890FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D276FF2B208CE17A00754F7E /* UIMultiButton.m in Sources */,
-				D27B1453208A752200ED3598 /* ComboBarButtonItem.mm in Sources */,
+				D27B1453208A752200ED3598 /* AltButton.mm in Sources */,
 				D2AE57F90FACE47B0093E56B /* main.mm in Sources */,
-				D2AE59CF0FACE81D0093E56B /* DualActionButton.m in Sources */,
-				D2AE59D00FACE81D0093E56B /* SimpleButton.m in Sources */,
 				D2AE59E80FACE81D0093E56B /* SoundEffect.m in Sources */,
 				D2AE5A130FACE81D0093E56B /* point.cc in Sources */,
 				D2AE5A140FACE81D0093E56B /* rand_utils.c in Sources */,
@@ -1696,7 +1659,6 @@
 				D27097BC0FB67B0C00E7B5FA /* m12.cc in Sources */,
 				D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */,
 				D27097CE0FB67B8200E7B5FA /* point.cc in Sources */,
-				D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */,
 				D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */,
 				D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */,
 				D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */,

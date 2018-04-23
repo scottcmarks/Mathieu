@@ -8,7 +8,6 @@
 
 #include "view.h"
 #import "SporadicMAppDelegate.h"
-#import "RootViewController.h"
 #import "AppleModalAlert.h"
 #import "SporadicMViewController.h"
 #import "SporadicMView.h"
@@ -23,7 +22,6 @@
 
 @implementation SporadicMViewController
 
-@synthesize rootViewController;
 - (SporadicMView *)sporadicMView {
     assert([self.view isKindOfClass:SporadicMView.class]);
     return (SporadicMView *)self.view;
@@ -45,9 +43,9 @@
 #if TARGET_IOS
 
 // Implement viewDidLoad to do additional setup after loading the view.
-- (void)viewDidLoad {
-    [ super viewDidLoad ];
+- (void)initializeView {
     haveNotedSuccess = [ self.gameModel isSolving ] && [ self.gameModel isIdentity ];
+    [self.sporadicMView initializeViews];
 }
 
 #if TARGET_IOS && OVERRIDE_DEPRECATED
@@ -72,7 +70,7 @@
 
 - (IBAction)toggleView
 {
-    [ rootViewController toggleView ];
+    abort(); // [ rootViewController toggleView ];
 }
 
 - (IBAction)toggleInverted {
@@ -273,17 +271,7 @@
     self.invert = false ;
     [ self.gameModel random ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
-#if TARGET_IOS
-    self.rootViewController.nowHandlingShake = false;
-#endif /* TARGET_IOS */
     haveNotedSuccess = false;
-}
-
-
--(void) noShake{
-#if TARGET_IOS
-    self.rootViewController.nowHandlingShake = false;
-#endif /* TARGET_IOS */
 }
 
 
@@ -293,9 +281,6 @@
     if ( [ self.gameModel isSolving ] )
         [ self.gameModel revert ];
     [ self updateDuration: LARGE_MOVE_DURATION ];
-#if TARGET_IOS
-    self.rootViewController.nowHandlingShake = false;
-#endif /* TARGET_IOS */
 }
 
 
@@ -305,14 +290,10 @@
 
 -(void) confirmShake
 {
-    void(^continuation)(bool) = ^(bool confirmed) {
-        if (confirmed) [self doShake]; else [self noShake];
-    };
-    NSLog(@"confirmShake - continuation=0x%016lX", (size_t)(void *)continuation);
     [ AppleModalAlert alertOKCancel:@"This will create a new " applicationName @" puzzle.\n"
-      @"Press OK if you want to do this."
-                               title:@"Shake!"
-                        continuation:continuation] ;
+                                    @"Press OK if you want to do this."
+                              title:@"Shake!"
+                       continuation:^(bool confirmed) { if (confirmed) [self doShake]; }] ;
 }
 
 -(void) confirmRestart
@@ -355,14 +336,14 @@
     [ self.sporadicMView disableAllComboButtons ];
     [ self.ballRingView redraw ];
     [ self.sporadicMView showCurrentPermutationAtDuration:INSTANTANEOUS ];
-    [ self.rootViewController toggleView ];
+    abort(); // [ self.rootViewController toggleView ];
 }
 
 
 -( void ) dontChangeSwap
 {
     [ BallView setColorsForSwapPermutation: MathieuPermutation::swapPermutation ];
-    [ self.rootViewController toggleView ];
+    abort(); // [ self.rootViewController toggleView ];
 }
 
 
