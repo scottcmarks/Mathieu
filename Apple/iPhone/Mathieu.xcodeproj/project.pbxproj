@@ -23,6 +23,7 @@
 		D2017AB51497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */; };
 		D2017AB71497EB46003DA78F /* PreferencesView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB61497EB46003DA78F /* PreferencesView-iPad.xib */; };
 		D2017AB91497F07D003DA78F /* HelpView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB81497F07D003DA78F /* HelpView-iPad.xib */; };
+		D2019706208DAD900077A7C0 /* SporadicM12 free iOS App Store 1024x1024.png in Resources */ = {isa = PBXBuildFile; fileRef = D20DC793207ACB8B007E2D93 /* SporadicM12 free iOS App Store 1024x1024.png */; };
 		D204A276143B7D3F005E4A82 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A274143B7D3F005E4A82 /* Default.png */; };
 		D204A277143B7D3F005E4A82 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A274143B7D3F005E4A82 /* Default.png */; };
 		D204A278143B7D3F005E4A82 /* Default@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A275143B7D3F005E4A82 /* Default@x2.png */; };
@@ -52,12 +53,25 @@
 		D27097BC0FB67B0C00E7B5FA /* m12.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5A980FACE9BB0093E56B /* m12.cc */; };
 		D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5AEC0FACE9BB0093E56B /* view.cc */; };
 		D27097CE0FB67B8200E7B5FA /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58870FACE81D0093E56B /* point.cc */; };
+		D276FF25208BDAC200754F7E /* ComboBarButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D276FF24208BDAC200754F7E /* ComboBarButton.mm */; };
+		D276FF26208BDAC200754F7E /* ComboBarButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D276FF24208BDAC200754F7E /* ComboBarButton.mm */; };
+		D276FF27208BDAC200754F7E /* ComboBarButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = D276FF24208BDAC200754F7E /* ComboBarButton.mm */; };
+		D276FF2B208CE17A00754F7E /* UIMultiButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2A208CE17A00754F7E /* UIMultiButton.m */; };
+		D276FF2C208CE17A00754F7E /* UIMultiButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2A208CE17A00754F7E /* UIMultiButton.m */; };
+		D276FF2D208CE17A00754F7E /* UIMultiButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2A208CE17A00754F7E /* UIMultiButton.m */; };
+		D276FF30208CE30B00754F7E /* UIDualButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2F208CE30B00754F7E /* UIDualButton.m */; };
+		D276FF31208CE30B00754F7E /* UIDualButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2F208CE30B00754F7E /* UIDualButton.m */; };
+		D276FF32208CE30B00754F7E /* UIDualButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D276FF2F208CE30B00754F7E /* UIDualButton.m */; };
+		D27B1453208A752200ED3598 /* ComboBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */; };
+		D27B1454208A752200ED3598 /* ComboBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */; };
+		D27B1455208A752200ED3598 /* ComboBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */; };
 		D27C7C230FB2202700ECAE6F /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D27C7C1E0FB2202700ECAE6F /* main.mm */; };
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
 		D28A801A0FB8C20100BCC180 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BB0FACE47A0093E56B /* RootViewController.mm */; };
 		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
+		D2982799208DB51300266ED5 /* SporadicM12 free 355x355.png in Resources */ = {isa = PBXBuildFile; fileRef = D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */; };
 		D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D29CC5B3207A5EE20006336A /* LockImages.mm in Sources */ = {isa = PBXBuildFile; fileRef = D29CC5B1207A5EE10006336A /* LockImages.mm */; };
 		D29CC5B4207A5EE20006336A /* AppleModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D29CC5B2207A5EE10006336A /* AppleModalAlert.m */; };
@@ -296,6 +310,14 @@
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D276FF24208BDAC200754F7E /* ComboBarButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboBarButton.mm; sourceTree = "<group>"; };
+		D276FF28208BDAE800754F7E /* ComboBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboBarButton.h; sourceTree = "<group>"; };
+		D276FF29208CE17A00754F7E /* UIMultiButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMultiButton.h; sourceTree = "<group>"; };
+		D276FF2A208CE17A00754F7E /* UIMultiButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIMultiButton.m; sourceTree = "<group>"; };
+		D276FF2E208CE30B00754F7E /* UIDualButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIDualButton.h; sourceTree = "<group>"; };
+		D276FF2F208CE30B00754F7E /* UIDualButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIDualButton.m; sourceTree = "<group>"; };
+		D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboBarButtonItem.mm; sourceTree = "<group>"; };
+		D27B1456208A754B00ED3598 /* ComboBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboBarButtonItem.h; sourceTree = "<group>"; };
 		D27C7B950FB21B9400ECAE6F /* SporadicM12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27C7C1D0FB2202700ECAE6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D27C7C1E0FB2202700ECAE6F /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
@@ -304,6 +326,7 @@
 		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D28025350FFBBF9B008CA92E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; plistStructureDefinitionIdentifier = "<none>"; sourceTree = "<group>"; };
 		D295286E0FB4B9E100BABAF4 /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
+		D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 free 355x355.png"; sourceTree = "<group>"; };
 		D29CC5AE207A5EE10006336A /* AppleModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleModalAlert.h; sourceTree = "<group>"; };
 		D29CC5AF207A5EE10006336A /* Apple Cross-platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Apple Cross-platform.h"; sourceTree = "<group>"; };
 		D29CC5B0207A5EE10006336A /* LockImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockImages.h; sourceTree = "<group>"; };
@@ -752,6 +775,10 @@
 		D2AE55DC0FACE47A0093E56B /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				D27B1452208A752200ED3598 /* ComboBarButtonItem.mm */,
+				D276FF24208BDAC200754F7E /* ComboBarButton.mm */,
+				D27B1456208A754B00ED3598 /* ComboBarButtonItem.h */,
+				D276FF28208BDAE800754F7E /* ComboBarButton.h */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				D2AE55ED0FACE47A0093E56B /* Constants.h */,
 				D2AE55EE0FACE47A0093E56B /* M12 */,
@@ -963,6 +990,10 @@
 				D2AE58280FACE81D0093E56B /* DualActionButtonProtocol.h */,
 				D2AE58290FACE81D0093E56B /* SimpleButton.h */,
 				D2AE582A0FACE81D0093E56B /* SimpleButton.m */,
+				D276FF29208CE17A00754F7E /* UIMultiButton.h */,
+				D276FF2A208CE17A00754F7E /* UIMultiButton.m */,
+				D276FF2E208CE30B00754F7E /* UIDualButton.h */,
+				D276FF2F208CE30B00754F7E /* UIDualButton.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1171,6 +1202,7 @@
 		D2B5996120819C4800FB4403 /* povray */ = {
 			isa = PBXGroup;
 			children = (
+				D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */,
 				D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */,
 				D2B5996220819C4800FB4403 /* SporadicM12.pov */,
 				D2B5996320819C4800FB4403 /* SporadicM12.inc */,
@@ -1484,6 +1516,7 @@
 				D2D3FF801FC9140400B29F46 /* SporadicM12.storyboard in Resources */,
 				D2FDA87B1FC779F800603E02 /* SporadicMView.xib in Resources */,
 				D2AE578F0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
+				D2982799208DB51300266ED5 /* SporadicM12 free 355x355.png in Resources */,
 				D2AE57910FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE57920FACE47B0093E56B /* combo.caf in Resources */,
 				D2AE57930FACE47B0093E56B /* combo_not_set.caf in Resources */,
@@ -1505,6 +1538,7 @@
 				D2AE59DF0FACE81D0093E56B /* SimpleButtonNormal.png in Resources */,
 				D2AE59E10FACE81D0093E56B /* SimpleButtonNormalRound.png in Resources */,
 				D2AE59E20FACE81D0093E56B /* SimpleButtonRoundHighlighted.png in Resources */,
+				D2019706208DAD900077A7C0 /* SporadicM12 free iOS App Store 1024x1024.png in Resources */,
 				D2AE59E30FACE81D0093E56B /* SimpleDarkButtonHighlighted.png in Resources */,
 				D23B2FE91FC9D941009CD6BD /* Images.xcassets in Resources */,
 				D2AE59E40FACE81D0093E56B /* SimpleDarkButtonNormal.png in Resources */,
@@ -1563,12 +1597,16 @@
 				D2AE57050FACE47B0093E56B /* SwapPermutationsView.mm in Sources */,
 				D2AE57060FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D2AE57760FACE47B0093E56B /* main.mm in Sources */,
+				D276FF2C208CE17A00754F7E /* UIMultiButton.m in Sources */,
 				D2AE59500FACE81D0093E56B /* DualActionButton.m in Sources */,
 				D2AE59510FACE81D0093E56B /* SimpleButton.m in Sources */,
 				D2AE59690FACE81D0093E56B /* SoundEffect.m in Sources */,
+				D27B1454208A752200ED3598 /* ComboBarButtonItem.mm in Sources */,
 				D2AE59940FACE81D0093E56B /* point.cc in Sources */,
+				D276FF31208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59950FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5BB70FACE9BB0093E56B /* m12.cc in Sources */,
+				D276FF26208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE5BFD0FACE9BB0093E56B /* view.cc in Sources */,
 				D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
 				D204A27E143BA851005E4A82 /* NSBundle+VersionString.m in Sources */,
@@ -1594,12 +1632,16 @@
 				D2AE56820FACE47B0093E56B /* SwapPermutationsView.mm in Sources */,
 				D2AE56830FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D2AE56F30FACE47B0093E56B /* main.mm in Sources */,
+				D276FF2D208CE17A00754F7E /* UIMultiButton.m in Sources */,
 				D2AE58D10FACE81D0093E56B /* DualActionButton.m in Sources */,
 				D2AE58D20FACE81D0093E56B /* SimpleButton.m in Sources */,
 				D2AE58EA0FACE81D0093E56B /* SoundEffect.m in Sources */,
+				D27B1455208A752200ED3598 /* ComboBarButtonItem.mm in Sources */,
 				D2AE59150FACE81D0093E56B /* point.cc in Sources */,
+				D276FF32208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59160FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5B6D0FACE9BB0093E56B /* m24.cc in Sources */,
+				D276FF27208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE5B750FACE9BB0093E56B /* view.cc in Sources */,
 				D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
 				D204A27F143BA851005E4A82 /* NSBundle+VersionString.m in Sources */,
@@ -1624,7 +1666,10 @@
 				D2AE57860FACE47B0093E56B /* SporadicMView.mm in Sources */,
 				D2AE57870FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
 				D2AE57880FACE47B0093E56B /* SwapPermutationsView.mm in Sources */,
+				D276FF25208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE57890FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
+				D276FF2B208CE17A00754F7E /* UIMultiButton.m in Sources */,
+				D27B1453208A752200ED3598 /* ComboBarButtonItem.mm in Sources */,
 				D2AE57F90FACE47B0093E56B /* main.mm in Sources */,
 				D2AE59CF0FACE81D0093E56B /* DualActionButton.m in Sources */,
 				D2AE59D00FACE81D0093E56B /* SimpleButton.m in Sources */,
@@ -1634,6 +1679,7 @@
 				D2AE5C3F0FACE9BB0093E56B /* m12.cc in Sources */,
 				D29CC5B4207A5EE20006336A /* AppleModalAlert.m in Sources */,
 				D2AE5C850FACE9BB0093E56B /* view.cc in Sources */,
+				D276FF30208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2B7EA7E11D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
 				D204A27D143BA851005E4A82 /* NSBundle+VersionString.m in Sources */,
 			);
