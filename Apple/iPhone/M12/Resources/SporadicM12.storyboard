@@ -550,7 +550,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJX-Fk-WZj" userLabel="Ball View Container View">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJX-Fk-WZj" userLabel="Ball View Container View">
                                 <rect key="frame" x="103.66666666666669" y="64" width="207" height="248"/>
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PKb-xF-QsX" customClass="BallRingView">

@@ -173,7 +173,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     
     // Not currently doing Swap gesture
     swapGestureStarted = false;
-    self.userInteractionEnabled = YES;
 }
 
 - ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate {
