@@ -18,22 +18,28 @@
 #import "iPhoneUtilities.h"
 
 @interface SporadicMViewController()
-@property (nonatomic, strong, readwrite) IBOutlet SporadicMView * spview;
+@property (nonatomic, strong, readonly) SporadicMView * sporadicMView;
 @end
 
 @implementation SporadicMViewController
 
 @synthesize rootViewController;
-@synthesize spview;
+- (SporadicMView *)sporadicMView {
+    assert([self.view isKindOfClass:SporadicMView.class]);
+    return (SporadicMView *)self.view;
+}
 
-- ( BallRingView * ) ballRingView { return self.spview.ballRingView; }
+- ( BallRingView * ) ballRingView { return self.sporadicMView.ballRingView; }
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - ( bool ) confirm { return self.appDelegate.confirm; }
 - ( bool ) invert  { return self.appDelegate.invert; }
-- ( void ) setInvert:(bool)inverted { [ self.spview setInvertibleButtonsInverted: ( self.appDelegate.invert = inverted ) ]; }
+- ( void ) setInvert:(bool)inverted {
+    self.appDelegate.invert = inverted ;
+    [ self.sporadicMView setInvertibleButtonsInverted: inverted];
+}
 
 // Framework-generated messages
 #if TARGET_IOS
@@ -59,13 +65,6 @@
 
 #endif /* TARGET_IOS */
 
-- (void)dealloc
-{
-    self.rootViewController = nil;
-    self.spview = nil;
-    [super dealloc];
-}
-
 
 
 // Handlers for events from the SporadicMView
@@ -76,7 +75,9 @@
     [ rootViewController toggleView ];
 }
 
-- (IBAction)toggleInverted { self.invert = !self.invert ; }
+- (IBAction)toggleInverted {
+    self.invert = !self.invert ;
+}
 
 - ( CGFloat ) appropriateDurationForMove: ( HistoryElement ) e
 {
@@ -89,7 +90,7 @@
 
 - ( void )updateDuration: ( CGFloat ) duration
 {
-    [ self.spview showCurrentPermutationAtDuration: duration ];
+    [ self.sporadicMView showCurrentPermutationAtDuration: duration ];
 
     if ( [ self.gameModel isSolving ] && [ self.gameModel isIdentity ] && !haveNotedSuccess )
     {
@@ -124,7 +125,7 @@
         [ self.gameModel eraseCombo: comboName ];
     else
         [ self.gameModel setCombo: comboName ];
-    [ self.spview setComboButton:comboName enabled: [ self.gameModel hasDefinedCombo:comboName ] ];
+    [ self.sporadicMView setComboButton:comboName enabled: [ self.gameModel hasDefinedCombo:comboName ] ];
 }
 
 -(void) confirmSetCombo: ( HistoryElement ) comboName
@@ -140,9 +141,7 @@
     NSString * alertFormat = @"This will %@ the meaning of %c.\nPress OK if you want to do this." ;
     [ AppleModalAlert alertOKCancel:[ NSString stringWithFormat:alertFormat, verb, (char)comboName ]
                               title:@"Combo Set!"
-                       continuation:^(bool confirmed) {
-                           if (confirmed) [self doSetCombo: comboName];
-                       }];
+                       continuation:^(bool confirmed) { if (confirmed) [self doSetCombo: comboName]; }];
 }
 
 
@@ -215,7 +214,7 @@
 -(void) spinInProgress: (int) wedges{
     self.invert = false ;
     [ self.gameModel spin: wedges ];
-//      [ self.spview updateHistoryText ];
+//      [ self.sporadicMView updateHistoryText ];
 }
 
 - (void) spinFinished: (int)wedges{
@@ -238,11 +237,11 @@
         self.invert = false ;
 }
 
-
 -(IBAction) undoMove  { [ self undo: true  ] ; }
 
-
 -(IBAction) undoStep  { [ self undo: false ] ; }
+
+-(IBAction) undoStepOrMove { [self undo: self.invert];}
 
 
 - ( void ) doHome
@@ -346,16 +345,16 @@
         [ self doRestart ];
 }
 
-
+-(IBAction) shakeOrRestart { if (self.invert) [self restart]; else [self shake]; }
 
 -( void ) doChangeSwap:(int) newSwapIndex
 {
     self.gameModel.swapIndex = newSwapIndex;
     [ self.gameModel reset ];
     [ self.gameModel eraseAllCombos ];
-    [ self.spview disableAllComboButtons ];
+    [ self.sporadicMView disableAllComboButtons ];
     [ self.ballRingView redraw ];
-    [ self.spview showCurrentPermutationAtDuration:INSTANTANEOUS ];
+    [ self.sporadicMView showCurrentPermutationAtDuration:INSTANTANEOUS ];
     [ self.rootViewController toggleView ];
 }
 
@@ -395,7 +394,7 @@
 
 - ( void     ) synchronizeView
 {
-    [ self.spview showCurrentPermutationAtDuration: INSTANTANEOUS ] ;
+    [ self.sporadicMView showCurrentPermutationAtDuration: INSTANTANEOUS ] ;
 }
 
 @end

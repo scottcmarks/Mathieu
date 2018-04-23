@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="20f-S3-zSP">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -19,48 +19,50 @@
             <objects>
                 <viewController id="20f-S3-zSP" userLabel="SporadicM View Controller" customClass="SporadicMViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4O7-xt-CFh" customClass="SporadicMView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IYw-Zt-vdt" userLabel="Ball View Container View">
-                                <rect key="frame" x="10" y="40" width="355" height="426"/>
+                                <rect key="frame" x="10" y="40.000000000000028" width="394" height="472.66666666666674"/>
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Skb-lI-pNA" customClass="BallRingView">
-                                        <rect key="frame" x="0.0" y="0.0" width="355" height="426"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="394" height="472.66666666666669"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czP-ga-EH1">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czP-ga-EH1" userLabel="Shake or Restart" customClass="UIDualButton">
                                         <rect key="frame" x="8" y="8" width="42" height="30"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Shake"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="alternateTitle" value="Restart"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="shake" destination="20f-S3-zSP" eventType="touchUpInside" id="AtK-YV-NHM"/>
+                                            <action selector="shakeOrRestart" destination="20f-S3-zSP" eventType="touchUpInside" id="yek-F5-L4b"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kn-q4-FQT">
-                                        <rect key="frame" x="306" y="8" width="41" height="30"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kn-q4-FQT" customClass="UIDualButton">
+                                        <rect key="frame" x="345" y="8" width="41" height="30"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Home"/>
                                         <connections>
                                             <action selector="home" destination="20f-S3-zSP" eventType="touchUpInside" id="HDY-3o-ofq"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PYf-MQ-6Yb" userLabel="Prefs">
-                                        <rect key="frame" x="18" y="396" width="22" height="22"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PYf-MQ-6Yb" userLabel="Prefs" customClass="UIDualButton">
+                                        <rect key="frame" x="18" y="442.66666666666669" width="22" height="22"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <segue destination="YVk-tT-0Mz" kind="show" id="ErR-ZX-M4T"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlY-GV-B7M">
-                                        <rect key="frame" x="309" y="388" width="38" height="30"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlY-GV-B7M" customClass="UIDualButton">
+                                        <rect key="frame" x="348" y="434.66666666666669" width="38" height="30"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Undo"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="alternateTitle" value="Undo!"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="undoStep" destination="20f-S3-zSP" eventType="touchUpInside" id="cZ2-dD-xN4"/>
+                                            <action selector="undoStepOrMove" destination="20f-S3-zSP" eventType="touchUpInside" id="McT-g7-eap"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -83,7 +85,7 @@
                                 </constraints>
                             </view>
                             <label autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" textAlignment="right" lineBreakMode="clip" numberOfLines="2" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ur-dH-chn" userLabel="Moves and Steps">
-                                <rect key="frame" x="10" y="466" width="13.5" height="26.5"/>
+                                <rect key="frame" x="10" y="512.66666666666663" width="15" height="29.666666666666629"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="5ur-dH-chn" secondAttribute="height" multiplier="1:2" id="8mG-oi-Z5R"/>
@@ -96,40 +98,83 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" maximumZoomScale="2" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEP-uO-ypc" userLabel="history">
-                                <rect key="frame" x="23.5" y="466" width="341.5" height="26.5"/>
+                                <rect key="frame" x="25" y="512.66666666666663" width="379" height="29.666666666666629"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textView>
                             <toolbar contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzv-tM-2NG">
-                                <rect key="frame" x="10" y="502.5" width="355" height="44"/>
+                                <rect key="frame" x="10" y="552.33333333333337" width="394" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="8R5-7C-Xot"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="A" id="H79-A6-DLs"/>
+                                    <barButtonItem title="A Item" style="plain" id="EiL-Bm-nzA">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oiQ-iV-wFU" customClass="ComboBarButton">
+                                            <rect key="frame" x="20" y="5" width="34" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <state key="normal" title="A"/>
+                                            <connections>
+                                                <outlet property="target" destination="20f-S3-zSP" id="7NT-kK-Im5"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="5kX-ep-Zlg"/>
-                                    <barButtonItem title="B" id="gFb-wk-xUU"/>
+                                    <barButtonItem title="B Item" style="plain" id="Rks-pG-lVv">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mbW-o4-OH4" customClass="ComboBarButton">
+                                            <rect key="frame" x="85" y="5" width="34" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <state key="normal" title="B"/>
+                                            <connections>
+                                                <outlet property="target" destination="20f-S3-zSP" id="Wap-J5-jJJ"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CrQ-cU-RZd"/>
-                                    <barButtonItem title="C" id="asW-KD-kR1"/>
+                                    <barButtonItem title="C Item" style="plain" id="PfA-zL-3PP">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EVs-ND-JVH" customClass="ComboBarButton">
+                                            <rect key="frame" x="150" y="5" width="34" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <state key="normal" title="C"/>
+                                            <connections>
+                                                <outlet property="target" destination="20f-S3-zSP" id="wWC-l3-0gy"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="D1N-74-MkX"/>
-                                    <barButtonItem title="D" id="Fh8-yX-qO4"/>
+                                    <barButtonItem title="D Item" style="plain" id="WaN-4g-JWv">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nmR-c4-n8E" customClass="ComboBarButton">
+                                            <rect key="frame" x="215" y="5" width="34" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <state key="normal" title="D"/>
+                                            <connections>
+                                                <outlet property="target" destination="20f-S3-zSP" id="fAY-cR-btv"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="33V-zJ-SYF"/>
-                                    <barButtonItem title="E" id="zuA-h2-rOx"/>
+                                    <barButtonItem title="E Item" style="plain" id="4u4-Yp-ia5">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LQj-dX-TXc" customClass="ComboBarButton">
+                                            <rect key="frame" x="280" y="5" width="34" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <state key="normal" title="E"/>
+                                            <connections>
+                                                <outlet property="target" destination="20f-S3-zSP" id="vob-QW-dJ2"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="L6u-VR-hC3"/>
-                                    <barButtonItem title="Alt" id="kKs-jg-kCD"/>
+                                    <barButtonItem title="Alt" style="plain" id="kKs-jg-kCD">
+                                        <connections>
+                                            <action selector="toggleInverted" destination="20f-S3-zSP" id="7fH-qB-918"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </toolbar>
-                            <imageView autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SporadicGamesLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="1KX-F6-Jeu">
-                                <rect key="frame" x="0.0" y="585.5" width="375" height="37.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="1KX-F6-Jeu" secondAttribute="height" multiplier="10:1" id="iWH-Gy-0tB"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Amk-zV-h6e" userLabel="Ad View">
-                                <rect key="frame" x="0.0" y="546.5" width="375" height="39"/>
+                                <rect key="frame" x="0.0" y="596" width="414" height="54"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Ad Here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J1r-ze-uZH">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -160,6 +205,12 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <imageView autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SporadicGamesLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="1KX-F6-Jeu">
+                                <rect key="frame" x="0.0" y="650.66666666666663" width="414" height="41.333333333333371"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="1KX-F6-Jeu" secondAttribute="height" multiplier="10:1" id="iWH-Gy-0tB"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Amk-zV-h6e" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" id="4cp-TQ-E0O"/>
@@ -190,32 +241,31 @@
                             <outlet property="controller" destination="20f-S3-zSP" id="HWo-1c-9BF"/>
                             <outlet property="history" destination="FEP-uO-ypc" id="Xrt-zo-j9J"/>
                             <outlet property="moves" destination="5ur-dH-chn" id="fnG-da-7Dc"/>
+                            <outlet property="shakeButton" destination="czP-ga-EH1" id="OSX-qC-eeM"/>
                             <outlet property="toolbar" destination="Bzv-tM-2NG" id="jMy-sh-yiz"/>
+                            <outlet property="undoButton" destination="ZlY-GV-B7M" id="89j-ac-Nf5"/>
                         </connections>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="spview" destination="4O7-xt-CFh" id="RME-59-B4G"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kWr-Cr-pvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1039.2" y="-1150.0749625187407"/>
+            <point key="canvasLocation" x="-1040.625" y="-1150.3521126760563"/>
         </scene>
         <!--Preferences View Controller-->
         <scene sceneID="4Cr-UL-8Pj">
             <objects>
                 <viewController id="YVk-tT-0Mz" customClass="PreferencesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qei-3T-CMC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lDe-ad-xFX" customClass="PreferencesView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="692"/>
                                 <subviews>
                                     <navigationBar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vja-qk-4Xd">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <color key="barTintColor" red="0.75294119000000004" green="0.75294119000000004" blue="0.88627451999999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <items>
                                             <navigationItem title="M₁₂" id="drH-Ap-CGd">
@@ -233,13 +283,13 @@
                                         </items>
                                     </navigationBar>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Current Swap Permutation" textAlignment="right" lineBreakMode="wordWrap" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="3Wv-w7-bfz">
-                                        <rect key="frame" x="87" y="126" width="202" height="21"/>
+                                        <rect key="frame" x="106" y="126" width="202" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UI4-WN-16K">
-                                        <rect key="frame" x="320" y="125" width="22" height="22"/>
+                                        <rect key="frame" x="340" y="125" width="22" height="22"/>
                                         <state key="normal">
                                             <color key="titleColor" red="0.19607843" green="0.30980393000000001" blue="0.52156866000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -252,7 +302,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" text="((0 1) (2 3) (4 5) (6 7) (8 9) (10 11))" lineBreakMode="clip" baselineAdjustment="none" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="LDO-Px-iHW" userLabel="CurrentPermutation">
-                                        <rect key="frame" x="33" y="159" width="309" height="53"/>
+                                        <rect key="frame" x="53" y="159" width="309" height="53"/>
                                         <color key="backgroundColor" red="0.026699495" green="0.027173935999999999" blue="0.026818106000000001" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="53" id="7O2-K0-fE1"/>
@@ -262,7 +312,7 @@
                                         <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" lineBreakMode="wordWrap" numberOfLines="4" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="dpx-w1-1XR">
-                                        <rect key="frame" x="20" y="268" width="204" height="53"/>
+                                        <rect key="frame" x="20" y="268.33333333333331" width="243" height="52.666666666666686"/>
                                         <string key="text">When solving, confirm Shake,
 Restart and Home. Confirm combo set or erase of a previously-set combo.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -270,7 +320,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Confirmation" textAlignment="right" lineBreakMode="wordWrap" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="L9j-q7-WTY">
-                                        <rect key="frame" x="246" y="248" width="104" height="18"/>
+                                        <rect key="frame" x="285" y="248" width="104" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="fMQ-0H-XeU"/>
                                             <constraint firstAttribute="width" constant="104" id="frN-bO-DGP"/>
@@ -280,13 +330,13 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A1U-zf-3eZ">
-                                        <rect key="frame" x="293" y="278" width="51" height="31"/>
+                                        <rect key="frame" x="332" y="278" width="51" height="31"/>
                                         <connections>
                                             <action selector="confirmSwitchChanged" destination="YVk-tT-0Mz" eventType="valueChanged" id="TDu-Sc-uzg"/>
                                         </connections>
                                     </switch>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Sound Effects" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lAS-Jv-fhR">
-                                        <rect key="frame" x="229" y="366" width="120" height="21"/>
+                                        <rect key="frame" x="268" y="366" width="120" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="WQU-5p-Es9"/>
                                         </constraints>
@@ -295,13 +345,13 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xmA-c5-XP6">
-                                        <rect key="frame" x="293" y="399" width="51" height="31"/>
+                                        <rect key="frame" x="332" y="398" width="51" height="31"/>
                                         <connections>
                                             <action selector="soundEffectsSwitchChanged" destination="YVk-tT-0Mz" eventType="valueChanged" id="rRg-7b-53J"/>
                                         </connections>
                                     </switch>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Animation Speed" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="YIz-zF-Rxh">
-                                        <rect key="frame" x="214" y="477" width="135" height="20"/>
+                                        <rect key="frame" x="253" y="476" width="135" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="135" id="xwf-Pu-Fxd"/>
                                         </constraints>
@@ -310,7 +360,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Slow" lineBreakMode="wordWrap" minimumFontSize="8" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0t-pE-r2c">
-                                        <rect key="frame" x="20" y="505" width="26" height="16"/>
+                                        <rect key="frame" x="20" y="504" width="26" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="26" id="E6v-CG-lfn"/>
                                         </constraints>
@@ -319,7 +369,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Fast" lineBreakMode="wordWrap" minimumFontSize="8" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7LB-NR-LGN">
-                                        <rect key="frame" x="329" y="505" width="26" height="16"/>
+                                        <rect key="frame" x="368" y="504" width="26" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="Kdu-Vx-Qnu"/>
                                             <constraint firstAttribute="width" constant="26" id="Mz0-Uu-AxU"/>
@@ -329,19 +379,19 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2.5" minValue="0.0" maxValue="3" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6H-XV-912">
-                                        <rect key="frame" x="18" y="509" width="339" height="31"/>
+                                        <rect key="frame" x="18" y="508" width="378" height="31"/>
                                         <connections>
                                             <action selector="animationSpeedChanged" destination="YVk-tT-0Mz" eventType="valueChanged" id="zRX-GI-c9n"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SporadicM12Free v1.3.0 (Build 8888)" lineBreakMode="tailTruncation" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="7RC-kI-DVe">
-                                        <rect key="frame" x="8" y="574" width="164" height="11"/>
+                                        <rect key="frame" x="8" y="639" width="164" height="11"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                         <color key="textColor" red="0.2470588235" green="0.2470588235" blue="0.1137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Sporadic_Games_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="8uP-Hg-QBe">
-                                        <rect key="frame" x="0.0" y="585.5" width="375" height="37.5"/>
+                                        <rect key="frame" x="0.0" y="650.66666666666663" width="414" height="41.333333333333371"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="8uP-Hg-QBe" secondAttribute="height" multiplier="10:1" id="OzJ-zC-wcU"/>
                                             <constraint firstAttribute="width" secondItem="8uP-Hg-QBe" secondAttribute="height" multiplier="10:1" id="svr-WF-0hy"/>
@@ -421,11 +471,11 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
             <objects>
                 <viewController id="GNK-Z6-NYR" customClass="HelpViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mqE-N1-nqc" customClass="HelpView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yv2-mt-ng8">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                                 <items>
                                     <navigationItem title="M12" id="LCU-Gk-urS">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="1q0-ak-03O">
@@ -442,13 +492,13 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                 </items>
                             </navigationBar>
                             <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Sporadic_Games_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="HAI-69-18W">
-                                <rect key="frame" x="0.0" y="585.5" width="375" height="37.5"/>
+                                <rect key="frame" x="0.0" y="650.66666666666663" width="414" height="41.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="HAI-69-18W" secondAttribute="height" multiplier="10:1" id="9AU-Ye-ayp"/>
                                 </constraints>
                             </imageView>
                             <webView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
-                                <rect key="frame" x="0.0" y="64" width="375" height="521.5"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="586.66666666666663"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="delegate" destination="GNK-Z6-NYR" id="nVx-LA-lDX"/>
@@ -480,11 +530,11 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
             <objects>
                 <viewController id="Zrn-k1-6dv" customClass="SwapPermutationsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7qx-ki-iJ7" customClass="SwapPermutationsView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oiP-kY-7q1">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                                 <items>
                                     <navigationItem title="M" id="XHr-IN-x0E">
                                         <barButtonItem key="leftBarButtonItem" title="Help" id="lsg-rO-bd1">
@@ -501,10 +551,10 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJX-Fk-WZj" userLabel="Ball View Container View">
-                                <rect key="frame" x="94" y="64" width="187.5" height="225"/>
+                                <rect key="frame" x="103.66666666666669" y="64" width="207" height="248"/>
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PKb-xF-QsX" customClass="BallRingView">
-                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="225"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="207" height="248"/>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -516,36 +566,40 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" text="( 0 1 2 3 4 5 6 7 8 9 10 11 )" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="none" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="9Ps-zw-6Hd" userLabel="CurrentPermutation">
-                                <rect key="frame" x="0.0" y="297" width="375" height="24"/>
+                                <rect key="frame" x="0.0" y="320.33333333333331" width="414" height="24"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
-                            <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Sporadic_Games_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="na9-00-Ce4">
-                                <rect key="frame" x="0.0" y="590.5" width="375" height="32"/>
-                            </imageView>
                             <pickerView opaque="NO" clipsSubviews="YES" contentMode="left" translatesAutoresizingMaskIntoConstraints="NO" id="EER-fj-waz" showNotesWithSelection="YES">
-                                <rect key="frame" x="27.5" y="329" width="320" height="216"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="47" y="352" width="320" height="216"/>
+                                <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="delegate" destination="7qx-ki-iJ7" id="8MA-4K-Bz1"/>
                                 </connections>
                             </pickerView>
+                            <imageView autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SporadicGamesLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="zgs-Ac-HfM">
+                                <rect key="frame" x="0.0" y="650" width="414" height="41.333333333333371"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="zgs-Ac-HfM" secondAttribute="height" multiplier="10:1" id="0TW-eM-Ipe"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="gk3-9I-zzR" firstAttribute="bottom" secondItem="zgs-Ac-HfM" secondAttribute="bottom" id="2GV-cf-opa"/>
                             <constraint firstItem="UJX-Fk-WZj" firstAttribute="top" secondItem="oiP-kY-7q1" secondAttribute="bottom" id="DRE-KC-eGU"/>
                             <constraint firstItem="9Ps-zw-6Hd" firstAttribute="width" secondItem="gk3-9I-zzR" secondAttribute="width" id="HWL-zy-sU6"/>
                             <constraint firstItem="UJX-Fk-WZj" firstAttribute="centerX" secondItem="7qx-ki-iJ7" secondAttribute="centerX" id="HZX-wN-J4W"/>
                             <constraint firstItem="UJX-Fk-WZj" firstAttribute="width" secondItem="oiP-kY-7q1" secondAttribute="width" multiplier="1:2" id="IZp-lm-bhC"/>
-                            <constraint firstItem="na9-00-Ce4" firstAttribute="trailing" secondItem="gk3-9I-zzR" secondAttribute="trailing" id="MkG-5W-jMJ"/>
                             <constraint firstItem="oiP-kY-7q1" firstAttribute="top" secondItem="gk3-9I-zzR" secondAttribute="top" id="P31-DH-xfd"/>
+                            <constraint firstItem="zgs-Ac-HfM" firstAttribute="width" secondItem="zgs-Ac-HfM" secondAttribute="height" multiplier="10:1" id="QPv-6i-B94"/>
                             <constraint firstItem="EER-fj-waz" firstAttribute="top" secondItem="9Ps-zw-6Hd" secondAttribute="bottom" constant="8" id="Scr-Ys-rDD"/>
                             <constraint firstItem="9Ps-zw-6Hd" firstAttribute="centerX" secondItem="7qx-ki-iJ7" secondAttribute="centerX" id="WAL-AG-lqj"/>
                             <constraint firstItem="EER-fj-waz" firstAttribute="centerX" secondItem="7qx-ki-iJ7" secondAttribute="centerX" id="Yu0-0J-mHL"/>
-                            <constraint firstItem="na9-00-Ce4" firstAttribute="leading" secondItem="gk3-9I-zzR" secondAttribute="leading" id="ZPy-z5-wtY"/>
                             <constraint firstItem="9Ps-zw-6Hd" firstAttribute="top" secondItem="UJX-Fk-WZj" secondAttribute="bottom" constant="8" id="aNG-P1-OFA"/>
-                            <constraint firstItem="na9-00-Ce4" firstAttribute="bottom" secondItem="gk3-9I-zzR" secondAttribute="bottom" id="acE-oV-4e0"/>
+                            <constraint firstItem="zgs-Ac-HfM" firstAttribute="leading" secondItem="gk3-9I-zzR" secondAttribute="leading" id="aTu-su-GGb"/>
+                            <constraint firstItem="zgs-Ac-HfM" firstAttribute="trailing" secondItem="gk3-9I-zzR" secondAttribute="trailing" id="aw8-cm-OZS"/>
                             <constraint firstItem="oiP-kY-7q1" firstAttribute="width" secondItem="gk3-9I-zzR" secondAttribute="width" id="i1e-l7-ISs"/>
                             <constraint firstItem="oiP-kY-7q1" firstAttribute="centerX" secondItem="7qx-ki-iJ7" secondAttribute="centerX" id="jhL-Dk-oEy"/>
                         </constraints>
