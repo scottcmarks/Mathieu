@@ -12,8 +12,6 @@
 #import "ComboButtonTargetProtocol.h"
 #import "BallRingViewDelegate.h"
 
-@class RootViewController ;
-
 #if TARGET_IOS
 @interface SporadicMViewController : UIViewController
                                                     < UITextFieldDelegate,
@@ -29,11 +27,8 @@
 #endif
 
 {
-    RootViewController * rootViewController ;
     bool                 haveNotedSuccess   ;
 }
-
-@property ( nonatomic, assign   ) RootViewController * rootViewController ;
 
 // Handlers for events from the SporadicMView
 - ( IBAction ) toggleView     ;
@@ -51,6 +46,7 @@
 - ( void     ) spinInProgress : ( int ) wedges       ;
 - ( void     ) spinFinished   : ( int ) wedges       ;
 - ( void     ) setSwapIndex   : ( int ) newSwapIndex ;
-- ( void     ) synchronizeView ;
+- ( void     ) initializeView ;
+- ( void     ) synchronizeView;
 
 @end

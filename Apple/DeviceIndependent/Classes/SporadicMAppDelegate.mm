@@ -7,7 +7,7 @@
 //
 
 #include "rand_utils.h"
-#import "RootViewController.h"
+#import "SporadicMViewController.h"
 #import "SporadicMAppDelegate.h"
 #import "GameModel.h"
 #import "iPhoneUtilities.h"
@@ -64,8 +64,8 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
     __timestamp__;
 #endif
     // Set up root view controller
-    RootViewController *viewController = [ RootViewController new ];
-    self.window.rootViewController = viewController;
+    SporadicMViewController *viewController = [ SporadicMViewController new ];
+    self.window.SporadicMViewController = viewController;
     [ viewController release ] ;
 #if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
@@ -111,10 +111,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
     self.gameModel       = [ GameModel gameFromData:[ defaults dataForKey:SporadicMGameModelKey ] ];
     
-#if OLD_PRESENTATION_LAYER
-    [ ((RootViewController *)self.window.rootViewController) synchronizeView ] ;
-#else // OLD_PRESENTATION_LAYER
-#endif // OLD_PRESENTATION_LAYER
+    [ ((SporadicMViewController *)self.window.rootViewController) initializeView ] ;
 
 #if APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;

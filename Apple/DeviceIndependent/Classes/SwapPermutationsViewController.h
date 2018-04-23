@@ -8,7 +8,6 @@
 
 #include "Apple Cross-platform.h"
 
-@class RootViewController;
 @class PreferencesViewController;
 @class SwapPermutationsView;
 
@@ -18,12 +17,10 @@
 //                                                           <UIWebViewDelegate>
 #endif
 {
-    RootViewController        * rootViewController        ;
     PreferencesViewController * preferencesViewController ;
     SwapPermutationsView      * swapPermutationsView      ;
 }
 
-@property ( nonatomic, assign   )          RootViewController        * rootViewController        ;
 @property ( nonatomic, assign   )          PreferencesViewController * preferencesViewController ;
 @property ( nonatomic, retain   ) IBOutlet SwapPermutationsView      * swapPermutationsView      ;
 

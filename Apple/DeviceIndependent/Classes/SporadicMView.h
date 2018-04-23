@@ -43,6 +43,7 @@
 @property ( nonatomic, retain   )          NSTimer                 * historyTextUpdatingTimer;
 @property ( nonatomic, retain   )          NSString                * historyTextCache;
 
+- (void) initializeViews;
 -( void ) updateHistoryText;
 
 -( void ) showCurrentPermutationAtDuration: ( CGFloat ) duration;

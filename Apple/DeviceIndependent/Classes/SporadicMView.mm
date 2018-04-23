@@ -107,264 +107,18 @@
     [ self updateHistoryText ];
 }
 
-#if CONSTRUCT_PROGRAMMATICALLY
-- ( DualActionButton * ) createActionButtonAt: ( CGPoint    ) center
-                                        width: ( CGFloat    ) width
-                               normalSelector: ( SEL        ) normalSelector
-                                  normalTitle: ( NSString * ) normalTitle
-                            alternateSelector: ( SEL        ) alternateSelector
-                               alternateTitle: ( NSString * ) alternateTitle
-{	
-#if TARGET_IOS
-    DualActionButton * button =
-        [ DualActionButton dualActionButtonWithFrame: CGRectMake( center.x - width/2,
-                                                                  center.y - toolbarButtonHeight/2,
-                                                                  width,
-                                                                  toolbarButtonHeight)
-                                              target: self.controller
-                                      normalSelector: normalSelector
-                                         normalTitle: normalTitle
-                                   alternateSelector: alternateSelector
-                                      alternateTitle: alternateTitle ] ;
-    return button ;
-#elif TARGET_MACOS
-    return nil;
-#else
-#error Don't know this platform!
-#endif
-}
-
-
-- (ComboBarButton *)createToolbarComboBarButtonWidth: ( CGFloat    ) width
-                                     comboName: ( HistoryElement ) comboName
-{
-#if TARGET_IOS
-    return  [ ComboBarButton ComboBarButtonWithFrame: CGRectMake( 0, 0, width, toolbarButtonHeight)
-                                        target: self.controller
-                                     comboName: comboName ] ;
-#elif TARGET_MACOS
-    return nil;
-#else
-#error Don't know this platform!
-#endif
-}
-
-- (DualActionButton *)createToolbarAltButtonWidth: ( CGFloat    ) width
-{
-#if TARGET_IOS
-    return [ [ DualActionButton alloc ]
-            initWithFrame:     CGRectMake(0, 0, width, toolbarButtonHeight)
-            target:            self.controller
-            normalSelector:    @selector( toggleInverted )
-            normalTitle:       @"Alt"
-            alternateSelector: @selector( toggleInverted )
-            alternateTitle:    @"Alt"  ];
-#elif TARGET_MACOS
-    return nil;
-#else
-#error Don't know this platform!
-#endif
-}
-
-- ( Button * ) createInfoButton
-{
-    Button * button;
-#define INFO_BUTTON_CENTER ( DEVICE_IS_IPAD ? CGPointMake( 76.8 , 848 ) : CGPointMake( 32.0 , 382 ) )
-
-#if TARGET_IOS
-    button = [ Button buttonWithType:UIButtonTypeInfoDark ] ;
-    [ button addTarget: self.controller
-                action: @selector(toggleView)
-      forControlEvents: UIControlEventTouchUpInside ];
-    button.center = INFO_BUTTON_CENTER;
-#elif TARGET_MACOS
-#else
-    button = [ [ Button alloc ] init ];
-    [ button setButtonType: NSMomentaryLightButton ];
-    [ button addTarget: self.controller
-                action: @selector(toggleView)
-      forControlEvents: UIControlEventTouchUpInside ];
-    button.center = INFO_BUTTON_CENTER;
-#error Don't know this platform!
-#endif
-
-    return button;
-}
-
-typedef enum{ flexibleSpace=1, ComboBarButton=2, invButton=3 } ToolbarButtonType;
-
-typedef struct { NSString * normalTitle; SEL normalSelector;
-                NSString * alternateTitle; SEL alternateSelector;
-                CGPoint center; CGFloat width; DualActionButton * * variable; } ButtonDescription ;
-#endif // CONSTRUCT_PROGRAMMATICALLY
-
 - (void) awakeFromNib
 {
     [super awakeFromNib];
     
-#if CONSTRUCT_PROGRAMMATICALLY
-    ButtonDescription dualActionButtons_iPhone[ ] =
-    {
-        { @"Shake", @selector(shake)    , @"Restart", @selector(restart)  , {  42,  54 }, largeActionButtonWidth , &shakeButton },
-        { @"Home" , @selector(home)     , nil       , NULL                , { 268,  54 }, largeActionButtonWidth , NULL         },
-        { @"Left" , @selector(left)     , nil       , NULL                , { 130, 240 }, mediumActionButtonWidth, NULL         },
-        { @"Swap" , @selector(swap)     , nil       , NULL                , { 160, 195 }, mediumActionButtonWidth, NULL         },
-        { @"Right", @selector(right)    , nil       , NULL                , { 190, 240 }, mediumActionButtonWidth, NULL         },
-        { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 289, 380 }, mediumActionButtonWidth, &undoButton  },
-    } ;
-    
-    ButtonDescription dualActionButtons_iPad[ ] =-
-    {
-        { @"Shake", @selector(shake)    , @"Restart", @selector(restart)  , { 100,  94 }, largeActionButtonWidth , &shakeButton },
-        { @"Home" , @selector(home)     , nil       , NULL                , { 634,  94 }, largeActionButtonWidth , NULL         },
-        { @"Left" , @selector(left)     , nil       , NULL                , { 312, 500 }, mediumActionButtonWidth, NULL         },
-        { @"Swap" , @selector(swap)     , nil       , NULL                , { 384, 402 }, mediumActionButtonWidth, NULL         },
-        { @"Right", @selector(right)    , nil       , NULL                , { 456, 500 }, mediumActionButtonWidth, NULL         },
-        { @"Undo" , @selector(undoStep) , @"Undo!"  , @selector(undoMove) , { 694, 806 }, mediumActionButtonWidth, &undoButton  },
-    } ;
-    
-    #if TARGET_IOS
-        ButtonDescription dualActionButtons[ 6 ] ;
-        if ( DEVICE_IS_IPAD )
-            forArray( i , dualActionButtons_iPad )
-                dualActionButtons[ i ] = dualActionButtons_iPad[ i ] ;
-        else
-            forArray( i , dualActionButtons_iPhone )
-                dualActionButtons[ i ] = dualActionButtons_iPhone[ i ] ;
-    #elif TARGET_MACOS
-        #error Haven't defined action button description array!
-    #else
-        #error Don't know this platform!
-    #endif
-#endif // -CONSTRUCT_PROGRAMMATICALLY
-
     //DEBUG  [self.ballRingView createEverythingButDontWorryAboutLayout];
     self.ballRingView.delegate = self.controller;
     [self.ballRingView createSubviews];
+}
 
+- (void) initializeViews
+{
 #if !ICONIC_PICTURE_ONLY
-#if CONSTRUCT_PROGRAMMATICALLY
-
-	history.font = [ Font systemFontOfSize: historyFontSize ];
-    self.historyTextCache = @"";
-    moves.font = [ Font systemFontOfSize: movesFontSize ];
-    moves.text = [ NSString stringWithFormat: @"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
-
-     // Create and add all the action buttons
-    forArray( i, dualActionButtons )
-    {
-#if TARGET_IOS
-        DualActionButton * dualActionButton =  [ self createActionButtonAt: dualActionButtons[ i ].center
-                                                                     width: dualActionButtons[ i ].width
-                                                            normalSelector: dualActionButtons[ i ].normalSelector
-                                                               normalTitle: dualActionButtons[ i ].normalTitle
-                                                         alternateSelector: dualActionButtons[ i ].alternateSelector
-                                                            alternateTitle: dualActionButtons[ i ].alternateTitle ] ; // need this from table
-        if ( dualActionButtons[ i ].variable != NULL )
-            *(dualActionButtons[ i ].variable) = dualActionButton;
-        [ self addSubview: dualActionButton ];
-#elif TARGET_MACOS
-#error Haven't coded setup of action buttons!
-#else
-#error Don't know this platform!
-#endif // TARGET_IOS or TARGET_MACOS
-    }
-
-
-
-    // Create and add the toolbar buttons
-    struct { ToolbarButtonType type;
-             NSString * title;
-             CGFloat width;
-           } toolbarButtons[ ] =
-           {
-               { flexibleSpace                            },
-               { ComboBarButton  ,  @"A"  , ComboBarButtonWidth },
-#if FREE
-               { flexibleSpace                            },
-#endif // FREE
-
-               { ComboBarButton  ,  @"B"  , ComboBarButtonWidth },
-#if !FREE
-               { ComboBarButton  ,  @"C"  , ComboBarButtonWidth },
-               { ComboBarButton  ,  @"D"  , ComboBarButtonWidth },
-    #if !defined( infoInToolbar )
-               { ComboBarButton  ,  @"E"  , ComboBarButtonWidth },
-    #endif // !defined( infoInToolbar )
-#endif // !FREE
-               { flexibleSpace                            },
-               { invButton    ,  @"Alt", altButtonWidth   },
-               { flexibleSpace                            },
-           };
-
-
-    NSMutableArray * toolbarArray = [ NSMutableArray array ];
-
-    forArray( i, toolbarButtons )
-    {
-        ToolbarButtonType type = toolbarButtons[ i ].type;
-        ToolbarButtonItem * theToolbarItem ;
-
-
-        switch ( type )
-        {
-            case flexibleSpace:
-                theToolbarItem = [ ToolbarButtonItem alloc ];
-#if TARGET_IOS
-                theToolbarItem = [ theToolbarItem initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                       target:nil
-                                                                       action:nil ] ;
-#elif TARGET_MACOS
-                theToolbarItem = [ theToolbarItem initWithItemIdentifier: NSToolbarFlexibleSpaceItemIdentifier ];
-#else
-#error Don't know this platform!
-#endif // TARGET_IOS or TARGET_MACOS
-                break;
-
-            case ComboBarButton: {
-                ComboBarButton * toolbarButton = [ self createToolbarComboBarButtonWidth: toolbarButtons[ i ].width
-                                                                         comboName: [ toolbarButtons[ i ].title characterAtIndex: 0] ];
-                theToolbarItem = [ToolbarButtonItem alloc];
-#if TARGET_IOS
-                theToolbarItem = [ theToolbarItem initWithCustomView: toolbarButton ];
-#elif TARGET_MACOS
-                theToolbarItem = [ theToolbarItem init ];
-                [ theToolbarItem setView: toolbarButton ];
-#else
-#error Don't know this platform!
-#endif // TARGET_IOS or TARGET_MACOS
-                break;
-            }
-            case invButton: {
-                DualActionButton * toolbarButton = [ self createToolbarAltButtonWidth: toolbarButtons[ i ].width ];
-                theToolbarItem = [ToolbarButtonItem alloc];
-#if TARGET_IOS
-                theToolbarItem = [ theToolbarItem initWithCustomView: toolbarButton ];
-#elif TARGET_MACOS
-                theToolbarItem = [ theToolbarItem init ];
-                [ theToolbarItem setView: toolbarButton ];
-#else
-#error Don't know this platform!
-#endif // TARGET_IOS or TARGET_MACOS
-                altButton = toolbarButton ;
-                break;
-            }
-        }
-        theToolbarItem.tag = type;
-        [ toolbarArray addObject: theToolbarItem ];
-    }
-
-#if TARGET_IOS
-    [ toolbar setItems:toolbarArray animated: false];
-#elif TARGET_MACOS
-    NSLog(@"Don't yet build the toolbar");
-#else
-#error Don't know this platform!
-#endif // TARGET_IOS or TARGET_MACOS
-
-    [ self addSubview: [ self createInfoButton ] ];
-#endif // CONSTRUCT_PROGRAMMATICALLY
-
 
     // Establish invariant between combo definednesses and combo buttons appearance
     for ( HistoryElement c='A'; c<=lastComboButton; c++ )
@@ -395,9 +149,6 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
         history.hidden = NO;
         moves.hidden = NO;
         toolbar.hidden = NO;
-        #if CONSTRUCT_PROGRAMMATICALLY
-            self.backgroundColor = [ UIColor blackColor ];
-        #endif // CONSTRUCT_PROGRAMMATICALLY
     #elif TARGET_MACOS
     #else
         #error Don't know this platform!
@@ -420,9 +171,9 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
     NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
     ToolbarButtonItem * item;
     while ( item = [ toolbarItemsEnumerator nextObject ] )
-        if ( [ item isKindOfClass:ComboBarButton.class ] )
+        if ( [ item.customView isKindOfClass:UIDualButton.class ] )
         {
-            ComboBarButton * button = (ComboBarButton *)item.customView;
+            UIDualButton * button = (UIDualButton *)item.customView;
             button.alternate = inverted;
         }
 }
@@ -447,15 +198,17 @@ typedef struct { NSString * normalTitle; SEL normalSelector;
 
 -( void ) setComboButton:( HistoryElement )c enabled:( const bool )enabled
 {
-    NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
-    ToolbarButtonItem * item;
-    while ( item = [ toolbarItemsEnumerator nextObject ] )
+    NSArray<ToolbarButtonItem *> * items = self.toolbar.items;
+    [items enumerateObjectsUsingBlock:^(ToolbarButtonItem * item, NSUInteger __unused idx, BOOL * _Nonnull stop) {
         if ( [ item.customView isKindOfClass:ComboBarButton.class ] )
         {
             ComboBarButton * button = ( ComboBarButton * )item.customView;
-            if ( c == button.comboName )
+            if ( c == button.comboName ) {
                 button.disabled = !enabled;
+                *stop=YES;
+            }
         }
+    }];
 }
 
 -( void ) disableAllComboButtons

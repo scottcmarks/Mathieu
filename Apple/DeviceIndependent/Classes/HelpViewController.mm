@@ -11,7 +11,6 @@
 #import "SporadicMAppDelegate.h"
 
 @implementation HelpViewController
-@synthesize rootViewController;
 @synthesize helpView;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
@@ -43,14 +42,13 @@
 
 
 - (void)dealloc {
-    self.rootViewController = nil;
     self.helpView = nil;
     [super dealloc];
 }
 
 - (IBAction)dismissHelp
 {
-    [ self.rootViewController toggleView ];
+    abort();
 }
 
 #pragma mark WebView delegate methods

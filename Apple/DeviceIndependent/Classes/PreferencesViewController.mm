@@ -9,7 +9,6 @@
 #import "PreferencesViewController.h"
 #import "SporadicMAppDelegate.h"
 #import "GameModel.h"
-#import "RootViewController.h"
 #import "PreferencesView.h"
 #import "HelpViewController.h"
 #import "SwapPermutationsView.h"
@@ -20,7 +19,6 @@
 
 @implementation PreferencesViewController
 
-@synthesize rootViewController;
 @synthesize preferencesView;
 @synthesize helpViewController;
 @synthesize swapPermutationsViewController;
@@ -40,7 +38,6 @@
     NSString * nibName = DEVICE_IS_IPAD ? @"HelpView-iPad" : @"HelpView" ;
     HelpViewController *viewController = [[HelpViewController alloc] initWithNibName: nibName bundle:nil];
     self.helpViewController = viewController;
-    viewController.rootViewController = rootViewController;
     [ viewController release ];
 }
 
@@ -48,14 +45,13 @@
 {
     SwapPermutationsViewController *viewController = [[SwapPermutationsViewController alloc] initWithNibName:@"SwapPermutationsView" bundle:nil];
     self.swapPermutationsViewController = viewController;
-    viewController.rootViewController = rootViewController;
     viewController.preferencesViewController = self;
     [ viewController release ];
 }
 
 - ( IBAction )toggleView
 {
-    [ self.rootViewController toggleView ];
+    abort();
 }
 
 
@@ -63,9 +59,7 @@
 {
     if ( self.helpViewController == nil )
         [ self loadHelpViewController ];
-
-    [self.rootViewController flipFrom: self to: helpViewController transition: curl ];
-
+    abort();
 }
 
 
@@ -73,9 +67,7 @@
 {
     if ( self.swapPermutationsViewController == nil )
         [ self loadSwapPermutationsViewController ];
-
-    [self.rootViewController flipFrom: self to: swapPermutationsViewController transition: curl];
-
+    abort();
 }
 
 
@@ -127,7 +119,6 @@
 
 - ( void ) dealloc
 {
-    self.rootViewController = nil;
     self.helpViewController = nil;
     self.preferencesView = nil;
     self.swapPermutationsViewController = nil;
