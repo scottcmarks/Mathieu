@@ -12,32 +12,11 @@
 #import "ComboButton.h"
 
 // Class variables
-static Image * comboButtonDisabledImage    ;
-
 @interface ComboButton( PrivateLocking )
 - ( bool ) isTimerRunning;
 @end
 
 @implementation ComboButton
-
-+ ( void ) initialize
-{
-    if ( self == [ ComboButton class ] )
-        comboButtonDisabledImage = [ [ [ Image imageNamed: @"ComboButtonDisabled.png" ]
-                                            stretchableImageWithLeftCapWidth: 12.0
-                                                                topCapHeight: 0.0 ]
-                                        retain ] ;
-}
-
-+ ( id ) comboButtonWithFrame: ( CGRect                  ) frame
-                       target: ( id< ComboButtonTarget > ) target
-                    comboName: ( HistoryElement          ) comboName
-{
-    return [ [ [ ComboButton alloc ] initWithFrame: ( CGRect         ) frame
-                                            target: ( id             ) target
-                                         comboName: ( HistoryElement ) comboName ] autorelease ] ;
-}
-
 
 // Instance variables
 
@@ -63,7 +42,7 @@ static Image * comboButtonDisabledImage    ;
     {
         if ( alternate )
             [ self setTitle:           normalTitle               forState: UIControlStateNormal ];
-        [ self setBackgroundImage: comboButtonDisabledImage  forState: UIControlStateNormal ] ;
+        [ self setBackgroundImage: normalImage  forState: UIControlStateNormal ] ;
     }
     else if ( alternate )
     {
@@ -80,40 +59,10 @@ static Image * comboButtonDisabledImage    ;
 
 @synthesize comboName;
 
-
-- (id) initWithFrame: ( CGRect                  ) frame
-              target: ( id< ComboButtonTarget > ) targ
-           comboName: ( HistoryElement          ) m
-{
-    if ( self = [ super initWithFrame: frame
-                               target: self
-                       normalSelector: @selector( touchUpInside: )
-                          normalTitle: [ NSString stringWithFormat: @"%c", m ]
-                    alternateSelector: @selector( touchUpInside: )
-                       alternateTitle: [ NSString stringWithFormat: @"%c%C%C", m, (unichar)superscriptMinus, (unichar)superscriptOne ] ] )
-    {
-        [ self addTarget: self action: @selector( touchDown: )
-                     forControlEvents: UIControlEventTouchDown ];
-        comboTarget    = targ ;
-        comboName      = m ;
-        disabled       = false ;
-        timerLock      = [ [ NSLock alloc ] init ] ;
-        timerRunning   = false;
-    }
-    return self;
+- (void) awakeFromNib {
+    [super awakeFromNib];
+    timerLock = [ NSLock new];
 }
-
-
-- (id) initWithFrame: ( CGRect     ) frame
-              target: ( id         ) targ
-      normalSelector: ( SEL        ) normalSel
-         normalTitle: ( NSString * ) normalTit
-   alternateSelector: ( SEL        ) alternateSel
-      alternateTitle: ( NSString * ) alternateTit
-{
-    return nil ;
-}
-
 
 - ( bool ) wasTimerRunning
 {
@@ -156,6 +105,7 @@ static Image * comboButtonDisabledImage    ;
 
 - (void)dealloc {
     [ timerLock release ] ;
+    timerLock = nil ;
     [super dealloc];
 }
 

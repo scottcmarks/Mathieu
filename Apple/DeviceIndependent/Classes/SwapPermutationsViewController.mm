@@ -12,14 +12,12 @@
 #import "BallView.h"
 #import "SwapPermutationsView.h"
 #import "SwapPermutationsViewController.h"
-#import "RootViewController.h"
 
 @implementation SwapPermutationsViewController
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
-@synthesize rootViewController;
 @synthesize swapPermutationsView;
 @synthesize preferencesViewController;
 
@@ -53,7 +51,6 @@
 
 
 - (void)dealloc {
-    self.rootViewController = nil;
     self.swapPermutationsView = nil;
     [super dealloc];
 }
@@ -62,9 +59,9 @@
 {
     int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
     if ( newSwapIndex != self.gameModel.swapIndex )
-        [ rootViewController setSwapIndex: newSwapIndex ];
+        abort(); // [ rootViewController setSwapIndex: newSwapIndex ];
     else
-        [ rootViewController toggleView ];
+        abort(); // [ rootViewController toggleView ];
 }
 
 @end

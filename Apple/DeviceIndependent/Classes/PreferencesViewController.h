@@ -8,21 +8,18 @@
 
 #import "Kit.h"
 
-@class RootViewController;
 @class PreferencesView;
 @class HelpViewController;
 @class SwapPermutationsViewController;
 
 @interface PreferencesViewController : UIViewController
 {
-    RootViewController * rootViewController ;
     HelpViewController * helpViewController ;
     SwapPermutationsViewController * swapPermutationsViewController ;
     PreferencesView    * preferencesView    ;
     UILabel            * versionStringLabel ;
 }
 
-@property ( nonatomic, assign   ) RootViewController * rootViewController ;
 @property ( nonatomic, retain   ) HelpViewController * helpViewController ;
 @property ( nonatomic, retain   ) SwapPermutationsViewController * swapPermutationsViewController ;
 @property ( nonatomic, retain   ) IBOutlet  PreferencesView    * preferencesView    ;
