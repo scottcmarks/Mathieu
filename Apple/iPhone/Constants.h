@@ -58,49 +58,10 @@
 // Apple user interface recommendation
 #define TOUCH_SPOT_SIZE       44.0
 
-// Create special gray buttons
-
-#define smallActionButtonWidth    38.0
-#define mediumActionButtonWidth   52.0
-#define largeActionButtonWidth    60.0
-
-#define USE_FAT_BUTTONS
-#if defined( USE_FAT_BUTTONS )
-    #define toolbarButtonHeight   38.0
-    #if FREE
-         #define comboButtonWidth      58.0
-         #define altButtonWidth        58.0
-    #else
-         #define comboButtonWidth      38.0
-         #define altButtonWidth        44.0
-    #endif
-    #undef infoInToolbar
-    #if defined( infoInToolbar )
-        #if FREE
-            #define lastComboButton       'B'
-        #else
-            #define lastComboButton       'D'
-        #endif
-    #else
-        #if FREE
-            #define lastComboButton       'B'
-        #else
-            #define lastComboButton       'E'
-        #endif
-    #endif
-    #define simpleButtonSmallFontSize  13.0
-    #define simpleButtonLargeFontSize  16.0
+#if FREE
+    #define lastComboButton       'B'
 #else
-    #define toolbarButtonHeight    28.0
-    #define comboButtonWidth      30.0
-    #define altButtonWidth        32.0
-    #if FREE
-        #define lastComboButton       'B'
-    #else
-        #define lastComboButton       'E'
-    #endif
-    #define simpleButtonSmallFontSize  13.0
-    #define simpleButtonLargeFontSize  13.0
+    #define lastComboButton       'D'
 #endif
 
 #undef shortLSRNames

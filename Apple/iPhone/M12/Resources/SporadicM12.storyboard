@@ -115,6 +115,9 @@
                                             <rect key="frame" x="20" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="A"/>
+                                            <state key="disabled">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
                                             <connections>
                                                 <outlet property="target" destination="20f-S3-zSP" id="7NT-kK-Im5"/>
                                             </connections>
@@ -126,6 +129,9 @@
                                             <rect key="frame" x="85" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="B"/>
+                                            <state key="disabled">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
                                             <connections>
                                                 <outlet property="target" destination="20f-S3-zSP" id="Wap-J5-jJJ"/>
                                             </connections>
@@ -137,6 +143,9 @@
                                             <rect key="frame" x="150" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="C"/>
+                                            <state key="disabled">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
                                             <connections>
                                                 <outlet property="target" destination="20f-S3-zSP" id="wWC-l3-0gy"/>
                                             </connections>
@@ -148,6 +157,9 @@
                                             <rect key="frame" x="215" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="D"/>
+                                            <state key="disabled">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
                                             <connections>
                                                 <outlet property="target" destination="20f-S3-zSP" id="fAY-cR-btv"/>
                                             </connections>
@@ -159,6 +171,9 @@
                                             <rect key="frame" x="280" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="E"/>
+                                            <state key="disabled">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
                                             <connections>
                                                 <outlet property="target" destination="20f-S3-zSP" id="vob-QW-dJ2"/>
                                             </connections>
@@ -571,10 +586,9 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
-                            <pickerView opaque="NO" clipsSubviews="YES" contentMode="left" translatesAutoresizingMaskIntoConstraints="NO" id="EER-fj-waz" showNotesWithSelection="YES">
+                            <pickerView clipsSubviews="YES" contentMode="left" translatesAutoresizingMaskIntoConstraints="NO" id="EER-fj-waz" showNotesWithSelection="YES">
                                 <rect key="frame" x="47" y="352" width="320" height="216"/>
-                                <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.82945421009999998" green="0.82945421009999998" blue="0.82945421009999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="delegate" destination="7qx-ki-iJ7" id="8MA-4K-Bz1"/>
                                 </connections>
