@@ -58,10 +58,11 @@
 // Apple user interface recommendation
 #define TOUCH_SPOT_SIZE       44.0
 
+#define lastComboButton       'E'
 #if FREE
-    #define lastComboButton       'B'
+    #define lastComboButtonForThisVersion 'B'
 #else
-    #define lastComboButton       'D'
+    #define lastComboButtonForThisVersion 'E'
 #endif
 
 #undef shortLSRNames

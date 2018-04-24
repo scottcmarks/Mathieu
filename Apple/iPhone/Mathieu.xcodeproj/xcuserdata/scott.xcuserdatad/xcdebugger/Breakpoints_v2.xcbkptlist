@@ -6,47 +6,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../DeviceIndependent/Classes/SporadicMView.mm"
-            timestampString = "546297718.3635989"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "-setComboBarButtonsInverted:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../DeviceIndependent/Classes/SporadicMView.mm"
-            timestampString = "546297718.36405"
+            timestampString = "546300390.5436"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
-            landmarkName = "-initializeViews"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../DeviceIndependent/Classes/SporadicMView.mm"
-            timestampString = "546297718.364313"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "-setComboButton:enabled:"
             landmarkType = "7">
          </BreakpointContent>
@@ -64,38 +32,6 @@
             startingLineNumber = "126"
             endingLineNumber = "126"
             landmarkName = "-doSetCombo:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../DeviceIndependent/Classes/SporadicMView.mm"
-            timestampString = "546297718.364588"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "-setComboButton:enabled:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../DeviceIndependent/Classes/SporadicMView.mm"
-            timestampString = "546297718.364833"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "-setComboButton:enabled:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
