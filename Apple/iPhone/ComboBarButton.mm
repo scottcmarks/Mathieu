@@ -13,11 +13,13 @@ static NSString * inverse=@"⁻¹";
 @interface ComboBarButton()
 @property (nonatomic, assign) HistoryElement comboName;
 @property (nonatomic, assign) bool isTimerRunning;
+@property (nonatomic, assign) bool isPseudoDisabled;
 @end
 @implementation ComboBarButton
 @synthesize target;
 @synthesize comboName;
 @synthesize isTimerRunning;
+@synthesize isPseudoDisabled;
 
 - (void) awakeFromNib {
     [super awakeFromNib];
@@ -52,7 +54,7 @@ static NSString * inverse=@"⁻¹";
 }
 
 - ( void ) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"ComboBarButton: touchesEnded") ;
+//    NSLog(@"ComboBarButton: touchesEnded") ;
     if (![self stopTimer]) return;
     if (self.alternate)
         [target comboInverseInvoked:self.comboName];
@@ -62,9 +64,18 @@ static NSString * inverse=@"⁻¹";
 
 - (void) timerExpired
 {
-    NSLog(@"ComboBarButton: timerExpired") ;
+//    NSLog(@"ComboBarButton: timerExpired") ;
     if (![self stopTimer]) return;
     [target comboSet:self.comboName];
+}
+
+- (BOOL) disabled {return self.isPseudoDisabled;}
+
+- (void) setDisabled:(BOOL)d {
+    self.isPseudoDisabled = d;
+    UIColor * c = (d ? [UIColor darkGrayColor] : [UIColor whiteColor]);
+    [self setTitleColor:c forState:self.state];
+    return;
 }
 
 @end
