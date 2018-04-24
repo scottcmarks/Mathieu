@@ -116,14 +116,37 @@
     [self.ballRingView createSubviews];
 }
 
+- (void) forComboButtons:(void(^)(ComboBarButton *, BOOL *_Nonnull ))block {
+    NSArray<ToolbarButtonItem *> * items = self.toolbar.items;
+    [items enumerateObjectsUsingBlock:^(ToolbarButtonItem * item, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        if ( [ item.customView isKindOfClass:ComboBarButton.class ] ) block(item.customView, stop);
+    }];
+}
+
+- (void) forValidComboButtons:(void(^)(ComboBarButton *, BOOL *_Nonnull ))block {
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
+        HistoryElement c = button.comboName;
+        if (c <= lastComboButtonForThisVersion) block(button, stop);
+    }];
+}
+
+
+
 - (void) initializeViews
 {
 #if !ICONIC_PICTURE_ONLY
 
     // Establish invariant between combo definednesses and combo buttons appearance
-    for ( HistoryElement c='A'; c<=lastComboButton; c++ )
-        [ self setComboButton:c enabled:[ self.gameModel hasDefinedCombo:c ] ];
-
+    
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
+        HistoryElement c = button.comboName;
+        if (c <= lastComboButtonForThisVersion) {
+            button.disabled = ![ self.gameModel hasDefinedCombo:c ];
+        } else {
+            button.enabled = NO;
+            button.hidden = YES;
+        }
+    }];
     // Establish invariant between self.invert and the buttons appearance
     // as the buttons are created in the non-inverted state
     // Also, in the current hacked code, the buttons need to be correctly
@@ -168,14 +191,9 @@
 
 -( void ) setComboBarButtonsInverted: ( bool ) inverted
 {
-    NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
-    ToolbarButtonItem * item;
-    while ( item = [ toolbarItemsEnumerator nextObject ] )
-        if ( [ item.customView isKindOfClass:UIDualButton.class ] )
-        {
-            UIDualButton * button = (UIDualButton *)item.customView;
-            button.alternate = inverted;
-        }
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
+        if (!button.disabled) button.alternate = inverted;
+    }];
 }
 
 -( void ) setAltButtonInverted:(bool)inverted{
@@ -198,29 +216,17 @@
 
 -( void ) setComboButton:( HistoryElement )c enabled:( const bool )enabled
 {
-    NSArray<ToolbarButtonItem *> * items = self.toolbar.items;
-    [items enumerateObjectsUsingBlock:^(ToolbarButtonItem * item, NSUInteger __unused idx, BOOL * _Nonnull stop) {
-        if ( [ item.customView isKindOfClass:ComboBarButton.class ] )
-        {
-            ComboBarButton * button = ( ComboBarButton * )item.customView;
-            if ( c == button.comboName ) {
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
+        if ( c == button.comboName ) {
                 button.disabled = !enabled;
                 *stop=YES;
             }
-        }
-    }];
+        }];
 }
 
 -( void ) disableAllComboButtons
 {
-    NSEnumerator * toolbarItemsEnumerator = self.toolbar.items.objectEnumerator;
-    ToolbarButtonItem * item;
-    while ( item = [ toolbarItemsEnumerator nextObject ] )
-        if ( [ item.customView isKindOfClass:ComboBarButton.class ] )
-        {
-            ComboBarButton * button = ( ComboBarButton * )item.customView;
-            button.disabled = YES;
-        }
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) { button.disabled = YES; }];
 }
 
 -(void) showCurrentPermutationAtDuration:(CGFloat)duration
