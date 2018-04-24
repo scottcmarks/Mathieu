@@ -76,6 +76,7 @@
 		D29CC5B3207A5EE20006336A /* LockImages.mm in Sources */ = {isa = PBXBuildFile; fileRef = D29CC5B1207A5EE10006336A /* LockImages.mm */; };
 		D29CC5B4207A5EE20006336A /* AppleModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D29CC5B2207A5EE10006336A /* AppleModalAlert.m */; };
 		D29CC5B6207A8B430006336A /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEC1FC9D9F2009CD6BD /* AppIcon.xcassets */; };
+		D2AC9533208FDAC4004B0A6E /* SporadicM12 free.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D273C08F208E9758001A4CAD /* SporadicM12 free.storyboard */; };
 		D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56760FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
@@ -1383,6 +1384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2AE57070FACE47B0093E56B /* HelpView.xib in Resources */,
+				D2AC9533208FDAC4004B0A6E /* SporadicM12 free.storyboard in Resources */,
 				D2B5995F20815A4600FB4403 /* Launch Screen.storyboard in Resources */,
 				D2AE570A0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
 				D2AE570C0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
