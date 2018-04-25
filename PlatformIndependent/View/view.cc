@@ -70,14 +70,19 @@ bool FindBallWedge( const point probe,
 static const char left_tag ='L';
 static const char swap_tag ='S';
 static const char right_tag='R';
-
+static const wchar_t superscripts[]=L"⁰¹²³⁴⁵⁶⁷⁸⁹";
 
 template< typename ostream_type, typename char_type >
 static ostream_type & insert_count( ostream_type & os, char_type tag, int count )
 {
   os << tag;
-  if ( 1 < count )
-    os << count;
+    if ( 1 < count ) {
+        if (count < 10 ) {
+            os << superscripts[count];
+        } else {
+            os << superscripts[count / 10] << superscripts[count % 10];
+        }
+    }
   return os;
 }
 
