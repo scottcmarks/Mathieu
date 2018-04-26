@@ -378,4 +378,15 @@
     [ self.sporadicMView showCurrentPermutationAtDuration: INSTANTANEOUS ] ;
 }
 
+
+//- (BOOL)canPerformUnwindSegueAction:(SEL)action
+//                 fromViewController:(UIViewController *)fromViewController
+//                         withSender:(id)sender {
+//    return YES;
+//}
+
+-(IBAction)prepareForUnwindToSporadicM:(UIStoryboardSegue *)segue {
+    return;
+}
+
 @end
