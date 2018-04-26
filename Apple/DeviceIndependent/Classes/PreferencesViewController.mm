@@ -8,6 +8,7 @@
 
 #import "PreferencesViewController.h"
 #import "SporadicMAppDelegate.h"
+#import "SporadicMViewController.h"
 #import "GameModel.h"
 #import "PreferencesView.h"
 #import "HelpViewController.h"
@@ -116,6 +117,32 @@
     return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
 }
 #endif
+
+
+
+
+//- (BOOL)canPerformUnwindSegueAction:(SEL)action
+//                 fromViewController:(UIViewController *)fromViewController
+//                         withSender:(id)sender {
+//    return YES;
+//}
+
+
+-(IBAction)prepareForUnwindToPreferences:(UIStoryboardSegue *)segue {
+    SwapPermutationsViewController * source = segue.sourceViewController;
+    assert([SwapPermutationsViewController isKindOfClass:PreferencesViewController.class]);
+    SwapPermutationsView * swapPermutationsView=(SwapPermutationsView *)(source.view);
+    assert([SwapPermutationsView isKindOfClass:SwapPermutationsView.class]);
+    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
+    if ( newSwapIndex != self.gameModel.swapIndex )
+        abort(); // [ rootViewController setSwapIndex: newSwapIndex ];
+    else
+        abort(); // [ rootViewController toggleView ];
+
+    return;
+}
+
+
 
 - ( void ) dealloc
 {
