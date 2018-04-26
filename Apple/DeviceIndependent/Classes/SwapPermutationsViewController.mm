@@ -11,6 +11,7 @@
 #import "GameModel.h"
 #import "BallView.h"
 #import "PreferencesViewController.h"
+#import "AppleModalAlert.h"
 #import "SwapPermutationsView.h"
 #import "SwapPermutationsViewController.h"
 
@@ -86,6 +87,44 @@
 //                         withSender:(id)sender {
 //    return YES;
 //}
+
+
+- (void) unwindToSporadicM {
+    [self performSegueWithIdentifier:@"unwindToSporadicM" sender:nil];
+}
+
+-(void) setNewSwapIf:(bool)confirmed {
+    if (confirmed) {
+        [self unwindToSporadicM];
+    } else {
+        [swapPermutationsView synchronize];
+    }
+}
+
+- (void) confirmNewSwapIndex: ( int ) newSwapIndex  {
+    return;
+}
+
+- (IBAction) done: (id)sender
+{
+    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
+    if ( newSwapIndex == self.gameModel.swapIndex ) {
+        [self unwindToSporadicM];
+        return;
+    }
+    NSString * message = @"This will change the meaning of Swap.\n" ;
+    if ( [ self.gameModel isSolving ] )
+        message = [ message stringByAppendingString: @"The current puzzle will be discarded!\n" ];
+    else if ( ! [ self.gameModel historyIsEmpty ] )
+        message = [ message stringByAppendingString: @"The position will be reset.\n" ];
+    if ( [ self.gameModel hasAnyDefinedCombo ] )
+        message = [ message stringByAppendingString: @"All combo moves will be erased!\n" ];
+    message = [ message stringByAppendingString: @"Press OK if you want to do this." ];
+    [ AppleModalAlert alertOKCancel:message
+                              title:@"New Swap!"
+                       continuation:^(bool confirmed) {[self setNewSwapIf:confirmed];}
+                                 on:self];
+}
 
 -(IBAction)prepareForUnwindToSwapPermutations:(UIStoryboardSegue *)segue {
     return;
