@@ -120,7 +120,6 @@
                             </view>
                             <label autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" textAlignment="right" lineBreakMode="clip" numberOfLines="2" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ur-dH-chn" userLabel="Moves and Steps">
                                 <rect key="frame" x="10" y="512.66666666666663" width="15" height="29.666666666666629"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="5ur-dH-chn" secondAttribute="height" multiplier="1:2" id="8mG-oi-Z5R"/>
                                 </constraints>
@@ -128,11 +127,11 @@
                                 <string key="text">0
 0</string>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="9"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" maximumZoomScale="2" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEP-uO-ypc" userLabel="history">
-                                <rect key="frame" x="25" y="512.66666666666663" width="379" height="29.666666666666629"/>
+                                <rect key="frame" x="33" y="512.66666666666663" width="371" height="29.666666666666629"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -261,6 +260,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Amk-zV-h6e" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" id="4cp-TQ-E0O"/>
                             <constraint firstItem="FEP-uO-ypc" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" constant="-10" id="Cqm-tE-Chd"/>
@@ -277,7 +277,7 @@
                             <constraint firstItem="1KX-F6-Jeu" firstAttribute="leading" secondItem="vWy-B6-T80" secondAttribute="leading" id="aD9-pb-TBl"/>
                             <constraint firstItem="1KX-F6-Jeu" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" id="bFU-Tc-4nv"/>
                             <constraint firstItem="IYw-Zt-vdt" firstAttribute="top" secondItem="vWy-B6-T80" secondAttribute="top" constant="20" id="bYe-Zw-Tkd"/>
-                            <constraint firstItem="FEP-uO-ypc" firstAttribute="leading" secondItem="5ur-dH-chn" secondAttribute="trailing" id="ceT-8W-CaN"/>
+                            <constraint firstItem="FEP-uO-ypc" firstAttribute="leading" secondItem="5ur-dH-chn" secondAttribute="trailing" constant="8" id="ceT-8W-CaN"/>
                             <constraint firstItem="Bzv-tM-2NG" firstAttribute="leading" secondItem="vWy-B6-T80" secondAttribute="leading" constant="10" id="luY-46-U6g"/>
                             <constraint firstItem="IYw-Zt-vdt" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" constant="-10" id="ogU-Xx-JvR"/>
                             <constraint firstItem="IYw-Zt-vdt" firstAttribute="leading" secondItem="vWy-B6-T80" secondAttribute="leading" constant="10" id="rey-cE-e08"/>
