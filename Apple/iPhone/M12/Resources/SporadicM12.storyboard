@@ -27,6 +27,40 @@
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Skb-lI-pNA" customClass="BallRingView">
                                         <rect key="frame" x="0.0" y="0.0" width="394" height="472.66666666666669"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVi-GP-Yxn">
+                                                <rect key="frame" x="150" y="281.33333333333331" width="30" height="30"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Left"/>
+                                                <connections>
+                                                    <action selector="left" destination="20f-S3-zSP" eventType="touchUpInside" id="jQh-JZ-AGR"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cAt-Xz-ajB">
+                                                <rect key="frame" x="178" y="241.33333333333331" width="38" height="30"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Swap"/>
+                                                <connections>
+                                                    <action selector="swap" destination="20f-S3-zSP" eventType="touchUpInside" id="xDT-zH-4la"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NpI-QN-Ngn">
+                                                <rect key="frame" x="211" y="281.33333333333331" width="36" height="30"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Right"/>
+                                                <connections>
+                                                    <action selector="right" destination="20f-S3-zSP" eventType="touchUpInside" id="Vby-cM-9vD"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="NpI-QN-Ngn" firstAttribute="centerX" secondItem="Skb-lI-pNA" secondAttribute="centerX" constant="32" id="3et-9v-zPv"/>
+                                            <constraint firstItem="eVi-GP-Yxn" firstAttribute="centerY" secondItem="Skb-lI-pNA" secondAttribute="centerY" constant="60" id="FoT-rT-Qbr"/>
+                                            <constraint firstItem="cAt-Xz-ajB" firstAttribute="centerY" secondItem="Skb-lI-pNA" secondAttribute="centerY" constant="20" id="JIS-XM-n5a"/>
+                                            <constraint firstItem="eVi-GP-Yxn" firstAttribute="centerX" secondItem="Skb-lI-pNA" secondAttribute="centerX" constant="-32" id="ey0-tq-yoj"/>
+                                            <constraint firstItem="NpI-QN-Ngn" firstAttribute="centerY" secondItem="Skb-lI-pNA" secondAttribute="centerY" constant="60" id="jDN-C9-fsk"/>
+                                            <constraint firstItem="cAt-Xz-ajB" firstAttribute="centerX" secondItem="Skb-lI-pNA" secondAttribute="centerX" id="x5F-6w-Cmp"/>
+                                        </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czP-ga-EH1" userLabel="Shake or Restart" customClass="UIDualButton">
                                         <rect key="frame" x="8" y="8" width="42" height="30"/>
@@ -51,7 +85,7 @@
                                         <rect key="frame" x="18" y="442.66666666666669" width="22" height="22"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <segue destination="YVk-tT-0Mz" kind="show" id="ErR-ZX-M4T"/>
+                                            <segue destination="YVk-tT-0Mz" kind="presentation" identifier="ShowPreferences" modalTransitionStyle="flipHorizontal" id="ErR-ZX-M4T"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlY-GV-B7M" customClass="UIDualButton">
@@ -86,7 +120,6 @@
                             </view>
                             <label autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" textAlignment="right" lineBreakMode="clip" numberOfLines="2" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ur-dH-chn" userLabel="Moves and Steps">
                                 <rect key="frame" x="10" y="512.66666666666663" width="15" height="29.666666666666629"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="5ur-dH-chn" secondAttribute="height" multiplier="1:2" id="8mG-oi-Z5R"/>
                                 </constraints>
@@ -94,11 +127,11 @@
                                 <string key="text">0
 0</string>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="9"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" bounces="NO" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" maximumZoomScale="2" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEP-uO-ypc" userLabel="history">
-                                <rect key="frame" x="25" y="512.66666666666663" width="379" height="29.666666666666629"/>
+                                <rect key="frame" x="33" y="512.66666666666663" width="371" height="29.666666666666629"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -138,8 +171,8 @@
                                         </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CrQ-cU-RZd"/>
-                                    <barButtonItem title="C Item" style="plain" id="PfA-zL-3PP">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EVs-ND-JVH" customClass="ComboBarButton">
+                                    <barButtonItem enabled="NO" title="C Item" style="plain" id="PfA-zL-3PP">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EVs-ND-JVH" customClass="ComboBarButton">
                                             <rect key="frame" x="150" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="C"/>
@@ -153,7 +186,7 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="D1N-74-MkX"/>
                                     <barButtonItem title="D Item" style="plain" id="WaN-4g-JWv">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nmR-c4-n8E" customClass="ComboBarButton">
+                                        <button key="customView" hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nmR-c4-n8E" customClass="ComboBarButton">
                                             <rect key="frame" x="215" y="5" width="34" height="34"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <state key="normal" title="D"/>
@@ -227,6 +260,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Amk-zV-h6e" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" id="4cp-TQ-E0O"/>
                             <constraint firstItem="FEP-uO-ypc" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" constant="-10" id="Cqm-tE-Chd"/>
@@ -243,13 +277,24 @@
                             <constraint firstItem="1KX-F6-Jeu" firstAttribute="leading" secondItem="vWy-B6-T80" secondAttribute="leading" id="aD9-pb-TBl"/>
                             <constraint firstItem="1KX-F6-Jeu" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" id="bFU-Tc-4nv"/>
                             <constraint firstItem="IYw-Zt-vdt" firstAttribute="top" secondItem="vWy-B6-T80" secondAttribute="top" constant="20" id="bYe-Zw-Tkd"/>
-                            <constraint firstItem="FEP-uO-ypc" firstAttribute="leading" secondItem="5ur-dH-chn" secondAttribute="trailing" id="ceT-8W-CaN"/>
+                            <constraint firstItem="FEP-uO-ypc" firstAttribute="leading" secondItem="5ur-dH-chn" secondAttribute="trailing" constant="8" id="ceT-8W-CaN"/>
                             <constraint firstItem="Bzv-tM-2NG" firstAttribute="leading" secondItem="vWy-B6-T80" secondAttribute="leading" constant="10" id="luY-46-U6g"/>
                             <constraint firstItem="IYw-Zt-vdt" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" constant="-10" id="ogU-Xx-JvR"/>
                             <constraint firstItem="IYw-Zt-vdt" firstAttribute="leading" secondItem="vWy-B6-T80" secondAttribute="leading" constant="10" id="rey-cE-e08"/>
                             <constraint firstItem="Bzv-tM-2NG" firstAttribute="trailing" secondItem="vWy-B6-T80" secondAttribute="trailing" constant="-10" id="xbg-UL-5NR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vWy-B6-T80"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Amk-zV-h6e"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="4cp-TQ-E0O"/>
+                                <exclude reference="QWz-Zv-U9c"/>
+                                <exclude reference="UlU-Fa-Vca"/>
+                                <exclude reference="Umi-Sf-12w"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <outlet property="ballRingView" destination="Skb-lI-pNA" id="PA8-f3-O6E"/>
                             <outlet property="ballRingViewContainerView" destination="IYw-Zt-vdt" id="qkO-YM-1Q7"/>
@@ -277,21 +322,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lDe-ad-xFX" customClass="PreferencesView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="692"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
                                     <navigationBar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vja-qk-4Xd">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                        <color key="barTintColor" red="0.75294119000000004" green="0.75294119000000004" blue="0.88627451999999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <items>
                                             <navigationItem title="M₁₂" id="drH-Ap-CGd">
                                                 <barButtonItem key="leftBarButtonItem" title="Help" id="3mU-oA-cuj">
                                                     <connections>
-                                                        <segue destination="GNK-Z6-NYR" kind="show" id="az2-BU-dfX"/>
+                                                        <segue destination="GNK-Z6-NYR" kind="show" identifier="showHelpView" id="az2-BU-dfX"/>
                                                     </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Wts-ZT-GT2">
                                                     <connections>
-                                                        <action selector="done:" destination="YVk-tT-0Mz" id="2cN-g7-dAb"/>
+                                                        <segue destination="XWh-5w-YFp" kind="unwind" identifier="unwindToSporadicM" unwindAction="prepareForUnwindToSporadicM:" id="EPK-Lg-hlg"/>
                                                     </connections>
                                                 </barButtonItem>
                                             </navigationItem>
@@ -303,31 +347,15 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UI4-WN-16K">
-                                        <rect key="frame" x="340" y="125" width="22" height="22"/>
-                                        <state key="normal">
-                                            <color key="titleColor" red="0.19607843" green="0.30980393000000001" blue="0.52156866000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="Zrn-k1-6dv" kind="show" id="zrz-Qd-nV2"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" text="((0 1) (2 3) (4 5) (6 7) (8 9) (10 11))" lineBreakMode="clip" baselineAdjustment="none" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="LDO-Px-iHW" userLabel="CurrentPermutation">
-                                        <rect key="frame" x="53" y="159" width="309" height="53"/>
+                                        <rect key="frame" x="30" y="159" width="309" height="24"/>
                                         <color key="backgroundColor" red="0.026699495" green="0.027173935999999999" blue="0.026818106000000001" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="53" id="7O2-K0-fE1"/>
-                                        </constraints>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" lineBreakMode="wordWrap" numberOfLines="4" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="dpx-w1-1XR">
-                                        <rect key="frame" x="20" y="268.33333333333331" width="243" height="52.666666666666686"/>
+                                        <rect key="frame" x="20" y="239.33333333333334" width="243" height="52.666666666666657"/>
                                         <string key="text">When solving, confirm Shake,
 Restart and Home. Confirm combo set or erase of a previously-set combo.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -335,7 +363,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Confirmation" textAlignment="right" lineBreakMode="wordWrap" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="L9j-q7-WTY">
-                                        <rect key="frame" x="285" y="248" width="104" height="18"/>
+                                        <rect key="frame" x="285" y="219" width="104" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="fMQ-0H-XeU"/>
                                             <constraint firstAttribute="width" constant="104" id="frN-bO-DGP"/>
@@ -345,13 +373,13 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A1U-zf-3eZ">
-                                        <rect key="frame" x="332" y="278" width="51" height="31"/>
+                                        <rect key="frame" x="332" y="249" width="51" height="31"/>
                                         <connections>
                                             <action selector="confirmSwitchChanged" destination="YVk-tT-0Mz" eventType="valueChanged" id="TDu-Sc-uzg"/>
                                         </connections>
                                     </switch>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Sound Effects" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lAS-Jv-fhR">
-                                        <rect key="frame" x="268" y="366" width="120" height="20"/>
+                                        <rect key="frame" x="268" y="337" width="120" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="WQU-5p-Es9"/>
                                         </constraints>
@@ -360,13 +388,13 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xmA-c5-XP6">
-                                        <rect key="frame" x="332" y="398" width="51" height="31"/>
+                                        <rect key="frame" x="332" y="369" width="51" height="31"/>
                                         <connections>
                                             <action selector="soundEffectsSwitchChanged" destination="YVk-tT-0Mz" eventType="valueChanged" id="rRg-7b-53J"/>
                                         </connections>
                                     </switch>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Animation Speed" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="YIz-zF-Rxh">
-                                        <rect key="frame" x="253" y="476" width="135" height="20"/>
+                                        <rect key="frame" x="253" y="447" width="135" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="135" id="xwf-Pu-Fxd"/>
                                         </constraints>
@@ -375,7 +403,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Slow" lineBreakMode="wordWrap" minimumFontSize="8" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0t-pE-r2c">
-                                        <rect key="frame" x="20" y="504" width="26" height="16"/>
+                                        <rect key="frame" x="20" y="475" width="26" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="26" id="E6v-CG-lfn"/>
                                         </constraints>
@@ -384,7 +412,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Fast" lineBreakMode="wordWrap" minimumFontSize="8" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7LB-NR-LGN">
-                                        <rect key="frame" x="368" y="504" width="26" height="16"/>
+                                        <rect key="frame" x="368" y="475" width="26" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="Kdu-Vx-Qnu"/>
                                             <constraint firstAttribute="width" constant="26" id="Mz0-Uu-AxU"/>
@@ -394,32 +422,44 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2.5" minValue="0.0" maxValue="3" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6H-XV-912">
-                                        <rect key="frame" x="18" y="508" width="378" height="31"/>
+                                        <rect key="frame" x="18" y="479" width="378" height="31"/>
                                         <connections>
                                             <action selector="animationSpeedChanged" destination="YVk-tT-0Mz" eventType="valueChanged" id="zRX-GI-c9n"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SporadicM12Free v1.3.0 (Build 8888)" lineBreakMode="tailTruncation" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="7RC-kI-DVe">
-                                        <rect key="frame" x="8" y="639" width="164" height="11"/>
+                                        <rect key="frame" x="8" y="683.66666666666663" width="164" height="11"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                         <color key="textColor" red="0.2470588235" green="0.2470588235" blue="0.1137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Sporadic_Games_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="8uP-Hg-QBe">
-                                        <rect key="frame" x="0.0" y="650.66666666666663" width="414" height="41.333333333333371"/>
+                                        <rect key="frame" x="0.0" y="694.66666666666663" width="414" height="41.333333333333371"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="8uP-Hg-QBe" secondAttribute="height" multiplier="10:1" id="OzJ-zC-wcU"/>
                                             <constraint firstAttribute="width" secondItem="8uP-Hg-QBe" secondAttribute="height" multiplier="10:1" id="svr-WF-0hy"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UI4-WN-16K">
+                                        <rect key="frame" x="359" y="159" width="22" height="24"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="0.19607843" green="0.30980393000000001" blue="0.52156866000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="Zrn-k1-6dv" kind="show" identifier="showSwapPermutationsView" id="zrz-Qd-nV2"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.75294119000000004" green="0.75294119000000004" blue="0.88627451999999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="A1U-zf-3eZ" firstAttribute="leading" secondItem="xmA-c5-XP6" secondAttribute="leading" id="1Nz-wz-Jkd"/>
                                     <constraint firstItem="8uP-Hg-QBe" firstAttribute="leading" secondItem="lDe-ad-xFX" secondAttribute="leading" id="1Oh-6S-NdK"/>
                                     <constraint firstItem="7LB-NR-LGN" firstAttribute="trailing" secondItem="j6H-XV-912" secondAttribute="trailing" id="2EK-Hz-EiI"/>
-                                    <constraint firstItem="LDO-Px-iHW" firstAttribute="trailing" secondItem="UI4-WN-16K" secondAttribute="trailing" id="2tb-oh-i3g"/>
-                                    <constraint firstItem="UI4-WN-16K" firstAttribute="bottom" secondItem="3Wv-w7-bfz" secondAttribute="bottom" id="4gK-AR-pxL"/>
+                                    <constraint firstItem="LDO-Px-iHW" firstAttribute="trailing" secondItem="UI4-WN-16K" secondAttribute="leading" constant="-20" id="2tb-oh-i3g"/>
+                                    <constraint firstItem="UI4-WN-16K" firstAttribute="bottom" secondItem="LDO-Px-iHW" secondAttribute="bottom" id="4gK-AR-pxL"/>
                                     <constraint firstItem="lAS-Jv-fhR" firstAttribute="trailing" secondItem="YIz-zF-Rxh" secondAttribute="trailing" id="5I8-oI-ryj"/>
                                     <constraint firstItem="8uP-Hg-QBe" firstAttribute="bottom" secondItem="lDe-ad-xFX" secondAttribute="bottom" id="AtT-XE-Rqc"/>
                                     <constraint firstItem="YIz-zF-Rxh" firstAttribute="top" secondItem="xmA-c5-XP6" secondAttribute="bottom" constant="47" id="BDL-lN-Rwl"/>
@@ -430,9 +470,10 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     <constraint firstItem="Vja-qk-4Xd" firstAttribute="top" secondItem="lDe-ad-xFX" secondAttribute="topMargin" id="H8f-VZ-YjG"/>
                                     <constraint firstItem="3Wv-w7-bfz" firstAttribute="centerX" secondItem="lDe-ad-xFX" secondAttribute="centerX" id="HHc-Na-hMK"/>
                                     <constraint firstItem="8uP-Hg-QBe" firstAttribute="trailing" secondItem="lDe-ad-xFX" secondAttribute="trailing" id="KIa-ED-ihz"/>
-                                    <constraint firstItem="UI4-WN-16K" firstAttribute="top" secondItem="Vja-qk-4Xd" secondAttribute="bottom" constant="53" id="Kd7-10-KXL"/>
+                                    <constraint firstItem="UI4-WN-16K" firstAttribute="top" secondItem="LDO-Px-iHW" secondAttribute="top" id="Kd7-10-KXL"/>
                                     <constraint firstItem="xmA-c5-XP6" firstAttribute="top" secondItem="lAS-Jv-fhR" secondAttribute="bottom" constant="12" id="Kiu-7Y-1m7"/>
                                     <constraint firstItem="lAS-Jv-fhR" firstAttribute="top" secondItem="A1U-zf-3eZ" secondAttribute="bottom" constant="57" id="PTA-Me-fWq"/>
+                                    <constraint firstItem="3Wv-w7-bfz" firstAttribute="top" secondItem="Vja-qk-4Xd" secondAttribute="bottom" constant="54" id="TFg-ea-omP"/>
                                     <constraint firstItem="L9j-q7-WTY" firstAttribute="top" secondItem="LDO-Px-iHW" secondAttribute="bottom" constant="36" id="YQn-cV-qnz"/>
                                     <constraint firstItem="dpx-w1-1XR" firstAttribute="leading" secondItem="lDe-ad-xFX" secondAttribute="leading" constant="20" symbolic="YES" id="ats-Ig-YSm"/>
                                     <constraint firstItem="c0t-pE-r2c" firstAttribute="leading" secondItem="j6H-XV-912" secondAttribute="leading" id="cZH-Wf-Ni8"/>
@@ -448,7 +489,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     <constraint firstItem="A1U-zf-3eZ" firstAttribute="top" secondItem="L9j-q7-WTY" secondAttribute="bottom" constant="12" id="rsU-il-df7"/>
                                     <constraint firstItem="Vja-qk-4Xd" firstAttribute="trailing" secondItem="lDe-ad-xFX" secondAttribute="trailing" id="s7x-8a-JjX"/>
                                     <constraint firstItem="A1U-zf-3eZ" firstAttribute="leading" secondItem="dpx-w1-1XR" secondAttribute="trailing" constant="69" id="tbr-VT-n8u"/>
-                                    <constraint firstItem="LDO-Px-iHW" firstAttribute="centerX" secondItem="lDe-ad-xFX" secondAttribute="centerX" id="wpC-ZY-uDV"/>
+                                    <constraint firstItem="UI4-WN-16K" firstAttribute="trailing" secondItem="A1U-zf-3eZ" secondAttribute="trailing" id="w8N-Nh-mBL"/>
                                     <constraint firstItem="LDO-Px-iHW" firstAttribute="top" secondItem="3Wv-w7-bfz" secondAttribute="bottom" constant="12" id="xea-0U-Ssb"/>
                                     <constraint firstItem="7RC-kI-DVe" firstAttribute="leading" secondItem="lDe-ad-xFX" secondAttribute="leading" constant="8" id="zHh-XU-y0G"/>
                                 </constraints>
@@ -478,6 +519,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Po5-2D-VcI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="XWh-5w-YFp" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="588" y="-1150.0749625187407"/>
         </scene>
@@ -501,19 +543,20 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="4TY-N0-XM0">
                                             <connections>
                                                 <action selector="dismissHelp" destination="GNK-Z6-NYR" id="yaE-1I-bMg"/>
+                                                <segue destination="zNp-Qh-fFl" kind="unwind" identifier="unwindToSourceViewController" unwindAction="prepareForUnwindToPreferences:" id="2u4-QF-pKa"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                             <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Sporadic_Games_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="HAI-69-18W">
-                                <rect key="frame" x="0.0" y="650.66666666666663" width="414" height="41.333333333333371"/>
+                                <rect key="frame" x="0.0" y="694.66666666666663" width="414" height="41.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="HAI-69-18W" secondAttribute="height" multiplier="10:1" id="9AU-Ye-ayp"/>
                                 </constraints>
                             </imageView>
                             <webView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
-                                <rect key="frame" x="0.0" y="64" width="414" height="586.66666666666663"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="630.66666666666663"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="delegate" destination="GNK-Z6-NYR" id="nVx-LA-lDX"/>
@@ -534,9 +577,14 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                             <constraint firstItem="ptn-33-7rG" firstAttribute="leading" secondItem="izd-8P-xIh" secondAttribute="leading" id="yqd-uv-boL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="izd-8P-xIh"/>
+                        <connections>
+                            <outlet property="backButton" destination="1q0-ak-03O" id="wzT-CP-r8d"/>
+                            <outlet property="helpWebView" destination="ptn-33-7rG" id="tfX-qn-Eqf"/>
+                        </connections>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SiQ-Up-4Wu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="zNp-Qh-fFl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1560.8" y="-258.62068965517244"/>
         </scene>
@@ -554,12 +602,12 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     <navigationItem title="M" id="XHr-IN-x0E">
                                         <barButtonItem key="leftBarButtonItem" title="Help" id="lsg-rO-bd1">
                                             <connections>
-                                                <segue destination="GNK-Z6-NYR" kind="show" id="NIP-UO-9BO"/>
+                                                <segue destination="GNK-Z6-NYR" kind="show" identifier="showHelpView" id="NIP-UO-9BO"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="PQx-F4-xSr">
                                             <connections>
-                                                <action selector="dismissSwapPermutations" destination="Zrn-k1-6dv" id="rgI-R0-2i1"/>
+                                                <action selector="done:" destination="Zrn-k1-6dv" id="sZh-hF-1k6"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -583,23 +631,24 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" text="( 0 1 2 3 4 5 6 7 8 9 10 11 )" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="none" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="9Ps-zw-6Hd" userLabel="CurrentPermutation">
                                 <rect key="frame" x="0.0" y="320.33333333333331" width="414" height="24"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
-                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="textColor"/>
                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <pickerView clipsSubviews="YES" contentMode="left" translatesAutoresizingMaskIntoConstraints="NO" id="EER-fj-waz" showNotesWithSelection="YES">
                                 <rect key="frame" x="47" y="352" width="320" height="216"/>
-                                <color key="backgroundColor" red="0.82945421009999998" green="0.82945421009999998" blue="0.82945421009999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="delegate" destination="7qx-ki-iJ7" id="8MA-4K-Bz1"/>
                                 </connections>
                             </pickerView>
                             <imageView autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SporadicGamesLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="zgs-Ac-HfM">
-                                <rect key="frame" x="0.0" y="650" width="414" height="41.333333333333371"/>
+                                <rect key="frame" x="0.0" y="694.66666666666663" width="414" height="41.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zgs-Ac-HfM" secondAttribute="height" multiplier="10:1" id="0TW-eM-Ipe"/>
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="gk3-9I-zzR" firstAttribute="bottom" secondItem="zgs-Ac-HfM" secondAttribute="bottom" id="2GV-cf-opa"/>
                             <constraint firstItem="UJX-Fk-WZj" firstAttribute="top" secondItem="oiP-kY-7q1" secondAttribute="bottom" id="DRE-KC-eGU"/>
@@ -627,9 +676,11 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                     </view>
                     <connections>
                         <outlet property="swapPermutationsView" destination="7qx-ki-iJ7" id="vaZ-ZK-26m"/>
+                        <segue destination="jL6-z9-Ll0" kind="unwind" identifier="unwindToSporadicM" unwindAction="prepareForUnwindToSporadicM:" id="qie-hB-afg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YAn-zy-4hI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="jL6-z9-Ll0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2455" y="-1151"/>
         </scene>
