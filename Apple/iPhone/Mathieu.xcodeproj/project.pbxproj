@@ -70,6 +70,12 @@
 		D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */; };
 		D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D27C7C310FB2211800ECAE6F /* MainMenu.xib */; };
 		D28A80F20FB8EA6F00BCC180 /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
+		D28E02E12092640900DF8DDD /* Launch Screen free.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D28E02E02092640900DF8DDD /* Launch Screen free.storyboard */; };
+		D28E02E3209264F100DF8DDD /* SporadicM12 355x355@2.png in Resources */ = {isa = PBXBuildFile; fileRef = D28E02E2209264F100DF8DDD /* SporadicM12 355x355@2.png */; };
+		D28E02E52092656A00DF8DDD /* SporadicM12 355x355.png in Resources */ = {isa = PBXBuildFile; fileRef = D28E02E42092656A00DF8DDD /* SporadicM12 355x355.png */; };
+		D28E02E72092658F00DF8DDD /* SporadicM12.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D28E02E62092658F00DF8DDD /* SporadicM12.storyboard */; };
+		D28E02E82092660300DF8DDD /* AppleModalAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = D29CC5B2207A5EE10006336A /* AppleModalAlert.m */; };
+		D28E02E9209268B000DF8DDD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */; };
 		D29528690FB4B84000BABAF4 /* SporadicMAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BD0FACE47A0093E56B /* SporadicMAppDelegate.mm */; };
 		D2982799208DB51300266ED5 /* SporadicM12 free 355x355.png in Resources */ = {isa = PBXBuildFile; fileRef = D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */; };
 		D29CA2F80FB8F9FD0064A893 /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
@@ -243,14 +249,10 @@
 		D2AE5CBD0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CBE0FACEA8C0093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5C990FACEA8C0093E56B /* Images */; };
 		D2AE5CE50FACEAA80093E56B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5CBF0FACEAA80093E56B /* Images */; };
-		D2B5995E20815A4600FB4403 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */; };
-		D2B5995F20815A4600FB4403 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */; };
 		D2B599E120819CC300FB4403 /* SporadicM12 4000x4000.png in Resources */ = {isa = PBXBuildFile; fileRef = D2B5996520819C4800FB4403 /* SporadicM12 4000x4000.png */; };
 		D2B7EA7E11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
-		D2D3FF801FC9140400B29F46 /* SporadicM12.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */; };
-		D2D3FF811FC9140400B29F46 /* SporadicM12.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */; };
 		D2D3FF821FC9367F00B29F46 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */; };
 		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2FDA8781FC750C100603E02 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */; };
@@ -315,6 +317,10 @@
 		D27C7C300FB2211800ECAE6F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D28025350FFBBF9B008CA92E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; plistStructureDefinitionIdentifier = "<none>"; sourceTree = "<group>"; };
+		D28E02E02092640900DF8DDD /* Launch Screen free.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen free.storyboard"; sourceTree = "<group>"; };
+		D28E02E2209264F100DF8DDD /* SporadicM12 355x355@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 355x355@2.png"; sourceTree = "<group>"; };
+		D28E02E42092656A00DF8DDD /* SporadicM12 355x355.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 355x355.png"; sourceTree = "<group>"; };
+		D28E02E62092658F00DF8DDD /* SporadicM12.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SporadicM12.storyboard; sourceTree = "<group>"; };
 		D295286E0FB4B9E100BABAF4 /* mathieu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathieu.h; sourceTree = "<group>"; };
 		D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 free 355x355.png"; sourceTree = "<group>"; };
 		D29CC5AE207A5EE10006336A /* AppleModalAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleModalAlert.h; sourceTree = "<group>"; };
@@ -480,7 +486,6 @@
 		D2B5999920819C4900FB4403 /* SporadicM12Screenshot2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = SporadicM12Screenshot2.tiff; sourceTree = "<group>"; };
 		D2B7EA7C11D32AF600BCE169 /* iPhoneUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneUtilities.h; sourceTree = "<group>"; };
 		D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPhoneUtilities.m; sourceTree = "<group>"; };
-		D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SporadicM12.storyboard; sourceTree = "<group>"; };
 		D2D897A6142FD19B00626D94 /* MHAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHAlertView.h; sourceTree = "<group>"; };
 		D2D897A7142FD19B00626D94 /* MHAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHAlertView.m; sourceTree = "<group>"; };
 		D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -788,8 +793,9 @@
 			isa = PBXGroup;
 			children = (
 				D2B5995D20815A4600FB4403 /* Launch Screen.storyboard */,
-				D2D3FF7F1FC9140400B29F46 /* SporadicM12.storyboard */,
+				D28E02E02092640900DF8DDD /* Launch Screen free.storyboard */,
 				D273C08F208E9758001A4CAD /* SporadicM12 free.storyboard */,
+				D28E02E62092658F00DF8DDD /* SporadicM12.storyboard */,
 				D2AE55F30FACE47A0093E56B /* Images */,
 			);
 			path = Resources;
@@ -1177,6 +1183,8 @@
 		D2B5996120819C4800FB4403 /* povray */ = {
 			isa = PBXGroup;
 			children = (
+				D28E02E42092656A00DF8DDD /* SporadicM12 355x355.png */,
+				D28E02E2209264F100DF8DDD /* SporadicM12 355x355@2.png */,
 				D2982798208DB51300266ED5 /* SporadicM12 free 355x355.png */,
 				D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */,
 				D2B5996220819C4800FB4403 /* SporadicM12.pov */,
@@ -1385,9 +1393,10 @@
 			files = (
 				D2AE57070FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2AC9533208FDAC4004B0A6E /* SporadicM12 free.storyboard in Resources */,
-				D2B5995F20815A4600FB4403 /* Launch Screen.storyboard in Resources */,
+				D28E02E72092658F00DF8DDD /* SporadicM12.storyboard in Resources */,
 				D2AE570A0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
 				D2AE570C0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
+				D28E02E3209264F100DF8DDD /* SporadicM12 355x355@2.png in Resources */,
 				D2AE570E0FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE570F0FACE47B0093E56B /* combo.caf in Resources */,
 				D2AE57100FACE47B0093E56B /* combo_not_set.caf in Resources */,
@@ -1409,6 +1418,7 @@
 				D2AE59600FACE81D0093E56B /* SimpleButtonNormal.png in Resources */,
 				D2AE59620FACE81D0093E56B /* SimpleButtonNormalRound.png in Resources */,
 				D2AE59630FACE81D0093E56B /* SimpleButtonRoundHighlighted.png in Resources */,
+				D28E02E9209268B000DF8DDD /* Launch Screen.storyboard in Resources */,
 				D2AE59640FACE81D0093E56B /* SimpleDarkButtonHighlighted.png in Resources */,
 				D2AE59650FACE81D0093E56B /* SimpleDarkButtonNormal.png in Resources */,
 				D2AE598D0FACE81D0093E56B /* SporadicGamesLogo.png in Resources */,
@@ -1419,7 +1429,6 @@
 				D2AE5BAB0FACE9BB0093E56B /* index.html in Resources */,
 				D2AE5BAC0FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5BAE0FACE9BB0093E56B /* preferences.html in Resources */,
-				D2D3FF811FC9140400B29F46 /* SporadicM12.storyboard in Resources */,
 				D2AE5BAF0FACE9BB0093E56B /* swap_permutations.html in Resources */,
 				D2AE5BBD0FACE9BB0093E56B /* perms.lst in Resources */,
 				D29CC5B6207A8B430006336A /* AppIcon.xcassets in Resources */,
@@ -1430,6 +1439,7 @@
 				D204A279143B7D3F005E4A82 /* Default@x2.png in Resources */,
 				D2017AB01497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
 				D2017AB41497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
+				D28E02E52092656A00DF8DDD /* SporadicM12 355x355.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1489,7 +1499,6 @@
 				D2AE578A0FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2B599E120819CC300FB4403 /* SporadicM12 4000x4000.png in Resources */,
 				D2AE578D0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
-				D2D3FF801FC9140400B29F46 /* SporadicM12.storyboard in Resources */,
 				D2FDA87B1FC779F800603E02 /* SporadicMView.xib in Resources */,
 				D2AE578F0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D2982799208DB51300266ED5 /* SporadicM12 free 355x355.png in Resources */,
@@ -1510,6 +1519,7 @@
 				D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */,
 				D2AE59D10FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */,
 				D2AE59DB0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */,
+				D28E02E12092640900DF8DDD /* Launch Screen free.storyboard in Resources */,
 				D2AE59DC0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */,
 				D2AE59DF0FACE81D0093E56B /* SimpleButtonNormal.png in Resources */,
 				D2AE59E10FACE81D0093E56B /* SimpleButtonNormalRound.png in Resources */,
@@ -1532,7 +1542,6 @@
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
 				D2AE5C980FACEA6C0093E56B /* Generic_Images in Resources */,
 				D273C090208E9758001A4CAD /* SporadicM12 free.storyboard in Resources */,
-				D2B5995E20815A4600FB4403 /* Launch Screen.storyboard in Resources */,
 				D2AE5CBE0FACEA8C0093E56B /* Images in Resources */,
 				D204A276143B7D3F005E4A82 /* Default.png in Resources */,
 				D204A278143B7D3F005E4A82 /* Default@x2.png in Resources */,
@@ -1579,6 +1588,7 @@
 				D276FF31208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59950FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5BB70FACE9BB0093E56B /* m12.cc in Sources */,
+				D28E02E82092660300DF8DDD /* AppleModalAlert.m in Sources */,
 				D276FF26208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE5BFD0FACE9BB0093E56B /* view.cc in Sources */,
 				D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
