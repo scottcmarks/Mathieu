@@ -411,13 +411,13 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 
 - (void)dealloc
 {
-    forAllBalls( i )
-    {
-        [ _ballLabels[ i ] release ];
-        _ballLabels[ i ] = nil;
-        [ _ballViews[ i ] release ];
-        _ballViews[ i ] = nil;
-    }
+//    forAllBalls( i )
+//    {
+//        [ _ballLabels[ i ] release ];
+//        _ballLabels[ i ] = nil;
+//        [ _ballViews[ i ] release ];
+//        _ballViews[ i ] = nil;
+//    }
     [ _rightSound    release ] ;
     [ _leftSound     release ] ;
     [ _swapSound     release ] ;
