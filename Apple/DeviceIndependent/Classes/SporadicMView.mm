@@ -141,6 +141,8 @@
     [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
         HistoryElement c = button.comboName;
         if (c <= lastComboButtonForThisVersion) {
+            button.enabled = YES;
+            button.hidden = NO;
             button.disabled = ![ self.gameModel hasDefinedCombo:c ];
         } else {
             button.enabled = NO;
