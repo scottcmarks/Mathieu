@@ -49,7 +49,7 @@ static NSString * inverse=@"⁻¹";
 }
 
 - ( void ) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"ComboBarButton: touchesBegan") ;
+//    NSLog(@"ComboBarButton: touchesBegan") ;
     [self startTimer];
 }
 
