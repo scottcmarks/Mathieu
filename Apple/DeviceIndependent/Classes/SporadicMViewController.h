@@ -47,6 +47,6 @@
 - ( void     ) spinFinished   : ( int ) wedges       ;
 - ( void     ) setSwapIndex   : ( int ) newSwapIndex ;
 - ( void     ) initializeView ;
-- ( void     ) synchronizeView;
+- ( void     ) synchronize;
 
 @end

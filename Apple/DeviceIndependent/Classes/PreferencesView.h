@@ -31,4 +31,5 @@
 #endif
 @property /* dynamic */           CGFloat animationSpeed;
 
+-(void) synchronize;
 @end

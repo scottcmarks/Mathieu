@@ -107,6 +107,7 @@
 {
     [ super viewDidLoad ] ;
     self.versionStringLabel.text = [ NSBundle versionString ] ;
+    [preferencesView synchronize];
 }
 
 #if TARGET_IOS && OVERRIDE_DEPRECATED
@@ -129,16 +130,6 @@
 
 
 -(IBAction)prepareForUnwindToPreferences:(UIStoryboardSegue *)segue {
-    SwapPermutationsViewController * source = segue.sourceViewController;
-    assert([SwapPermutationsViewController isKindOfClass:PreferencesViewController.class]);
-    SwapPermutationsView * swapPermutationsView=(SwapPermutationsView *)(source.view);
-    assert([SwapPermutationsView isKindOfClass:SwapPermutationsView.class]);
-    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
-    if ( newSwapIndex != self.gameModel.swapIndex )
-        abort(); // [ rootViewController setSwapIndex: newSwapIndex ];
-    else
-        abort(); // [ rootViewController toggleView ];
-
     return;
 }
 

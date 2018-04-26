@@ -34,9 +34,15 @@
     [currentPermutationPreview createSubviews];
 }
 
+- (void)redrawForSwapIndex:(NSInteger)row {
+    currentPermutation.text = [ self.gameModel cyclesForSwap:(int)row ];
+    [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
+    [ currentPermutationPreview redraw ];
+}
+
+
 - ( void ) synchronize
 {
-    currentPermutation.text    = self.gameModel.cycles;
     pickedSwapIndex = self.gameModel.swapIndex;
 #if FREE
     int row = pickedSwapIndex == 1 ? 0 : 1;
@@ -46,6 +52,7 @@
 #if TARGET_IOS
     [ swapPermutationPicker selectRow: row inComponent: 0 animated: NO ];
 #endif
+    [ self redrawForSwapIndex:pickedSwapIndex ];
 }
 
 - ( void ) willMoveToSuperview: ( View * )superView
@@ -74,9 +81,7 @@
 #if FREE
     row = ( row == 0 ? 1 : 24 );
 #endif
-    currentPermutation.text = [ self.gameModel cyclesForSwap:(int)row ];
-    [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
-    [ currentPermutationPreview redraw ];
+    [self redrawForSwapIndex:row];
     pickedSwapIndex = (int)row;
 }
 

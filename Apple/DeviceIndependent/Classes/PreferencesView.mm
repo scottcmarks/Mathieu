@@ -53,25 +53,17 @@
 #endif
 }
 
-- ( void ) willMoveToSuperview: ( View *) newSuperView
-{
-    if ( newSuperView )
-    {
-        NSString * cycles = self.appDelegate.gameModel.cycles;
+- ( void ) synchronize {
+    NSString * cycles = self.appDelegate.gameModel.cycles;
 #if ( nBalls == 24 )  && defined( SHOW_M24_CURRENT_PERMUTATION )
-            NSRange brk = [ cycles rangeOfString:@") ("
-                                         options:NSLiteralSearch
-                                           range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
-            cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
-            currentPermutation.font = [ Font systemFontOfSize:13.0 ];
+    NSRange brk = [ cycles rangeOfString:@") ("
+                                 options:NSLiteralSearch
+                                   range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
+    cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
+    currentPermutation.font = [ Font systemFontOfSize:13.0 ];
 #endif
-        currentPermutation.text = cycles;
-
-    }
-}
-
-- (void)dealloc {
-    [super dealloc];
+    currentPermutation.text = cycles;
+    
 }
 
 
