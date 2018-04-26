@@ -10,6 +10,7 @@
 #import "SporadicMAppDelegate.h"
 #import "GameModel.h"
 #import "BallView.h"
+#import "PreferencesViewController.h"
 #import "SwapPermutationsView.h"
 #import "SwapPermutationsViewController.h"
 
@@ -55,6 +56,8 @@
     [super dealloc];
 }
 
+
+
 - (IBAction)dismissSwapPermutations
 {
     int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
@@ -63,5 +66,30 @@
     else
         abort(); // [ rootViewController toggleView ];
 }
+
+
+//- (IBAction)unwindToPreferences:(UIStoryboardSegue*)sender
+//{
+//    UIViewController *sourceViewController = sender.sourceViewController;
+//    assert([sourceViewController isKindOfClass:PreferencesViewController.class]);
+//    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
+//    if ( newSwapIndex != self.gameModel.swapIndex )
+//        abort(); // [ rootViewController setSwapIndex: newSwapIndex ];
+//    else
+//        abort(); // [ rootViewController toggleView ];
+//    
+//    // Pull any data from the view controller which initiated the unwind segue.
+//}
+
+//- (BOOL)canPerformUnwindSegueAction:(SEL)action
+//                 fromViewController:(UIViewController *)fromViewController
+//                         withSender:(id)sender {
+//    return YES;
+//}
+
+-(IBAction)prepareForUnwindToSwapPermutations:(UIStoryboardSegue *)segue {
+    return;
+}
+
 
 @end
