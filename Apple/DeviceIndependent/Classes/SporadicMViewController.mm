@@ -15,6 +15,8 @@
 #import "BallRingView.h"
 #import "Constants.h"
 #import "iPhoneUtilities.h"
+#import "SwapPermutationsView.h"
+#import "SwapPermutationsViewController.h"
 
 @interface SporadicMViewController()
 @property (nonatomic, strong, readonly) SporadicMView * sporadicMView;
@@ -336,14 +338,14 @@
     [ self.sporadicMView disableAllComboButtons ];
     [ self.ballRingView redraw ];
     [ self.sporadicMView showCurrentPermutationAtDuration:INSTANTANEOUS ];
-    abort(); // [ self.rootViewController toggleView ];
+//    abort(); // [ self.rootViewController toggleView ];
 }
 
 
 -( void ) dontChangeSwap
 {
     [ BallView setColorsForSwapPermutation: MathieuPermutation::swapPermutation ];
-    abort(); // [ self.rootViewController toggleView ];
+//    abort(); // [ self.rootViewController toggleView ];
 }
 
 
@@ -352,41 +354,24 @@
     if ( newSwapIndex == self.gameModel.swapIndex )
         [ self dontChangeSwap ];
     else
-    {
-        NSString * message = @"This will change the meaning of Swap.\n" ;
-        if ( [ self.gameModel isSolving ] )
-            message = [ message stringByAppendingString: @"The current puzzle will be discarded!\n" ];
-        else if ( ! [ self.gameModel historyIsEmpty ] )
-            message = [ message stringByAppendingString: @"The position will be reset.\n" ];
-        if ( [ self.gameModel hasAnyDefinedCombo ] )
-            message = [ message stringByAppendingString: @"All combo moves will be erased!\n" ];
-        message = [ message stringByAppendingString: @"Press OK if you want to do this." ];
-        [ AppleModalAlert alertOKCancel:message
-                                  title:@"New Swap!"
-                           continuation:^(bool confirmed) {
-                               if (confirmed)
-                                   [ self doChangeSwap:newSwapIndex];
-                               else
-                                   [ self dontChangeSwap ];
-                           }];
-    }
-}
+        [ self doChangeSwap:newSwapIndex];
+ }
 
 
-- ( void     ) synchronizeView
+- ( void     ) synchronize
 {
     [ self.sporadicMView showCurrentPermutationAtDuration: INSTANTANEOUS ] ;
 }
 
 
-//- (BOOL)canPerformUnwindSegueAction:(SEL)action
-//                 fromViewController:(UIViewController *)fromViewController
-//                         withSender:(id)sender {
-//    return YES;
-//}
-
 -(IBAction)prepareForUnwindToSporadicM:(UIStoryboardSegue *)segue {
-    return;
+    if ([segue.sourceViewController isKindOfClass: SwapPermutationsViewController.class]) {
+        SwapPermutationsViewController * source = segue.sourceViewController;
+        SwapPermutationsView * swapPermutationsView=(SwapPermutationsView *)(source.view);
+        assert([swapPermutationsView isKindOfClass:SwapPermutationsView.class]);
+        int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
+        [self setSwapIndex:newSwapIndex];
+    }
 }
 
 @end
