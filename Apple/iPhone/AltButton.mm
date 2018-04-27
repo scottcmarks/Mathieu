@@ -8,7 +8,7 @@
 #import "AltButton.h"
 
 @implementation AltButton
--( void ) setAlternate: ( BOOL ) alt {
+-( void ) setAlternate: ( bool ) alt {
     [super setAlternate:alt];
     self.highlighted = alt;
 }
