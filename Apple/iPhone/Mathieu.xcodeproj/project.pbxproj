@@ -51,6 +51,49 @@
 		D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D266F90D0F7A9F120080CAD1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */; };
+		D26DA63B2092E7C00045E179 /* left_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63A2092E7BF0045E179 /* left_position.html */; };
+		D26DA63C2092E7C30045E179 /* left_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63A2092E7BF0045E179 /* left_position.html */; };
+		D26DA63E2092E7CA0045E179 /* left_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63A2092E7BF0045E179 /* left_position.html */; };
+		D26DA6412092E9440045E179 /* right_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63F2092E9440045E179 /* right_position.html */; };
+		D26DA6422092E9440045E179 /* right_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63F2092E9440045E179 /* right_position.html */; };
+		D26DA6432092E9440045E179 /* right_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63F2092E9440045E179 /* right_position.html */; };
+		D26DA6442092E9440045E179 /* swap_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6402092E9440045E179 /* swap_position.html */; };
+		D26DA6452092E9440045E179 /* swap_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6402092E9440045E179 /* swap_position.html */; };
+		D26DA6462092E9440045E179 /* swap_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6402092E9440045E179 /* swap_position.html */; };
+		D26DA6482092E9860045E179 /* home_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6472092E9860045E179 /* home_position.html */; };
+		D26DA6492092E9860045E179 /* home_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6472092E9860045E179 /* home_position.html */; };
+		D26DA64A2092E9860045E179 /* home_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6472092E9860045E179 /* home_position.html */; };
+		D26DA64B2092E9AF0045E179 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = D2AE5A8B0FACE9BB0093E56B /* index.html */; };
+		D26DA64D2092EA2B0045E179 /* A.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA64C2092EA2B0045E179 /* A.html */; };
+		D26DA64E2092EA2B0045E179 /* A.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA64C2092EA2B0045E179 /* A.html */; };
+		D26DA64F2092EA2B0045E179 /* A.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA64C2092EA2B0045E179 /* A.html */; };
+		D26DA6512092EA400045E179 /* AA.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6502092EA400045E179 /* AA.html */; };
+		D26DA6522092EA400045E179 /* AA.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6502092EA400045E179 /* AA.html */; };
+		D26DA6532092EA400045E179 /* AA.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6502092EA400045E179 /* AA.html */; };
+		D26DA6552092EA500045E179 /* AAA.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6542092EA500045E179 /* AAA.html */; };
+		D26DA6562092EA500045E179 /* AAA.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6542092EA500045E179 /* AAA.html */; };
+		D26DA6572092EA500045E179 /* AAA.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6542092EA500045E179 /* AAA.html */; };
+		D26DA6592092EB5F0045E179 /* shake_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6582092EB5E0045E179 /* shake_confirm.html */; };
+		D26DA65A2092EB5F0045E179 /* shake_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6582092EB5E0045E179 /* shake_confirm.html */; };
+		D26DA65B2092EB5F0045E179 /* shake_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6582092EB5E0045E179 /* shake_confirm.html */; };
+		D26DA65D2092EB970045E179 /* home_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA65C2092EB970045E179 /* home_confirm.html */; };
+		D26DA65E2092EB970045E179 /* home_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA65C2092EB970045E179 /* home_confirm.html */; };
+		D26DA65F2092EB970045E179 /* home_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA65C2092EB970045E179 /* home_confirm.html */; };
+		D26DA6612092EC130045E179 /* show_preferences.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6602092EC130045E179 /* show_preferences.html */; };
+		D26DA6622092EC130045E179 /* show_preferences.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6602092EC130045E179 /* show_preferences.html */; };
+		D26DA6632092EC130045E179 /* show_preferences.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6602092EC130045E179 /* show_preferences.html */; };
+		D26DA6652092EC4B0045E179 /* restart_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6642092EC4B0045E179 /* restart_confirm.html */; };
+		D26DA6662092EC4B0045E179 /* restart_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6642092EC4B0045E179 /* restart_confirm.html */; };
+		D26DA6672092EC4B0045E179 /* restart_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6642092EC4B0045E179 /* restart_confirm.html */; };
+		D26DA6692092EC9A0045E179 /* combo_set_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6682092EC9A0045E179 /* combo_set_confirm.html */; };
+		D26DA66A2092EC9A0045E179 /* combo_set_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6682092EC9A0045E179 /* combo_set_confirm.html */; };
+		D26DA66B2092EC9A0045E179 /* combo_set_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6682092EC9A0045E179 /* combo_set_confirm.html */; };
+		D26DA66D2092ECBF0045E179 /* combo_erase_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA66C2092ECBF0045E179 /* combo_erase_confirm.html */; };
+		D26DA66E2092ECBF0045E179 /* combo_erase_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA66C2092ECBF0045E179 /* combo_erase_confirm.html */; };
+		D26DA66F2092ECBF0045E179 /* combo_erase_confirm.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA66C2092ECBF0045E179 /* combo_erase_confirm.html */; };
+		D26DA6712092ECFE0045E179 /* combo_button_A_pressed.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6702092ECFE0045E179 /* combo_button_A_pressed.html */; };
+		D26DA6722092ECFE0045E179 /* combo_button_A_pressed.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6702092ECFE0045E179 /* combo_button_A_pressed.html */; };
+		D26DA6732092ECFE0045E179 /* combo_button_A_pressed.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA6702092ECFE0045E179 /* combo_button_A_pressed.html */; };
 		D27097BC0FB67B0C00E7B5FA /* m12.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5A980FACE9BB0093E56B /* m12.cc */; };
 		D27097CA0FB67B6B00E7B5FA /* view.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE5AEC0FACE9BB0093E56B /* view.cc */; };
 		D27097CE0FB67B8200E7B5FA /* point.cc in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58870FACE81D0093E56B /* point.cc */; };
@@ -301,6 +344,20 @@
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D266F9110F7A9F120080CAD1 /* SporadicM12Free.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM12Free.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D26DA63A2092E7BF0045E179 /* left_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = left_position.html; sourceTree = "<group>"; };
+		D26DA63F2092E9440045E179 /* right_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = right_position.html; sourceTree = "<group>"; };
+		D26DA6402092E9440045E179 /* swap_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = swap_position.html; sourceTree = "<group>"; };
+		D26DA6472092E9860045E179 /* home_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = home_position.html; sourceTree = "<group>"; };
+		D26DA64C2092EA2B0045E179 /* A.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = A.html; sourceTree = "<group>"; };
+		D26DA6502092EA400045E179 /* AA.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = AA.html; sourceTree = "<group>"; };
+		D26DA6542092EA500045E179 /* AAA.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = AAA.html; sourceTree = "<group>"; };
+		D26DA6582092EB5E0045E179 /* shake_confirm.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = shake_confirm.html; sourceTree = "<group>"; };
+		D26DA65C2092EB970045E179 /* home_confirm.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = home_confirm.html; sourceTree = "<group>"; };
+		D26DA6602092EC130045E179 /* show_preferences.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = show_preferences.html; sourceTree = "<group>"; };
+		D26DA6642092EC4B0045E179 /* restart_confirm.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = restart_confirm.html; sourceTree = "<group>"; };
+		D26DA6682092EC9A0045E179 /* combo_set_confirm.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = combo_set_confirm.html; sourceTree = "<group>"; };
+		D26DA66C2092ECBF0045E179 /* combo_erase_confirm.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = combo_erase_confirm.html; sourceTree = "<group>"; };
+		D26DA6702092ECFE0045E179 /* combo_button_A_pressed.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = combo_button_A_pressed.html; sourceTree = "<group>"; };
 		D273C08F208E9758001A4CAD /* SporadicM12 free.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SporadicM12 free.storyboard"; sourceTree = "<group>"; };
 		D276FF24208BDAC200754F7E /* ComboBarButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ComboBarButton.mm; sourceTree = "<group>"; };
 		D276FF28208BDAE800754F7E /* ComboBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboBarButton.h; sourceTree = "<group>"; };
@@ -1098,6 +1155,20 @@
 		D2AE5A630FACE9BB0093E56B /* html */ = {
 			isa = PBXGroup;
 			children = (
+				D26DA63F2092E9440045E179 /* right_position.html */,
+				D26DA6402092E9440045E179 /* swap_position.html */,
+				D26DA63A2092E7BF0045E179 /* left_position.html */,
+				D26DA6472092E9860045E179 /* home_position.html */,
+				D26DA64C2092EA2B0045E179 /* A.html */,
+				D26DA6502092EA400045E179 /* AA.html */,
+				D26DA6542092EA500045E179 /* AAA.html */,
+				D26DA6582092EB5E0045E179 /* shake_confirm.html */,
+				D26DA6642092EC4B0045E179 /* restart_confirm.html */,
+				D26DA6682092EC9A0045E179 /* combo_set_confirm.html */,
+				D26DA6702092ECFE0045E179 /* combo_button_A_pressed.html */,
+				D26DA66C2092ECBF0045E179 /* combo_erase_confirm.html */,
+				D26DA65C2092EB970045E179 /* home_confirm.html */,
+				D26DA6602092EC130045E179 /* show_preferences.html */,
 				D2AE5C990FACEA8C0093E56B /* Images */,
 				D2AE5A640FACE9BB0093E56B /* buttons.html */,
 				D2AE5A650FACE9BB0093E56B /* combo_buttons.html */,
@@ -1398,24 +1469,31 @@
 				D2AE570A0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
 				D2AE570C0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D28E02E3209264F100DF8DDD /* SporadicM12 355x355@2.png in Resources */,
+				D26DA6722092ECFE0045E179 /* combo_button_A_pressed.html in Resources */,
 				D2AE570E0FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE570F0FACE47B0093E56B /* combo.caf in Resources */,
 				D2AE57100FACE47B0093E56B /* combo_not_set.caf in Resources */,
 				D2AE57110FACE47B0093E56B /* combo_set.caf in Resources */,
 				D2AE57120FACE47B0093E56B /* home.caf in Resources */,
+				D26DA6522092EA400045E179 /* AA.html in Resources */,
+				D26DA66E2092ECBF0045E179 /* combo_erase_confirm.html in Resources */,
 				D2AE57130FACE47B0093E56B /* left.caf in Resources */,
 				D2AE57140FACE47B0093E56B /* restart.caf in Resources */,
 				D2AE57150FACE47B0093E56B /* right.caf in Resources */,
 				D2AE57160FACE47B0093E56B /* shake.caf in Resources */,
 				D2AE57170FACE47B0093E56B /* success.caf in Resources */,
+				D26DA65E2092EB970045E179 /* home_confirm.html in Resources */,
 				D2AE57180FACE47B0093E56B /* swap.caf in Resources */,
+				D26DA6492092E9860045E179 /* home_position.html in Resources */,
 				D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
 				D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */,
 				D2AE57790FACE47B0093E56B /* SporadicMView.xib in Resources */,
+				D26DA6422092E9440045E179 /* right_position.html in Resources */,
 				D2AE59520FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */,
 				D2AE595C0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */,
 				D2AE595D0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */,
+				D26DA6622092EC130045E179 /* show_preferences.html in Resources */,
 				D2AE59600FACE81D0093E56B /* SimpleButtonNormal.png in Resources */,
 				D2AE59620FACE81D0093E56B /* SimpleButtonNormalRound.png in Resources */,
 				D2AE59630FACE81D0093E56B /* SimpleButtonRoundHighlighted.png in Resources */,
@@ -1426,17 +1504,24 @@
 				D2AE5B850FACE9BB0093E56B /* buttons.html in Resources */,
 				D2AE5B860FACE9BB0093E56B /* combo_buttons.html in Resources */,
 				D2AE5B870FACE9BB0093E56B /* error.html in Resources */,
+				D26DA66A2092EC9A0045E179 /* combo_set_confirm.html in Resources */,
 				D2AE5B880FACE9BB0093E56B /* hints.html in Resources */,
+				D26DA64E2092EA2B0045E179 /* A.html in Resources */,
+				D26DA63C2092E7C30045E179 /* left_position.html in Resources */,
 				D2AE5BAB0FACE9BB0093E56B /* index.html in Resources */,
 				D2AE5BAC0FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5BAE0FACE9BB0093E56B /* preferences.html in Resources */,
 				D2AE5BAF0FACE9BB0093E56B /* swap_permutations.html in Resources */,
 				D2AE5BBD0FACE9BB0093E56B /* perms.lst in Resources */,
+				D26DA6562092EA500045E179 /* AAA.html in Resources */,
+				D26DA65A2092EB5F0045E179 /* shake_confirm.html in Resources */,
 				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
 				D23B2FF01FC9E56B009CD6BD /* Launch.storyboard in Resources */,
+				D26DA6662092EC4B0045E179 /* restart_confirm.html in Resources */,
 				D204A277143B7D3F005E4A82 /* Default.png in Resources */,
 				D204A279143B7D3F005E4A82 /* Default@x2.png in Resources */,
+				D26DA6452092E9440045E179 /* swap_position.html in Resources */,
 				D2017AB01497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
 				D2017AB41497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
 				D28E02E52092656A00DF8DDD /* SporadicM12 355x355.png in Resources */,
@@ -1496,14 +1581,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26DA6442092E9440045E179 /* swap_position.html in Resources */,
+				D26DA63B2092E7C00045E179 /* left_position.html in Resources */,
+				D26DA6612092EC130045E179 /* show_preferences.html in Resources */,
 				D2AE578A0FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2B599E120819CC300FB4403 /* SporadicM12 4000x4000.png in Resources */,
 				D2AE578D0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
 				D2FDA87B1FC779F800603E02 /* SporadicMView.xib in Resources */,
+				D26DA66D2092ECBF0045E179 /* combo_erase_confirm.html in Resources */,
 				D2AE578F0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D2982799208DB51300266ED5 /* SporadicM12 free 355x355.png in Resources */,
 				D2AE57910FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE57920FACE47B0093E56B /* combo.caf in Resources */,
+				D26DA6652092EC4B0045E179 /* restart_confirm.html in Resources */,
 				D2AE57930FACE47B0093E56B /* combo_not_set.caf in Resources */,
 				D2AE57940FACE47B0093E56B /* combo_set.caf in Resources */,
 				D2AE57950FACE47B0093E56B /* home.caf in Resources */,
@@ -1513,11 +1603,18 @@
 				D2AE57980FACE47B0093E56B /* right.caf in Resources */,
 				D2AE57990FACE47B0093E56B /* shake.caf in Resources */,
 				D2AE579A0FACE47B0093E56B /* success.caf in Resources */,
+				D26DA6482092E9860045E179 /* home_position.html in Resources */,
+				D26DA6592092EB5F0045E179 /* shake_confirm.html in Resources */,
 				D2AE579B0FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE579C0FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
+				D26DA6552092EA500045E179 /* AAA.html in Resources */,
 				D2AE57FA0FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE57FB0FACE47B0093E56B /* PreferencesView.xib in Resources */,
+				D26DA6512092EA400045E179 /* AA.html in Resources */,
+				D26DA6412092E9440045E179 /* right_position.html in Resources */,
 				D2AE59D10FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */,
+				D26DA64D2092EA2B0045E179 /* A.html in Resources */,
+				D26DA6712092ECFE0045E179 /* combo_button_A_pressed.html in Resources */,
 				D2AE59DB0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */,
 				D28E02E12092640900DF8DDD /* Launch Screen free.storyboard in Resources */,
 				D2AE59DC0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */,
@@ -1537,6 +1634,7 @@
 				D2AE5C100FACE9BB0093E56B /* hints.html in Resources */,
 				D2AE5C330FACE9BB0093E56B /* index.html in Resources */,
 				D2AE5C340FACE9BB0093E56B /* moves_and_steps.html in Resources */,
+				D26DA6692092EC9A0045E179 /* combo_set_confirm.html in Resources */,
 				D2AE5C360FACE9BB0093E56B /* preferences.html in Resources */,
 				D2AE5C370FACE9BB0093E56B /* swap_permutations.html in Resources */,
 				D2AE5C450FACE9BB0093E56B /* perms.lst in Resources */,
@@ -1546,6 +1644,7 @@
 				D204A276143B7D3F005E4A82 /* Default.png in Resources */,
 				D204A278143B7D3F005E4A82 /* Default@x2.png in Resources */,
 				D2017AAF1497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
+				D26DA65D2092EB970045E179 /* home_confirm.html in Resources */,
 				D2017AB31497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1554,9 +1653,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26DA64F2092EA2B0045E179 /* A.html in Resources */,
+				D26DA66F2092ECBF0045E179 /* combo_erase_confirm.html in Resources */,
+				D26DA65B2092EB5F0045E179 /* shake_confirm.html in Resources */,
+				D26DA66B2092EC9A0045E179 /* combo_set_confirm.html in Resources */,
+				D26DA6532092EA400045E179 /* AA.html in Resources */,
 				D27C7C330FB2211800ECAE6F /* InfoPlist.strings in Resources */,
+				D26DA6632092EC130045E179 /* show_preferences.html in Resources */,
+				D26DA63E2092E7CA0045E179 /* left_position.html in Resources */,
+				D26DA6732092ECFE0045E179 /* combo_button_A_pressed.html in Resources */,
+				D26DA64A2092E9860045E179 /* home_position.html in Resources */,
+				D26DA64B2092E9AF0045E179 /* index.html in Resources */,
+				D26DA6572092EA500045E179 /* AAA.html in Resources */,
+				D26DA6672092EC4B0045E179 /* restart_confirm.html in Resources */,
 				D27C7C340FB2211800ECAE6F /* MainMenu.xib in Resources */,
 				D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */,
+				D26DA65F2092EB970045E179 /* home_confirm.html in Resources */,
+				D26DA6462092E9440045E179 /* swap_position.html in Resources */,
+				D26DA6432092E9440045E179 /* right_position.html in Resources */,
 				D2FDA8791FC779F600603E02 /* SporadicMView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
