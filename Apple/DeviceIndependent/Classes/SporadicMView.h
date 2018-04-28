@@ -7,12 +7,12 @@
 //
 
 #include "Apple Cross-platform.h"
+#import "BallView.h"
+#import "BallRingView.h"
 
-@class BallRingView;
-@class ComboButton;
+#import "UIDualButton.h"
+
 @class SporadicMViewController;
-@class UIDualButton;
-@class GameModel;
 @interface SporadicMView : UIView // TransitionView
 {
 
