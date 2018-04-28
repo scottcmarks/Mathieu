@@ -47,7 +47,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
         // This will be used when the app has never previously terminated.
         [ [ NSUserDefaults standardUserDefaults ] registerDefaults: @{SporadicMAnimationSpeedKey : @2.0,
                                                                       SporadicMSoundEffectsKey   : @YES,
-                                                                      SporadicMConfirmKey        : @NO, // @YES, // DEBUG  // TODO
+                                                                      SporadicMConfirmKey        : @YES,
                                                                       SporadicMInvertKey         : @NO,
                                                                       SporadicMSpinMessagesKey   : @NO
                                                                      } ];
