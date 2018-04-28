@@ -21,23 +21,27 @@ static BallColor ballColors[ nBalls ];
 
 + ( void ) setColorsForSwapPermutation: ( const MathieuPermutation & ) swap
 {
-    int lastColorUsed = -1;
-    bool colorIsSet[ nBalls ];
-    forAllBalls( i ) colorIsSet[ i ] = false;
-    forAllBalls( i )
-    if ( ! colorIsSet[ i ] )
-    {
-        lastColorUsed ++;
-        ballColors[ i ] = ballColors[ swap[ i ] ] = colors[ lastColorUsed ];
-        colorIsSet[ i ] = colorIsSet[ swap[ i ] ] = true;
+    int nextColorToUse = 0;
+    bool colorIsSet[ nBalls ] = {false};
+    forAllBalls( i ) {
+        if ( ! colorIsSet[ i ] )
+        {
+            BallColor color = colors[ nextColorToUse++ ];
+            ballColors[ i ] = ballColors[ swap[ i ] ] = color;
+            colorIsSet[ i ] = colorIsSet[ swap[ i ] ] = true;
+        }
     }
 }
 
-+ ( void ) initialize
-{
-    if ( self == [ BallView class ] )
-        [ self setColorsForSwapPermutation: MathieuPermutation::swapPermutation] ;
++ ( void ) setColorsForCurrentSwapPermutation {
+    [ self setColorsForSwapPermutation: MathieuPermutation::swapPermutation] ;
 }
+
+//+ ( void ) initialize
+//{
+//    if ( self == [ BallView class ] )
+//        [ self setColorsForCurrentSwapPermutation ];
+//}
 
 
 - (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
