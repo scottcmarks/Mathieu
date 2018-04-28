@@ -13,9 +13,7 @@
 #import "iPhoneUtilities.h"
 #import "SporadicMViewController.h"
 #import "SporadicMAppDelegate.h"
-#import "UIDualButton.h"
 #import "ComboBarButton.h"
-#import "BallRingView.h"
 #import "SporadicMView.h"
 
 #if TARGET_MACOS & ! TARGET_IOS
@@ -137,6 +135,7 @@
 #if !ICONIC_PICTURE_ONLY
 
     // Establish invariant between combo definednesses and combo buttons appearance
+    [BallView setColorsForCurrentSwapPermutation];
     
     [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
         HistoryElement c = button.comboName;

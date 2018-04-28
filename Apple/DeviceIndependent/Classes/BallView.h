@@ -16,6 +16,8 @@
 
 + ( void ) setColorsForSwapPermutation: ( const MathieuPermutation & ) swap;
 
++ ( void ) setColorsForCurrentSwapPermutation;
+
 + ( BallView * ) ballViewWithFrame: ( CGRect ) frame ballNumber:( int ) ballNumber;
 
 - (id)initWithFrame:(CGRect)frame ballNumber: ( int ) ballNumber;
