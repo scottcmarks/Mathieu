@@ -20,7 +20,7 @@
 
 @implementation BallRingView
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 - ( bool ) soundEffects { return self.appDelegate.soundEffects; }
 
@@ -51,7 +51,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     // Create and add all the labels (in front of the balls)
     forAllBalls(i)
     {
-        Label * ballLabel = [ [ Label alloc ] initWithFrame: ballFrame ];
+        AppleLabel * ballLabel = [ [ AppleLabel alloc ] initWithFrame: ballFrame ];
         assert(ballLabel );
         [self addSubview:ballLabel ];
         _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
@@ -99,11 +99,11 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     
 #else // !ICONIC_PICTURE_ONLY
     
-    Font * ballFont = [Font systemFontOfSize:ballFontSize ];
+    AppleFont * ballFont = [AppleFont systemFontOfSize:ballFontSize ];
     // Position the ball labels
     forAllBalls(i)
     {
-        Label * ballLabel = _ballLabels[ i ];
+        AppleLabel * ballLabel = _ballLabels[ i ];
         assert(ballLabel );
         ballLabel.frame = ballFrame;
         ballLabel.center = _ballCenters[ i ];
@@ -122,7 +122,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     CGRect tagLabelFrame = CGRectMake(0, 0, NOMINALBALLRADIUS, NOMINALBALLRADIUS);
     forAllBalls(i)
     {
-        Label * tagLabel = [ [ Label alloc ] initWithFrame: tagLabelFrame ];
+        AppleLabel * tagLabel = [ [ AppleLabel alloc ] initWithFrame: tagLabelFrame ];
         assert (tagLabel );
         _tagLabels[i] = tagLabel;
         [self addSubview:tagLabel ];
@@ -133,10 +133,10 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     point tagCoordinates [ nBalls ];
     CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
     CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
-    Font * tagFont = [Font systemFontOfSize:tagFontSize ];
+    AppleFont * tagFont = [AppleFont systemFontOfSize:tagFontSize ];
     forAllBalls(i)
     {
-        Label * tagLabel = _tagLabels[i];
+        AppleLabel * tagLabel = _tagLabels[i];
         assert (tagLabel );
         tagLabel.frame = tagLabelFrame;
         tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
@@ -312,12 +312,15 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 
 - (void)  finishedTouching
 {
+    assert( _delegate );
     [ _delegate spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
     firstWedgeTouched = -1 ;
 }
 
 - (bool) recordTouch:(UITouch *)touch
 {
+    assert( _delegate );
+    
     Index wedgeAtTouch;
     double thetaAtTouch;
     if ( ! [ self findWedgeAtTouch:touch tolerant:YES
@@ -330,7 +333,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
     lastThetaTouched = thetaAtTouch ;
     for (Index i = 1; i < nBalls ; i++ )
     {
-        Label * ballLabel = _ballLabels[ spinStartingPosition[ i ] ];
+        AppleLabel * ballLabel = _ballLabels[ spinStartingPosition[ i ] ];
         /*
          ballLabel is currently who-knows-where.
          But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.

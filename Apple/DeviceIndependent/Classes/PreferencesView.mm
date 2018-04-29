@@ -13,7 +13,7 @@
 
 @implementation PreferencesView
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 
 #if TARGET_IOS
 @synthesize navigationBar;
@@ -60,7 +60,7 @@
                                  options:NSLiteralSearch
                                    range:NSMakeRange( cycles.length/2 - 4, 9 ) ];
     cycles = [ cycles stringByReplacingCharactersInRange:brk withString:@")\n (" ];
-    currentPermutation.font = [ Font systemFontOfSize:13.0 ];
+    currentPermutation.font = [ AppleFont systemFontOfSize:13.0 ];
 #endif
     currentPermutation.text = cycles;
     

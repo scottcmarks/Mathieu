@@ -22,7 +22,7 @@
 @synthesize navigationBar             ;
 @synthesize swapPermutationPicker     ;
 #endif
-- ( SporadicMAppDelegate * ) appDelegate { return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate { return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - (void) awakeFromNib
@@ -36,7 +36,8 @@
 
 - (void)redrawForSwapIndex:(NSInteger)row {
     currentPermutation.text = [ self.gameModel cyclesForSwap:(int)row ];
-    [ BallView setColorsForSwapPermutation: MathieuPermutation( MathieuPermutation::swaps[ row ].swap ) ] ;
+    MathieuPermutation p( MathieuPermutation::swaps[ row ].swap );
+    [ BallView setColorsForSwapPermutation: p ] ;
     [ currentPermutationPreview redraw ];
 }
 
@@ -55,7 +56,7 @@
     [ self redrawForSwapIndex:pickedSwapIndex ];
 }
 
-- ( void ) willMoveToSuperview: ( View * )superView
+- ( void ) willMoveToSuperview: ( AppleView * )superView
 {
     if ( superView ) [ self synchronize ] ;
 }
