@@ -6,7 +6,7 @@
 //  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import "Kit.h"
+#import "Apple Cross-platform.h"
 #import "view.h"
 
 @protocol ComboButtonTarget

@@ -14,14 +14,14 @@
 @class SoundEffect;
 @class BallView;
 
-@interface BallRingView : View
+@interface BallRingView : AppleView
 {
     CGFloat   _circleRadius;
     CGPoint   _circleCenter;
     CGFloat   _ballRadius;
     BallView * _ballViews[ nBalls ];
-    Label *_ballLabels[ nBalls ];
-    Label *_tagLabels[ nBalls ];
+    AppleLabel *_ballLabels[ nBalls ];
+    AppleLabel *_tagLabels[ nBalls ];
     CGPoint _ballCenters[ nBalls ];
     SoundEffect * _rightSound;
     SoundEffect * _leftSound;
