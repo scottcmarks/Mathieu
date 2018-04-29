@@ -31,7 +31,7 @@
 
 - ( BallRingView * ) ballRingView { return self.sporadicMView.ballRingView; }
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 - ( bool ) confirm { return self.appDelegate.confirm; }

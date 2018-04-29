@@ -17,7 +17,7 @@
 
 @implementation SwapPermutationsViewController
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
 
 @synthesize swapPermutationsView;
