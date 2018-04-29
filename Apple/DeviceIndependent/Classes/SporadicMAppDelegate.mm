@@ -55,7 +55,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 }
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
-- ( BOOL ) application: ( Application * ) application didFinishLaunchingWithOptions: ( NSDictionary * ) launchOptions
+- ( BOOL ) application: ( AppleApplication * ) application didFinishLaunchingWithOptions: ( NSDictionary * ) launchOptions
 {
 #define APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL 1
 
@@ -73,7 +73,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
     
     // Add the root view controller's view to the window
 #if TARGET_IOS
-    View * rootView = [ viewController view ];
+    AppleView * rootView = [ viewController view ];
     [ window_view( window ) addSubview: rootView ];
 #elif TARGET_MACOS
     viewController.view = window_view( window );
@@ -94,7 +94,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 }
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
-- ( void ) applicationDidBecomeActive: ( Application * ) application
+- ( void ) applicationDidBecomeActive: ( AppleApplication * ) application
 {
 #define APPLICATIONDIDBECOMEACTIVE_DEBUG_LEVEL 1
 
@@ -120,7 +120,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 }
 
 #if TARGET_MACOS
-- ( BOOL ) applicationShouldTerminateAfterLastWindowClosed: ( Application * ) sender
+- ( BOOL ) applicationShouldTerminateAfterLastWindowClosed: ( AppleApplication * ) sender
 {
     // return YES to allow the application to terminate when the user closes the last window the application has open
     return YES;
@@ -128,7 +128,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 #endif
 
 
-// - ( void ) applicationDidEnterBackground: ( Application * ) application
+// - ( void ) applicationDidEnterBackground: ( AppleApplication * ) application
 //
 // Tells the delegate that the application is now in the background.
 //
@@ -136,7 +136,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 //   application
 //     The singleton application instance.
 //
-- ( void ) applicationDidEnterBackground: ( Application * ) application
+- ( void ) applicationDidEnterBackground: ( AppleApplication * ) application
 {
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
     [ defaults setFloat:  self.animationSpeed       forKey: SporadicMAnimationSpeedKey ] ;
@@ -149,7 +149,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 
 
 // Invoked immediately before the application terminates.
-- ( void ) applicationWillTerminate: ( Application * ) application
+- ( void ) applicationWillTerminate: ( AppleApplication * ) application
 {
     [ self applicationDidEnterBackground: application ] ;
 }

@@ -14,7 +14,7 @@
 
 @synthesize backButton;
 
-//- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+//- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 
 - ( void ) showInitialHelpScreen
 {

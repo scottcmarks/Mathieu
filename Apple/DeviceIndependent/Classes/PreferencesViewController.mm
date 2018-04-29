@@ -25,7 +25,7 @@
 @synthesize swapPermutationsViewController;
 @synthesize versionStringLabel ;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 
 
 -(IBAction) done:(id)sender

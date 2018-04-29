@@ -6,7 +6,7 @@
 //  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
 //
 
-#import "Kit.h"
+#import "Apple Cross-platform.h"
 #import "view.h"
 #import "Constants.h"
 #import "Utilities.h"
@@ -72,7 +72,7 @@
 
 @synthesize historyTextCache;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( bool ) invert { return self.appDelegate.invert; }
 - (CGFloat ) animationSpeed { return self.appDelegate.animationSpeed ; }
 - (GameModel * ) gameModel { return self.appDelegate.gameModel ; }
@@ -115,8 +115,8 @@
 }
 
 - (void) forComboButtons:(void(^)(ComboBarButton *, BOOL *_Nonnull ))block {
-    NSArray<ToolbarButtonItem *> * items = self.toolbar.items;
-    [items enumerateObjectsUsingBlock:^(ToolbarButtonItem * item, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+    NSArray<AppleToolbarButtonItem *> * items = self.toolbar.items;
+    [items enumerateObjectsUsingBlock:^(AppleToolbarButtonItem * item, NSUInteger __unused idx, BOOL * _Nonnull stop) {
         if ( [ item.customView isKindOfClass:ComboBarButton.class ] ) block(item.customView, stop);
     }];
 }
@@ -155,6 +155,8 @@
     buttonsInverted = false;
     if ( self.invert ) [self setInvertibleButtonsInverted: true ];
 
+    [ BallView setColorsForSwapPermutation: MathieuPermutation::swapPermutation ] ;
+    [self.ballRingView redraw];
 
     // Let's see it
     [ self showCurrentPermutationAtDuration: INSTANTANEOUS ];
@@ -236,9 +238,9 @@
     duration *= ( MAX_ANIMATION_DURATION_FACTOR - self.animationSpeed ) ;
     if ( 0.0 < duration )
     {
-        [View setAnimationBeginsFromCurrentState:YES];
-        [View beginAnimations:nil context:NULL ];
-        [View setAnimationDuration: duration ];
+        [AppleView setAnimationBeginsFromCurrentState:YES];
+        [AppleView beginAnimations:nil context:NULL ];
+        [AppleView setAnimationDuration: duration ];
     }
 #endif
 
@@ -246,7 +248,7 @@
 
 #if TARGET_IOS
     if ( 0.0 < duration )
-        [View commitAnimations];
+        [AppleView commitAnimations];
 #endif
 
     [ self updateHistoryText ];

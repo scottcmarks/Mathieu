@@ -13,7 +13,7 @@
 @implementation HelpViewController
 @synthesize helpView;
 
-- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ Application sharedApplication ] delegate ] ; }
+- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -63,30 +63,30 @@
 //    return YES;
 //}
 
-#pragma mark WebView delegate methods
+#pragma mark AppleWebView delegate methods
 
-- (void)webViewDidStartLoad:(WebView *)webView
+- (void)webViewDidStartLoad:(AppleWebView *)webView
 {
 #if TARGET_IOS
 	// starting the load, show the activity indicator in the status bar
-	[Application sharedApplication].networkActivityIndicatorVisible = YES;
+	[AppleApplication sharedApplication].networkActivityIndicatorVisible = YES;
 #endif
 }
 
-- (void)webViewDidFinishLoad:(WebView *)webView
+- (void)webViewDidFinishLoad:(AppleWebView *)webView
 {
 #if TARGET_IOS
 	// finished loading, hide the activity indicator in the status bar
-	[Application sharedApplication].networkActivityIndicatorVisible = NO;
+	[AppleApplication sharedApplication].networkActivityIndicatorVisible = NO;
 #endif
     [ helpView updateBackButton ];
 }
 
-- (void)webView:(WebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(AppleWebView *)webView didFailLoadWithError:(NSError *)error
 {
 #if TARGET_IOS
 	// load error, hide the activity indicator in the status bar
-	[Application sharedApplication].networkActivityIndicatorVisible = NO;
+	[AppleApplication sharedApplication].networkActivityIndicatorVisible = NO;
 #endif
     // let the helpView report the error;
     [ helpView reportError: error ];

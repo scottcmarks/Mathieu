@@ -35,9 +35,35 @@
 		D2073BC22083FD8B00EF9B71 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */; };
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
+		D230EB3720951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
+		D230EB3820951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
+		D230EB3920951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
+		D230EB3A20951115002A7EA4 /* StoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3020951115002A7EA4 /* StoreManager.m */; };
+		D230EB3B20951115002A7EA4 /* StoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3020951115002A7EA4 /* StoreManager.m */; };
+		D230EB3C20951115002A7EA4 /* StoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3020951115002A7EA4 /* StoreManager.m */; };
+		D230EB3D20951115002A7EA4 /* ProductsRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3120951115002A7EA4 /* ProductsRequestManager.m */; };
+		D230EB3E20951115002A7EA4 /* ProductsRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3120951115002A7EA4 /* ProductsRequestManager.m */; };
+		D230EB3F20951115002A7EA4 /* ProductsRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3120951115002A7EA4 /* ProductsRequestManager.m */; };
+		D230EB4020951115002A7EA4 /* CatalogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3220951115002A7EA4 /* CatalogManager.m */; };
+		D230EB4120951115002A7EA4 /* CatalogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3220951115002A7EA4 /* CatalogManager.m */; };
+		D230EB4220951115002A7EA4 /* CatalogManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3220951115002A7EA4 /* CatalogManager.m */; };
+		D230EB4320951115002A7EA4 /* PaymentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3520951115002A7EA4 /* PaymentManager.m */; };
+		D230EB4420951115002A7EA4 /* PaymentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3520951115002A7EA4 /* PaymentManager.m */; };
+		D230EB4520951115002A7EA4 /* PaymentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3520951115002A7EA4 /* PaymentManager.m */; };
+		D230EB552095234F002A7EA4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D230EB542095234F002A7EA4 /* StoreKit.framework */; };
+		D230EB562095235F002A7EA4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D230EB542095234F002A7EA4 /* StoreKit.framework */; };
+		D230EB572095236F002A7EA4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D230EB542095234F002A7EA4 /* StoreKit.framework */; };
+		D230EB5B20952475002A7EA4 /* KeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5920952474002A7EA4 /* KeychainItem.m */; };
+		D230EB5C20952475002A7EA4 /* KeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5920952474002A7EA4 /* KeychainItem.m */; };
+		D230EB5D20952475002A7EA4 /* KeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5920952474002A7EA4 /* KeychainItem.m */; };
+		D230EB6E20952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
+		D230EB6F20952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
+		D230EB7020952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
 		D23B2FE91FC9D941009CD6BD /* M12 Free Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FE81FC9D941009CD6BD /* M12 Free Images.xcassets */; };
 		D23B2FEF1FC9E3F4009CD6BD /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */; };
 		D23B2FF01FC9E56B009CD6BD /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */; };
+		D23E23CC20953B250034B997 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E23CB20953B250034B997 /* Security.framework */; };
+		D23E23D020953BBC0034B997 /* NSObject+Data.m in Sources */ = {isa = PBXBuildFile; fileRef = D23E23CF20953BBC0034B997 /* NSObject+Data.m */; };
 		D24B1E5420851DA3007A13BA /* SporadicM12 free 355x355@2.png in Resources */ = {isa = PBXBuildFile; fileRef = D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */; };
 		D2511338209284C4002811D7 /* M12 Full Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2511336209284C0002811D7 /* M12 Full Images.xcassets */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
@@ -337,8 +363,39 @@
 		D20DC79B207ACF25007E2D93 /* Sporadic M12 free iPhone App iOS 7 60x60@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sporadic M12 free iPhone App iOS 7 60x60@2.png"; sourceTree = "<group>"; };
 		D20DC79C207ACF4C007E2D93 /* Sporadic M12 free iPhone App iOS 7 60x60@3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sporadic M12 free iPhone App iOS 7 60x60@3.png"; sourceTree = "<group>"; };
 		D222AEFC0FF578C400B2618B /* English */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = English; path = English.lproj/SporadicM12Icon_Prerendered.icns; sourceTree = "<group>"; };
+		D230EB2D20951115002A7EA4 /* CatalogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogManager.h; sourceTree = "<group>"; };
+		D230EB2E20951115002A7EA4 /* Ledger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ledger.m; sourceTree = "<group>"; };
+		D230EB2F20951115002A7EA4 /* PaymentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentManager.h; sourceTree = "<group>"; };
+		D230EB3020951115002A7EA4 /* StoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoreManager.m; sourceTree = "<group>"; };
+		D230EB3120951115002A7EA4 /* ProductsRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsRequestManager.m; sourceTree = "<group>"; };
+		D230EB3220951115002A7EA4 /* CatalogManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogManager.m; sourceTree = "<group>"; };
+		D230EB3320951115002A7EA4 /* ProductsRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsRequestManager.h; sourceTree = "<group>"; };
+		D230EB3420951115002A7EA4 /* StoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoreManager.h; sourceTree = "<group>"; };
+		D230EB3520951115002A7EA4 /* PaymentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentManager.m; sourceTree = "<group>"; };
+		D230EB3620951115002A7EA4 /* Ledger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ledger.h; sourceTree = "<group>"; };
+		D230EB542095234F002A7EA4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		D230EB5920952474002A7EA4 /* KeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItem.m; sourceTree = "<group>"; };
+		D230EB5A20952474002A7EA4 /* KeychainItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItem.h; sourceTree = "<group>"; };
+		D230EB5F20952485002A7EA4 /* AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AES.m; sourceTree = "<group>"; };
+		D230EB6020952485002A7EA4 /* SHA256_Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHA256_Test.m; sourceTree = "<group>"; };
+		D230EB6120952485002A7EA4 /* AES_Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AES_Test.m; sourceTree = "<group>"; };
+		D230EB6220952485002A7EA4 /* KeyedEncrytable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyedEncrytable.h; sourceTree = "<group>"; };
+		D230EB6320952485002A7EA4 /* Password.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Password.m; sourceTree = "<group>"; };
+		D230EB6420952485002A7EA4 /* SHA256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHA256.h; sourceTree = "<group>"; };
+		D230EB6520952485002A7EA4 /* SecretString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecretString.m; sourceTree = "<group>"; };
+		D230EB6620952485002A7EA4 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES.h; sourceTree = "<group>"; };
+		D230EB6720952485002A7EA4 /* KeyedEncrytable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyedEncrytable.m; sourceTree = "<group>"; };
+		D230EB6820952485002A7EA4 /* AES_Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES_Test.h; sourceTree = "<group>"; };
+		D230EB6920952485002A7EA4 /* SHA256_Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHA256_Test.h; sourceTree = "<group>"; };
+		D230EB6A20952485002A7EA4 /* SHA256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHA256.m; sourceTree = "<group>"; };
+		D230EB6B20952485002A7EA4 /* Password.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Password.h; sourceTree = "<group>"; };
+		D230EB6C20952485002A7EA4 /* SecretString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecretString.h; sourceTree = "<group>"; };
+		D230EB6D20952485002A7EA4 /* Encryptable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encryptable.h; sourceTree = "<group>"; };
 		D23B2FE81FC9D941009CD6BD /* M12 Free Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "M12 Free Images.xcassets"; sourceTree = "<group>"; };
 		D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		D23E23CB20953B250034B997 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		D23E23CE20953BBC0034B997 /* NSObject+Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Data.h"; sourceTree = "<group>"; };
+		D23E23CF20953BBC0034B997 /* NSObject+Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Data.m"; sourceTree = "<group>"; };
 		D24B1E5320851DA3007A13BA /* SporadicM12 free 355x355@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 free 355x355@2.png"; sourceTree = "<group>"; };
 		D2511336209284C0002811D7 /* M12 Full Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "M12 Full Images.xcassets"; sourceTree = "<group>"; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
@@ -553,6 +610,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D23E23CC20953B250034B997 /* Security.framework in Frameworks */,
+				D230EB552095234F002A7EA4 /* StoreKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -565,6 +624,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D230EB562095235F002A7EA4 /* StoreKit.framework in Frameworks */,
 				8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */,
 				8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */,
 				8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */,
@@ -576,6 +636,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D230EB572095236F002A7EA4 /* StoreKit.framework in Frameworks */,
 				D266F90A0F7A9F120080CAD1 /* Foundation.framework in Frameworks */,
 				D266F90B0F7A9F120080CAD1 /* UIKit.framework in Frameworks */,
 				D266F90C0F7A9F120080CAD1 /* CoreGraphics.framework in Frameworks */,
@@ -685,6 +746,63 @@
 				D20910E11439738600F35429 /* Info.plist */,
 			);
 			path = Full;
+			sourceTree = "<group>";
+		};
+		D230EB2C20951115002A7EA4 /* InAppPurchases */ = {
+			isa = PBXGroup;
+			children = (
+				D230EB2D20951115002A7EA4 /* CatalogManager.h */,
+				D230EB2E20951115002A7EA4 /* Ledger.m */,
+				D230EB2F20951115002A7EA4 /* PaymentManager.h */,
+				D230EB3020951115002A7EA4 /* StoreManager.m */,
+				D230EB3120951115002A7EA4 /* ProductsRequestManager.m */,
+				D230EB3220951115002A7EA4 /* CatalogManager.m */,
+				D230EB3320951115002A7EA4 /* ProductsRequestManager.h */,
+				D230EB3420951115002A7EA4 /* StoreManager.h */,
+				D230EB3520951115002A7EA4 /* PaymentManager.m */,
+				D230EB3620951115002A7EA4 /* Ledger.h */,
+			);
+			path = InAppPurchases;
+			sourceTree = "<group>";
+		};
+		D230EB5820952474002A7EA4 /* KeychainItem */ = {
+			isa = PBXGroup;
+			children = (
+				D230EB5920952474002A7EA4 /* KeychainItem.m */,
+				D230EB5A20952474002A7EA4 /* KeychainItem.h */,
+			);
+			path = KeychainItem;
+			sourceTree = "<group>";
+		};
+		D230EB5E20952485002A7EA4 /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				D230EB5F20952485002A7EA4 /* AES.m */,
+				D230EB6020952485002A7EA4 /* SHA256_Test.m */,
+				D230EB6120952485002A7EA4 /* AES_Test.m */,
+				D230EB6220952485002A7EA4 /* KeyedEncrytable.h */,
+				D230EB6320952485002A7EA4 /* Password.m */,
+				D230EB6420952485002A7EA4 /* SHA256.h */,
+				D230EB6520952485002A7EA4 /* SecretString.m */,
+				D230EB6620952485002A7EA4 /* AES.h */,
+				D230EB6720952485002A7EA4 /* KeyedEncrytable.m */,
+				D230EB6820952485002A7EA4 /* AES_Test.h */,
+				D230EB6920952485002A7EA4 /* SHA256_Test.h */,
+				D230EB6A20952485002A7EA4 /* SHA256.m */,
+				D230EB6B20952485002A7EA4 /* Password.h */,
+				D230EB6C20952485002A7EA4 /* SecretString.h */,
+				D230EB6D20952485002A7EA4 /* Encryptable.h */,
+			);
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		D23E23CD20953BBC0034B997 /* NSObject+Data */ = {
+			isa = PBXGroup;
+			children = (
+				D23E23CE20953BBC0034B997 /* NSObject+Data.h */,
+				D23E23CF20953BBC0034B997 /* NSObject+Data.m */,
+			);
+			path = "NSObject+Data";
 			sourceTree = "<group>";
 		};
 		D25CEB470FBB60360051EB25 /* Frameworks */ = {
@@ -1003,6 +1121,10 @@
 		D2AE58220FACE81D0093E56B /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				D23E23CD20953BBC0034B997 /* NSObject+Data */,
+				D230EB5E20952485002A7EA4 /* Crypto */,
+				D230EB5820952474002A7EA4 /* KeychainItem */,
+				D230EB2C20951115002A7EA4 /* InAppPurchases */,
 				D29CC5AD207A5EE10006336A /* Apple Cross-platform */,
 				D2AE58480FACE81D0093E56B /* Kit.h */,
 				D2AE58230FACE81D0093E56B /* Buttons */,
@@ -1333,6 +1455,8 @@
 		D2FDA8761FC7509B00603E02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D23E23CB20953B250034B997 /* Security.framework */,
+				D230EB542095234F002A7EA4 /* StoreKit.framework */,
 				D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */,
 			);
 			name = Frameworks;
@@ -1682,8 +1806,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D230EB5C20952475002A7EA4 /* KeychainItem.m in Sources */,
+				D230EB3B20951115002A7EA4 /* StoreManager.m in Sources */,
 				D2AE56F80FACE47B0093E56B /* BallRingView.mm in Sources */,
 				D2AE56F90FACE47B0093E56B /* BallView.mm in Sources */,
+				D230EB3E20951115002A7EA4 /* ProductsRequestManager.m in Sources */,
+				D230EB3820951115002A7EA4 /* Ledger.m in Sources */,
 				D2AE56FB0FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56FC0FACE47B0093E56B /* HelpView.mm in Sources */,
 				D2AE56FD0FACE47B0093E56B /* HelpViewController.mm in Sources */,
@@ -1701,7 +1829,10 @@
 				D2AE59940FACE81D0093E56B /* point.cc in Sources */,
 				D276FF31208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59950FACE81D0093E56B /* rand_utils.c in Sources */,
+				D230EB4420951115002A7EA4 /* PaymentManager.m in Sources */,
 				D2AE5BB70FACE9BB0093E56B /* m12.cc in Sources */,
+				D230EB6F20952486002A7EA4 /* AES.m in Sources */,
+				D230EB4120951115002A7EA4 /* CatalogManager.m in Sources */,
 				D28E02E82092660300DF8DDD /* AppleModalAlert.m in Sources */,
 				D276FF26208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE5BFD0FACE9BB0093E56B /* view.cc in Sources */,
@@ -1715,17 +1846,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2AE56750FACE47B0093E56B /* BallRingView.mm in Sources */,
+				D230EB7020952486002A7EA4 /* AES.m in Sources */,
+				D230EB4220951115002A7EA4 /* CatalogManager.m in Sources */,
 				D2AE56760FACE47B0093E56B /* BallView.mm in Sources */,
 				D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56790FACE47B0093E56B /* HelpView.mm in Sources */,
+				D230EB3920951115002A7EA4 /* Ledger.m in Sources */,
 				D2AE567A0FACE47B0093E56B /* HelpViewController.mm in Sources */,
 				D2AE567C0FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE567D0FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
 				D2AE567F0FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */,
 				D2AE56800FACE47B0093E56B /* SporadicMView.mm in Sources */,
 				D2AE56810FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
+				D230EB4520951115002A7EA4 /* PaymentManager.m in Sources */,
 				D2AE56820FACE47B0093E56B /* SwapPermutationsView.mm in Sources */,
+				D230EB5D20952475002A7EA4 /* KeychainItem.m in Sources */,
 				D2AE56830FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
+				D230EB3C20951115002A7EA4 /* StoreManager.m in Sources */,
 				D2AE56F30FACE47B0093E56B /* main.mm in Sources */,
 				D276FF2D208CE17A00754F7E /* UIMultiButton.m in Sources */,
 				D2AE58EA0FACE81D0093E56B /* SoundEffect.m in Sources */,
@@ -1734,6 +1871,7 @@
 				D276FF32208CE30B00754F7E /* UIDualButton.m in Sources */,
 				D2AE59160FACE81D0093E56B /* rand_utils.c in Sources */,
 				D2AE5B6D0FACE9BB0093E56B /* m24.cc in Sources */,
+				D230EB3F20951115002A7EA4 /* ProductsRequestManager.m in Sources */,
 				D276FF27208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE5B750FACE9BB0093E56B /* view.cc in Sources */,
 				D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */,
@@ -1745,8 +1883,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D230EB6E20952486002A7EA4 /* AES.m in Sources */,
 				D29CC5B3207A5EE20006336A /* LockImages.mm in Sources */,
+				D230EB3A20951115002A7EA4 /* StoreManager.m in Sources */,
+				D230EB4320951115002A7EA4 /* PaymentManager.m in Sources */,
 				D2AE577B0FACE47B0093E56B /* BallRingView.mm in Sources */,
+				D230EB5B20952475002A7EA4 /* KeychainItem.m in Sources */,
 				D2AE577C0FACE47B0093E56B /* BallView.mm in Sources */,
 				D2AE577E0FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE577F0FACE47B0093E56B /* HelpView.mm in Sources */,
@@ -1756,15 +1898,19 @@
 				D2AE57850FACE47B0093E56B /* SporadicMAppDelegate.mm in Sources */,
 				D2AE57860FACE47B0093E56B /* SporadicMView.mm in Sources */,
 				D2AE57870FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
+				D230EB3D20951115002A7EA4 /* ProductsRequestManager.m in Sources */,
 				D2AE57880FACE47B0093E56B /* SwapPermutationsView.mm in Sources */,
 				D276FF25208BDAC200754F7E /* ComboBarButton.mm in Sources */,
 				D2AE57890FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D276FF2B208CE17A00754F7E /* UIMultiButton.m in Sources */,
 				D27B1453208A752200ED3598 /* AltButton.mm in Sources */,
+				D230EB3720951115002A7EA4 /* Ledger.m in Sources */,
 				D2AE57F90FACE47B0093E56B /* main.mm in Sources */,
+				D23E23D020953BBC0034B997 /* NSObject+Data.m in Sources */,
 				D2AE59E80FACE81D0093E56B /* SoundEffect.m in Sources */,
 				D2AE5A130FACE81D0093E56B /* point.cc in Sources */,
 				D2AE5A140FACE81D0093E56B /* rand_utils.c in Sources */,
+				D230EB4020951115002A7EA4 /* CatalogManager.m in Sources */,
 				D2AE5C3F0FACE9BB0093E56B /* m12.cc in Sources */,
 				D29CC5B4207A5EE20006336A /* AppleModalAlert.m in Sources */,
 				D2AE5C850FACE9BB0093E56B /* view.cc in Sources */,
