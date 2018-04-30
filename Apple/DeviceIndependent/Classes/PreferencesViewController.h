@@ -25,11 +25,4 @@
 @property ( nonatomic, retain   ) IBOutlet  PreferencesView    * preferencesView    ;
 @property ( nonatomic, assign   ) IBOutlet  UILabel            * versionStringLabel ;
 
-- ( IBAction ) toggleView                 ;
-- ( IBAction ) showHelp                   ;
-- ( IBAction ) showSwapPermutations       ;
-- ( IBAction ) animationSpeedChanged      ;
-- ( IBAction ) soundEffectsSwitchChanged  ;
-- ( IBAction ) confirmSwitchChanged       ;
-
 @end
