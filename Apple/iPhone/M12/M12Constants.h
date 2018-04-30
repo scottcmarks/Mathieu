@@ -17,7 +17,7 @@
 
 #define BALL_COLORS \
 WHITE             , \
-LIGHT_BLUE_AZURE  , \
+LIGHT_AZURE_BLUE  , \
 LIGHT_HARD_ORANGE , \
 YELLOW            , \
 DARK_HARD_GREEN   , \
