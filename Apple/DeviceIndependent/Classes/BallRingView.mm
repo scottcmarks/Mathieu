@@ -177,6 +177,18 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 }
 
 
+-(void) createSubviews {
+    [self createBallsAndLabels ];
+    
+    if (_delegate) {
+        [self createTags];
+        [self setupSounds];
+        [self initializeInteraction];
+    }
+}
+
+#pragma mark -  UIView method overrides
+
 - ( id ) initWithFrame:         ( CGRect ) frame
 {
 #define INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL 1
@@ -187,16 +199,6 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
     self = [ super initWithFrame: CGRect_to_NSRect( frame ) ];
     [self createSubviews];
     return self;
-}
-
--(void) createSubviews {
-    [self createBallsAndLabels ];
-    
-    if (_delegate) {
-        [self createTags];
-        [self setupSounds];
-        [self initializeInteraction];
-    }
 }
 
 - ( void ) layoutSubviews {
@@ -414,13 +416,6 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 
 - (void)dealloc
 {
-//    forAllBalls( i )
-//    {
-//        [ _ballLabels[ i ] release ];
-//        _ballLabels[ i ] = nil;
-//        [ _ballViews[ i ] release ];
-//        _ballViews[ i ] = nil;
-//    }
     [ _rightSound    release ] ;
     [ _leftSound     release ] ;
     [ _swapSound     release ] ;

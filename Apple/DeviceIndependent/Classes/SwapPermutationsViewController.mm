@@ -59,16 +59,6 @@
 
 
 
-- (IBAction)dismissSwapPermutations
-{
-    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
-    if ( newSwapIndex != self.gameModel.swapIndex )
-        abort(); // [ rootViewController setSwapIndex: newSwapIndex ];
-    else
-        abort(); // [ rootViewController toggleView ];
-}
-
-
 //- (IBAction)unwindToPreferences:(UIStoryboardSegue*)sender
 //{
 //    UIViewController *sourceViewController = sender.sourceViewController;
