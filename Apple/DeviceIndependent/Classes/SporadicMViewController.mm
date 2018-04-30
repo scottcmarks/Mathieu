@@ -41,39 +41,13 @@
     [ self.sporadicMView setInvertibleButtonsInverted: inverted];
 }
 
-// Framework-generated messages
-#if TARGET_IOS
-
-// Implement viewDidLoad to do additional setup after loading the view.
 - (void)initializeView {
     haveNotedSuccess = [ self.gameModel isSolving ] && [ self.gameModel isIdentity ];
     [self.sporadicMView initializeViews];
 }
 
-#if TARGET_IOS && OVERRIDE_DEPRECATED
-- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
-{
-    // Return YES for supported orientations
-    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
-}
-#endif // TARGET_IOS && OVERRIDE_DEPRECATED
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
-}
-
-#endif /* TARGET_IOS */
-
-
 
 // Handlers for events from the SporadicMView
-
-
-- (IBAction)toggleView
-{
-    abort(); // [ rootViewController toggleView ];
-}
 
 - (IBAction)toggleInverted {
     self.invert = !self.invert ;
@@ -338,14 +312,12 @@
     [ self.sporadicMView disableAllComboButtons ];
     [ self.ballRingView redraw ];
     [ self.sporadicMView showCurrentPermutationAtDuration:INSTANTANEOUS ];
-//    abort(); // [ self.rootViewController toggleView ];
 }
 
 
 -( void ) dontChangeSwap
 {
     [ BallView setColorsForSwapPermutation: MathieuPermutation::swapPermutation ];
-//    abort(); // [ self.rootViewController toggleView ];
 }
 
 

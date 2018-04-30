@@ -25,16 +25,8 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <items>
                         <navigationItem title="M24" id="4">
-                            <barButtonItem key="leftBarButtonItem" title="Help" id="66">
-                                <connections>
-                                    <action selector="showHelp" destination="-1" id="74"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="5">
-                                <connections>
-                                    <action selector="toggleView" destination="-1" id="73"/>
-                                </connections>
-                            </barButtonItem>
+                            <barButtonItem key="leftBarButtonItem" title="Help" id="66"/>
+                            <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="5"/>
                         </navigationItem>
                     </items>
                 </navigationBar>

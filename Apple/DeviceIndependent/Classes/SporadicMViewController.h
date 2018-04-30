@@ -31,7 +31,6 @@
 }
 
 // Handlers for events from the SporadicMView
-- ( IBAction ) toggleView     ;
 - ( IBAction ) toggleInverted ;
 - ( IBAction ) right          ;
 - ( IBAction ) left           ;

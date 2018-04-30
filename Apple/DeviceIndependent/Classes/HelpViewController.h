@@ -24,6 +24,4 @@
 
 @property ( nonatomic, retain   ) IBOutlet HelpView *helpView;
 
-- ( IBAction ) dismissHelp ;
-
 @end
