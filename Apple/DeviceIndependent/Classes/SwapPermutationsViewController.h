@@ -24,6 +24,4 @@
 @property ( nonatomic, assign   )          PreferencesViewController * preferencesViewController ;
 @property ( nonatomic, retain   ) IBOutlet SwapPermutationsView      * swapPermutationsView      ;
 
-- ( IBAction ) showHelp ;
-
 @end
