@@ -234,21 +234,18 @@
 
 -(void) showCurrentPermutationAtDuration:(CGFloat)duration
 {
+
 #if TARGET_IOS
     duration *= ( MAX_ANIMATION_DURATION_FACTOR - self.animationSpeed ) ;
-    if ( 0.0 < duration )
-    {
-        [AppleView setAnimationBeginsFromCurrentState:YES];
-        [AppleView beginAnimations:nil context:NULL ];
-        [AppleView setAnimationDuration: duration ];
-    }
-#endif
+    if (duration <= 0.0) duration = 0.01;
+    [SporadicMView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState
+                            animations:^{
+                                [ ballRingView moveLabels ];
+                            }
+                            completion:nil];
 
+#else //  TARGET_IOS
     [ ballRingView moveLabels ];
-
-#if TARGET_IOS
-    if ( 0.0 < duration )
-        [AppleView commitAnimations];
 #endif
 
     [ self updateHistoryText ];
