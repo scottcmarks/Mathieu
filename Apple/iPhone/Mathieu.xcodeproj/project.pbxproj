@@ -15,14 +15,8 @@
 		8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		D2017AB01497D14E003DA78F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */; };
-		D2017AB11497D14E003DA78F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */; };
-		D2017AB41497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */; };
-		D2017AB51497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */; };
 		D2017AB71497EB46003DA78F /* PreferencesView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB61497EB46003DA78F /* PreferencesView-iPad.xib */; };
 		D2017AB91497F07D003DA78F /* HelpView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2017AB81497F07D003DA78F /* HelpView-iPad.xib */; };
-		D204A277143B7D3F005E4A82 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A274143B7D3F005E4A82 /* Default.png */; };
-		D204A279143B7D3F005E4A82 /* Default@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D204A275143B7D3F005E4A82 /* Default@x2.png */; };
 		D204A27E143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D204A27F143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D204A280143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
@@ -45,7 +39,6 @@
 		D230EB5D20952475002A7EA4 /* KeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5920952474002A7EA4 /* KeychainItem.m */; };
 		D230EB6F20952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
 		D230EB7020952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
-		D23B2FF01FC9E56B009CD6BD /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */; };
 		D23E23CC20953B250034B997 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E23CB20953B250034B997 /* Security.framework */; };
 		D2511338209284C4002811D7 /* M12 Full Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2511336209284C0002811D7 /* M12 Full Images.xcassets */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
@@ -119,7 +112,6 @@
 		D2AE56820FACE47B0093E56B /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C30FACE47A0093E56B /* SwapPermutationsView.mm */; };
 		D2AE56830FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */; };
 		D2AE56840FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55C70FACE47A0093E56B /* HelpView.xib */; };
-		D2AE56870FACE47B0093E56B /* ComboButtonDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55CB0FACE47A0093E56B /* ComboButtonDisabled.png */; };
 		D2AE56890FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55CD0FACE47A0093E56B /* Sporadic_Games_Logo.png */; };
 		D2AE568B0FACE47B0093E56B /* applause.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D00FACE47A0093E56B /* applause.caf */; };
 		D2AE568C0FACE47B0093E56B /* combo.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D10FACE47A0093E56B /* combo.caf */; };
@@ -132,12 +124,10 @@
 		D2AE56930FACE47B0093E56B /* shake.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D80FACE47A0093E56B /* shake.caf */; };
 		D2AE56940FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
 		D2AE56950FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
-		D2AE56960FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
 		D2AE56E30FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56510FACE47A0093E56B /* HelpView.xib */; };
 		D2AE56EC0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */; };
 		D2AE56F10FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56600FACE47A0093E56B /* PreferencesView.xib */; };
 		D2AE56F30FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
-		D2AE56F40FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
 		D2AE56F80FACE47B0093E56B /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2AE56F90FACE47B0093E56B /* BallView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AA0FACE47A0093E56B /* BallView.mm */; };
 		D2AE56FB0FACE47B0093E56B /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
@@ -151,7 +141,6 @@
 		D2AE57050FACE47B0093E56B /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C30FACE47A0093E56B /* SwapPermutationsView.mm */; };
 		D2AE57060FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */; };
 		D2AE57070FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55C70FACE47A0093E56B /* HelpView.xib */; };
-		D2AE570A0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55CB0FACE47A0093E56B /* ComboButtonDisabled.png */; };
 		D2AE570C0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55CD0FACE47A0093E56B /* Sporadic_Games_Logo.png */; };
 		D2AE570E0FACE47B0093E56B /* applause.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D00FACE47A0093E56B /* applause.caf */; };
 		D2AE570F0FACE47B0093E56B /* combo.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D10FACE47A0093E56B /* combo.caf */; };
@@ -164,11 +153,7 @@
 		D2AE57160FACE47B0093E56B /* shake.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D80FACE47A0093E56B /* shake.caf */; };
 		D2AE57170FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
 		D2AE57180FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
-		D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */; };
 		D2AE57760FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
-		D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566A0FACE47B0093E56B /* MainWindow.xib */; };
-		D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566B0FACE47B0093E56B /* PreferencesView.xib */; };
-		D2AE57790FACE47B0093E56B /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
 		D2AE58D30FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */; };
 		D2AE58DD0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58370FACE81D0093E56B /* SimpleBluishButtonNormal.png */; };
 		D2AE58DE0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58380FACE81D0093E56B /* SimpleButtonHighlighted.png */; };
@@ -220,8 +205,6 @@
 		D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
 		D2FDA8781FC750C100603E02 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */; };
-		D2FDA8791FC779F600603E02 /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
-		D2FDA87A1FC779F700603E02 /* SporadicMView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE566C0FACE47B0093E56B /* SporadicMView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -231,12 +214,8 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C081A2F0F698ED000C21C40 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8C1B8AE70F68470300F359D6 /* SporadicM24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SporadicM24.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
-		D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SporadicMView-iPad.xib"; sourceTree = "<group>"; };
 		D2017AB61497EB46003DA78F /* PreferencesView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "PreferencesView-iPad.xib"; sourceTree = "<group>"; };
 		D2017AB81497F07D003DA78F /* HelpView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "HelpView-iPad.xib"; sourceTree = "<group>"; };
-		D204A274143B7D3F005E4A82 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		D204A275143B7D3F005E4A82 /* Default@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@x2.png"; sourceTree = "<group>"; };
 		D204A27B143BA851005E4A82 /* NSBundle+VersionString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+VersionString.h"; sourceTree = "<group>"; };
 		D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+VersionString.m"; sourceTree = "<group>"; };
 		D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -275,7 +254,6 @@
 		D230EB6B20952485002A7EA4 /* Password.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Password.h; sourceTree = "<group>"; };
 		D230EB6C20952485002A7EA4 /* SecretString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecretString.h; sourceTree = "<group>"; };
 		D230EB6D20952485002A7EA4 /* Encryptable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encryptable.h; sourceTree = "<group>"; };
-		D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		D23E23CB20953B250034B997 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D23E23CE20953BBC0034B997 /* NSObject+Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Data.h"; sourceTree = "<group>"; };
 		D23E23CF20953BBC0034B997 /* NSObject+Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Data.m"; sourceTree = "<group>"; };
@@ -348,7 +326,6 @@
 		D2AE55C40FACE47A0093E56B /* SwapPermutationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapPermutationsViewController.h; sourceTree = "<group>"; };
 		D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SwapPermutationsViewController.mm; sourceTree = "<group>"; };
 		D2AE55C70FACE47A0093E56B /* HelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpView.xib; sourceTree = "<group>"; };
-		D2AE55CB0FACE47A0093E56B /* ComboButtonDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ComboButtonDisabled.png; sourceTree = "<group>"; };
 		D2AE55CD0FACE47A0093E56B /* Sporadic_Games_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sporadic_Games_Logo.png; sourceTree = "<group>"; };
 		D2AE55D00FACE47A0093E56B /* applause.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = applause.caf; sourceTree = "<group>"; };
 		D2AE55D10FACE47A0093E56B /* combo.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = combo.caf; sourceTree = "<group>"; };
@@ -361,7 +338,6 @@
 		D2AE55D80FACE47A0093E56B /* shake.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = shake.caf; sourceTree = "<group>"; };
 		D2AE55D90FACE47A0093E56B /* success.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.caf; sourceTree = "<group>"; };
 		D2AE55DA0FACE47A0093E56B /* swap.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = swap.caf; sourceTree = "<group>"; };
-		D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SwapPermutationsView.xib; path = ../../DeviceIndependent/Resources/SwapPermutationsView.xib; sourceTree = "<group>"; };
 		D2AE55ED0FACE47A0093E56B /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		D2AE55F10FACE47A0093E56B /* M12Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M12Constants.h; sourceTree = "<group>"; };
 		D2AE55FC0FACE47A0093E56B /* SporadicM12_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicM12_Prefix.pch; sourceTree = "<group>"; };
@@ -372,9 +348,6 @@
 		D2AE56630FACE47A0093E56B /* SporadicM24_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SporadicM24_Prefix.pch; sourceTree = "<group>"; };
 		D2AE56640FACE47A0093E56B /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		D2AE56680FACE47A0093E56B /* Mathieu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathieu_Prefix.pch; sourceTree = "<group>"; };
-		D2AE566A0FACE47B0093E56B /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		D2AE566B0FACE47B0093E56B /* PreferencesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesView.xib; sourceTree = "<group>"; };
-		D2AE566C0FACE47B0093E56B /* SporadicMView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SporadicMView.xib; sourceTree = "<group>"; };
 		D2AE58250FACE81D0093E56B /* CanDisableButtonProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanDisableButtonProtocol.h; sourceTree = "<group>"; };
 		D2AE58280FACE81D0093E56B /* DualActionButtonProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DualActionButtonProtocol.h; sourceTree = "<group>"; };
 		D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DualActionButtonAlternate.png; sourceTree = "<group>"; };
@@ -561,15 +534,6 @@
 			);
 			name = Mathieu;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		D2017AAD1497D14E003DA78F /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-				D2017AAE1497D14E003DA78F /* MainWindow-iPad.xib */,
-				D2017AB21497DC9A003DA78F /* SporadicMView-iPad.xib */,
-			);
-			path = iPad;
 			sourceTree = "<group>";
 		};
 		D204A27A143BA851005E4A82 /* NSBundle+VersionString */ = {
@@ -760,7 +724,6 @@
 		D2AE55C80FACE47A0093E56B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				D2AE55CB0FACE47A0093E56B /* ComboButtonDisabled.png */,
 				D2AE55CD0FACE47A0093E56B /* Sporadic_Games_Logo.png */,
 			);
 			path = Images;
@@ -797,7 +760,6 @@
 				D2AE55FD0FACE47A0093E56B /* M24 */,
 				D2AE56640FACE47A0093E56B /* main.mm */,
 				D2AE56680FACE47A0093E56B /* Mathieu_Prefix.pch */,
-				D2AE56690FACE47B0093E56B /* Resources */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -873,21 +835,6 @@
 				D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */,
 			);
 			path = Images;
-			sourceTree = "<group>";
-		};
-		D2AE56690FACE47B0093E56B /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				D2017AAD1497D14E003DA78F /* iPad */,
-				D204A274143B7D3F005E4A82 /* Default.png */,
-				D204A275143B7D3F005E4A82 /* Default@x2.png */,
-				D2AE566A0FACE47B0093E56B /* MainWindow.xib */,
-				D2AE566B0FACE47B0093E56B /* PreferencesView.xib */,
-				D2AE566C0FACE47B0093E56B /* SporadicMView.xib */,
-				D2AE55DB0FACE47A0093E56B /* SwapPermutationsView.xib */,
-				D23B2FEE1FC9E3F4009CD6BD /* Launch.storyboard */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		D2AE58140FACE4AC0093E56B /* Application Control */ = {
@@ -1398,7 +1345,6 @@
 				D2AE57070FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2511338209284C4002811D7 /* M12 Full Images.xcassets in Resources */,
 				D28E02E72092658F00DF8DDD /* SporadicM12.storyboard in Resources */,
-				D2AE570A0FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
 				D2AE570C0FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D28E02E3209264F100DF8DDD /* SporadicM12 355x355@2.png in Resources */,
 				D26DA6722092ECFE0045E179 /* combo_button_A_pressed.html in Resources */,
@@ -1417,10 +1363,6 @@
 				D26DA65E2092EB970045E179 /* home_confirm.html in Resources */,
 				D2AE57180FACE47B0093E56B /* swap.caf in Resources */,
 				D26DA6492092E9860045E179 /* home_position.html in Resources */,
-				D2AE57190FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
-				D2AE57770FACE47B0093E56B /* MainWindow.xib in Resources */,
-				D2AE57780FACE47B0093E56B /* PreferencesView.xib in Resources */,
-				D2AE57790FACE47B0093E56B /* SporadicMView.xib in Resources */,
 				D26DA6422092E9440045E179 /* right_position.html in Resources */,
 				D2AE59520FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */,
 				D2AE595C0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */,
@@ -1449,13 +1391,8 @@
 				D26DA65A2092EB5F0045E179 /* shake_confirm.html in Resources */,
 				D2AE5C970FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CBD0FACEA8C0093E56B /* Images in Resources */,
-				D23B2FF01FC9E56B009CD6BD /* Launch.storyboard in Resources */,
 				D26DA6662092EC4B0045E179 /* restart_confirm.html in Resources */,
-				D204A277143B7D3F005E4A82 /* Default.png in Resources */,
-				D204A279143B7D3F005E4A82 /* Default@x2.png in Resources */,
 				D26DA6452092E9440045E179 /* swap_position.html in Resources */,
-				D2017AB01497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
-				D2017AB41497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
 				D28E02E52092656A00DF8DDD /* SporadicM12 355x355.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1465,12 +1402,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2AE56840FACE47B0093E56B /* HelpView.xib in Resources */,
-				D2AE56870FACE47B0093E56B /* ComboButtonDisabled.png in Resources */,
 				D2AE56890FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D2AE568B0FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE568C0FACE47B0093E56B /* combo.caf in Resources */,
 				D2073BC22083FD8B00EF9B71 /* Default-568h@2x.png in Resources */,
-				D2FDA87A1FC779F700603E02 /* SporadicMView.xib in Resources */,
 				D2AE568D0FACE47B0093E56B /* combo_not_set.caf in Resources */,
 				D2AE568E0FACE47B0093E56B /* combo_set.caf in Resources */,
 				D2AE568F0FACE47B0093E56B /* home.caf in Resources */,
@@ -1480,11 +1415,9 @@
 				D2AE56930FACE47B0093E56B /* shake.caf in Resources */,
 				D2AE56940FACE47B0093E56B /* success.caf in Resources */,
 				D2AE56950FACE47B0093E56B /* swap.caf in Resources */,
-				D2AE56960FACE47B0093E56B /* SwapPermutationsView.xib in Resources */,
 				D2AE56E30FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2AE56EC0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */,
 				D2AE56F10FACE47B0093E56B /* PreferencesView.xib in Resources */,
-				D2AE56F40FACE47B0093E56B /* MainWindow.xib in Resources */,
 				D2AE58D30FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */,
 				D2AE58DD0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */,
 				D2AE58DE0FACE81D0093E56B /* SimpleButtonHighlighted.png in Resources */,
@@ -1502,8 +1435,6 @@
 				D2AE5B640FACE9BB0093E56B /* moves_and_steps.html in Resources */,
 				D2AE5C960FACEA6C0093E56B /* Generic_Images in Resources */,
 				D2AE5CE50FACEAA80093E56B /* Images in Resources */,
-				D2017AB11497D14E003DA78F /* MainWindow-iPad.xib in Resources */,
-				D2017AB51497DC9A003DA78F /* SporadicMView-iPad.xib in Resources */,
 				D2017AB71497EB46003DA78F /* PreferencesView-iPad.xib in Resources */,
 				D2017AB91497F07D003DA78F /* HelpView-iPad.xib in Resources */,
 			);
@@ -1531,7 +1462,6 @@
 				D26DA65F2092EB970045E179 /* home_confirm.html in Resources */,
 				D26DA6462092E9440045E179 /* swap_position.html in Resources */,
 				D26DA6432092E9440045E179 /* right_position.html in Resources */,
-				D2FDA8791FC779F600603E02 /* SporadicMView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
