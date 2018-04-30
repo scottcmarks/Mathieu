@@ -37,12 +37,6 @@ static BallColor ballColors[ nBalls ];
     [ self setColorsForSwapPermutation: MathieuPermutation::swapPermutation] ;
 }
 
-//+ ( void ) initialize
-//{
-//    if ( self == [ BallView class ] )
-//        [ self setColorsForCurrentSwapPermutation ];
-//}
-
 
 - (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
 {
