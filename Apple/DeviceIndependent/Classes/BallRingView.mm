@@ -109,7 +109,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
         ballLabel.center = _ballCenters[ i ];
         ballLabel.font = ballFont;
         ballLabel.textAlignment = NSTextAlignmentCenter;
-        ballLabel.textColor = [ UIColor colorWithWhite:0.1667 alpha:1.0 ];
+        ballLabel.textColor = [ UIColor colorWithWhite:0.250 alpha:1.0 ];
         ballLabel.backgroundColor = [ UIColor clearColor ];
         ballLabel.text = [NSString stringWithFormat:@"%d", i ];
     }
