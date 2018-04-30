@@ -39,7 +39,7 @@ using namespace std;
 }
 
 -(id)init{
-	if ( self = [super init] ) {
+	if ( ( self = [super init] ) ) {
         currentPermutation = new MathieuPermutationWithHistory;
         startingPermutation = NULL;
 	}
@@ -259,13 +259,6 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
         ( * currentPermutation ).left ( -n );
 }
 
--(void)dealloc
-{
-    delete currentPermutation;
-    [ self setStartingPermutation: NULL ];
-    [ super dealloc ];
-}
-
 -( void ) runCombo: ( HistoryElement ) c inverted: ( bool ) inverted 
 {
     ( * currentPermutation ).run_macro( c, inverted ) ;
@@ -339,6 +332,11 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
     return ( * currentPermutation ).steps( );
 }
 
-
+-(void)dealloc
+{
+    delete currentPermutation;
+    [ self setStartingPermutation: NULL ];
+    [ super dealloc ];
+}
 
 @end
