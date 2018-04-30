@@ -24,44 +24,11 @@
     return self;
 }
 
-
-#if TARGET_IOS && OVERRIDE_DEPRECATED
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return YES;
-}
-
-//  - (void)didReceiveMemoryWarning {
-//      [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-//      // Release anything that's not essential, such as cached data shadow?
-//  }
-
-#endif
-
-
-- (void)dealloc {
-    self.helpView = nil;
-    [super dealloc];
-}
-
-- (IBAction)dismissHelp
-{
-    abort();
-}
-
 - (IBAction)unwindToSourceViewController:(UIStoryboardSegue*)sender
 {
     // UIViewController *sourceViewController = sender.sourceViewController;
     return;
 }
-
-//- (BOOL)canPerformUnwindSegueAction:(SEL)action
-//                 fromViewController:(UIViewController *)fromViewController
-//                         withSender:(id)sender {
-//    return YES;
-//}
 
 #pragma mark AppleWebView delegate methods
 
@@ -90,6 +57,12 @@
 #endif
     // let the helpView report the error;
     [ helpView reportError: error ];
+}
+
+
+- (void)dealloc {
+    self.helpView = nil;
+    [super dealloc];
 }
 
 @end

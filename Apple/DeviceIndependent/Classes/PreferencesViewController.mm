@@ -50,27 +50,6 @@
     [ viewController release ];
 }
 
-- ( IBAction )toggleView
-{
-    abort();
-}
-
-
-- (IBAction)showHelp
-{
-    if ( self.helpViewController == nil )
-        [ self loadHelpViewController ];
-    abort();
-}
-
-
-- (IBAction)showSwapPermutations
-{
-    if ( self.swapPermutationsViewController == nil )
-        [ self loadSwapPermutationsViewController ];
-    abort();
-}
-
 
 - (IBAction)animationSpeedChanged
 {
@@ -109,25 +88,6 @@
     self.versionStringLabel.text = [ NSBundle versionString ] ;
     [preferencesView synchronize];
 }
-
-#if TARGET_IOS && OVERRIDE_DEPRECATED
-// Override to allow orientations other than the default portrait orientation.
-- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
-{
-    // Return YES for supported orientations
-    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
-}
-#endif
-
-
-
-
-//- (BOOL)canPerformUnwindSegueAction:(SEL)action
-//                 fromViewController:(UIViewController *)fromViewController
-//                         withSender:(id)sender {
-//    return YES;
-//}
-
 
 -(IBAction)prepareForUnwindToPreferences:(UIStoryboardSegue *)segue {
     return;

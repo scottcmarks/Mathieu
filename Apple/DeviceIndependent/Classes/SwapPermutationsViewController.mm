@@ -32,53 +32,6 @@
 }
 
 
-- (void) showHelp { [ self.preferencesViewController showHelp ] ; }
-
-
-#if TARGET_IOS && OVERRIDE_DEPRECATED
-
-// Override to allow orientations other than the default portrait orientation.
-- ( BOOL ) shouldAutorotateToInterfaceOrientation: ( UIInterfaceOrientation ) interfaceOrientation
-{
-    // Return YES for supported orientations
-    return UIInterfaceOrientationIsPortrait(interfaceOrientation ) ;
-}
-
-//  - (void)didReceiveMemoryWarning {
-//      [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-//      // Release anything that's not essential, such as cached data shadow?
-//  }
-
-#endif
-
-
-- (void)dealloc {
-    self.swapPermutationsView = nil;
-    [super dealloc];
-}
-
-
-
-//- (IBAction)unwindToPreferences:(UIStoryboardSegue*)sender
-//{
-//    UIViewController *sourceViewController = sender.sourceViewController;
-//    assert([sourceViewController isKindOfClass:PreferencesViewController.class]);
-//    int newSwapIndex = swapPermutationsView.pickedSwapIndex ;
-//    if ( newSwapIndex != self.gameModel.swapIndex )
-//        abort(); // [ rootViewController setSwapIndex: newSwapIndex ];
-//    else
-//        abort(); // [ rootViewController toggleView ];
-//    
-//    // Pull any data from the view controller which initiated the unwind segue.
-//}
-
-//- (BOOL)canPerformUnwindSegueAction:(SEL)action
-//                 fromViewController:(UIViewController *)fromViewController
-//                         withSender:(id)sender {
-//    return YES;
-//}
-
-
 - (void) unwindToSporadicM {
     [self performSegueWithIdentifier:@"unwindToSporadicM" sender:nil];
 }
@@ -120,5 +73,11 @@
     return;
 }
 
+
+
+- (void)dealloc {
+    self.swapPermutationsView = nil;
+    [super dealloc];
+}
 
 @end
