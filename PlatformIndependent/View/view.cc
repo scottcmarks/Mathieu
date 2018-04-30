@@ -1,6 +1,6 @@
 /*
  *  view.cc
- *  SporadicM12
+ *  SporadicM
  *
  *  Created by Scott Marks on 10/19/08.
  *  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.

@@ -17,7 +17,6 @@ static NSString * const SporadicMAnimationSpeedKey = @"SporadicMAnimationSpeedKe
 static NSString * const SporadicMSoundEffectsKey   = @"SporadicMSoundEffectsKey"   ;
 static NSString * const SporadicMConfirmKey        = @"SporadicMConfirmKey"        ;
 static NSString * const SporadicMInvertKey         = @"SporadicMInvertKey"         ;
-static NSString * const SporadicMSpinMessagesKey   = @"SporadicMSpinMessagesKey"   ;
 static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"      ;
 
 @implementation SporadicMAppDelegate
@@ -29,67 +28,26 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 @synthesize invert;
 @synthesize gameModel;
 
-// +initialize is invoked before the class receives any other messages, so it
-// is a good place to set up application defaults
-
-+ ( void ) initialize
-{
-#define INITIALIZE_DEBUG_LEVEL 1
-    if ( self == [ SporadicMAppDelegate class ] )
-    {
-#if INITIALIZE_DEBUG_LEVEL <= DEBUG_LEVEL
-        __timestamp__;
-#endif
-
-        initialize_rand( ) ;
-
-        // Register default values for the persistent state.
-        // This will be used when the app has never previously terminated.
-        [ [ NSUserDefaults standardUserDefaults ] registerDefaults: @{SporadicMAnimationSpeedKey : @2.0,
-                                                                      SporadicMSoundEffectsKey   : @YES,
-                                                                      SporadicMConfirmKey        : @YES,
-                                                                      SporadicMInvertKey         : @NO,
-                                                                      SporadicMSpinMessagesKey   : @NO
-                                                                     } ];
-    }
-}
 
 // Invoked after the application has been launched and initialized but before it has received its first event.
 - ( BOOL ) application: ( AppleApplication * ) application didFinishLaunchingWithOptions: ( NSDictionary * ) launchOptions
 {
 #define APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL 1
-
-#if OLD_PRESENTATION_LAYER
-#if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
-    __timestamp__;
-#endif
-    // Set up root view controller
-    SporadicMViewController *viewController = [ SporadicMViewController new ];
-    self.window.SporadicMViewController = viewController;
-    [ viewController release ] ;
-#if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
-    __timestamp__;
-#endif
-    
-    // Add the root view controller's view to the window
-#if TARGET_IOS
-    AppleView * rootView = [ viewController view ];
-    [ window_view( window ) addSubview: rootView ];
-#elif TARGET_MACOS
-    viewController.view = window_view( window );
-    [ viewController viewDidLoad ];  // tacky to call this directly?
-#else
-#error Don't know this platform!
-#endif
-
-#else // OLD_PRESENTATION_LAYER
-#endif // OLD_PRESENTATION_LAYER
-    
-
     
 #if APPLICATIONDIDFINISHLAUNCHING_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__;
 #endif
+    
+    initialize_rand( ) ;
+    
+    // Register default values for the persistent state.
+    // This will be used when the app has never previously terminated.
+    NSDictionary * defaults = @{SporadicMAnimationSpeedKey : @2.0,
+                                SporadicMSoundEffectsKey   : @YES,
+                                SporadicMConfirmKey        : @YES,
+                                SporadicMInvertKey         : @NO,
+                               };
+    [ [ NSUserDefaults standardUserDefaults ] registerDefaults: defaults ];
     return YES ;
 }
 
