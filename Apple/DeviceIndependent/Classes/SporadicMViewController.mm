@@ -188,7 +188,6 @@
 -(void) spinInProgress: (int) wedges{
     self.invert = false ;
     [ self.gameModel spin: wedges ];
-//      [ self.sporadicMView updateHistoryText ];
 }
 
 - (void) spinFinished: (int)wedges{
