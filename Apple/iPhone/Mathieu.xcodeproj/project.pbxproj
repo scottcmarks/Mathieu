@@ -48,6 +48,7 @@
 		D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
 		D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */; };
 		D266CA4A0FBCCAA50095135E /* SporadicMView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55BF0FACE47A0093E56B /* SporadicMView.mm */; };
+		D26C265E25A110CD00E5180A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D26C265D25A110CD00E5180A /* CoreServices.framework */; };
 		D26DA63C2092E7C30045E179 /* left_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63A2092E7BF0045E179 /* left_position.html */; };
 		D26DA63E2092E7CA0045E179 /* left_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63A2092E7BF0045E179 /* left_position.html */; };
 		D26DA6422092E9440045E179 /* right_position.html in Resources */ = {isa = PBXBuildFile; fileRef = D26DA63F2092E9440045E179 /* right_position.html */; };
@@ -204,7 +205,6 @@
 		D2B7EA7F11D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2B7EA8011D32AF600BCE169 /* iPhoneUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */; };
 		D2D427080FF0087200A6706E /* BallRingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55A70FACE47A0093E56B /* BallRingView.mm */; };
-		D2FDA8781FC750C100603E02 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -225,7 +225,6 @@
 		D20910F01439753500F35429 /* SporadicM12Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Screenshot1.png; sourceTree = "<group>"; };
 		D20910F21439753600F35429 /* SporadicM12Screenshot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Screenshot2.png; sourceTree = "<group>"; };
 		D20910F41439753600F35429 /* SporadicM12Screenshot3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SporadicM12Screenshot3.png; sourceTree = "<group>"; };
-		D222AEFC0FF578C400B2618B /* English */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = English; path = English.lproj/SporadicM12Icon_Prerendered.icns; sourceTree = "<group>"; };
 		D230EB2D20951115002A7EA4 /* CatalogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogManager.h; sourceTree = "<group>"; };
 		D230EB2E20951115002A7EA4 /* Ledger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ledger.m; sourceTree = "<group>"; };
 		D230EB2F20951115002A7EA4 /* PaymentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentManager.h; sourceTree = "<group>"; };
@@ -260,6 +259,10 @@
 		D2511336209284C0002811D7 /* M12 Full Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "M12 Full Images.xcassets"; sourceTree = "<group>"; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		D26C265D25A110CD00E5180A /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		D26C266225A110FA00E5180A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D26C266325A1110100E5180A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D26C266425A1110100E5180A /* en */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = en; path = en.lproj/SporadicM12Icon_Prerendered.icns; sourceTree = "<group>"; };
 		D26DA63A2092E7BF0045E179 /* left_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = left_position.html; sourceTree = "<group>"; };
 		D26DA63F2092E9440045E179 /* right_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = right_position.html; sourceTree = "<group>"; };
 		D26DA6402092E9440045E179 /* swap_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = swap_position.html; sourceTree = "<group>"; };
@@ -286,8 +289,6 @@
 		D27C7C1D0FB2202700ECAE6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D27C7C1E0FB2202700ECAE6F /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		D27C7C1F0FB2202700ECAE6F /* Mathieu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mathieu_Prefix.pch; sourceTree = "<group>"; };
-		D27C7C300FB2211800ECAE6F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D27C7C320FB2211800ECAE6F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D28025350FFBBF9B008CA92E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; plistStructureDefinitionIdentifier = "<none>"; sourceTree = "<group>"; };
 		D28E02E2209264F100DF8DDD /* SporadicM12 355x355@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 355x355@2.png"; sourceTree = "<group>"; };
 		D28E02E42092656A00DF8DDD /* SporadicM12 355x355.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 355x355.png"; sourceTree = "<group>"; };
@@ -462,7 +463,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				8C081A300F698ED000C21C40 /* AudioToolbox.framework in Frameworks */,
-				D2FDA8781FC750C100603E02 /* MobileCoreServices.framework in Frameworks */,
+				D26C265E25A110CD00E5180A /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1233,6 +1234,7 @@
 		D2FDA8761FC7509B00603E02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D26C265D25A110CD00E5180A /* CoreServices.framework */,
 				D23E23CB20953B250034B997 /* Security.framework */,
 				D230EB542095234F002A7EA4 /* StoreKit.framework */,
 				D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */,
@@ -1300,7 +1302,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 23JBC9D428;
@@ -1318,13 +1320,14 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Mathieu" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				de,
+				fr,
+				Base,
+				ja,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -1573,7 +1576,7 @@
 		D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D222AEFC0FF578C400B2618B /* English */,
+				D26C266425A1110100E5180A /* en */,
 			);
 			name = SporadicM12Icon_Prerendered.icns;
 			sourceTree = "<group>";
@@ -1581,7 +1584,7 @@
 		D27C7C2F0FB2211800ECAE6F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D27C7C300FB2211800ECAE6F /* English */,
+				D26C266325A1110100E5180A /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1589,7 +1592,7 @@
 		D27C7C310FB2211800ECAE6F /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D27C7C320FB2211800ECAE6F /* English */,
+				D26C266225A110FA00E5180A /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1608,6 +1611,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4243;
 				DEVELOPMENT_TEAM = 23JBC9D428;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1619,7 +1623,8 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = M12/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.magnoliaheights.${TARGET_NAME:identifier}";
 				PRODUCT_NAME = SporadicM12;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1637,6 +1642,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 4243;
 				DEVELOPMENT_TEAM = 23JBC9D428;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1646,7 +1652,8 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = M12/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.magnoliaheights.${TARGET_NAME:identifier}";
 				PRODUCT_NAME = SporadicM12;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1674,7 +1681,7 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = M24/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.magnoliaheights.${TARGET_NAME:identifier}";
 				PRODUCT_NAME = SporadicM24;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1701,7 +1708,7 @@
 				);
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = M24/Full/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.magnoliaheights.${TARGET_NAME:identifier}";
 				PRODUCT_NAME = SporadicM24;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1727,6 +1734,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1773,6 +1781,7 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1808,6 +1817,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 23JBC9D428;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1845,6 +1855,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23JBC9D428;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
