@@ -41,6 +41,7 @@
 		D230EB7020952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
 		D23E23CC20953B250034B997 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E23CB20953B250034B997 /* Security.framework */; };
 		D2511338209284C4002811D7 /* M12 Full Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2511336209284C0002811D7 /* M12 Full Images.xcassets */; };
+		D256A75725A13D5D00ABE27C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEB480FBB610D0051EB25 /* WebKit.framework */; };
@@ -257,6 +258,7 @@
 		D23E23CE20953BBC0034B997 /* NSObject+Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Data.h"; sourceTree = "<group>"; };
 		D23E23CF20953BBC0034B997 /* NSObject+Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Data.m"; sourceTree = "<group>"; };
 		D2511336209284C0002811D7 /* M12 Full Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "M12 Full Images.xcassets"; sourceTree = "<group>"; };
+		D256A75625A13D5D00ABE27C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D26C265D25A110CD00E5180A /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
@@ -449,7 +451,6 @@
 		D2B7EA7D11D32AF600BCE169 /* iPhoneUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPhoneUtilities.m; sourceTree = "<group>"; };
 		D2D897A6142FD19B00626D94 /* MHAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHAlertView.h; sourceTree = "<group>"; };
 		D2D897A7142FD19B00626D94 /* MHAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHAlertView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -457,6 +458,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D256A75725A13D5D00ABE27C /* WebKit.framework in Frameworks */,
 				D23E23CC20953B250034B997 /* Security.framework in Frameworks */,
 				D230EB552095234F002A7EA4 /* StoreKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -1234,10 +1236,10 @@
 		D2FDA8761FC7509B00603E02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D256A75625A13D5D00ABE27C /* WebKit.framework */,
 				D26C265D25A110CD00E5180A /* CoreServices.framework */,
 				D23E23CB20953B250034B997 /* Security.framework */,
 				D230EB542095234F002A7EA4 /* StoreKit.framework */,
-				D2FDA8771FC7509B00603E02 /* MobileCoreServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1754,7 +1756,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1799,8 +1801,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;

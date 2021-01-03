@@ -1,3 +1,6 @@
+Almost surely atm Back button in Help doesn't
+work because of the new WKWebKit object
+
 Patent application on M12 using swap permutation #22 (really 21 when 0-origin)
 (it's planar, and only has one non-adjacent swap: (2 9) in ((0 1)(2 9)(3 4)(5 6)(7 8)(10 11)) )
 (are there other planar swaps?)
