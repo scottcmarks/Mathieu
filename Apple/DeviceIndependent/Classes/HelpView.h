@@ -7,11 +7,11 @@
 //
 
 #import "Apple Cross-platform.h"
-
+#import <WebKit/WebKit.h>
 
 @interface HelpView : UIView
 {
-    IBOutlet UIWebView* helpWebView;
+    IBOutlet AppleWebView* helpWebView;
     IBOutlet UIBarButtonItem* backButton;
     NSURL * baseURL;
 }
