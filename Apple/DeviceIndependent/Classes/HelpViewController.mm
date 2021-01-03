@@ -30,36 +30,6 @@
     return;
 }
 
-#pragma mark AppleWebView delegate methods
-
-- (void)webViewDidStartLoad:(AppleWebView *)webView
-{
-#if TARGET_IOS
-	// starting the load, show the activity indicator in the status bar
-	[AppleApplication sharedApplication].networkActivityIndicatorVisible = YES;
-#endif
-}
-
-- (void)webViewDidFinishLoad:(AppleWebView *)webView
-{
-#if TARGET_IOS
-	// finished loading, hide the activity indicator in the status bar
-	[AppleApplication sharedApplication].networkActivityIndicatorVisible = NO;
-#endif
-    [ helpView updateBackButton ];
-}
-
-- (void)webView:(AppleWebView *)webView didFailLoadWithError:(NSError *)error
-{
-#if TARGET_IOS
-	// load error, hide the activity indicator in the status bar
-	[AppleApplication sharedApplication].networkActivityIndicatorVisible = NO;
-#endif
-    // let the helpView report the error;
-    [ helpView reportError: error ];
-}
-
-
 - (void)dealloc {
     self.helpView = nil;
     [super dealloc];
