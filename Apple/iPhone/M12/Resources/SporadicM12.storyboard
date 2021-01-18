@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -114,6 +115,7 @@
                             </view>
                             <label autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" textAlignment="right" lineBreakMode="clip" numberOfLines="2" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ur-dH-chn" userLabel="Moves and Steps">
                                 <rect key="frame" x="10" y="492.66666666666669" width="14.666666666666664" height="29.666666666666686"/>
+                                <color key="backgroundColor" systemColor="labelColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="5ur-dH-chn" secondAttribute="height" multiplier="1:2" id="8mG-oi-Z5R"/>
                                 </constraints>
@@ -529,7 +531,11 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <items>
                                     <navigationItem title="M12" id="LCU-Gk-urS">
-                                        <barButtonItem key="leftBarButtonItem" title="Back" id="1q0-ak-03O"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="1q0-ak-03O">
+                                            <connections>
+                                                <action selector="receiveBackButton" destination="mqE-N1-nqc" id="AgP-zv-g5s"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="4TY-N0-XM0">
                                             <connections>
                                                 <action selector="dismissHelp" destination="GNK-Z6-NYR" id="yaE-1I-bMg"/>
@@ -565,7 +571,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                             <constraint firstItem="HAI-69-18W" firstAttribute="leading" secondItem="izd-8P-xIh" secondAttribute="leading" id="nZx-HC-75P"/>
                         </constraints>
                         <connections>
-                            <outlet property="backButton" destination="1q0-ak-03O" id="wzT-CP-r8d"/>
+                            <outlet property="backButton" destination="1q0-ak-03O" id="LhN-4z-lKA"/>
                             <outlet property="helpWebView" destination="1zJ-jw-K0A" id="AwE-l9-dt8"/>
                         </connections>
                     </view>
@@ -707,5 +713,8 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
     <resources>
         <image name="SporadicGamesLogo.png" width="320" height="32"/>
         <image name="Sporadic_Games_Logo.png" width="320" height="32"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

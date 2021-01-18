@@ -12,29 +12,40 @@
 
 @implementation HelpView
 
+
+@synthesize helpWebView;
 @synthesize backButton;
 
 //- ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 
-- ( void ) showInitialHelpScreen
+- ( void ) showScreen: (NSString *)resource
 {
-    NSURL * indexURL = [NSURL URLWithString: @"index.html" relativeToURL: baseURL];
-    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:indexURL ] ];
+    NSBundle * m = [NSBundle mainBundle] ;
+    NSString *bundlePath = [m bundlePath];
+    NSString *resourcePath = [NSBundle pathForResource:resource ofType:@"html" inDirectory:bundlePath];
+    [self.helpWebView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:resourcePath]]];
 }
 
-- ( void ) showErrorScreen: ( NSError *)error
+- ( void ) showInitialHelpScreen
 {
-    NSURL * errorURL = [NSURL URLWithString: @"error.html" relativeToURL: baseURL];
-    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];
+    [self showScreen:@"index"];
+}
+
+- ( void ) showErrorScreen: (NSError *)error
+{
+    [self showScreen:@"error"];
 }
 
 - (void) awakeFromNib {
     [super awakeFromNib];
-    NSBundle *main = [NSBundle mainBundle];
-    NSString *path = [ main bundlePath];
-    baseURL = [ [ NSURL fileURLWithPath: path isDirectory:YES ] retain ];
     [ self showInitialHelpScreen ] ;
 }
+
+- (void) loadView {
+    [super awakeFromNib];
+    [ self showInitialHelpScreen ] ;
+}
+
 
 -(void) reportError: (NSError *)error
 {
@@ -44,14 +55,19 @@
 
 -(void) updateBackButton
 {
-    backButton.enabled = helpWebView.canGoBack;
+    self.backButton.enabled = self.helpWebView.canGoBack;
 }
 
-- (void)dealloc {
-    [ baseURL release ];
+- (IBAction) receiveBackButton
+{
+    [ self.helpWebView goBack];
+}
+
+- (void) dealloc
+{
+    self.backButton = nil ;
+    self.helpWebView = nil ;
     [super dealloc];
 }
-
-
 @end
 
