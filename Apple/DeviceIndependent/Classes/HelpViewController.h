@@ -18,9 +18,7 @@
 #else
 #error Don't know this platform!
 #endif
-{
-    HelpView* helpView;
-}
+
 
 @property ( nonatomic, retain   ) IBOutlet HelpView *helpView;
 

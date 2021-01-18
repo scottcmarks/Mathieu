@@ -21,6 +21,8 @@
 		D204A27F143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D204A280143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D2073BC22083FD8B00EF9B71 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */; };
+		D21EDF0C25A50AF200EDF59C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
+		D21EDF0D25A50AF300EDF59C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D230EB3820951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
@@ -44,7 +46,6 @@
 		D256A75725A13D5D00ABE27C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
-		D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEB480FBB610D0051EB25 /* WebKit.framework */; };
 		D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEC0C0FBB65130051EB25 /* Cocoa.framework */; };
 		D266CA1D0FBCBE930095135E /* HelpViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B30FACE47A0093E56B /* HelpViewController.mm */; };
 		D266CA1E0FBCBE990095135E /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */; };
@@ -259,7 +260,6 @@
 		D23E23CF20953BBC0034B997 /* NSObject+Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Data.m"; sourceTree = "<group>"; };
 		D2511336209284C0002811D7 /* M12 Full Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "M12 Full Images.xcassets"; sourceTree = "<group>"; };
 		D256A75625A13D5D00ABE27C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		D25CEB480FBB610D0051EB25 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D26C265D25A110CD00E5180A /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		D26C266225A110FA00E5180A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -475,6 +475,7 @@
 			files = (
 				D230EB562095235F002A7EA4 /* StoreKit.framework in Frameworks */,
 				8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */,
+				D21EDF0D25A50AF300EDF59C /* WebKit.framework in Frameworks */,
 				8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */,
 				8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */,
 				8C081A310F698ED000C21C40 /* AudioToolbox.framework in Frameworks */,
@@ -485,8 +486,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D25CEB490FBB610D0051EB25 /* WebKit.framework in Frameworks */,
 				D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */,
+				D21EDF0C25A50AF200EDF59C /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,7 +627,6 @@
 			isa = PBXGroup;
 			children = (
 				D25CEC0C0FBB65130051EB25 /* Cocoa.framework */,
-				D25CEB480FBB610D0051EB25 /* WebKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
