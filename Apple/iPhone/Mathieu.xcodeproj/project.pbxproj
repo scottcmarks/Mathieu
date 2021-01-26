@@ -114,7 +114,6 @@
 		D2AE56810FACE47B0093E56B /* SporadicMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C10FACE47A0093E56B /* SporadicMViewController.mm */; };
 		D2AE56820FACE47B0093E56B /* SwapPermutationsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C30FACE47A0093E56B /* SwapPermutationsView.mm */; };
 		D2AE56830FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55C50FACE47A0093E56B /* SwapPermutationsViewController.mm */; };
-		D2AE56840FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55C70FACE47A0093E56B /* HelpView.xib */; };
 		D2AE56890FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55CD0FACE47A0093E56B /* Sporadic_Games_Logo.png */; };
 		D2AE568B0FACE47B0093E56B /* applause.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D00FACE47A0093E56B /* applause.caf */; };
 		D2AE568C0FACE47B0093E56B /* combo.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D10FACE47A0093E56B /* combo.caf */; };
@@ -433,11 +432,9 @@
 		D2B5998320819C4800FB4403 /* Sphere18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sphere18.png; sourceTree = "<group>"; };
 		D2B5998420819C4800FB4403 /* Sphere19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sphere19.png; sourceTree = "<group>"; };
 		D2B5998520819C4800FB4403 /* Sphere25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sphere25.png; sourceTree = "<group>"; };
-		D2B5998620819C4800FB4403 /* Sphere.mpeg */ = {isa = PBXFileReference; lastKnownFileType = video.mpeg; path = Sphere.mpeg; sourceTree = "<group>"; };
 		D2B5998720819C4800FB4403 /* Sphere.pov */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sphere.pov; sourceTree = "<group>"; };
 		D2B5998920819C4800FB4403 /* Text.pov */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Text.pov; sourceTree = "<group>"; };
 		D2B5998C20819C4800FB4403 /* textdemo.pov */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = textdemo.pov; sourceTree = "<group>"; };
-		D2B5998D20819C4800FB4403 /* Sphere.mpeg */ = {isa = PBXFileReference; lastKnownFileType = video.mpeg; path = Sphere.mpeg; sourceTree = "<group>"; };
 		D2B5998F20819C4800FB4403 /* Sphere.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sphere.ini; sourceTree = "<group>"; };
 		D2B5999020819C4800FB4403 /* SporadicM12 1200x1200.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SporadicM12 1200x1200.png"; sourceTree = "<group>"; };
 		D2B5999120819C4800FB4403 /* SporadicM12 114x114.xcf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SporadicM12 114x114.xcf"; sourceTree = "<group>"; };
@@ -1169,7 +1166,6 @@
 				D2B5996620819C4800FB4403 /* Spheres */,
 				D2B5998720819C4800FB4403 /* Sphere.pov */,
 				D2B5998F20819C4800FB4403 /* Sphere.ini */,
-				D2B5998D20819C4800FB4403 /* Sphere.mpeg */,
 				D2B5998920819C4800FB4403 /* Text.pov */,
 				D2B5998C20819C4800FB4403 /* textdemo.pov */,
 			);
@@ -1210,7 +1206,6 @@
 				D2B5998320819C4800FB4403 /* Sphere18.png */,
 				D2B5998420819C4800FB4403 /* Sphere19.png */,
 				D2B5998520819C4800FB4403 /* Sphere25.png */,
-				D2B5998620819C4800FB4403 /* Sphere.mpeg */,
 			);
 			path = Spheres;
 			sourceTree = "<group>";
@@ -1406,7 +1401,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2AE56840FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2AE56890FACE47B0093E56B /* Sporadic_Games_Logo.png in Resources */,
 				D2AE568B0FACE47B0093E56B /* applause.caf in Resources */,
 				D2AE568C0FACE47B0093E56B /* combo.caf in Resources */,

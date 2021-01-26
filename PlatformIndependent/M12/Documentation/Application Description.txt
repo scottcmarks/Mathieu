@@ -4,6 +4,6 @@ The numbers start out all mixed up -- your job is to return them to the "Home po
 
 So easy ... and yet ...
 
-Solve it by spinning the ring of numbers or doing a swap.   The game generates puzzles by random moves, so each puzzle solvable ... but that doesn't mean it will be easy! 
+Solve it by spinning the ring of numbers or doing a swap.   The game generates puzzles by random moves, so each puzzle is solvable ... but that doesn't mean it will be easy! 
 
 Our email address is m12@magnolia-heights.com.
