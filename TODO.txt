@@ -1,3 +1,4 @@
+Shake using motion object.
 Almost surely atm Back button in Help doesn't
 work because of the new WKWebKit object
 
