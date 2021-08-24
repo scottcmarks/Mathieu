@@ -1248,6 +1248,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				D2759ACE26D47360001AC440 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1465,6 +1466,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D2759ACE26D47360001AC440 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nCOMMITS=$(git rev-list HEAD | wc -l)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION#*v}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1605,7 +1626,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4243;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 23JBC9D428;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1618,7 +1639,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = M12/Full/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = UNKNOWN;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.magnoliaheights.${TARGET_NAME:identifier}";
 				PRODUCT_NAME = SporadicM12;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1636,7 +1657,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 4243;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 23JBC9D428;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Mathieu_Prefix.pch;
@@ -1647,7 +1668,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = M12/Full/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = UNKNOWN;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.magnoliaheights.${TARGET_NAME:identifier}";
 				PRODUCT_NAME = SporadicM12;
 				PROVISIONING_PROFILE_SPECIFIER = "";
