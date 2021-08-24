@@ -26,7 +26,6 @@
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D230EB3820951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
-		D230EB3920951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
 		D230EB3B20951115002A7EA4 /* StoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3020951115002A7EA4 /* StoreManager.m */; };
 		D230EB3C20951115002A7EA4 /* StoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3020951115002A7EA4 /* StoreManager.m */; };
 		D230EB3E20951115002A7EA4 /* ProductsRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB3120951115002A7EA4 /* ProductsRequestManager.m */; };
@@ -38,7 +37,6 @@
 		D230EB552095234F002A7EA4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D230EB542095234F002A7EA4 /* StoreKit.framework */; };
 		D230EB562095235F002A7EA4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D230EB542095234F002A7EA4 /* StoreKit.framework */; };
 		D230EB5C20952475002A7EA4 /* KeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5920952474002A7EA4 /* KeychainItem.m */; };
-		D230EB5D20952475002A7EA4 /* KeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5920952474002A7EA4 /* KeychainItem.m */; };
 		D230EB6F20952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
 		D230EB7020952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
 		D23E23CC20953B250034B997 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E23CB20953B250034B997 /* Security.framework */; };
@@ -1536,7 +1534,6 @@
 				D2AE56760FACE47B0093E56B /* BallView.mm in Sources */,
 				D2AE56780FACE47B0093E56B /* GameModel.mm in Sources */,
 				D2AE56790FACE47B0093E56B /* HelpView.mm in Sources */,
-				D230EB3920951115002A7EA4 /* Ledger.m in Sources */,
 				D2AE567A0FACE47B0093E56B /* HelpViewController.mm in Sources */,
 				D2AE567C0FACE47B0093E56B /* PreferencesView.mm in Sources */,
 				D2AE567D0FACE47B0093E56B /* PreferencesViewController.mm in Sources */,
@@ -1545,7 +1542,6 @@
 				D2AE56810FACE47B0093E56B /* SporadicMViewController.mm in Sources */,
 				D230EB4520951115002A7EA4 /* PaymentManager.m in Sources */,
 				D2AE56820FACE47B0093E56B /* SwapPermutationsView.mm in Sources */,
-				D230EB5D20952475002A7EA4 /* KeychainItem.m in Sources */,
 				D2AE56830FACE47B0093E56B /* SwapPermutationsViewController.mm in Sources */,
 				D230EB3C20951115002A7EA4 /* StoreManager.m in Sources */,
 				D276FF2D208CE17A00754F7E /* UIMultiButton.m in Sources */,
