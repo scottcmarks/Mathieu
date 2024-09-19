@@ -3,7 +3,7 @@
 //  SporadicM12
 //
 //  Created by Scott Marks on 12/15/08.
-//  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
+//  Copyright © 2008, 2023 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "mathieu.h"
@@ -31,12 +31,14 @@
 }
 
 #pragma mark AppleWebView delegate methods
-
 - (void)webViewDidStartLoad:(AppleWebView *)webView
 {
 #if TARGET_IOS
 	// starting the load, show the activity indicator in the status bar
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	[AppleApplication sharedApplication].networkActivityIndicatorVisible = YES;
+#pragma clang diagnostic pop
 #endif
 }
 
@@ -44,7 +46,10 @@
 {
 #if TARGET_IOS
 	// finished loading, hide the activity indicator in the status bar
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	[AppleApplication sharedApplication].networkActivityIndicatorVisible = NO;
+#pragma clang diagnostic pop
 #endif
     [ helpView updateBackButton ];
 }
@@ -53,11 +58,15 @@
 {
 #if TARGET_IOS
 	// load error, hide the activity indicator in the status bar
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	[AppleApplication sharedApplication].networkActivityIndicatorVisible = NO;
+#pragma clang diagnostic pop
 #endif
     // let the helpView report the error;
     [ helpView reportError: error ];
 }
+
 
 
 - (void)dealloc {
