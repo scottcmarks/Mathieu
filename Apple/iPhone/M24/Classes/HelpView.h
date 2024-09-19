@@ -10,12 +10,12 @@
 
 
 @interface HelpView : UIView {
-    IBOutlet UIWebView* helpWebView;
+    IBOutlet WKWebView* helpWebView;
     IBOutlet UIBarButtonItem* backButton;
     NSURL * baseURL;
 }
 
-//@property ( nonatomic, retain   ) UIWebView *helpWebView;
+//@property ( nonatomic, retain   ) WKWebView *helpWebView;
 @property ( nonatomic, assign   ) UIBarButtonItem *backButton;
 
 -(void) reportError: (NSError *)error;

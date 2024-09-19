@@ -3,7 +3,7 @@
 //  Mathieu
 //
 //  Created by Scott Marks on 3/30/09.
-//  Copyright © 2009, 2018 Magnolia Heights Research and Development. All rights reserved.
+//  Copyright © 2009, 2023 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "SwapPermutationsView.h"

@@ -12,7 +12,7 @@
 #import "HelpView.h"
 
 
-@interface HelpViewController : UIViewController <UIWebViewDelegate>
+@interface HelpViewController : UIViewController <WKWebViewDelegate>
 {
     RootViewController *rootViewController;
     IBOutlet HelpView* helpView;
