@@ -19,13 +19,13 @@
 - ( void ) showInitialHelpScreen
 {
     NSURL * indexURL = [NSURL URLWithString: @"index.html" relativeToURL: baseURL];
-    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:indexURL ] ];
+    [ self.helpWebView loadRequest:[ NSURLRequest requestWithURL:indexURL ] ];
 }
 
 - ( void ) showErrorScreen: ( NSError *)error
 {
     NSURL * errorURL = [NSURL URLWithString: @"error.html" relativeToURL: baseURL];
-    [ helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];
+    [ self.helpWebView loadRequest:[ NSURLRequest requestWithURL:errorURL ] ];
 }
 
 - (void) awakeFromNib {
@@ -44,7 +44,15 @@
 
 -(void) updateBackButton
 {
-    backButton.enabled = helpWebView.canGoBack;
+    backButton.enabled = self.helpWebView.canGoBack;
+    if (@available(iOS 16.0, *)) {
+        backButton.hidden = !self.helpWebView.canGoBack;
+    }
+}
+
+-(IBAction) goBack:(id)sender
+{
+    [self.helpWebView goBack];
 }
 
 - (void)dealloc {
