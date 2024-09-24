@@ -11,14 +11,14 @@
 
 @interface HelpView : UIView
 {
-    IBOutlet WKWebView* helpWebView;
     IBOutlet UIBarButtonItem* backButton;
     NSURL * baseURL;
 }
 
-@property ( nonatomic, assign   ) UIBarButtonItem *backButton;
+@property ( nonatomic, assign ) UIBarButtonItem *backButton;
+@property ( nonatomic, strong ) IBOutlet AppleWebView* helpWebView;
 
 -(void) reportError: (NSError *)error;
 -(void) updateBackButton;
-
+-(IBAction) goBack:(id)sender;
 @end

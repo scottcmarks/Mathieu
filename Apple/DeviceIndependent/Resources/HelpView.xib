@@ -22,11 +22,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <items>
                         <navigationItem title="M12" id="7">
-                            <barButtonItem key="leftBarButtonItem" title="Back" id="21">
-                                <connections>
-                                    <action selector="goBack" destination="4" id="22"/>
-                                </connections>
-                            </barButtonItem>
+                            <barButtonItem key="leftBarButtonItem" title="Back" id="21"/>
                             <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="9">
                                 <connections>
                                     <action selector="dismissHelp" destination="-1" id="24"/>
@@ -47,9 +43,6 @@
                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                         <wkPreferences key="preferences"/>
                     </wkWebViewConfiguration>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="18"/>
-                    </connections>
                 </wkWebView>
             </subviews>
             <color key="backgroundColor" red="0.75294119000000004" green="0.75294119000000004" blue="0.88627451999999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
