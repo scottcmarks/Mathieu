@@ -20,6 +20,7 @@
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // this will appear as the title in the navigation bar
         self.title = NSLocalizedString(fullAppName, @"");
+        self.helpView.helpWebView.UIDelegate = self;
     }
     return self;
 }
@@ -30,8 +31,8 @@
     return;
 }
 
-#pragma mark AppleWebView delegate methods
-- (void)webViewDidStartLoad:(AppleWebView *)webView
+#pragma mark AppleWebViewNavigationDelegate methods
+- (void)webView:(AppleWebView *)webView didStartProvisionalNavigation:(AppleWebViewNavigation *)navigation;
 {
 #if TARGET_IOS
 	// starting the load, show the activity indicator in the status bar
@@ -42,8 +43,7 @@
 #endif
 }
 
-- (void)webViewDidFinishLoad:(AppleWebView *)webView
-{
+- (void)webView:(AppleWebView *)webView didFinishNavigation:(AppleWebViewNavigation *)navigation;{
 #if TARGET_IOS
 	// finished loading, hide the activity indicator in the status bar
 #pragma clang diagnostic push
@@ -54,7 +54,8 @@
     [ helpView updateBackButton ];
 }
 
-- (void)webView:(AppleWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didFailNavigation:(AppleWebViewNavigation *)navigation
+      withError:(NSError *)error
 {
 #if TARGET_IOS
 	// load error, hide the activity indicator in the status bar
