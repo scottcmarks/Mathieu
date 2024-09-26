@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -119,11 +119,9 @@
 		D2AE568E0FACE47B0093E56B /* combo_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D30FACE47A0093E56B /* combo_set.caf */; };
 		D2AE568F0FACE47B0093E56B /* home.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D40FACE47A0093E56B /* home.caf */; };
 		D2AE56900FACE47B0093E56B /* left.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D50FACE47A0093E56B /* left.caf */; };
-		D2AE56910FACE47B0093E56B /* restart.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D60FACE47A0093E56B /* restart.caf */; };
 		D2AE56920FACE47B0093E56B /* right.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D70FACE47A0093E56B /* right.caf */; };
 		D2AE56930FACE47B0093E56B /* shake.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D80FACE47A0093E56B /* shake.caf */; };
 		D2AE56940FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
-		D2AE56950FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE56E30FACE47B0093E56B /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56510FACE47A0093E56B /* HelpView.xib */; };
 		D2AE56EC0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE565B0FACE47A0093E56B /* SporadicM24Icon_Prerendered.png */; };
 		D2AE56F10FACE47B0093E56B /* PreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AE56600FACE47A0093E56B /* PreferencesView.xib */; };
@@ -147,11 +145,9 @@
 		D2AE57110FACE47B0093E56B /* combo_set.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D30FACE47A0093E56B /* combo_set.caf */; };
 		D2AE57120FACE47B0093E56B /* home.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D40FACE47A0093E56B /* home.caf */; };
 		D2AE57130FACE47B0093E56B /* left.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D50FACE47A0093E56B /* left.caf */; };
-		D2AE57140FACE47B0093E56B /* restart.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D60FACE47A0093E56B /* restart.caf */; };
 		D2AE57150FACE47B0093E56B /* right.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D70FACE47A0093E56B /* right.caf */; };
 		D2AE57160FACE47B0093E56B /* shake.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D80FACE47A0093E56B /* shake.caf */; };
 		D2AE57170FACE47B0093E56B /* success.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55D90FACE47A0093E56B /* success.caf */; };
-		D2AE57180FACE47B0093E56B /* swap.caf in Resources */ = {isa = PBXBuildFile; fileRef = D2AE55DA0FACE47A0093E56B /* swap.caf */; };
 		D2AE57760FACE47B0093E56B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE56640FACE47A0093E56B /* main.mm */; };
 		D2AE58D30FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE582D0FACE81D0093E56B /* DualActionButtonAlternate.png */; };
 		D2AE58DD0FACE81D0093E56B /* SimpleBluishButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = D2AE58370FACE81D0093E56B /* SimpleBluishButtonNormal.png */; };
@@ -1297,7 +1293,8 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1250;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 23JBC9D428;
@@ -1354,12 +1351,10 @@
 				D26DA6522092EA400045E179 /* AA.html in Resources */,
 				D26DA66E2092ECBF0045E179 /* combo_erase_confirm.html in Resources */,
 				D2AE57130FACE47B0093E56B /* left.caf in Resources */,
-				D2AE57140FACE47B0093E56B /* restart.caf in Resources */,
 				D2AE57150FACE47B0093E56B /* right.caf in Resources */,
 				D2AE57160FACE47B0093E56B /* shake.caf in Resources */,
 				D2AE57170FACE47B0093E56B /* success.caf in Resources */,
 				D26DA65E2092EB970045E179 /* home_confirm.html in Resources */,
-				D2AE57180FACE47B0093E56B /* swap.caf in Resources */,
 				D26DA6492092E9860045E179 /* home_position.html in Resources */,
 				D26DA6422092E9440045E179 /* right_position.html in Resources */,
 				D2AE59520FACE81D0093E56B /* DualActionButtonAlternate.png in Resources */,
@@ -1407,11 +1402,9 @@
 				D2AE568E0FACE47B0093E56B /* combo_set.caf in Resources */,
 				D2AE568F0FACE47B0093E56B /* home.caf in Resources */,
 				D2AE56900FACE47B0093E56B /* left.caf in Resources */,
-				D2AE56910FACE47B0093E56B /* restart.caf in Resources */,
 				D2AE56920FACE47B0093E56B /* right.caf in Resources */,
 				D2AE56930FACE47B0093E56B /* shake.caf in Resources */,
 				D2AE56940FACE47B0093E56B /* success.caf in Resources */,
-				D2AE56950FACE47B0093E56B /* swap.caf in Resources */,
 				D2AE56E30FACE47B0093E56B /* HelpView.xib in Resources */,
 				D2AE56EC0FACE47B0093E56B /* SporadicM24Icon_Prerendered.png in Resources */,
 				D2AE56F10FACE47B0093E56B /* PreferencesView.xib in Resources */,
@@ -1467,6 +1460,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		D2759ACE26D47360001AC440 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1826,6 +1820,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 23JBC9D428;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1841,7 +1836,7 @@
 				);
 				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1863,6 +1858,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23JBC9D428;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1877,7 +1873,7 @@
 				);
 				INFOPLIST_FILE = ../Mac/Cocoa/M12/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
