@@ -3,14 +3,12 @@
 //  SporadicM12
 //
 //  Created by Scott Marks on 01/01/08.
-//  Copyright © 2008, 2018 Magnolia Heights Research and Development. All rights reserved.
+//  Copyright © 2008, 2023 Magnolia Heights Research and Development. All rights reserved.
 //
 
 #import "Apple Cross-platform.h"
 
 @interface HelpView : UIView
-{
-}
 
 @property ( nonatomic, retain   ) IBOutlet AppleWebView* helpWebView;
 @property ( nonatomic, retain   ) IBOutlet UIBarButtonItem* backButton;
