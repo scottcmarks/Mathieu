@@ -325,7 +325,7 @@
                                             <navigationItem title="M₁₂" id="drH-Ap-CGd">
                                                 <barButtonItem key="leftBarButtonItem" title="Help" id="3mU-oA-cuj">
                                                     <connections>
-                                                        <segue destination="GNK-Z6-NYR" kind="show" identifier="showHelpView" id="az2-BU-dfX"/>
+                                                        <segue destination="GNK-Z6-NYR" kind="presentation" id="thu-7c-7JN"/>
                                                     </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Wts-ZT-GT2">
@@ -532,35 +532,31 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     <navigationItem title="M12" id="LCU-Gk-urS">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="1q0-ak-03O">
                                             <connections>
-                                                <action selector="receiveBackButton" destination="mqE-N1-nqc" id="AgP-zv-g5s"/>
+                                                <action selector="goBack:" destination="mqE-N1-nqc" id="noM-Jb-Mjm"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="4TY-N0-XM0">
                                             <connections>
-                                                <action selector="dismissHelp" destination="GNK-Z6-NYR" id="yaE-1I-bMg"/>
                                                 <segue destination="zNp-Qh-fFl" kind="unwind" identifier="unwindToSourceViewController" unwindAction="prepareForUnwindToPreferences:" id="2u4-QF-pKa"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <wkWebView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" allowsBackForwardNavigationGestures="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
+                                <rect key="frame" x="0.0" y="56" width="414" height="618.66666666666663"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                             <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Sporadic_Games_Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="HAI-69-18W">
                                 <rect key="frame" x="0.0" y="674.66666666666663" width="414" height="41.333333333333371"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="HAI-69-18W" secondAttribute="height" multiplier="10:1" id="9AU-Ye-ayp"/>
                                 </constraints>
                             </imageView>
-                            <wkWebView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
-                                <rect key="frame" x="0.0" y="56" width="414" height="618.66666666666663"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="GNK-Z6-NYR" id="nVx-LA-lDX"/>
-                                </connections>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="izd-8P-xIh"/>
                         <constraints>
@@ -576,6 +572,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                             <outlet property="helpWebView" destination="1zJ-jw-K0A" id="AwE-l9-dt8"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="hqj-sl-KrF"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SiQ-Up-4Wu" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="zNp-Qh-fFl" userLabel="Exit" sceneMemberID="exit"/>
@@ -709,7 +706,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="NIP-UO-9BO"/>
+        <segue reference="thu-7c-7JN"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="SporadicGamesLogo.png" width="320" height="32"/>
