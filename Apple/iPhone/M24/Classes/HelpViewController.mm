@@ -48,22 +48,22 @@
     [ self.rootViewController toggleView:sender];
 }
 
-#pragma mark UIWebView delegate methods
+#pragma mark WKWebView delegate methods
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(WKWebView *)webView
 {
 	// starting the load, show the activity indicator in the status bar
 	[UIApplication sharedApplication].isNetworkActivityIndicatorVisible = YES;
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(WKWebView *)webView
 {
 	// finished loading, hide the activity indicator in the status bar
 	[UIApplication sharedApplication].isNetworkActivityIndicatorVisible = NO;
     [ helpView updateBackButton ];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didFailLoadWithError:(NSError *)error
 {
 	// load error, hide the activity indicator in the status bar
 	[UIApplication sharedApplication].isNetworkActivityIndicatorVisible = NO;
