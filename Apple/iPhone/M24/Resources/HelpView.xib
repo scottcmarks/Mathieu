@@ -15,7 +15,7 @@
 			<string>IBProxyObject</string>
 			<string>IBUIImageView</string>
 			<string>IBUIBarButtonItem</string>
-			<string>IBUIWebView</string>
+			<string>IBWKWebView</string>
 			<string>IBUINavigationBar</string>
 			<string>IBUINavigationItem</string>
 			<string>IBUIView</string>
@@ -96,7 +96,7 @@
 							<string key="NSResourceName">Sporadic_Games_Logo.png</string>
 						</object>
 					</object>
-					<object class="IBUIWebView" id="1003294252">
+					<object class="IBWKWebView" id="1003294252">
 						<reference key="NSNextResponder" ref="724658593"/>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrame">{{0, 44}, {320, 385}}</string>
@@ -333,7 +333,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>UIWebView</string>
+							<string>WKWebView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -351,7 +351,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">helpWebView</string>
-								<string key="candidateClassName">UIWebView</string>
+								<string key="candidateClassName">WKWebView</string>
 							</object>
 						</object>
 					</object>
