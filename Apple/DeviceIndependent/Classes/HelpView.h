@@ -15,6 +15,6 @@
 
 -(void) reportError: (NSError *)error;
 -(void) updateBackButton;
-- (IBAction) receiveBackButton;
+-(IBAction) goBack:(id)sender;
 
 @end

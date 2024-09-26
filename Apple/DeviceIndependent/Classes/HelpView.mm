@@ -55,7 +55,15 @@
 
 -(void) updateBackButton
 {
-    self.backButton.enabled = self.helpWebView.canGoBack;
+    backButton.enabled = self.helpWebView.canGoBack;
+    if (@available(iOS 16.0, *)) {
+        backButton.hidden = !self.helpWebView.canGoBack;
+    }
+}
+
+-(IBAction) goBack:(id)sender
+{
+    [self.helpWebView goBack];
 }
 
 - (IBAction) receiveBackButton
@@ -70,4 +78,3 @@
     [super dealloc];
 }
 @end
-
