@@ -12,9 +12,9 @@
 
 
 #if TARGET_IOS
-@interface HelpViewController : UIViewController // <UIWebViewDelegate>
+@interface HelpViewController : UIViewController <AppleWebViewNavigationDelegate, AppleWebViewUIDelegate>
 #elif TARGET_MACOS
-@interface HelpViewController : NSViewController
+@interface HelpViewController : NSViewController <AppleWebViewNavigationDelegate, AppleWebViewUIDelegate
 #else
 #error Don't know this platform!
 #endif

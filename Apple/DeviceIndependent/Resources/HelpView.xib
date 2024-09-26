@@ -43,9 +43,6 @@
                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                         <wkPreferences key="preferences"/>
                     </wkWebViewConfiguration>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="18"/>
-                    </connections>
                 </wkWebView>
             </subviews>
             <color key="backgroundColor" red="0.75294119000000004" green="0.75294119000000004" blue="0.88627451999999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
