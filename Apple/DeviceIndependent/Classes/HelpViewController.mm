@@ -32,7 +32,7 @@
 }
 
 #pragma mark AppleWebViewNavigationDelegate methods
-- (void)webView:(AppleWebView *)webView didStartProvisionalNavigation:(AppleWebViewNavigation *)navigation;
+- (void)webView:(AppleWebView *)webView didStartProvisionalNavigation:(AppleWebViewNavigation *)navigation
 {
 #if TARGET_IOS
 	// starting the load, show the activity indicator in the status bar
@@ -43,7 +43,7 @@
 #endif
 }
 
-- (void)webView:(AppleWebView *)webView didFinishNavigation:(AppleWebViewNavigation *)navigation;{
+- (void)webView:(AppleWebView *)webView didFinishNavigation:(AppleWebViewNavigation *)navigation {
 #if TARGET_IOS
 	// finished loading, hide the activity indicator in the status bar
 #pragma clang diagnostic push

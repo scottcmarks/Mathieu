@@ -97,7 +97,7 @@ static NSString * const SporadicMGameModelKey      = @"SporadicMGameModelKey"   
 - ( void ) applicationDidEnterBackground: ( AppleApplication * ) application
 {
     NSUserDefaults * defaults = [ NSUserDefaults standardUserDefaults ] ;
-    [ defaults setFloat:  self.animationSpeed       forKey: SporadicMAnimationSpeedKey ] ;
+    [ defaults setFloat:  (float)self.animationSpeed       forKey: SporadicMAnimationSpeedKey ] ;
     [ defaults setBool:   self.soundEffects         forKey: SporadicMSoundEffectsKey   ] ;
     [ defaults setBool:   self.confirm              forKey: SporadicMConfirmKey        ] ;
     [ defaults setBool:   self.invert               forKey: SporadicMInvertKey         ] ;

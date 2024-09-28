@@ -10,9 +10,6 @@
 #import "mathieu.h"
 
 @interface BallView : AppleView
-{
-    int _ballNumber;
-}
 
 + ( void ) setColorsForSwapPermutation: ( const MathieuPermutation & ) swap;
 

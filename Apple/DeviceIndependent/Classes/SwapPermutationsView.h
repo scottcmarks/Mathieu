@@ -16,15 +16,6 @@
 else
 #error Don't know this platform!
 #endif
-{
-    UILabel          * currentPermutation        ;
-    BallRingView     * currentPermutationPreview ;
-    int                pickedSwapIndex           ;
-#if TARGET_IOS
-    UIPickerView     * swapPermutationPicker     ;
-	UINavigationItem * navigationBar             ;
-#endif
-}
 
 @property( nonatomic, readonly )          int               pickedSwapIndex                ;
 #if TARGET_IOS
