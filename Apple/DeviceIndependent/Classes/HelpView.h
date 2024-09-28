@@ -9,7 +9,6 @@
 #import "Apple Cross-platform.h"
 
 @interface HelpView : UIView
-
 @property ( nonatomic, retain   ) IBOutlet AppleWebView* helpWebView;
 @property ( nonatomic, retain   ) IBOutlet UIBarButtonItem* backButton;
 
