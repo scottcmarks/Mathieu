@@ -15,35 +15,6 @@
 @class BallView;
 
 @interface BallRingView : AppleView
-{
-    CGFloat   _circleRadius;
-    CGPoint   _circleCenter;
-    CGFloat   _ballRadius;
-    BallView * _ballViews[ nBalls ];
-    AppleLabel *_ballLabels[ nBalls ];
-    AppleLabel *_tagLabels[ nBalls ];
-    CGPoint _ballCenters[ nBalls ];
-    SoundEffect * _rightSound;
-    SoundEffect * _leftSound;
-    SoundEffect * _swapSound;
-    SoundEffect * _homeSound;
-    SoundEffect * _shakeSound;
-    SoundEffect * _restartSound;
-    SoundEffect * _comboSound;
-    SoundEffect * _comboSetSound;
-    SoundEffect * _comboNotSetSound;
-    SoundEffect * _successSound;
-    SoundEffect * _applauseSound;
-    int firstWedgeTouched;
-    bool swapGestureStarted ;
-    int previousWedgeTouched;
-    int lastWedgeTouched;
-    double firstThetaTouched;
-    double lastThetaTouched;
-    PermArray spinStartingPosition;
-    id < BallRingViewDelegate > _delegate;
-    //  bool animateBallPops;
-}
 
 + ( __nonnull instancetype ) ballRingViewWithFrame: ( CGRect ) frame ;
 - ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate ;

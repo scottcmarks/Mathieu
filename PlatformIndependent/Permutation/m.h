@@ -150,7 +150,8 @@ public:
     static int set_swapPermutationIndex( int i )
     {
         int old_index = swapPermutationIndex;
-        if ( 0 <= i && i <= n_array_elements( swaps ) )
+        int nswaps = (int)n_array_elements( swaps );
+        if ( 0 <= i && i < nswaps )
         {
             swapPermutation = MathieuPermutation( swaps[ i ].swap );
             swapPermutationIndex = i;
@@ -479,7 +480,7 @@ public:
                     else                                  // Macro moves
                         // Can't use map::operator[ ] in a const method
                         // because it will insert the element pair if not found
-                        result += macros.find( abs( *p ) )->second.history.steps( );
+                        result += macros.find( (HistoryElement)(abs( *p )) )->second.history.steps( );
             return result;
         };
 
@@ -571,19 +572,19 @@ public:
     {
         super::reset( );
         // Start out with a swap?
-        if ( rand() & 1 )
+        if ( arc4random() & 1 )
             swap( );
         // Make some random moves
         for (int i=1; i<=nRandomMoves; i++) {
             const int nMoves = rand_int_from_1_to(nBalls-1);
-            if ( rand( ) & 1 )
-                for ( int i=0; i<nMoves; i++) left( );
+            if ( arc4random( ) & 1 )
+                for ( int j=0; j<nMoves; j++) left( );
             else
-                for ( int i=0; i<nMoves; i++) right( );
+                for ( int j=0; j<nMoves; j++) right( );
             swap( );
         }
         // Erase that last swap?
-        if ( rand() & 1 )
+        if ( arc4random() & 1 )
             swap( );
         // Amnesia
         if ( amnesia ) history.reset( );

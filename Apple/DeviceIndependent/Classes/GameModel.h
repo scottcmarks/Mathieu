@@ -11,11 +11,7 @@
 
 typedef MathieuPermutationWithHistory::PermArray PermArray;
 typedef MathieuPermutationWithHistory::HistoryElement HistoryElement;
-@interface GameModel : NSObject {
-@private
-    MathieuPermutationWithHistory *currentPermutation;
-    MathieuPermutationWithHistory *startingPermutation;
-}
+@interface GameModel : NSObject
 
 -(id) init;
 -(id) initFromData: ( NSData * ) data;
