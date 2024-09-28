@@ -13,12 +13,6 @@
 @class SwapPermutationsViewController;
 
 @interface PreferencesViewController : UIViewController
-{
-    HelpViewController * helpViewController ;
-    SwapPermutationsViewController * swapPermutationsViewController ;
-    PreferencesView    * preferencesView    ;
-    UILabel            * versionStringLabel ;
-}
 
 @property ( nonatomic, retain   ) HelpViewController * helpViewController ;
 @property ( nonatomic, retain   ) SwapPermutationsViewController * swapPermutationsViewController ;

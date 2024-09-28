@@ -14,22 +14,7 @@
 
 @class SporadicMViewController;
 @interface SporadicMView : UIView // TransitionView
-{
 
-    SporadicMViewController * controller;
-    AppleLabel * moves;
-    AppleTextView * history;
-    AppleToolbar  * toolbar;
-    NSTimer * historyTextUpdatingTimer;
-    BallRingView * ballRingView;
-
-    NSString * historyTextCache;
-
-    UIDualButton * shakeButton;
-    UIDualButton * altButton;
-    UIDualButton * undoButton;
-    bool buttonsInverted;
-}
 
 
 @property ( nonatomic, assign   ) IBOutlet AppleLabel              * moves;

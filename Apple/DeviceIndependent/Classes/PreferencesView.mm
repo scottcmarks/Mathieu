@@ -11,6 +11,9 @@
 #import "SporadicMAppDelegate.h"
 #import "GameModel.h"
 
+@interface PreferencesView()
+@end
+
 @implementation PreferencesView
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
@@ -28,7 +31,7 @@
         speed = 0.0;
     else if ( !( speed <= MAX_ANIMATION_DURATION_FACTOR ) )
         speed = MAX_ANIMATION_DURATION_FACTOR ;
-    self.appDelegate.animationSpeed = animationSpeedSlider.value = speed;
+    self.appDelegate.animationSpeed = animationSpeedSlider.value = (float)speed;
 }
 - (CGFloat ) animationSpeed { return animationSpeedSlider.value; }
 
@@ -41,7 +44,7 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
-    animationSpeedSlider.value = self.appDelegate.animationSpeed  ;
+    animationSpeedSlider.value = (float)self.appDelegate.animationSpeed  ;
     soundEffectsSwitch.on      = self.appDelegate.soundEffects    ;
     confirmSwitch.on           = self.appDelegate.confirm         ;
     BOOL bigBalls              = ( nBalls == 24 )                 ;

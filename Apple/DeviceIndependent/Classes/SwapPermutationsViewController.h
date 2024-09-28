@@ -16,10 +16,6 @@
 #if TARGET_IOS
 //                                                           <WKWebViewDelegate>
 #endif
-{
-    PreferencesViewController * preferencesViewController ;
-    SwapPermutationsView      * swapPermutationsView      ;
-}
 
 @property ( nonatomic, assign   )          PreferencesViewController * preferencesViewController ;
 @property ( nonatomic, retain   ) IBOutlet SwapPermutationsView      * swapPermutationsView      ;
