@@ -69,6 +69,7 @@
 }
 
 
+
 - (void)dealloc {
     self.helpView = nil;
     [super dealloc];
