@@ -14,16 +14,6 @@
 #if TARGET_IOS
                                            <UIApplicationDelegate>
 #endif /* TARGET_IOS */
-{
-    UIWindow *window;
-    CGFloat animationSpeed;
-    bool soundEffects;
-    bool confirm;
-    bool invert;
-    GameModel * gameModel;
-
-}
-
 // You'd think that the Interface builder would expand preprocessor constants, but apparently not
 #if TARGET_IOS
 @property (nonatomic, retain ) IBOutlet UIWindow *window;

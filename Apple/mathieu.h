@@ -11,15 +11,15 @@
 
 #if MATHIEU_GROUP_PERMUTATION_SIZE==12
 
-    #import "m12.h"
-    #import "Constants.h"
-    #import "M12Constants.h"
+    #include "m12.h"
+    #include "Constants.h"
+    #include "M12Constants.h"
 
 #elif MATHIEU_GROUP_PERMUTATION_SIZE==24
 
-    #import "m24.h"
-    #import "Constants.h"
-    #import "M24Constants.h"
+    #include "m24.h"
+    #include "Constants.h"
+    #include "M24Constants.h"
 
 #else
 

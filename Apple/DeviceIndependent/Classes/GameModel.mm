@@ -17,7 +17,15 @@ using namespace std;
 #import "Constants.h"
 #import "GameModel.h"
 #import "iPhoneUtilities.h"
+
+@interface GameModel()
+@property (nonatomic, readwrite) MathieuPermutationWithHistory *currentPermutation;
+@property (nonatomic, readwrite) MathieuPermutationWithHistory *startingPermutation;
+@end
+
 @implementation GameModel
+@synthesize currentPermutation;
+@synthesize startingPermutation;
 
 -( MathieuPermutationWithHistory *) serializePermutationFrom: ( istream & ) is
 {
@@ -72,7 +80,7 @@ using namespace std;
         stringstream ss;
         const char * bytes = ( const char * ) data.bytes;
         size_t length = data.length;
-        ss.write( bytes, length );
+        ss.write( bytes, (streamsize)length );
         
 #if INITFROMDATA_DEBUG_LEVEL <= DEBUG_LEVEL
         __timestamp__;
@@ -116,7 +124,7 @@ using namespace std;
 
 -( int ) at: ( int )index
 {
-	return ( * currentPermutation )[ index ];
+	return ( * currentPermutation )[ (tiny_int)index ];
 }
 
 -( void ) copyInto: (PermArray) pa
@@ -185,7 +193,8 @@ using namespace std;
 
 -( NSString * ) cyclesForSwap: ( int ) nSwap
 {
-    if ( ! ( 0 <= nSwap && nSwap < n_array_elements( MathieuPermutation::swaps ) ) )
+    int nswaps = (int)n_array_elements( MathieuPermutation::swaps );
+    if ( ! ( 0 <= nSwap && nSwap < nswaps ) )
         return [ NSString stringWithFormat: @"No such swap %d", nSwap ];
     return [ self cyclesForPermutation:MathieuPermutation( MathieuPermutation::swaps[ nSwap ].swap ) ];
 }
@@ -254,9 +263,9 @@ static inline MathieuPermutation & as( MathieuPermutationWithHistory & p) { retu
 -( void ) spin: ( int ) n 
 {
     if ( 0 < n )
-        ( * currentPermutation ).right( +n );
+        ( * currentPermutation ).right( (tiny_int)+n );
     else
-        ( * currentPermutation ).left ( -n );
+        ( * currentPermutation ).left ( (tiny_int)-n );
 }
 
 -( void ) runCombo: ( HistoryElement ) c inverted: ( bool ) inverted 

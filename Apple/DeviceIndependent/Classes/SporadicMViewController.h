@@ -26,10 +26,6 @@
 #error Don't know this platform!
 #endif
 
-{
-    bool                 haveNotedSuccess   ;
-}
-
 // Handlers for events from the SporadicMView
 - ( IBAction ) toggleInverted ;
 - ( IBAction ) right          ;

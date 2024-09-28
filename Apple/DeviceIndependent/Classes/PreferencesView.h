@@ -9,17 +9,6 @@
 #include "Apple Cross-platform.h"
 
 @interface PreferencesView : UIView
-{
-    AppleSlider * animationSpeedSlider;
-    AppleSwitch * soundEffectsSwitch;
-    AppleSwitch * confirmSwitch;
-    AppleLabel  * currentPermutation;
-    AppleLabel  * currentPermLabel;
-    AppleButton * swapsButton;
-#if TARGET_IOS
-	UINavigationItem * navigationBar;
-#endif
-}
 @property( nonatomic, assign ) IBOutlet AppleSlider * animationSpeedSlider;
 @property( nonatomic, assign ) IBOutlet AppleSwitch * soundEffectsSwitch;
 @property( nonatomic, assign ) IBOutlet AppleSwitch * confirmSwitch;
@@ -29,7 +18,7 @@
 #if TARGET_IOS
 @property( nonatomic, assign ) IBOutlet UINavigationItem * navigationBar;
 #endif
-@property /* dynamic */           CGFloat animationSpeed;
+@property( nonatomic, assign ) CGFloat animationSpeed;
 
 -(void) synchronize;
 @end

@@ -9,7 +9,14 @@
 #import "BallView.h"
 #import "Utilities.h"
 
+@interface BallView()
+@property (nonatomic,readwrite) int ballNumber;
+@end
+
+
 @implementation BallView
+
+@synthesize ballNumber;
 
 typedef struct { unsigned char r; unsigned char g; unsigned char b; } BallColor;
 
@@ -38,11 +45,11 @@ static BallColor ballColors[ nBalls ];
 }
 
 
-- (id)initWithFrame:(CGRect)frame ballNumber:( int ) ballNumber
+- (id)initWithFrame:(CGRect)frame ballNumber:( int ) _ballNumber
 {
     if ( self = [super initWithFrame:CGRect_to_NSRect(frame)] )
     {
-        _ballNumber = ballNumber;
+        self.ballNumber = _ballNumber;
 #if TARGET_IOS
         self.backgroundColor = [UIColor clearColor];
 #endif /* TARGET_IOS */
@@ -50,22 +57,22 @@ static BallColor ballColors[ nBalls ];
     return self;
 }
 
-+ ( BallView * ) ballViewWithFrame: ( CGRect ) frame ballNumber:( int ) ballNumber
++ ( BallView * ) ballViewWithFrame: ( CGRect ) frame ballNumber:( int ) _ballNumber
 {
-    return [ [ [ self alloc ] initWithFrame:frame ballNumber: ballNumber ] autorelease];
+    return [ [ [ self alloc ] initWithFrame:frame ballNumber: _ballNumber ] autorelease];
 }
 
 
 - (void)drawRect:(CGRect)rect {
 
-    const float R = ballColors[ _ballNumber ].r / 255.0;
-    const float G = ballColors[ _ballNumber ].g / 255.0;
-    const float B = ballColors[ _ballNumber ].b / 255.0;
+    const float R = ballColors[ self.ballNumber ].r / 255.0f;
+    const float G = ballColors[ self.ballNumber ].g / 255.0f;
+    const float B = ballColors[ self.ballNumber ].b / 255.0f;
 
     // Make the gradient
     const int nLocations = 3;
 
-    CGFloat colors[ 4 * nLocations ] =
+    CGFloat clrs[ 4 * nLocations ] =
     {
         0.6*R, 0.6*G, 0.6*B, 0.0,  // Start color
         0.6*R, 0.6*G, 0.6*B, 1.0,  // Middle color
@@ -74,7 +81,7 @@ static BallColor ballColors[ nBalls ];
     CGFloat locations[ nLocations ] = { 0.0, 0.05, 1.0 };
 
     CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
-    CGGradientRef gradient = CGGradientCreateWithColorComponents( rgb, colors, locations, nLocations );
+    CGGradientRef gradient = CGGradientCreateWithColorComponents( rgb, clrs, locations, nLocations );
     CGColorSpaceRelease(rgb);
 
     // Draw a radial gradient to make the 2D image of a sphere cap lit from above

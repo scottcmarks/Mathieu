@@ -20,6 +20,7 @@
 
 @interface SporadicMViewController()
 @property (nonatomic, strong, readonly) SporadicMView * sporadicMView;
+@property (nonatomic, readwrite) bool                 haveNotedSuccess   ;
 @end
 
 @implementation SporadicMViewController
@@ -28,6 +29,8 @@
     assert([self.view isKindOfClass:SporadicMView.class]);
     return (SporadicMView *)self.view;
 }
+
+@synthesize haveNotedSuccess;
 
 - ( BallRingView * ) ballRingView { return self.sporadicMView.ballRingView; }
 
@@ -140,7 +143,7 @@
 }
 
 
-- ( void ) combo: ( HistoryElement ) comboName inverse: ( bool ) inverse ;
+- ( void ) combo: ( HistoryElement ) comboName inverse: ( bool ) inverse
 {
     if ( [ self.gameModel hasDefinedCombo: comboName ] )
     {
