@@ -54,6 +54,7 @@
 
 @interface SporadicMView ()
 @property ( nonatomic, strong, readwrite ) IBOutlet UIView * ballRingViewContainerView;
+@property ( nonatomic, readwrite ) bool buttonsInverted;
 @end
 
 @implementation SporadicMView
@@ -67,6 +68,7 @@
 @synthesize historyTextUpdatingTimer;
 @synthesize ballRingViewContainerView;
 @synthesize ballRingView;
+@synthesize buttonsInverted;
 
 //  @synthesize animateBallPops;
 
@@ -137,7 +139,7 @@
     // Establish invariant between combo definednesses and combo buttons appearance
     [BallView setColorsForCurrentSwapPermutation];
     
-    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull ) {
         HistoryElement c = button.comboName;
         if (c <= lastComboButtonForThisVersion) {
             button.enabled = YES;
@@ -194,7 +196,7 @@
 
 -( void ) setComboBarButtonsInverted: ( bool ) inverted
 {
-    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) {
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull ) {
         if (!button.disabled) button.alternate = inverted;
     }];
 }
@@ -229,7 +231,7 @@
 
 -( void ) disableAllComboButtons
 {
-    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull stop) { button.disabled = YES; }];
+    [self forComboButtons:^(ComboBarButton * button, BOOL * _Nonnull ) { button.disabled = YES; }];
 }
 
 -(void) showCurrentPermutationAtDuration:(CGFloat)duration

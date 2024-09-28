@@ -17,8 +17,35 @@
 
 #import "BallRingView.h"
 
-
 @implementation BallRingView
+
+CGFloat   _circleRadius;
+CGPoint   _circleCenter;
+CGFloat   _ballRadius;
+BallView * _ballViews[ nBalls ];
+AppleLabel *_ballLabels[ nBalls ];
+AppleLabel *_tagLabels[ nBalls ];
+CGPoint _ballCenters[ nBalls ];
+SoundEffect * _rightSound;
+SoundEffect * _leftSound;
+SoundEffect * _swapSound;
+SoundEffect * _homeSound;
+SoundEffect * _shakeSound;
+SoundEffect * _restartSound;
+SoundEffect * _comboSound;
+SoundEffect * _comboSetSound;
+SoundEffect * _comboNotSetSound;
+SoundEffect * _successSound;
+SoundEffect * _applauseSound;
+int firstWedgeTouched;
+bool swapGestureStarted ;
+int previousWedgeTouched;
+int lastWedgeTouched;
+double firstThetaTouched;
+double lastThetaTouched;
+PermArray spinStartingPosition;
+id < BallRingViewDelegate > _delegate;
+//  bool animateBallPops;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
@@ -265,7 +292,8 @@ forAllBalls(i)
     && wedge == 1 ;
 }
 
-int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
+static
+int wedgeDifference( )
 {
     int nWedgesSpun = lastWedgeTouched - previousWedgeTouched;
     if ( nWedgesSpun < -(nBalls/2 - 1 ) )
@@ -315,7 +343,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
 - (void)  finishedTouching
 {
     assert( _delegate );
-    [ _delegate spinFinished: [ self spinClicks: wedgeDifference( lastWedgeTouched, previousWedgeTouched ) ] ];
+    [ _delegate spinFinished: [ self spinClicks: wedgeDifference() ] ];
     firstWedgeTouched = -1 ;
 }
 
@@ -348,7 +376,7 @@ int wedgeDifference( Index lastWedgeTouched, Index previousWedgeTouched )
         ballLabel.center = CGPointMakeFromPoint( spun );
     }
 
-    [ _delegate spinInProgress: [ self spinClicks: wedgeDifference( lastWedgeTouched , previousWedgeTouched ) ] ];
+    [ _delegate spinInProgress: [ self spinClicks: wedgeDifference() ] ];
     previousWedgeTouched = lastWedgeTouched ;
     return true;
 }
