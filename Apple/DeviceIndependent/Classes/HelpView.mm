@@ -66,11 +66,6 @@
     [self.helpWebView goBack];
 }
 
-- (IBAction) receiveBackButton
-{
-    [ self.helpWebView goBack];
-}
-
 - (void) dealloc
 {
     self.backButton = nil ;
