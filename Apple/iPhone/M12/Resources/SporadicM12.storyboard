@@ -557,17 +557,6 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     <constraint firstAttribute="width" secondItem="HAI-69-18W" secondAttribute="height" multiplier="10:1" id="9AU-Ye-ayp"/>
                                 </constraints>
                             </imageView>
-                            <wkWebView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
-                                <rect key="frame" x="0.0" y="56" width="414" height="618.66666666666663"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="GNK-Z6-NYR" id="nVx-LA-lDX"/>
-                                </connections>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="izd-8P-xIh"/>
                         <constraints>
@@ -717,7 +706,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="NIP-UO-9BO"/>
+        <segue reference="thu-7c-7JN"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="SporadicGamesLogo.png" width="320" height="32"/>
