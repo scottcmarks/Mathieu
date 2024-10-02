@@ -21,8 +21,6 @@
 		D204A27F143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D204A280143BA851005E4A82 /* NSBundle+VersionString.m in Sources */ = {isa = PBXBuildFile; fileRef = D204A27C143BA851005E4A82 /* NSBundle+VersionString.m */; };
 		D2073BC22083FD8B00EF9B71 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D2073BC12083FD8A00EF9B71 /* Default-568h@2x.png */; };
-		D21EDF0C25A50AF200EDF59C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
-		D21EDF0D25A50AF300EDF59C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
 		D222AEFD0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns in Resources */ = {isa = PBXBuildFile; fileRef = D222AEFB0FF578C400B2618B /* SporadicM12Icon_Prerendered.icns */; };
 		D22D58FA0FB622080040121A /* GameModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55AF0FACE47A0093E56B /* GameModel.mm */; };
 		D230EB3820951115002A7EA4 /* Ledger.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB2E20951115002A7EA4 /* Ledger.m */; };
@@ -41,7 +39,6 @@
 		D230EB7020952486002A7EA4 /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = D230EB5F20952485002A7EA4 /* AES.m */; };
 		D23E23CC20953B250034B997 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E23CB20953B250034B997 /* Security.framework */; };
 		D2511338209284C4002811D7 /* M12 Full Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2511336209284C0002811D7 /* M12 Full Images.xcassets */; };
-		D256A75725A13D5D00ABE27C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D256A75625A13D5D00ABE27C /* WebKit.framework */; };
 		D25B055B0FB6093400A4CFB1 /* rand_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D2AE58890FACE81D0093E56B /* rand_utils.c */; };
 		D25CEB040FBA8F4C0051EB25 /* PreferencesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D2AE55B90FACE47A0093E56B /* PreferencesViewController.mm */; };
 		D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D25CEC0C0FBB65130051EB25 /* Cocoa.framework */; };
@@ -247,7 +244,6 @@
 		D23E23CE20953BBC0034B997 /* NSObject+Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Data.h"; sourceTree = "<group>"; };
 		D23E23CF20953BBC0034B997 /* NSObject+Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Data.m"; sourceTree = "<group>"; };
 		D2511336209284C0002811D7 /* M12 Full Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "M12 Full Images.xcassets"; sourceTree = "<group>"; };
-		D256A75625A13D5D00ABE27C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D25CEC0C0FBB65130051EB25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D26DA63A2092E7BF0045E179 /* left_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = left_position.html; sourceTree = "<group>"; };
 		D26DA63F2092E9440045E179 /* right_position.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html.documentation; path = right_position.html; sourceTree = "<group>"; };
@@ -455,6 +451,7 @@
 		D2D42B512C9C9B190090885C /* tada.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tada.caf; sourceTree = "<group>"; };
 		D2D42B522C9C9B190090885C /* tick.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tick.caf; sourceTree = "<group>"; };
 		D2D42B532C9C9B190090885C /* tock.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = tock.caf; sourceTree = "<group>"; };
+		D2D71E1F2CADB6D200DD6E08 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D2D897A6142FD19B00626D94 /* MHAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHAlertView.h; sourceTree = "<group>"; };
 		D2D897A7142FD19B00626D94 /* MHAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHAlertView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
@@ -464,7 +461,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D256A75725A13D5D00ABE27C /* WebKit.framework in Frameworks */,
 				D23E23CC20953B250034B997 /* Security.framework in Frameworks */,
 				D230EB552095234F002A7EA4 /* StoreKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -481,7 +477,6 @@
 			files = (
 				D230EB562095235F002A7EA4 /* StoreKit.framework in Frameworks */,
 				8C1B8AE10F68470300F359D6 /* Foundation.framework in Frameworks */,
-				D21EDF0D25A50AF300EDF59C /* WebKit.framework in Frameworks */,
 				8C1B8AE20F68470300F359D6 /* UIKit.framework in Frameworks */,
 				8C1B8AE30F68470300F359D6 /* CoreGraphics.framework in Frameworks */,
 				8C081A310F698ED000C21C40 /* AudioToolbox.framework in Frameworks */,
@@ -493,7 +488,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D25CEC0D0FBB65130051EB25 /* Cocoa.framework in Frameworks */,
-				D21EDF0C25A50AF200EDF59C /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,7 +513,6 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				D28025350FFBBF9B008CA92E /* Entitlements.plist */,
 				D2FDA8761FC7509B00603E02 /* Frameworks */,
-				D2E1B4082CA6096100AFA709 /* Recovered References */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1266,20 +1259,13 @@
 			path = MHAlertView;
 			sourceTree = "<group>";
 		};
-		D2E1B4082CA6096100AFA709 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				D256A75625A13D5D00ABE27C /* WebKit.framework */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		D2FDA8761FC7509B00603E02 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				D2C7C0BE259E240B000ADA29 /* CoreServices.framework */,
 				D23E23CB20953B250034B997 /* Security.framework */,
 				D230EB542095234F002A7EA4 /* StoreKit.framework */,
+				D2D71E1F2CADB6D200DD6E08 /* WebKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
