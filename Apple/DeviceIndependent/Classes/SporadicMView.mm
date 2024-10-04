@@ -52,6 +52,15 @@
 
 #endif //  TARGET_MACOS & ! TARGET_IOS
 
+@implementation AppleLabelClearsBeforeWriting
+-(void) drawTextInRect:(CGRect)rect{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
+    CGContextFillRect(context, rect);
+    [super drawTextInRect:rect];
+}
+@end
+
 @interface SporadicMView ()
 @property ( nonatomic, strong, readwrite ) IBOutlet UIView * ballRingViewContainerView;
 @property ( nonatomic, readwrite ) bool buttonsInverted;
@@ -87,6 +96,7 @@
       && [ historyTextCache compare: historyText options: NSLiteralSearch ] == NSOrderedSame )
         return;
     history.text = self.historyTextCache = historyText ;
+    
     moves.text = [ NSString stringWithFormat:@"%d\n%d", self.gameModel.moves, self.gameModel.steps ];
     // I know of no good way to make the end of the string visible.
     //

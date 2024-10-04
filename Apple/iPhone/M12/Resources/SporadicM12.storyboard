@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IYw-Zt-vdt" userLabel="Ball View Container View">
-                                <rect key="frame" x="10" y="20.000000000000028" width="394" height="472.66666666666674"/>
+                                <rect key="frame" x="10" y="40.000000000000028" width="394" height="472.66666666666674"/>
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Skb-lI-pNA" customClass="BallRingView">
                                         <rect key="frame" x="0.0" y="0.0" width="394" height="472.66666666666669"/>
@@ -113,7 +112,7 @@
                                     <constraint firstItem="Skb-lI-pNA" firstAttribute="top" secondItem="IYw-Zt-vdt" secondAttribute="top" id="tfe-DE-bbz"/>
                                 </constraints>
                             </view>
-                            <label autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" textAlignment="right" lineBreakMode="clip" numberOfLines="2" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ur-dH-chn" userLabel="Moves and Steps">
+                            <label autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" textAlignment="right" lineBreakMode="clip" numberOfLines="2" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ur-dH-chn" userLabel="Moves and Steps" customClass="AppleLabelClearsBeforeWriting">
                                 <rect key="frame" x="10" y="512.66666666666663" width="14.666666666666664" height="29.666666666666629"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="5ur-dH-chn" secondAttribute="height" multiplier="1:2" id="8mG-oi-Z5R"/>
@@ -133,7 +132,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textView>
                             <toolbar contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzv-tM-2NG">
-                                <rect key="frame" x="10" y="532.33333333333337" width="394" height="44"/>
+                                <rect key="frame" x="10" y="552.33333333333337" width="394" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="8R5-7C-Xot"/>
                                 </constraints>
@@ -543,8 +542,9 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <wkWebView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" allowsBackForwardNavigationGestures="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
+                            <wkWebView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" allowsBackForwardNavigationGestures="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ptn-33-7rG">
                                 <rect key="frame" x="0.0" y="56" width="414" height="618.66666666666663"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -569,7 +569,6 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                         </constraints>
                         <connections>
                             <outlet property="backButton" destination="1q0-ak-03O" id="LhN-4z-lKA"/>
-                            <outlet property="helpWebView" destination="1zJ-jw-K0A" id="AwE-l9-dt8"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="hqj-sl-KrF"/>
