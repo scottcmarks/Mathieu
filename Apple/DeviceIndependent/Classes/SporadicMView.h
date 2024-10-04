@@ -12,12 +12,15 @@
 
 #import "UIDualButton.h"
 
+@interface AppleLabelClearsBeforeWriting : AppleLabel
+@end
+
 @class SporadicMViewController;
 @interface SporadicMView : UIView // TransitionView
 
 
 
-@property ( nonatomic, assign   ) IBOutlet AppleLabel              * moves;
+@property ( nonatomic, assign   ) IBOutlet AppleLabelClearsBeforeWriting              * moves;
 @property ( nonatomic, assign   ) IBOutlet AppleTextView * history;
 @property ( nonatomic, assign   ) IBOutlet AppleToolbar  * toolbar;
 @property ( nonatomic, assign   ) IBOutlet UIDualButton  * shakeButton;
