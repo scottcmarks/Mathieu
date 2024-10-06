@@ -342,12 +342,25 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" text="((0 1) (2 3) (4 5) (6 7) (8 9) (10 11))" lineBreakMode="clip" baselineAdjustment="none" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="LDO-Px-iHW" userLabel="CurrentPermutation">
-                                        <rect key="frame" x="26.333333333333343" y="151" width="309" height="25.666666666666657"/>
+                                        <rect key="frame" x="39.333333333333343" y="151" width="309" height="25.666666666666657"/>
                                         <color key="backgroundColor" red="0.026699495" green="0.027173935999999999" blue="0.026818106000000001" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
+                                    <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UI4-WN-16K">
+                                        <rect key="frame" x="368.33333333333331" y="151" width="25.666666666666686" height="25.666666666666657"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="0.19607843" green="0.30980393000000001" blue="0.52156866000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="Zrn-k1-6dv" kind="show" identifier="showSwapPermutationsView" id="zrz-Qd-nV2"/>
+                                        </connections>
+                                    </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" lineBreakMode="wordWrap" numberOfLines="4" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="dpx-w1-1XR">
                                         <rect key="frame" x="20" y="232.99999999999997" width="243" height="52.666666666666657"/>
                                         <string key="text">When solving, confirm Shake,
@@ -434,25 +447,11 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                             <constraint firstAttribute="width" secondItem="8uP-Hg-QBe" secondAttribute="height" multiplier="10:1" id="svr-WF-0hy"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UI4-WN-16K">
-                                        <rect key="frame" x="355.33333333333331" y="151" width="25.666666666666686" height="25.666666666666657"/>
-                                        <state key="normal">
-                                            <color key="titleColor" red="0.19607843" green="0.30980393000000001" blue="0.52156866000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="Zrn-k1-6dv" kind="show" identifier="showSwapPermutationsView" id="zrz-Qd-nV2"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="A1U-zf-3eZ" firstAttribute="leading" secondItem="xmA-c5-XP6" secondAttribute="leading" id="1Nz-wz-Jkd"/>
                                     <constraint firstItem="8uP-Hg-QBe" firstAttribute="leading" secondItem="lDe-ad-xFX" secondAttribute="leading" id="1Oh-6S-NdK"/>
                                     <constraint firstItem="7LB-NR-LGN" firstAttribute="trailing" secondItem="j6H-XV-912" secondAttribute="trailing" id="2EK-Hz-EiI"/>
-                                    <constraint firstItem="LDO-Px-iHW" firstAttribute="trailing" secondItem="UI4-WN-16K" secondAttribute="leading" constant="-20" id="2tb-oh-i3g"/>
                                     <constraint firstItem="UI4-WN-16K" firstAttribute="bottom" secondItem="LDO-Px-iHW" secondAttribute="bottom" id="4gK-AR-pxL"/>
                                     <constraint firstItem="lAS-Jv-fhR" firstAttribute="trailing" secondItem="YIz-zF-Rxh" secondAttribute="trailing" id="5I8-oI-ryj"/>
                                     <constraint firstItem="8uP-Hg-QBe" firstAttribute="bottom" secondItem="lDe-ad-xFX" secondAttribute="bottom" id="AtT-XE-Rqc"/>
@@ -483,7 +482,8 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                                     <constraint firstItem="A1U-zf-3eZ" firstAttribute="top" secondItem="L9j-q7-WTY" secondAttribute="bottom" constant="12" id="rsU-il-df7"/>
                                     <constraint firstItem="Vja-qk-4Xd" firstAttribute="trailing" secondItem="lDe-ad-xFX" secondAttribute="trailing" id="s7x-8a-JjX"/>
                                     <constraint firstItem="A1U-zf-3eZ" firstAttribute="leading" secondItem="dpx-w1-1XR" secondAttribute="trailing" constant="69" id="tbr-VT-n8u"/>
-                                    <constraint firstItem="UI4-WN-16K" firstAttribute="trailing" secondItem="A1U-zf-3eZ" secondAttribute="trailing" id="w8N-Nh-mBL"/>
+                                    <constraint firstItem="UI4-WN-16K" firstAttribute="leading" secondItem="LDO-Px-iHW" secondAttribute="trailing" constant="19.999999999999886" id="urc-GX-OrN"/>
+                                    <constraint firstItem="UI4-WN-16K" firstAttribute="centerX" secondItem="A1U-zf-3eZ" secondAttribute="trailing" id="w8N-Nh-mBL"/>
                                     <constraint firstItem="LDO-Px-iHW" firstAttribute="top" secondItem="3Wv-w7-bfz" secondAttribute="bottom" constant="12" id="xea-0U-Ssb"/>
                                     <constraint firstItem="7RC-kI-DVe" firstAttribute="leading" secondItem="lDe-ad-xFX" secondAttribute="leading" constant="8" id="zHh-XU-y0G"/>
                                 </constraints>
@@ -569,6 +569,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
                         </constraints>
                         <connections>
                             <outlet property="backButton" destination="1q0-ak-03O" id="LhN-4z-lKA"/>
+                            <outlet property="helpWebView" destination="ptn-33-7rG" id="h5p-fB-dVQ"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="hqj-sl-KrF"/>
