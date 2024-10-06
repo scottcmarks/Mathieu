@@ -23,7 +23,9 @@
     NSBundle * m = [NSBundle mainBundle] ;
     NSString *bundlePath = [m bundlePath];
     NSString *resourcePath = [NSBundle pathForResource:resource ofType:@"html" inDirectory:bundlePath];
-    [self.helpWebView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:resourcePath]]];
+    NSURL *resourceURL = [NSURL fileURLWithPath:resourcePath];
+    NSURLRequest *resourceRequest = [NSURLRequest requestWithURL:resourceURL];
+    [self.helpWebView loadRequest:resourceRequest];
 }
 
 - ( void ) showInitialHelpScreen
