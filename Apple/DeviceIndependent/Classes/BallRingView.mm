@@ -17,35 +17,69 @@
 
 #import "BallRingView.h"
 
+@interface BallRingView()
+@property (nonatomic,assign) CGFloat   circleRadius;
+@property (nonatomic,assign) CGPoint   circleCenter;
+@property (nonatomic,assign) CGFloat   ballRadius;
+@property (nonatomic,retain) NSMutableArray <BallView *> * ballViews /* [ nBalls ] */ ;
+@property (nonatomic,retain) NSMutableArray <AppleLabel *> * ballLabels /* [ nBalls ] */ ;
+@property (nonatomic,retain) NSMutableArray <AppleLabel *> * tagLabels /* [ nBalls ] */ ;
+@property (nonatomic,retain) NSMutableArray <NSValue /*CGPoint*/ *> * nsv_ballCenters /* [ nBalls ] */ ;
+@property (nonatomic,retain) SoundEffect * rightSound;
+@property (nonatomic,retain) SoundEffect * leftSound;
+@property (nonatomic,retain) SoundEffect * swapSound;
+@property (nonatomic,retain) SoundEffect * homeSound;
+@property (nonatomic,retain) SoundEffect * shakeSound;
+@property (nonatomic,retain) SoundEffect * restartSound;
+@property (nonatomic,retain) SoundEffect * comboSound;
+@property (nonatomic,retain) SoundEffect * comboSetSound;
+@property (nonatomic,retain) SoundEffect * comboNotSetSound;
+@property (nonatomic,retain) SoundEffect * successSound;
+@property (nonatomic,retain) SoundEffect * applauseSound;
+@property (nonatomic,assign) int firstWedgeTouched;
+@property (nonatomic,assign) bool swapGestureStarted;
+@property (nonatomic,assign) int previousWedgeTouched;
+@property (nonatomic,assign) int lastWedgeTouched;
+@property (nonatomic,assign) double firstThetaTouched;
+@property (nonatomic,assign) double lastThetaTouched;
+@property (nonatomic,assign) void * /* PermArray */ v_spinStartingPosition;
+@property (nonatomic,weak  ) id < BallRingViewDelegate > delegate;
+
+// @property (nonatomic,assign) bool animateBallPops;
+
+
+@end
+
 @implementation BallRingView
 
-CGFloat   _circleRadius;
-CGPoint   _circleCenter;
-CGFloat   _ballRadius;
-BallView * _ballViews[ nBalls ];
-AppleLabel *_ballLabels[ nBalls ];
-AppleLabel *_tagLabels[ nBalls ];
-CGPoint _ballCenters[ nBalls ];
-SoundEffect * _rightSound;
-SoundEffect * _leftSound;
-SoundEffect * _swapSound;
-SoundEffect * _homeSound;
-SoundEffect * _shakeSound;
-SoundEffect * _restartSound;
-SoundEffect * _comboSound;
-SoundEffect * _comboSetSound;
-SoundEffect * _comboNotSetSound;
-SoundEffect * _successSound;
-SoundEffect * _applauseSound;
-int firstWedgeTouched;
-bool swapGestureStarted ;
-int previousWedgeTouched;
-int lastWedgeTouched;
-double firstThetaTouched;
-double lastThetaTouched;
-PermArray spinStartingPosition;
-id < BallRingViewDelegate > _delegate;
-//  bool animateBallPops;
+@synthesize circleRadius;
+@synthesize circleCenter;
+@synthesize ballRadius;
+@synthesize ballViews;
+@synthesize ballLabels;
+@synthesize tagLabels;
+@synthesize nsv_ballCenters;
+@synthesize rightSound;
+@synthesize leftSound;
+@synthesize swapSound;
+@synthesize homeSound;
+@synthesize shakeSound;
+@synthesize restartSound;
+@synthesize comboSound;
+@synthesize comboSetSound;
+@synthesize comboNotSetSound;
+@synthesize successSound;
+@synthesize applauseSound;
+@synthesize firstWedgeTouched;
+@synthesize swapGestureStarted;
+@synthesize previousWedgeTouched;
+@synthesize lastWedgeTouched;
+@synthesize firstThetaTouched;
+@synthesize lastThetaTouched;
+@synthesize v_spinStartingPosition;
+@synthesize delegate;
+
+// @synthesize animateBallPops;
 
 - ( SporadicMAppDelegate * ) appDelegate{ return ( SporadicMAppDelegate * )[ [ AppleApplication sharedApplication ] delegate ] ; }
 - ( GameModel * ) gameModel { return self.appDelegate.gameModel ; }
@@ -65,57 +99,61 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 - (void ) createBallsAndLabels {
     CGRect ballFrame = CGRectMake ( 0.0, 0.0, NOMINALBALLRADIUS*2, NOMINALBALLRADIUS*2 );
     // Create and add all the balls
+    self.ballViews = [NSMutableArray<BallView *> arrayWithCapacity:nBalls];
     forAllBalls(i)
     {
         BallView *ballView = [ BallView ballViewWithFrame: ballFrame ballNumber: i ] ;      //TODO: if we're allocating all of these don't we need to release them? (keep track?)
         assert(ballView);
         [ self addSubview: ballView ];
-        _ballViews[ i ] = ballView;
+        self.ballViews[ (NSUInteger)i ] = ballView;
     }
-    
+
 #if !ICONIC_PICTURE_ONLY
 
     // Create and add all the labels (in front of the balls)
+    self.ballLabels = [NSMutableArray<AppleLabel *> arrayWithCapacity:nBalls];
     forAllBalls(i)
     {
         AppleLabel * ballLabel = [ [ AppleLabel alloc ] initWithFrame: ballFrame ];
         assert(ballLabel );
         [self addSubview:ballLabel ];
-        _ballLabels[ i ] = ballLabel;                        //TODO retain count == 2?
+        self.ballLabels[ (NSUInteger)i ] = ballLabel;                        //TODO retain count == 2?
     }
 #endif // !ICONIC_PICTURE_ONLY
-    
-    
+
+
 
 }
 
 - (void ) layoutBallsAndLabelsForFrame: ( CGRect ) frame {
     CGFloat frameHalfWidth = CGRectGetWidth ( frame )/2;
-    CGRect ballFrame = CGRectMake ( 0.0, 0.0, _ballRadius*2, _ballRadius*2 );
-    _circleRadius = frameHalfWidth - 2*_ballRadius ;
-    _circleCenter = CGPointMake( CGRectGetMidX( frame ), CGRectGetMidY( frame )+ 0.5*_ballRadius + tagFontSize );
-    
+    CGRect ballFrame = CGRectMake ( 0.0, 0.0, self.ballRadius*2, self.ballRadius*2 );
+    self.circleRadius = frameHalfWidth - 2*self.ballRadius ;
+    self.circleCenter = CGPointMake( CGRectGetMidX( frame ), CGRectGetMidY( frame )+ 0.5*self.ballRadius + tagFontSize );
+
     point ballCoordinates[ nBalls ];
-    CalculateBallCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, ballCoordinates);   //fills array with coordinates for the center of the ball
+    CalculateBallCoordinates( CGPoint_to_point( self.circleCenter ), self.circleRadius, self.ballRadius, ballCoordinates);   //fills array with coordinates for the center of the ball
 
     // Do all the geometry
+    self.nsv_ballCenters = [NSMutableArray<NSValue /*CGPoint*/ *> arrayWithCapacity:nBalls];
     forAllBalls(i)
     {
-        _ballCenters[ i ].x = round( ballCoordinates[ i ].x ) ;
-        _ballCenters[ i ].y = round( ballCoordinates[ i ].y );
+        self.nsv_ballCenters[ (NSUInteger)i ] =
+            [NSValue valueWithCGPoint:CGPointMake(round( ballCoordinates[ i ].x ),
+                                                  round( ballCoordinates[ i ].y ))];
     }
-    
+
     // Position all the balls
     forAllBalls(i)
     {
-        BallView *ballView = _ballViews[ i ];
+        BallView *ballView = self.ballViews[ (NSUInteger)i ];
         assert(ballView);
         ballView.frame = ballFrame;
-        ballView.center = _ballCenters[ i ];
+        ballView.center = self.nsv_ballCenters[ (NSUInteger)i ].CGPointValue;
     }
-    
+
 #if ICONIC_PICTURE_ONLY
-    
+
 #if TARGET_IOS
     self.opaque = YES;
     self.userInteractionEnabled = NO;
@@ -123,17 +161,17 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 #else
 #error Don't know this platform!
 #endif
-    
+
 #else // !ICONIC_PICTURE_ONLY
-    
+
     AppleFont * ballFont = [AppleFont systemFontOfSize:ballFontSize ];
     // Position the ball labels
     forAllBalls(i)
     {
-        AppleLabel * ballLabel = _ballLabels[ i ];
+        AppleLabel * ballLabel = self.ballLabels[ (NSUInteger)i ];
         assert(ballLabel );
         ballLabel.frame = ballFrame;
-        ballLabel.center = _ballCenters[ i ];
+        ballLabel.center = self.nsv_ballCenters[ (NSUInteger)i ].CGPointValue;
         ballLabel.font = ballFont;
         ballLabel.textAlignment = NSTextAlignmentCenter;
         ballLabel.textColor = [ UIColor colorWithWhite:0.250 alpha:1.0 ];
@@ -147,23 +185,24 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 - ( void ) createTags {
     // Create and add all the little gray labels (next to the balls)
     CGRect tagLabelFrame = CGRectMake(0, 0, NOMINALBALLRADIUS, NOMINALBALLRADIUS);
+    self.tagLabels = [NSMutableArray<AppleLabel *> arrayWithCapacity:nBalls];
     forAllBalls(i)
     {
         AppleLabel * tagLabel = [ [ AppleLabel alloc ] initWithFrame: tagLabelFrame ];
         assert (tagLabel );
-        _tagLabels[i] = tagLabel;
+        self.tagLabels[(NSUInteger)i] = tagLabel;
         [self addSubview:tagLabel ];
     }
 }
 
 - ( void ) layoutTagsForFrame:(CGRect)frame {
     point tagCoordinates [ nBalls ];
-    CalculateTagCoordinates( CGPoint_to_point( _circleCenter ), _circleRadius, _ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
-    CGRect tagLabelFrame = CGRectMake(0, 0, _ballRadius, _ballRadius);
+    CalculateTagCoordinates( CGPoint_to_point( self.circleCenter ), self.circleRadius, self.ballRadius, tagCoordinates);   //fills array with coordinates for the center of the ball
+    CGRect tagLabelFrame = CGRectMake(0, 0, self.ballRadius, self.ballRadius);
     AppleFont * tagFont = [AppleFont systemFontOfSize:tagFontSize ];
     forAllBalls(i)
     {
-        AppleLabel * tagLabel = _tagLabels[i];
+        AppleLabel * tagLabel = self.tagLabels[(NSUInteger)i];
         assert (tagLabel );
         tagLabel.frame = tagLabelFrame;
         tagLabel.center = CGPointMakeFromPoint( tagCoordinates[ i ] );
@@ -176,38 +215,33 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 }
 
 - (void) setupSounds {
-    _rightSound       = [ SoundEffect newSoundEffectWithCaf: @"right"         ];
-    _leftSound        = [ SoundEffect newSoundEffectWithCaf: @"left"          ];
-    _swapSound        = [ SoundEffect newSoundEffectWithCaf: @"swap"          ];
-    _homeSound        = [ SoundEffect newSoundEffectWithCaf: @"home"          ];
-    _shakeSound       = [ SoundEffect newSoundEffectWithCaf: @"shake"         ];
+    self.rightSound       = [[ SoundEffect newSoundEffectWithCaf: @"right"         ] autorelease];
+    self.leftSound        = [[ SoundEffect newSoundEffectWithCaf: @"left"          ] autorelease];
+    self.swapSound        = [[ SoundEffect newSoundEffectWithCaf: @"swap"          ] autorelease];
+    self.homeSound        = [[ SoundEffect newSoundEffectWithCaf: @"home"          ] autorelease];
+    self.shakeSound       = [[ SoundEffect newSoundEffectWithCaf: @"shake"         ] autorelease];
     //TODO:  make real sound for restart amd combo
-    _restartSound     = [ SoundEffect newSoundEffectWithCaf: @"restart"       ];
-    _comboSound       = [ SoundEffect newSoundEffectWithCaf: @"combo"         ];
-    _comboSetSound    = [ SoundEffect newSoundEffectWithCaf: @"combo_set"     ];
-    _comboNotSetSound = [ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ];
-    _successSound     = [ SoundEffect newSoundEffectWithCaf: @"success"       ];
-    _applauseSound    = [ SoundEffect newSoundEffectWithCaf: @"applause"      ];
+    self.restartSound     = [[ SoundEffect newSoundEffectWithCaf: @"restart"       ] autorelease];
+    self.comboSound       = [[ SoundEffect newSoundEffectWithCaf: @"combo"         ] autorelease];
+    self.comboSetSound    = [[ SoundEffect newSoundEffectWithCaf: @"combo_set"     ] autorelease];
+    self.comboNotSetSound = [[ SoundEffect newSoundEffectWithCaf: @"combo_not_set" ] autorelease];
+    self.successSound     = [[ SoundEffect newSoundEffectWithCaf: @"success"       ] autorelease];
+    self.applauseSound    = [[ SoundEffect newSoundEffectWithCaf: @"applause"      ] autorelease];
 }
 
 - (void) initializeInteraction {
 
     // Not currently spinning
-    firstWedgeTouched = -1;
-    
+    self.firstWedgeTouched = -1;
+
     // Not currently doing Swap gesture
-    swapGestureStarted = false;
+    self.swapGestureStarted = false;
 }
-
-- ( void ) setDelegate: ( id < BallRingViewDelegate > __nonnull ) delegate {
-    _delegate = delegate;
-}
-
 
 -(void) createSubviews {
     [self createBallsAndLabels ];
-    
-    if (_delegate) {
+
+    if (self.delegate) {
         [self createTags];
         [self setupSounds];
         [self initializeInteraction];
@@ -219,7 +253,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 - ( id ) initWithFrame:         ( CGRect ) frame
 {
 #define INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL 1
-    
+
 #if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
     __timestamp__ ;
 #endif
@@ -229,23 +263,24 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 }
 
 - ( void ) layoutSubviews {
+    self.v_spinStartingPosition=new PermArray;
     CGFloat frameHalfWidth = CGRectGetWidth ( self.frame )/2;
-    _ballRadius = round( MBallRadiusRatio * frameHalfWidth );
-    
+    self.ballRadius = round( MBallRadiusRatio * frameHalfWidth );
+
 #if INITWITHFRAME_TAGS_DELEGATE_DEBUG_LEVEL <= DEBUG_LEVEL
-    NSLog( @"frameHalfWidth=%f _ballRadius=%f ratio _ballRadius/frameHalfWidth=%12f",
-          (float)frameHalfWidth, (float)_ballRadius, (float)((float)_ballRadius/(float)frameHalfWidth ));
+    NSLog( @"frameHalfWidth=%f self.ballRadius=%f ratio self.ballRadius/frameHalfWidth=%12f",
+          (float)frameHalfWidth, (float)self.ballRadius, (float)((float)self.ballRadius/(float)frameHalfWidth ));
 #endif
-    
+
     [self layoutBallsAndLabelsForFrame: self.frame];
-    if (_delegate) {
+    if (self.delegate) {
         [self layoutTagsForFrame:self.frame];
     }
 }
 
 - ( void ) redraw
 {
-    forAllBalls( i ) [ _ballViews[ i ] setNeedsDisplay ];
+    forAllBalls( i ) [ self.ballViews[ (NSUInteger)i ] setNeedsDisplay ];
 }
 
 
@@ -253,7 +288,7 @@ inline CGPoint CGPointMakeFromPoint( point p ) { return CGPointMake( p.x, p.y ) 
 {
 forAllBalls(i)
     {
-        _ballLabels[ [ self.gameModel at: i ] ].center = _ballCenters[ i ];
+        self.ballLabels[ (NSUInteger)[ self.gameModel at: i ] ].center = self.nsv_ballCenters[ (NSUInteger)i ].CGPointValue;
     }
 }
 
@@ -263,15 +298,16 @@ forAllBalls(i)
                   asWedge: ( Index & ) wedge
                  andTheta: ( double & ) theta{
     CGPoint touchPoint = [ touch locationInView: self ];
-    CGFloat annulusSemiWidth = tolerant ? _circleRadius : TOUCH_SPOT_SIZE/2;
+    CGFloat annulusSemiWidth = tolerant ? self.circleRadius : TOUCH_SPOT_SIZE/2;
     return FindBallWedge( CGPoint_to_point( touchPoint ),
-                          CGPoint_to_point( _circleCenter ), _circleRadius - annulusSemiWidth, _circleRadius + annulusSemiWidth,
+                          CGPoint_to_point( self.circleCenter ), self.circleRadius - annulusSemiWidth, self.circleRadius + annulusSemiWidth,
                          wedge, theta ) ;
 }
 
 - (bool) touch:(UITouch *)touch onBall:( Index )nBall{
-    CGRect ballTouchRect = CGRectMake( _ballCenters[ nBall ].x-TOUCH_SPOT_SIZE/2,
-                                       _ballCenters[ nBall ].y-TOUCH_SPOT_SIZE/2,
+    CGPoint ballCenter = self.nsv_ballCenters[ (NSUInteger) nBall ].CGPointValue;
+    CGRect ballTouchRect = CGRectMake( ballCenter.x-TOUCH_SPOT_SIZE/2,
+                                       ballCenter.y-TOUCH_SPOT_SIZE/2,
                                        TOUCH_SPOT_SIZE, TOUCH_SPOT_SIZE );
     CGPoint touchPoint = [ touch locationInView: self ];
     return CGRectContainsPoint(ballTouchRect, touchPoint );
@@ -287,30 +323,27 @@ forAllBalls(i)
     Index wedge;
     double theta;
     return FindBallWedge(CGPoint_to_point( touchPoint ),
-                         CGPoint_to_point( _circleCenter ), 0, _circleRadius + TOUCH_SPOT_SIZE/2,
+                         CGPoint_to_point( self.circleCenter ), 0, self.circleRadius + TOUCH_SPOT_SIZE/2,
                          wedge, theta )
     && wedge == 1 ;
 }
 
-static
-int wedgeDifference( )
+
+- (int) spinClicks
 {
-    int nWedgesSpun = lastWedgeTouched - previousWedgeTouched;
+    int nWedgesSpun = self.lastWedgeTouched - self.previousWedgeTouched;
     if ( nWedgesSpun < -(nBalls/2 - 1 ) )
         nWedgesSpun += (nBalls - 1);
     else if ( +(nBalls/2 - 1) < nWedgesSpun )
         nWedgesSpun -= (nBalls - 1);
-    return nWedgesSpun;
-}
 
-- (int) spinClicks: (int) nWedgesSpun
-{
     if ( 0 < nWedgesSpun )
         for ( int i = 0; i < +nWedgesSpun ; i ++ )
             [ self playRightSound ];
     else if ( nWedgesSpun < 0 )
         for ( int i = 0; i < -nWedgesSpun ; i ++ )
             [ self playLeftSound  ];
+
     return nWedgesSpun;
 }
 
@@ -318,11 +351,11 @@ int wedgeDifference( )
 {
     if ( [ self touch:touch onBall: 0 ] )
     {
-        swapGestureStarted = true;
+        self.swapGestureStarted = true;
         return ;
     }
 
-    swapGestureStarted = false;
+    self.swapGestureStarted = false;
     Index wedgeAtTouch = 0 ;
     double thetaAtTouch = 0.0 ;
     if (! [ self findWedgeAtTouch:touch tolerant:NO
@@ -333,24 +366,24 @@ int wedgeDifference( )
 
     // Here we might consider whether ball 0 was touched, indicating a desire to swap.
 
-    firstWedgeTouched = previousWedgeTouched = lastWedgeTouched = wedgeAtTouch;
-    firstThetaTouched = thetaAtTouch;
-    [ self.gameModel copyInto: spinStartingPosition ];
+    self.firstWedgeTouched = self.previousWedgeTouched = self.lastWedgeTouched = wedgeAtTouch;
+    self.firstThetaTouched = thetaAtTouch;
+    [ self.gameModel copyInto: *reinterpret_cast<PermArray *>(self.v_spinStartingPosition) ];
     //  if ( self.animateBallPops ) [ self animatePopBall:wedgeAtTouch first:YES ];
 }
 
 
 - (void)  finishedTouching
 {
-    assert( _delegate );
-    [ _delegate spinFinished: [ self spinClicks: wedgeDifference() ] ];
-    firstWedgeTouched = -1 ;
+    assert( self.delegate );
+    [ self.delegate spinFinished: self.spinClicks ];
+    self.firstWedgeTouched = -1 ;
 }
 
 - (bool) recordTouch:(UITouch *)touch
 {
-    assert( _delegate );
-    
+    assert( self.delegate );
+
     Index wedgeAtTouch;
     double thetaAtTouch;
     if ( ! [ self findWedgeAtTouch:touch tolerant:YES
@@ -359,25 +392,25 @@ int wedgeDifference( )
         [ self finishedTouching ] ;
         return false;
     }
-    lastWedgeTouched = wedgeAtTouch;
-    lastThetaTouched = thetaAtTouch ;
+    self.lastWedgeTouched = wedgeAtTouch;
+    self.lastThetaTouched = thetaAtTouch ;
     for (Index i = 1; i < nBalls ; i++ )
     {
-        AppleLabel * ballLabel = _ballLabels[ spinStartingPosition[ i ] ];
+        AppleLabel * ballLabel = self.ballLabels[ (NSUInteger)(*reinterpret_cast<PermArray *>(self.v_spinStartingPosition))[i] ];
         /*
          ballLabel is currently who-knows-where.
          But where we want it to be is (lastThetaTouched-firstThetaTouched) from where it started.
          It started at _ballCenters[ i ].
 
          */
-        point old_center = CGPoint_to_point( _ballCenters[ i ] );
-        point center = CGPoint_to_point( _circleCenter );
-        point spun = point( polar( old_center - center ).rotate( lastThetaTouched - firstThetaTouched ) ) + center;
+        point old_center = CGPoint_to_point( self.nsv_ballCenters[ (NSUInteger)i ].CGPointValue );
+        point center = CGPoint_to_point( self.circleCenter );
+        point spun = point( polar( old_center - center ).rotate( self.lastThetaTouched - self.firstThetaTouched ) ) + center;
         ballLabel.center = CGPointMakeFromPoint( spun );
     }
 
-    [ _delegate spinInProgress: [ self spinClicks: wedgeDifference() ] ];
-    previousWedgeTouched = lastWedgeTouched ;
+    [ self.delegate spinInProgress: self.spinClicks ];
+    self.previousWedgeTouched = self.lastWedgeTouched ;
     return true;
 }
 
@@ -387,11 +420,11 @@ int wedgeDifference( )
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *) event {
-    if ( swapGestureStarted )
+    if ( self.swapGestureStarted )
         return ;
-    
+
     UITouch * touch = [ touches anyObject ];
-    if ( firstWedgeTouched == - 1 )
+    if ( self.firstWedgeTouched == - 1 )
     {
         [ self startedTouching: touch ];
         return;
@@ -401,28 +434,28 @@ int wedgeDifference( )
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *) event {
     UITouch * touch = [ touches anyObject ];
-    if ( swapGestureStarted )
+    if ( self.swapGestureStarted )
     {
         if ( [ self innerWedgeOneContainsTouch:touch ] )
-            [ _delegate swapped ];
-        swapGestureStarted = false;
+            [ self.delegate swapped ];
+        self.swapGestureStarted = false;
         return;
     }
-    if ( firstWedgeTouched == -1 )
+    if ( self.firstWedgeTouched == -1 )
         return;
     if ( [ self recordTouch: touch ] )
         [ self finishedTouching ];
 }
 
--( void ) playRightSound       { if ( self.soundEffects ) [ _rightSound       play ]; }
--( void ) playLeftSound        { if ( self.soundEffects ) [ _leftSound        play ]; }
--( void ) playSwapSound        { if ( self.soundEffects ) [ _swapSound        play ]; }
--( void ) playHomeSound        { if ( self.soundEffects ) [ _homeSound        play ]; }
--( void ) playShakeSound       { if ( self.soundEffects ) [ _shakeSound       play ]; }
--( void ) playRestartSound     { if ( self.soundEffects ) [ _restartSound     play ]; }
--( void ) playComboSound       { if ( self.soundEffects ) [ _comboSound       play ]; }
--( void ) playComboSetSound    { if ( self.soundEffects ) [ _comboSetSound    play ]; }
--( void ) playComboNotSetSound { if ( self.soundEffects ) [ _comboNotSetSound play ]; }
+-( void ) playRightSound       { if ( self.soundEffects ) [ self.rightSound       play ]; }
+-( void ) playLeftSound        { if ( self.soundEffects ) [ self.leftSound        play ]; }
+-( void ) playSwapSound        { if ( self.soundEffects ) [ self.swapSound        play ]; }
+-( void ) playHomeSound        { if ( self.soundEffects ) [ self.homeSound        play ]; }
+-( void ) playShakeSound       { if ( self.soundEffects ) [ self.shakeSound       play ]; }
+-( void ) playRestartSound     { if ( self.soundEffects ) [ self.restartSound     play ]; }
+-( void ) playComboSound       { if ( self.soundEffects ) [ self.comboSound       play ]; }
+-( void ) playComboSetSound    { if ( self.soundEffects ) [ self.comboSetSound    play ]; }
+-( void ) playComboNotSetSound { if ( self.soundEffects ) [ self.comboNotSetSound play ]; }
 
 
 -( void ) playSuccessSound
@@ -430,9 +463,9 @@ int wedgeDifference( )
     if ( self.soundEffects )
     {
         if ( self.gameModel.historyLength <= APPLAUSE_THRESHOLD )
-            [ _applauseSound play ];
+            [ self.applauseSound play ];
         else
-            [ _successSound  play ];
+            [ self.successSound  play ];
     }
 }
 
@@ -444,16 +477,26 @@ int wedgeDifference( )
 
 - (void)dealloc
 {
-    [ _rightSound    release ] ;
-    [ _leftSound     release ] ;
-    [ _swapSound     release ] ;
-    [ _homeSound     release ] ;
-    [ _shakeSound    release ] ;
-    [ _restartSound  release ] ;
-    [ _comboSound    release ] ;
-    [ _comboSetSound release ] ;
-    [ _successSound  release ] ;
-    [ _applauseSound release ] ;
+    void * v = self.v_spinStartingPosition;
+    if (v != NULL) {
+        delete[] (PermArray *)v;
+        self.v_spinStartingPosition = NULL;
+    }
+    self.ballViews        = nil ;
+    self.ballLabels       = nil ;
+    self.tagLabels        = nil ;
+    self.nsv_ballCenters  = nil ;
+    self.rightSound       = nil ;
+    self.leftSound        = nil ;
+    self.swapSound        = nil ;
+    self.homeSound        = nil ;
+    self.shakeSound       = nil ;
+    self.restartSound     = nil ;
+    self.comboSound       = nil ;
+    self.comboSetSound    = nil ;
+    self.comboNotSetSound = nil ;
+    self.successSound     = nil ;
+    self.applauseSound    = nil ;
     [ super dealloc ];
 }
 

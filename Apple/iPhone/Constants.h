@@ -44,7 +44,7 @@
 #define kMinEraseInterval				0.5
 #define kEraseAccelerationThreshold		3.0
 
-#define ballFontSize      ( _ballRadius + 2.0 )
+#define ballFontSize      ( self.ballRadius + 2.0 )
 #define tagFontSize       round( ballFontSize * 0.73 )
 #define historyFontSize       13.0
 #define movesFontSize         13.0
