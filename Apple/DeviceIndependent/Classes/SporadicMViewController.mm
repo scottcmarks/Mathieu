@@ -284,6 +284,12 @@
                        }];
 }
 
+- (void)motionEnded:(UIEventSubtype)motion
+          withEvent:(UIEvent *)event {
+    if (motion==UIEventSubtypeMotionShake) {
+        [self shake];
+    }
+}
 
 -(IBAction) shake
 {
