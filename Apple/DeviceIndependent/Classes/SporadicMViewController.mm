@@ -206,7 +206,7 @@
     if ( [ self.gameModel undo: move move: e ] )
     {
       // make the appropriate noise and use the appropriate duration
-        [ self playAfterMove: -e ];
+        [ self playAfterMove: neg(e) ];
         [ self showCurrentPermutationAfterMove: e ];
     }
     if ( [ self.gameModel historyIsEmpty ] )

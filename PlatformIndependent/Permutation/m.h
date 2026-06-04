@@ -21,6 +21,11 @@
 typedef signed char tiny_int;
 typedef long int big_int;
 
+// Negate a narrow integer, keeping the result in its own type.
+// Silences clang's -Wimplicit-int-conversion-on-negation, which fires
+// because -(signed char) promotes to int before being stored back.
+template< typename T > inline T neg( T x ) { return static_cast< T >( -x ); }
+
 
 // #define Index tiny_int
 #define Index tiny_int
@@ -227,7 +232,7 @@ public:
                 else if ( is_swap( *p ) )
                     insert_swap ( os      );
                 else if ( *p < 0 )
-                    insert_macro_inverted( os, -*p );
+                    insert_macro_inverted( os, neg(*p) );
                 else
                     insert_macro( os, +*p );
             return os;
@@ -378,11 +383,11 @@ public:
                 while ( p < q )
                 {
                     HistoryElement temp=*p;
-                    *p++ = -*q;
-                    *q-- = -temp;
+                    *p++ = neg(*q);
+                    *q-- = neg(temp);
                 }
                 if ( p == q )
-                    *p = - *p;
+                    *p = neg(*p);
             }
             return *this;
         };
@@ -429,7 +434,7 @@ public:
 
         History& operator /=( const HistoryElement e )
         {
-            return *this *= -e;
+            return *this *= neg(e);
         };
 
         History& operator *=( const History & other_history )
@@ -606,7 +611,7 @@ public:
         if ( History::is_left( e ) )
         {
             if (! move ) e = -1;
-            right( -e );
+            right( neg(e) );
         }
         else if ( History::is_right( e ) )
         {
@@ -616,7 +621,7 @@ public:
         else if ( History::is_swap( e ) )
             swap( );
         else if ( e < 0 )
-            run_macro( -e, false );
+            run_macro( neg(e), false );
         else
             run_macro( +e, true );
         return true;
@@ -637,7 +642,7 @@ public:
             else if ( History::History::is_swap( *p ) )
                 swap( );
             else if ( *p < 0 )
-                run_macro( -*p, true );
+                run_macro( neg(*p), true );
             else
                 run_macro( +*p, false );
         return *this;

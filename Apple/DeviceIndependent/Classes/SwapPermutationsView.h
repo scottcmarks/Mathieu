@@ -13,7 +13,7 @@
 @interface SwapPermutationsView : UIView   <UIPickerViewDelegate , UIPickerViewDataSource>
 #elif TARGET_MACOS
 @interface SwapPermutationsView : NSView
-else
+#else
 #error Don't know this platform!
 #endif
 
