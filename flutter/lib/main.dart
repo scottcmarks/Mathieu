@@ -40,7 +40,7 @@ const _palette = <Color>[
 ];
 
 // Move durations (ms), echoing the legacy SMALL/LARGE_MOVE_DURATION feel.
-const _dRotate = 170, _dSwap = 280, _dMacro = 340, _dUndo = 220, _dBig = 340;
+const _dRotate = 170, _dSwap = 460, _dMacro = 460, _dUndo = 220, _dBig = 460;
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -255,9 +255,8 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _TopButton(_alt ? Icons.refresh : Icons.cancel_outlined,
-                    _alt ? 'Restart' : 'Shake', _shakeOrRestart),
-                _TopButton(Icons.arrow_circle_down_outlined, 'Home', _home),
+                _TopButton(_alt ? 'Restart' : 'Shake', _shakeOrRestart),
+                _TopButton('Home', _home),
               ],
             ),
           ),
@@ -331,7 +330,10 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 12),
+            child: Image.asset('assets/images/sporadic_games_logo.png', height: 22),
+          ),
         ],
       ),
     );
@@ -611,20 +613,16 @@ class _CtlButton extends StatelessWidget {
 }
 
 class _TopButton extends StatelessWidget {
-  final IconData icon;
   final String label;
   final VoidCallback onTap;
-  const _TopButton(this.icon, this.label, this.onTap);
+  const _TopButton(this.label, this.onTap);
   @override
   Widget build(BuildContext context) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: Colors.white70, size: 30),
-            Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Text(label, style: const TextStyle(color: Colors.white, fontSize: 17)),
         ),
       );
 }
@@ -653,7 +651,7 @@ class _MacroKey extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
         child: Text(label,
             style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 18)),
       ),
