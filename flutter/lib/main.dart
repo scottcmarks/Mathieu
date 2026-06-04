@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'mathieu_ffi.dart';
 import 'sounds.dart';
 
@@ -360,8 +361,11 @@ class _BallRing extends StatefulWidget {
   State<_BallRing> createState() => _BallRingState();
 }
 
-class _BallRingState extends State<_BallRing> with SingleTickerProviderStateMixin {
+class _BallRingState extends State<_BallRing> with TickerProviderStateMixin {
   static const _ballRadiusRatio = 0.1375; // MBallRadiusRatio
+  static const _flickThreshold = 3.0; // rad/s to trigger momentum
+  static const _stopThreshold = 0.5; // rad/s below which momentum settles
+  static const _decayPerSec = 0.12; // fraction of angular speed kept per second
 
   late Offset _center;
   late double _circleR, _ballR;
@@ -373,19 +377,67 @@ class _BallRingState extends State<_BallRing> with SingleTickerProviderStateMixi
   double _settleFrom = 0;
   late final AnimationController _settle;
 
+  // flick / momentum
+  Ticker? _momentum;
+  double _omega = 0; // rad/s
+  Duration _lastTick = Duration.zero;
+
   int get _n => widget.arrangement.length;
+  double get _step => 2 * math.pi / (_n - 1);
 
   @override
   void initState() {
     super.initState();
     _settle = AnimationController(vsync: this, duration: const Duration(milliseconds: 130));
     _settle.addListener(() => setState(() => _spin = _settleFrom * (1 - _settle.value)));
+    _momentum = createTicker(_onMomentumTick);
   }
 
   @override
   void dispose() {
+    _momentum?.dispose();
     _settle.dispose();
     super.dispose();
+  }
+
+  // Commit engine steps for any whole wedges currently in _spin (keeps render
+  // continuous across each commit).
+  void _commitWedges() {
+    while (_spin >= _step) {
+      _spin -= _step;
+      widget.onRotateDrag(true);
+    }
+    while (_spin <= -_step) {
+      _spin += _step;
+      widget.onRotateDrag(false);
+    }
+  }
+
+  void _snapAndSettle() {
+    if (_spin > _step / 2) {
+      _spin -= _step;
+      widget.onRotateDrag(true);
+    } else if (_spin < -_step / 2) {
+      _spin += _step;
+      widget.onRotateDrag(false);
+    }
+    _settleFrom = _spin;
+    _settle.forward(from: 0);
+  }
+
+  void _onMomentumTick(Duration elapsed) {
+    final dt = _lastTick == Duration.zero
+        ? 0.016
+        : (elapsed - _lastTick).inMicroseconds / 1e6;
+    _lastTick = elapsed;
+    _spin += _omega * dt;
+    _omega *= math.pow(_decayPerSec, dt).toDouble();
+    _commitWedges();
+    setState(() {});
+    if (_omega.abs() < _stopThreshold) {
+      _momentum?.stop();
+      _snapAndSettle();
+    }
   }
 
   double _angle(int slot) => (2 * math.pi / (_n - 1)) * (slot - 1) - math.pi / 2;
@@ -427,8 +479,8 @@ class _BallRingState extends State<_BallRing> with SingleTickerProviderStateMixi
     } else {
       _swapMode = false;
       _lastAngle = (p - _center).direction;
+      _momentum?.stop(); // grabbing mid-spin continues from here
       _settle.stop();
-      _spin = 0;
     }
   }
 
@@ -446,18 +498,9 @@ class _BallRingState extends State<_BallRing> with SingleTickerProviderStateMixi
     if (delta > math.pi) delta -= 2 * math.pi;
     if (delta < -math.pi) delta += 2 * math.pi;
     _lastAngle = ang;
-    final step = 2 * math.pi / (_n - 1);
-    // The ring follows the finger continuously; commit one engine step each time
-    // we cross a wedge, adjusting _spin so the rendered ring stays continuous.
+    // The ring follows the finger continuously; commit one engine step per wedge.
     _spin += delta;
-    while (_spin >= step) {
-      _spin -= step;
-      widget.onRotateDrag(true);
-    }
-    while (_spin <= -step) {
-      _spin += step;
-      widget.onRotateDrag(false);
-    }
+    _commitWedges();
     setState(() {});
   }
 
@@ -466,16 +509,16 @@ class _BallRingState extends State<_BallRing> with SingleTickerProviderStateMixi
       _swapMode = false;
       return;
     }
-    final step = 2 * math.pi / (_n - 1);
-    if (_spin > step / 2) {
-      _spin -= step;
-      widget.onRotateDrag(true);
-    } else if (_spin < -step / 2) {
-      _spin += step;
-      widget.onRotateDrag(false);
+    final v = d.velocity.pixelsPerSecond;
+    // angular velocity at the release point = tangential speed / radius
+    final omega = (-v.dx * math.sin(_lastAngle) + v.dy * math.cos(_lastAngle)) / _circleR;
+    if (omega.abs() > _flickThreshold) {
+      _omega = omega;
+      _lastTick = Duration.zero;
+      _momentum?.start(); // spin and decelerate, then snap+settle
+    } else {
+      _snapAndSettle();
     }
-    _settleFrom = _spin; // animate the residual back to 0
-    _settle.forward(from: 0);
   }
 
   @override
