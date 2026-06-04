@@ -93,6 +93,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   bool _confirm = true;
   bool _solving = false;
   bool _alt = false;
+  bool _arc = false; // current tween: rotations spin labels along the arc
   double _animSpeed = 1.0; // 1.0 = base durations; higher = faster
 
   @override
@@ -121,9 +122,11 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
 
   // Apply an engine action and tween the balls from the old to the new layout.
   // [success] true for "play" moves that can solve the puzzle (rotate/swap/macro/undo).
-  void _animatedMove(void Function() act, String? sound, int durationMs, {bool success = false}) {
+  void _animatedMove(void Function() act, String? sound, int durationMs,
+      {bool success = false, bool arc = false}) {
     setState(() {
       if (sound != null) Sfx.play(sound);
+      _arc = arc;
       _prevArr = _currArr;
       act();
       _currArr = _game.arrangement();
@@ -157,8 +160,8 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   }
 
   // --- button / gesture moves (success: can solve the puzzle) ---
-  void _left() => _animatedMove(_game.left, 'left', _dRotate, success: true);
-  void _right() => _animatedMove(_game.right, 'right', _dRotate, success: true);
+  void _left() => _animatedMove(_game.left, 'left', _dRotate, success: true, arc: true);
+  void _right() => _animatedMove(_game.right, 'right', _dRotate, success: true, arc: true);
   void _swap() => _animatedMove(_game.swap, 'swap', _dSwap, success: true);
   void _rotateDrag(bool right) => _instant(right ? _game.right : _game.left,
       sound: right ? 'right' : 'left', success: true);
@@ -289,6 +292,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
                 prevArrangement: _prevArr,
                 arrangement: _currArr,
                 t: _t.value,
+                arc: _arc,
                 colorOfBall: _colorOfBall,
                 onLeft: _left,
                 onRight: _right,
@@ -370,6 +374,7 @@ class _BallRing extends StatefulWidget {
   final List<int> prevArrangement;
   final List<int> arrangement;
   final double t;
+  final bool arc; // rotations spin labels along the arc; else straight lines
   final List<int> colorOfBall;
   final VoidCallback onLeft, onRight, onSwap;
   final void Function(bool right) onRotateDrag;
@@ -377,6 +382,7 @@ class _BallRing extends StatefulWidget {
     required this.prevArrangement,
     required this.arrangement,
     required this.t,
+    required this.arc,
     required this.colorOfBall,
     required this.onLeft,
     required this.onRight,
@@ -482,12 +488,13 @@ class _BallRingState extends State<_BallRing> with TickerProviderStateMixin {
     return Offset(_center.dx + _circleR * math.cos(a), _center.dy + _circleR * math.sin(a));
   }
 
-  // Position of ball value v, interpolated from its previous to its current slot.
-  Offset _ballPos(int v, double t) {
+  // Position of the number label for value v. The coloured spheres stay put; the
+  // labels move: rotations spin them along the arc, swaps/others go straight.
+  Offset _labelPos(int v, double t) {
     final ps = widget.prevArrangement.indexOf(v);
     final cs = widget.arrangement.indexOf(v);
     if (ps == cs || t >= 1.0) return _spunSlot(cs);
-    if (ps >= 1 && cs >= 1) {
+    if (widget.arc && ps >= 1 && cs >= 1) {
       final a0 = _angle(ps);
       var da = _angle(cs) - a0;
       while (da > math.pi) da -= 2 * math.pi;
@@ -495,7 +502,7 @@ class _BallRingState extends State<_BallRing> with TickerProviderStateMixin {
       final a = a0 + da * t;
       return Offset(_center.dx + _circleR * math.cos(a), _center.dy + _circleR * math.sin(a));
     }
-    return Offset.lerp(_slot(ps), _slot(cs), t)!;
+    return Offset.lerp(_slot(ps), _slot(cs), t)!; // straight line
   }
 
   void _onStart(DragStartDetails d) {
@@ -580,14 +587,32 @@ class _BallRingState extends State<_BallRing> with TickerProviderStateMixin {
         ));
       }
 
-      // balls, by value, at their interpolated positions
-      for (var v = 0; v < _n; v++) {
-        final ctr = _ballPos(v, widget.t);
-        final color = _palette[widget.colorOfBall[v] % _palette.length];
+      // fixed coloured spheres (no numbers): colour shows each position's swap pair
+      for (var slot = 0; slot < _n; slot++) {
+        final ctr = _slot(slot);
+        final color = _palette[widget.colorOfBall[slot] % _palette.length];
         children.add(Positioned(
           left: ctr.dx - _ballR,
           top: ctr.dy - _ballR,
-          child: _Marble(value: v, color: color, r: _ballR),
+          child: _Sphere(color: color, r: _ballR),
+        ));
+      }
+
+      // moving number labels: spheres stay, labels exchange (swap) / spin (rotate)
+      for (var v = 0; v < _n; v++) {
+        final ctr = _labelPos(v, widget.t);
+        children.add(Positioned(
+          left: ctr.dx - _ballR,
+          top: ctr.dy - _ballR,
+          width: _ballR * 2,
+          height: _ballR * 2,
+          child: Center(
+            child: Text('$v',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: _ballR * 0.8,
+                    fontWeight: FontWeight.bold)),
+          ),
         ));
       }
 
@@ -916,29 +941,18 @@ class _SwapSelectorPage extends StatelessWidget {
 }
 
 /// The original iOS marble, ported from BallView.mm's CGContextDrawRadialGradient.
-class _Marble extends StatelessWidget {
-  final int value;
+// A fixed coloured sphere (no number) — numbers are a separate moving layer.
+class _Sphere extends StatelessWidget {
   final Color color;
   final double r;
-  const _Marble({required this.value, required this.color, required this.r});
+  const _Sphere({required this.color, required this.r});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: r * 2,
-      height: r * 2,
-      child: CustomPaint(
-        painter: _MarblePainter(color),
-        child: Center(
-          child: Text('$value',
-              style: TextStyle(
-                  color: Colors.black, // dark numerals on every marble, as in 2.0.6
-                  fontSize: r * 0.8,
-                  fontWeight: FontWeight.bold)),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SizedBox(
+        width: r * 2,
+        height: r * 2,
+        child: CustomPaint(painter: _MarblePainter(color)),
+      );
 }
 
 class _MarblePainter extends CustomPainter {
