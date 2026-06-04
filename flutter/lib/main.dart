@@ -3,11 +3,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'mathieu_ffi.dart';
 import 'sounds.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  // Portrait only, like the original (it never rotated to landscape).
+  SystemChrome.setPreferredOrientations(
+      const [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   Sfx.init();
   runApp(const MathieuApp());
 }
