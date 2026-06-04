@@ -310,7 +310,7 @@
         <!--Preferences View Controller-->
         <scene sceneID="4Cr-UL-8Pj">
             <objects>
-                <viewController id="YVk-tT-0Mz" customClass="PreferencesViewController" sceneMemberID="viewController">
+                <viewController id="YVk-tT-0Mz" modalPresentationStyle="fullScreen" customClass="PreferencesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qei-3T-CMC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -520,7 +520,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
         <!--Help View Controller-->
         <scene sceneID="gkk-7h-Dab">
             <objects>
-                <viewController id="GNK-Z6-NYR" customClass="HelpViewController" sceneMemberID="viewController">
+                <viewController id="GNK-Z6-NYR" modalPresentationStyle="fullScreen" customClass="HelpViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mqE-N1-nqc" customClass="HelpView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -582,7 +582,7 @@ Restart and Home. Confirm combo set or erase of a previously-set combo.</strin
         <!--Swap Permutations View Controller-->
         <scene sceneID="SkS-bm-Wjn">
             <objects>
-                <viewController id="Zrn-k1-6dv" customClass="SwapPermutationsViewController" sceneMemberID="viewController">
+                <viewController id="Zrn-k1-6dv" modalPresentationStyle="fullScreen" customClass="SwapPermutationsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7qx-ki-iJ7" customClass="SwapPermutationsView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
