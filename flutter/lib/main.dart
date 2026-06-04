@@ -360,7 +360,7 @@ class _BallRing extends StatefulWidget {
   State<_BallRing> createState() => _BallRingState();
 }
 
-class _BallRingState extends State<_BallRing> {
+class _BallRingState extends State<_BallRing> with SingleTickerProviderStateMixin {
   static const _ballRadiusRatio = 0.1375; // MBallRadiusRatio
 
   late Offset _center;
@@ -368,9 +368,25 @@ class _BallRingState extends State<_BallRing> {
   late Offset _apex;
 
   bool _swapMode = false, _swapFired = false;
-  double _lastAngle = 0, _accum = 0;
+  double _lastAngle = 0;
+  double _spin = 0; // live rotation offset (radians) during/after a drag
+  double _settleFrom = 0;
+  late final AnimationController _settle;
 
   int get _n => widget.arrangement.length;
+
+  @override
+  void initState() {
+    super.initState();
+    _settle = AnimationController(vsync: this, duration: const Duration(milliseconds: 130));
+    _settle.addListener(() => setState(() => _spin = _settleFrom * (1 - _settle.value)));
+  }
+
+  @override
+  void dispose() {
+    _settle.dispose();
+    super.dispose();
+  }
 
   double _angle(int slot) => (2 * math.pi / (_n - 1)) * (slot - 1) - math.pi / 2;
 
@@ -380,11 +396,18 @@ class _BallRingState extends State<_BallRing> {
     return Offset(_center.dx + _circleR * math.cos(a), _center.dy + _circleR * math.sin(a));
   }
 
+  // Current slot of ball v, with the live drag spin applied to ring balls.
+  Offset _spunSlot(int cs) {
+    if (cs == 0 || _spin == 0) return _slot(cs);
+    final a = _angle(cs) + _spin; // rotations don't move the apex (slot 0)
+    return Offset(_center.dx + _circleR * math.cos(a), _center.dy + _circleR * math.sin(a));
+  }
+
   // Position of ball value v, interpolated from its previous to its current slot.
   Offset _ballPos(int v, double t) {
     final ps = widget.prevArrangement.indexOf(v);
     final cs = widget.arrangement.indexOf(v);
-    if (ps == cs || t >= 1.0) return _slot(cs);
+    if (ps == cs || t >= 1.0) return _spunSlot(cs);
     if (ps >= 1 && cs >= 1) {
       final a0 = _angle(ps);
       var da = _angle(cs) - a0;
@@ -404,7 +427,8 @@ class _BallRingState extends State<_BallRing> {
     } else {
       _swapMode = false;
       _lastAngle = (p - _center).direction;
-      _accum = 0;
+      _settle.stop();
+      _spin = 0;
     }
   }
 
@@ -421,17 +445,37 @@ class _BallRingState extends State<_BallRing> {
     var delta = ang - _lastAngle;
     if (delta > math.pi) delta -= 2 * math.pi;
     if (delta < -math.pi) delta += 2 * math.pi;
-    _accum += delta;
     _lastAngle = ang;
     final step = 2 * math.pi / (_n - 1);
-    while (_accum >= step) {
-      _accum -= step;
+    // The ring follows the finger continuously; commit one engine step each time
+    // we cross a wedge, adjusting _spin so the rendered ring stays continuous.
+    _spin += delta;
+    while (_spin >= step) {
+      _spin -= step;
       widget.onRotateDrag(true);
     }
-    while (_accum <= -step) {
-      _accum += step;
+    while (_spin <= -step) {
+      _spin += step;
       widget.onRotateDrag(false);
     }
+    setState(() {});
+  }
+
+  void _onEnd(DragEndDetails d) {
+    if (_swapMode) {
+      _swapMode = false;
+      return;
+    }
+    final step = 2 * math.pi / (_n - 1);
+    if (_spin > step / 2) {
+      _spin -= step;
+      widget.onRotateDrag(true);
+    } else if (_spin < -step / 2) {
+      _spin += step;
+      widget.onRotateDrag(false);
+    }
+    _settleFrom = _spin; // animate the residual back to 0
+    _settle.forward(from: 0);
   }
 
   @override
@@ -497,6 +541,7 @@ class _BallRingState extends State<_BallRing> {
         behavior: HitTestBehavior.opaque,
         onPanStart: _onStart,
         onPanUpdate: _onUpdate,
+        onPanEnd: _onEnd,
         child: Stack(children: children),
       );
     });
