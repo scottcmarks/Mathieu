@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'mathieu_ffi.dart';
 
@@ -34,7 +35,7 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   late final MathieuEngine _game;
   late int _n;
-  late List<int> _colorOfBall; // ball value -> palette index (from swap perm)
+  late List<int> _colorOfBall;
 
   @override
   void initState() {
@@ -42,8 +43,6 @@ class _GamePageState extends State<GamePage> {
     _game = MathieuEngine();
     _n = _game.n;
     _recomputeColors();
-    // Startup probe (non-mutating); confirms the FFI engine loaded, and is
-    // visible in the console on platforms where screenshots aren't available.
     debugPrint('[M12] engine ready: balls=${MathieuEngine.ballCount} '
         'swaps=${MathieuEngine.swapCount} arrangement=${_game.arrangement()}');
   }
@@ -90,13 +89,13 @@ class _GamePageState extends State<GamePage> {
       body: Column(
         children: [
           Expanded(
-            child: LayoutBuilder(builder: (context, c) {
-              return _BallRing(
-                arrangement: _game.arrangement(),
-                colorOfBall: _colorOfBall,
-                size: Size(c.maxWidth, c.maxHeight),
-              );
-            }),
+            child: _BallRing(
+              arrangement: _game.arrangement(),
+              colorOfBall: _colorOfBall,
+              onLeft: () => _do(_game.left),
+              onRight: () => _do(_game.right),
+              onSwap: () => _do(_game.swap),
+            ),
           ),
           if (solved)
             const Padding(
@@ -122,85 +121,177 @@ class _GamePageState extends State<GamePage> {
   }
 }
 
-class _BallRing extends StatelessWidget {
+/// The ring of balls, with finger gestures:
+///   * drag around the ring -> rotate (left / right)
+///   * pull the apex (position-0) ball downward -> swap
+class _BallRing extends StatefulWidget {
   final List<int> arrangement;
   final List<int> colorOfBall;
-  final Size size;
+  final VoidCallback onLeft, onRight, onSwap;
   const _BallRing({
     required this.arrangement,
     required this.colorOfBall,
-    required this.size,
+    required this.onLeft,
+    required this.onRight,
+    required this.onSwap,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final n = arrangement.length; // 12
-    final w = size.width, h = size.height;
-    final cx = w / 2, cy = h / 2 + h * 0.04;
-    final radius = math.min(w, h) * 0.36;
-    final ballR = radius * 0.26;
-
-    Offset slotCenter(int slot) {
-      if (slot == 0) {
-        return Offset(cx, cy - radius - ballR * 1.4); // apex above the ring
-      }
-      // slots 1..11 around the circle, slot 1 at top going clockwise
-      final theta = -math.pi / 2 + (slot - 1) * (2 * math.pi / (n - 1));
-      return Offset(cx + radius * math.cos(theta), cy + radius * math.sin(theta));
-    }
-
-    final children = <Widget>[];
-    for (var slot = 0; slot < n; slot++) {
-      final center = slotCenter(slot);
-      final ballValue = arrangement[slot];
-      final color = _palette[colorOfBall[ballValue] % _palette.length];
-      // gray "home" tag for this slot
-      children.add(Positioned(
-        left: center.dx + ballR * 0.7,
-        top: center.dy + ballR * 0.7,
-        child: Text('$slot',
-            style: TextStyle(color: Colors.grey.shade600, fontSize: ballR * 0.5)),
-      ));
-      // the ball
-      children.add(Positioned(
-        left: center.dx - ballR,
-        top: center.dy - ballR,
-        child: _Ball(value: ballValue, color: color, r: ballR),
-      ));
-    }
-    return Stack(children: children);
-  }
+  State<_BallRing> createState() => _BallRingState();
 }
 
-class _Ball extends StatelessWidget {
-  final int value;
-  final Color color;
-  final double r;
-  const _Ball({required this.value, required this.color, required this.r});
+class _BallRingState extends State<_BallRing> {
+  // geometry of the most recent layout (set in build)
+  late Offset _center;
+  late double _radius;
+  late double _ballR;
+  late Offset _apex;
+
+  // gesture tracking
+  bool _swapMode = false;
+  bool _swapFired = false;
+  double _lastAngle = 0;
+  double _accum = 0;
+
+  int get _n => widget.arrangement.length;
+
+  Offset _slotCenter(int slot) {
+    if (slot == 0) return _apex;
+    final theta = -math.pi / 2 + (slot - 1) * (2 * math.pi / (_n - 1));
+    return Offset(
+        _center.dx + _radius * math.cos(theta), _center.dy + _radius * math.sin(theta));
+  }
+
+  void _onStart(DragStartDetails d) {
+    final p = d.localPosition;
+    if ((p - _apex).distance <= _ballR * 1.6) {
+      _swapMode = true;
+      _swapFired = false;
+    } else {
+      _swapMode = false;
+      _lastAngle = (p - _center).direction;
+      _accum = 0;
+    }
+  }
+
+  void _onUpdate(DragUpdateDetails d) {
+    final p = d.localPosition;
+    if (_swapMode) {
+      if (!_swapFired && (p.dy - _apex.dy) > _ballR * 1.1) {
+        _swapFired = true;
+        widget.onSwap();
+      }
+      return;
+    }
+    final ang = (p - _center).direction;
+    var delta = ang - _lastAngle;
+    if (delta > math.pi) delta -= 2 * math.pi;
+    if (delta < -math.pi) delta += 2 * math.pi;
+    _accum += delta;
+    _lastAngle = ang;
+    final step = 2 * math.pi / (_n - 1);
+    while (_accum >= step) {
+      _accum -= step;
+      widget.onRight();
+    }
+    while (_accum <= -step) {
+      _accum += step;
+      widget.onLeft();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final lum = color.computeLuminance();
-    final textColor = lum > 0.5 ? Colors.black : Colors.white;
-    return Container(
+    return LayoutBuilder(builder: (context, c) {
+      final w = c.maxWidth, h = c.maxHeight;
+      _center = Offset(w / 2, h / 2 + h * 0.05);
+      _radius = math.min(w, h) * 0.38;
+      _ballR = _radius * 0.19; // smaller marbles
+      _apex = Offset(_center.dx, _center.dy - _radius - _ballR * 2.0);
+
+      final children = <Widget>[];
+      for (var slot = 0; slot < _n; slot++) {
+        final ctr = _slotCenter(slot);
+        final ballValue = widget.arrangement[slot];
+        final color = _palette[widget.colorOfBall[ballValue] % _palette.length];
+        children.add(Positioned(
+          left: ctr.dx + _ballR * 0.85,
+          top: ctr.dy - _ballR * 1.35,
+          child: Text('$slot',
+              style: TextStyle(color: Colors.grey.shade600, fontSize: _ballR * 0.55)),
+        ));
+        children.add(Positioned(
+          left: ctr.dx - _ballR,
+          top: ctr.dy - _ballR,
+          child: _Marble(value: ballValue, color: color, r: _ballR),
+        ));
+      }
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onPanStart: _onStart,
+        onPanUpdate: _onUpdate,
+        child: Stack(children: children),
+      );
+    });
+  }
+}
+
+/// The original iOS marble, ported faithfully from BallView.mm's
+/// CGContextDrawRadialGradient: a "sphere cap lit from above" — dark (0.6x) at
+/// the rim, brightening to full colour at a highlight 1/8 from the top, with a
+/// transparent anti-aliased edge.
+class _Marble extends StatelessWidget {
+  final int value;
+  final Color color;
+  final double r;
+  const _Marble({required this.value, required this.color, required this.r});
+
+  @override
+  Widget build(BuildContext context) {
+    final textColor = color.computeLuminance() > 0.55 ? Colors.black87 : Colors.white;
+    return SizedBox(
       width: r * 2,
       height: r * 2,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(
-          colors: [color, Color.lerp(color, Colors.black, 0.4)!],
-          stops: const [0.55, 1.0],
+      child: CustomPaint(
+        painter: _MarblePainter(color),
+        child: Center(
+          child: Text('$value',
+              style: TextStyle(
+                  color: textColor,
+                  fontSize: r * 0.85,
+                  fontWeight: FontWeight.bold)),
         ),
-        border: Border.all(color: Colors.black26, width: 1),
       ),
-      alignment: Alignment.center,
-      child: Text('$value',
-          style: TextStyle(
-              color: textColor,
-              fontSize: r * 0.9,
-              fontWeight: FontWeight.bold)),
     );
   }
+}
+
+class _MarblePainter extends CustomPainter {
+  final Color color;
+  _MarblePainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final d = size.width;
+    final r = d / 2;
+    final dark = Color.lerp(color, Colors.black, 0.4)!; // 0.6x brightness
+    // CG draws outer->highlight (stop 0 -> 1); Flutter's radial goes
+    // focal -> outer, so we reverse: bright highlight at stop 0, dark rim near 1.
+    final shader = ui.Gradient.radial(
+      Offset(r, r), // outer circle centre
+      r, // outer radius = width/2
+      [color, dark, dark.withValues(alpha: 0)],
+      [0.0, 0.95, 1.0],
+      TileMode.clamp,
+      null,
+      Offset(r, r / 4), // highlight focal point (midY/4 from BallView.mm)
+      0.0,
+    );
+    canvas.drawCircle(Offset(r, r), r, Paint()..shader = shader);
+  }
+
+  @override
+  bool shouldRepaint(_MarblePainter old) => old.color != color;
 }
 
 class _Controls extends StatelessWidget {
