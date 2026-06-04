@@ -7,7 +7,7 @@ class Sfx {
   static bool enabled = true;
 
   static const names = [
-    'left', 'right', 'swap', 'shake', 'applause', 'restart', 'combo', 'combo_set'
+    'left', 'right', 'swap', 'shake', 'applause', 'restart', 'combo', 'combo_set', 'home'
   ];
 
   static Future<void> init() async {
