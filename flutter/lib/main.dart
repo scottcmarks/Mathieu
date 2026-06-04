@@ -7,8 +7,9 @@ import 'package:flutter/services.dart';
 import 'mathieu_ffi.dart';
 import 'sounds.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initMathieu(); // load the WASM engine on web; no-op on other platforms
   // Portrait only, like the original (it never rotated to landscape).
   SystemChrome.setPreferredOrientations(
       const [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
