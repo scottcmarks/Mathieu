@@ -1,0 +1,2 @@
+# Redirect /ios to TestFlight once the build is published.
+# RedirectMatch 302 ^/ios/?$ https://testflight.apple.com/join/XXXXXXXX
