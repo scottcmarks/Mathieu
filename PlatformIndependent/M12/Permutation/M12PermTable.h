@@ -32,6 +32,7 @@ struct perm_info {
     assert( history_length <= max_history_length );
     for( int i=0; i < history_length; i++ )
       history[ i ] = p_history[ i ];
+    return *this;
   };
   bool is_all_2_cycles( )
   {
