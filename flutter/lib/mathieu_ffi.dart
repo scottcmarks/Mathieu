@@ -74,6 +74,7 @@ class MathieuEngine {
   static final _eraseMacro = _lib.lookupFunction<_VoidPtrIntC, _VoidPtrInt>('mathieu_erase_macro');
   static final _runMacro = _lib.lookupFunction<_VoidPtrIntIntC, _VoidPtrIntInt>('mathieu_run_macro');
   static final _histStr = _lib.lookupFunction<_HistStrC, _HistStr>('mathieu_history_str');
+  static final _histIsSingleMacro = _lib.lookupFunction<_IntPtrIntC, _IntPtrInt>('mathieu_history_is_single_macro');
 
   static int get ballCount => _numBalls();
   static int get swapCount => _numSwaps();
@@ -118,6 +119,7 @@ class MathieuEngine {
   void setMacro(int c) => _setMacro(_h, c);
   void eraseMacro(int c) => _eraseMacro(_h, c);
   void runMacro(int c, {bool inverted = false}) => _runMacro(_h, c, inverted ? 1 : 0);
+  bool historyIsSingleMacro(int c) => _histIsSingleMacro(_h, c) != 0;
 
   /// Move-history notation for the status line, e.g. "L2 S R3 A".
   String historyStr() {
