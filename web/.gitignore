@@ -1,0 +1,5 @@
+# Built artifacts assembled at deploy time (see deploy notes), not tracked here.
+app/
+*.apk
+*.dmg
+*.ipa
