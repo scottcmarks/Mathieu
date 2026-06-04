@@ -50,6 +50,8 @@ class _GamePageState extends State<GamePage> {
   late List<int> _colorOfBall;
   bool _wasSolved = true;
   bool _sound = true;
+  bool _confirm = true; // legacy "confirm" preference (on by default)
+  bool _solving = false; // a scramble is active (legacy isSolving)
   bool _alt = false; // one-shot invert modifier (the "Alt" key)
 
   @override
@@ -107,7 +109,14 @@ class _GamePageState extends State<GamePage> {
 
   // Long-press a macro key: define it from the current move history
   // (or erase it if the history is empty), matching the original "combo set".
-  void _macroSet(int c) {
+  Future<void> _macroSet(int c) async {
+    final defined = _game.macroDefined(c);
+    final empty = _game.historyLength == 0;
+    // erasing (empty history) or a first definition needs no confirm; changing does
+    if (_confirm && defined && !empty &&
+        !await _ask('Combo Set!', 'This will change the meaning of ${String.fromCharCode(c)}.')) {
+      return;
+    }
     setState(() {
       Sfx.play('combo_set');
       _game.setMacro(c);
@@ -122,27 +131,85 @@ class _GamePageState extends State<GamePage> {
       current: MathieuEngine.swapIndex,
       n: _n,
       onSelected: (i) => setState(() {
+        // Changing the swap permutation invalidates the puzzle: reset the board
+        // and erase macros (they kept their meaning only for the old swap).
         MathieuEngine.swapIndex = i;
+        _game.reset();
+        _game.eraseAllMacros();
         _recomputeColors();
-        _wasSolved = _game.isSolved;
+        _solving = false;
+        _wasSolved = true;
       }),
     )));
   }
 
-  void _scramble() => setState(() {
-        Sfx.play('shake');
-        _game.random();
-        _wasSolved = _game.isSolved;
-      });
+  Future<bool> _ask(String title, String msg) async {
+    if (!_confirm) return true;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(title),
+        content: Text(msg),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('OK')),
+        ],
+      ),
+    );
+    return ok ?? false;
+  }
 
-  void _reset() => setState(() {
-        Sfx.play('restart');
-        _game.reset();
-        _wasSolved = true;
-      });
+  // Shake: new scramble (confirm if mid-solve). Legacy doShake.
+  Future<void> _shake() async {
+    Sfx.play('shake');
+    if (_confirm && _solving &&
+        !await _ask('Shake!', 'This will create a new Sporadic M12 puzzle.')) {
+      return;
+    }
+    setState(() {
+      _game.random();
+      _solving = true;
+      _alt = false;
+      _wasSolved = _game.isSolved;
+    });
+  }
 
+  // Home: reset to the home (solved) position (confirm if mid-solve). Legacy doHome.
+  Future<void> _home() async {
+    Sfx.play('home');
+    if (_confirm && _solving &&
+        !await _ask('Home!', 'This will reset Sporadic M12 to the home position.')) {
+      return;
+    }
+    setState(() {
+      _game.reset();
+      _solving = false;
+      _alt = false;
+      _wasSolved = true;
+    });
+  }
+
+  // Restart: revert to the scrambled start, keeping macros. Legacy doRestart.
+  Future<void> _restart() async {
+    Sfx.play('restart');
+    if (_confirm && _solving &&
+        !await _ask('Restart!', 'This will restart solving this puzzle.')) {
+      return;
+    }
+    setState(() {
+      _game.revert();
+      _alt = false;
+      _wasSolved = _game.isSolved;
+    });
+  }
+
+  // Alt makes Shake act as Restart (legacy shakeOrRestart).
+  void _shakeOrRestart() => _alt ? _restart() : _shake();
+
+  // Undo a move; Alt undoes a single step (legacy undoStepOrMove).
   void _undo() => setState(() {
-        _game.undo();
+        _game.undo(move: !_alt);
+        _alt = false;
         _wasSolved = _game.isSolved;
       });
 
@@ -167,17 +234,26 @@ class _GamePageState extends State<GamePage> {
               Sfx.enabled = _sound;
             }),
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Text('moves ${_game.historyLength}',
-                  style: const TextStyle(fontSize: 14, color: Colors.black87)),
-            ),
+          IconButton(
+            tooltip: _confirm ? 'Confirmations on' : 'Confirmations off',
+            icon: Icon(_confirm ? Icons.help : Icons.help_outline),
+            onPressed: () => setState(() => _confirm = !_confirm),
           ),
         ],
       ),
       body: Column(
         children: [
+          // top corners: Shake (left, -> Restart when Alt) and Home (right)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _TopButton(_alt ? 'Restart' : 'Shake', _shakeOrRestart),
+                _TopButton('Home', _home),
+              ],
+            ),
+          ),
           Expanded(
             child: _BallRing(
               arrangement: _game.arrangement(),
@@ -187,22 +263,46 @@ class _GamePageState extends State<GamePage> {
               onSwap: () => _move(_game.swap, 'swap'),
             ),
           ),
-          // status line: the move-history notation
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: const Color(0xFF2C2C3A),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              _game.historyStr().isEmpty ? '—' : _game.historyStr(),
-              style: const TextStyle(
-                  color: Color(0xFF7DFF7D),
-                  fontFamily: 'monospace',
-                  fontSize: 15,
-                  letterSpacing: 1.0),
+          // counters (moves / steps) + status line + Undo, like the original
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${_game.moves}',
+                          style: const TextStyle(fontSize: 13, color: Colors.black87)),
+                      Text('${_game.steps}',
+                          style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2C2C3A),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      _game.historyStr().isEmpty ? '—' : _game.historyStr(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          color: Color(0xFF7DFF7D),
+                          fontFamily: 'monospace',
+                          fontSize: 15,
+                          letterSpacing: 1.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                OutlinedButton(onPressed: _undo, child: Text(_alt ? 'Step' : 'Undo')),
+              ],
             ),
           ),
           // macro row: A B C D E + Alt
@@ -230,22 +330,27 @@ class _GamePageState extends State<GamePage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 6, bottom: 10),
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 10,
-              children: [
-                OutlinedButton(onPressed: _undo, child: const Text('Undo')),
-                OutlinedButton(onPressed: _scramble, child: const Text('Scramble')),
-                OutlinedButton(onPressed: _reset, child: const Text('Reset')),
-              ],
-            ),
-          ),
+          const SizedBox(height: 10),
         ],
       ),
     );
   }
+}
+
+/// A top-corner action button (Shake / Restart / Home), styled like the legacy app.
+class _TopButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _TopButton(this.label, this.onTap);
+  @override
+  Widget build(BuildContext context) => FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: const Color(0xFF6A6A86),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        ),
+        onPressed: onTap,
+        child: Text(label),
+      );
 }
 
 /// A macro key (A..E or Alt). Tap to play / toggle; long-press to define.

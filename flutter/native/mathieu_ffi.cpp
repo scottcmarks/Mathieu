@@ -46,13 +46,25 @@ FFI_EXPORT void mathieu_right (void* h, int count) { G(h)->right((Index)count); 
 FFI_EXPORT void mathieu_swap  (void* h)            { G(h)->swap();         }
 FFI_EXPORT void mathieu_random(void* h)            { G(h)->random();       }
 
-// Returns 1 if a move was undone, 0 if the history was already empty.
-FFI_EXPORT int mathieu_undo(void* h) {
+// Undo one move (move!=0) or one step (move==0). Returns 1 if something was
+// undone, 0 if the history was already empty.
+FFI_EXPORT int mathieu_undo(void* h, int move) {
     Game* g = G(h);
     if (g->history_is_empty()) return 0;
-    g->undo();
+    g->undo(move != 0);
     return 1;
 }
+
+// Revert to the scrambled start (random() leaves history empty, so undoing all
+// moves returns to the scramble) while keeping macro definitions.
+FFI_EXPORT void mathieu_revert(void* h) {
+    Game* g = G(h);
+    while (!g->history_is_empty()) g->undo(true);
+}
+
+FFI_EXPORT int mathieu_moves(void* h) { return G(h)->moves(); }
+FFI_EXPORT int mathieu_steps(void* h) { return G(h)->steps(); }
+FFI_EXPORT void mathieu_erase_all_macros(void* h) { G(h)->erase_all_macros(); }
 
 // --- state queries ---
 // Fills out[i] (i in 0..nBalls-1) with the ball value currently at ring position i.

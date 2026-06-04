@@ -55,7 +55,11 @@ class MathieuEngine {
   static final _right = _lib.lookupFunction<_VoidPtrIntC, _VoidPtrInt>('mathieu_right');
   static final _swap = _lib.lookupFunction<_VoidPtrC, _VoidPtr>('mathieu_swap');
   static final _random = _lib.lookupFunction<_VoidPtrC, _VoidPtr>('mathieu_random');
-  static final _undo = _lib.lookupFunction<_IntPtrC, _IntPtr>('mathieu_undo');
+  static final _undo = _lib.lookupFunction<_IntPtrIntC, _IntPtrInt>('mathieu_undo');
+  static final _revert = _lib.lookupFunction<_VoidPtrC, _VoidPtr>('mathieu_revert');
+  static final _moves = _lib.lookupFunction<_IntPtrC, _IntPtr>('mathieu_moves');
+  static final _steps = _lib.lookupFunction<_IntPtrC, _IntPtr>('mathieu_steps');
+  static final _eraseAll = _lib.lookupFunction<_VoidPtrC, _VoidPtr>('mathieu_erase_all_macros');
   static final _arrangement = _lib.lookupFunction<_VoidPtrArrC, _VoidPtrArr>('mathieu_get_arrangement');
   static final _histLen = _lib.lookupFunction<_IntPtrC, _IntPtr>('mathieu_history_length');
   static final _solved = _lib.lookupFunction<_IntPtrC, _IntPtr>('mathieu_is_solved');
@@ -90,8 +94,12 @@ class MathieuEngine {
   void right([int count = 1]) => _right(_h, count);
   void swap() => _swap(_h);
   void random() => _random(_h);
-  bool undo() => _undo(_h) != 0;
+  bool undo({bool move = true}) => _undo(_h, move ? 1 : 0) != 0;
+  void revert() => _revert(_h);
+  void eraseAllMacros() => _eraseAll(_h);
   int get historyLength => _histLen(_h);
+  int get moves => _moves(_h);
+  int get steps => _steps(_h);
   bool get isSolved => _solved(_h) != 0;
 
   /// arrangement[i] = ball value currently at ring position i.
