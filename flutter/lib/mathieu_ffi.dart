@@ -28,6 +28,14 @@ typedef _IntIntC = Int32 Function(Int32);
 typedef _IntInt = int Function(int);
 typedef _VoidArrC = Void Function(Pointer<Int32>);
 typedef _VoidArr = void Function(Pointer<Int32>);
+typedef _VoidIntArrC = Void Function(Int32, Pointer<Int32>);
+typedef _VoidIntArr = void Function(int, Pointer<Int32>);
+typedef _IntPtrIntC = Int32 Function(Pointer<Void>, Int32);
+typedef _IntPtrInt = int Function(Pointer<Void>, int);
+typedef _VoidPtrIntIntC = Void Function(Pointer<Void>, Int32, Int32);
+typedef _VoidPtrIntInt = void Function(Pointer<Void>, int, int);
+typedef _HistStrC = Void Function(Pointer<Void>, Pointer<Uint8>, Int32);
+typedef _HistStr = void Function(Pointer<Void>, Pointer<Uint8>, int);
 
 DynamicLibrary _open() {
   // iOS/macOS: symbols are in the process. Others: a named shared library.
@@ -55,6 +63,13 @@ class MathieuEngine {
   static final _getSwapIndex = _lib.lookupFunction<_IntVoidC, _IntVoid>('mathieu_get_swap_index');
   static final _swapDifficulty = _lib.lookupFunction<_IntIntC, _IntInt>('mathieu_swap_difficulty');
   static final _swapPerm = _lib.lookupFunction<_VoidArrC, _VoidArr>('mathieu_get_swap_permutation');
+  static final _swapPermAt = _lib.lookupFunction<_VoidIntArrC, _VoidIntArr>('mathieu_get_swap_permutation_at');
+  static final _macroDefined = _lib.lookupFunction<_IntPtrIntC, _IntPtrInt>('mathieu_macro_defined');
+  static final _anyMacro = _lib.lookupFunction<_IntPtrC, _IntPtr>('mathieu_any_macro_defined');
+  static final _setMacro = _lib.lookupFunction<_VoidPtrIntC, _VoidPtrInt>('mathieu_set_macro');
+  static final _eraseMacro = _lib.lookupFunction<_VoidPtrIntC, _VoidPtrInt>('mathieu_erase_macro');
+  static final _runMacro = _lib.lookupFunction<_VoidPtrIntIntC, _VoidPtrIntInt>('mathieu_run_macro');
+  static final _histStr = _lib.lookupFunction<_HistStrC, _HistStr>('mathieu_history_str');
 
   static int get ballCount => _numBalls();
   static int get swapCount => _numSwaps();
@@ -84,6 +99,28 @@ class MathieuEngine {
 
   /// current swap permutation (six disjoint 2-cycles), keyed by ball value.
   static List<int> swapPermutation(int n) => _readArray(n, _swapPerm);
+
+  /// swap permutation #i (for the selector), without changing the selection.
+  static List<int> swapPermutationAt(int i, int n) =>
+      _readArray(n, (p) => _swapPermAt(i, p));
+
+  // --- macros (A..E => codes 65..69) ---
+  bool macroDefined(int c) => _macroDefined(_h, c) != 0;
+  bool get anyMacroDefined => _anyMacro(_h) != 0;
+  void setMacro(int c) => _setMacro(_h, c);
+  void eraseMacro(int c) => _eraseMacro(_h, c);
+  void runMacro(int c, {bool inverted = false}) => _runMacro(_h, c, inverted ? 1 : 0);
+
+  /// Move-history notation for the status line, e.g. "L2 S R3 A".
+  String historyStr() {
+    final buf = calloc<Uint8>(256);
+    try {
+      _histStr(_h, buf, 256);
+      return buf.cast<Utf8>().toDartString();
+    } finally {
+      calloc.free(buf);
+    }
+  }
 
   static List<int> _readArray(int n, void Function(Pointer<Int32>) fill) {
     final p = calloc<Int32>(n);

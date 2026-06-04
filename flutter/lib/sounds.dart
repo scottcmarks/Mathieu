@@ -6,7 +6,9 @@ class Sfx {
   static final Map<String, AudioPlayer> _players = {};
   static bool enabled = true;
 
-  static const names = ['left', 'right', 'swap', 'shake', 'applause', 'restart'];
+  static const names = [
+    'left', 'right', 'swap', 'shake', 'applause', 'restart', 'combo', 'combo_set'
+  ];
 
   static Future<void> init() async {
     for (final n in names) {
