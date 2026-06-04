@@ -110,16 +110,18 @@ class _GamePageState extends State<GamePage> {
   // Long-press a macro key: define it from the current move history
   // (or erase it if the history is empty), matching the original "combo set".
   Future<void> _macroSet(int c) async {
-    final defined = _game.macroDefined(c);
-    final empty = _game.historyLength == 0;
-    // erasing (empty history) or a first definition needs no confirm; changing does
-    if (_confirm && defined && !empty &&
-        !await _ask('Combo Set!', 'This will change the meaning of ${String.fromCharCode(c)}.')) {
-      return;
+    // Legacy confirmSetCombo: skip the dialog when the macro is undefined, or
+    // when the history is just this one unchanged macro. The latter is the
+    // "force-expand" gesture — type a macro's letter, then re-set it, and
+    // set_macro() expands it in place so the status line reveals its definition.
+    final letter = String.fromCharCode(c);
+    if (_confirm && _game.macroDefined(c) && !_game.historyIsSingleMacro(c)) {
+      final verb = _game.historyLength == 0 ? 'erase' : 'change';
+      if (!await _ask('Combo Set!', 'This will $verb the meaning of $letter.')) return;
     }
     setState(() {
       Sfx.play('combo_set');
-      _game.setMacro(c);
+      _game.setMacro(c); // expands the macro into the history when re-setting it
       _alt = false;
     });
   }
