@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sporadic M12 — Mathieu group puzzle</title>
+  <meta name="description" content="M12 — a puzzle on the Mathieu group M₁₂. Spin the ring, swap the pairs, define your own macro moves. Play in your browser or on iOS, macOS, Android and Apple Watch.">
+  <link rel="icon" href="m12_icon.png">
+  <link rel="apple-touch-icon" href="m12_icon.png">
+  <style>
+    :root { --bg:#0c0c12; --panel:#16161f; --ink:#f2f2f7; --muted:#9a9ab0;
+            --accent:#77AAFF; --gold:#FFC23D; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink);
+           font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+           text-align:center; line-height:1.5; }
+    .wrap { max-width:760px; margin:0 auto; padding:32px 20px 64px; }
+    .icon { width:132px; height:132px; border-radius:28px; margin-top:24px;
+            box-shadow:0 8px 30px rgba(0,0,0,.6); }
+    h1 { font-size:2.6rem; margin:.4em 0 .1em; letter-spacing:.5px; }
+    h1 .sub { font-feature-settings:"subs" 1; }
+    .tagline { color:var(--muted); font-size:1.15rem; margin:0 auto 8px; max-width:38em; }
+    .blurb { color:var(--muted); margin:18px auto 28px; max-width:40em; text-align:left; }
+    .blurb b { color:var(--ink); }
+    .grid { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:8px 0 28px; }
+    .card { display:block; width:210px; padding:16px 14px; border-radius:14px;
+            background:var(--panel); color:var(--ink); text-decoration:none;
+            border:1px solid #2a2a38; transition:transform .12s, border-color .12s; }
+    .card:hover { transform:translateY(-3px); border-color:var(--accent); }
+    .card.live { border-color:var(--accent); }
+    .card .k { font-size:1.15rem; font-weight:600; }
+    .card .v { color:var(--muted); font-size:.92rem; margin-top:4px; }
+    .card.soon { opacity:.6; cursor:default; }
+    .card.soon:hover { transform:none; border-color:#2a2a38; }
+    .pill { display:inline-block; font-size:.72rem; padding:2px 8px; border-radius:999px;
+            margin-top:8px; }
+    .pill.now { background:rgba(119,170,255,.18); color:var(--accent); }
+    .pill.soon { background:rgba(255,255,255,.08); color:var(--muted); }
+    footer { color:var(--muted); font-size:.85rem; margin-top:40px; }
+    footer img { height:22px; vertical-align:middle; opacity:.9; }
+    a.plain { color:var(--accent); text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <img class="icon" src="m12_icon.png" alt="M12 swap ring icon">
+    <h1>Sporadic&nbsp;M<span class="sub">₁₂</span></h1>
+    <p class="tagline">A puzzle on the Mathieu group&nbsp;M₁₂.</p>
+
+    <p class="blurb">
+      Twelve coloured marbles sit in a ring. <b>Spin</b> the ring and <b>swap</b>
+      the paired marbles to scramble them — then find your way back home. Record a
+      sequence as a <b>macro</b> and replay it (or its inverse) to crack the harder
+      arrangements. Choose from 341 swap permutations for a different puzzle each time.
+    </p>
+
+    <div class="grid">
+      <a class="card live" href="app/">
+        <div class="k">▶ Play in browser</div>
+        <div class="v">Runs the real C++ engine via WebAssembly</div>
+        <span class="pill now">available</span>
+      </a>
+      <a class="card" href="mathieu.apk">
+        <div class="k">🤖 Android</div>
+        <div class="v">Download the APK</div>
+        <span class="pill now">available</span>
+      </a>
+      <a class="card soon">
+        <div class="k">🍎 iOS</div>
+        <div class="v">via TestFlight</div>
+        <span class="pill soon">coming soon</span>
+      </a>
+      <a class="card soon">
+        <div class="k">🖥 macOS</div>
+        <div class="v">signed &amp; notarized .dmg</div>
+        <span class="pill soon">coming soon</span>
+      </a>
+      <a class="card soon">
+        <div class="k">⌚ Apple Watch</div>
+        <div class="v">Digital Crown control</div>
+        <span class="pill soon">coming soon</span>
+      </a>
+    </div>
+
+    <footer>
+      <img src="sporadic_games_logo.png" alt="Sporadic Games"><br>
+      A Sporadic Games puzzle. © Magnolia Heights Research and Development.
+    </footer>
+  </div>
+</body>
+</html>
