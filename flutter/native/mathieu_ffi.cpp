@@ -11,6 +11,8 @@
 //
 
 #include "m12.h"
+#include <string>
+#include <cstring>
 
 #if defined(_WIN32)
   #define FFI_EXPORT __declspec(dllexport)
@@ -24,6 +26,7 @@
 #endif
 
 typedef MathieuPermutationWithHistory Game;
+typedef Game::HistoryElement HistoryElement;
 static inline Game* G(void* h) { return static_cast<Game*>(h); }
 
 extern "C" {
@@ -76,6 +79,58 @@ FFI_EXPORT int mathieu_swap_difficulty(int i) {
 // Dart uses this to colour balls: each 2-cycle gets one palette colour.
 FFI_EXPORT void mathieu_get_swap_permutation(int* out) {
     for (int i = 0; i < nBalls; i++) out[i] = (int)MathieuPermutation::swapPermutation[(Index)i];
+}
+
+// Fill out[0..nBalls-1] with swap permutation #i (without changing selection).
+FFI_EXPORT void mathieu_get_swap_permutation_at(int i, int* out) {
+    if (i < 0 || i >= nSwaps) return;
+    const MathieuPermutation::PermArray& sp = MathieuPermutation::swaps[i].swap;
+    for (int k = 0; k < nBalls; k++) out[k] = (int)sp[k];
+}
+
+// --- macros ("combos" A..E, stored per-game in the history) ---
+FFI_EXPORT int mathieu_macro_defined(void* h, int c) {
+    return G(h)->macro_is_defined((HistoryElement)c) ? 1 : 0;
+}
+FFI_EXPORT int mathieu_any_macro_defined(void* h) {
+    return G(h)->any_macro_is_defined() ? 1 : 0;
+}
+// Define macro c as the current game; if the history is empty, erase it instead.
+FFI_EXPORT void mathieu_set_macro(void* h, int c) {
+    Game* g = G(h);
+    if (g->history_is_empty()) g->erase_macro((HistoryElement)c);
+    else g->set_macro((HistoryElement)c, *g);
+}
+FFI_EXPORT void mathieu_erase_macro(void* h, int c) { G(h)->erase_macro((HistoryElement)c); }
+FFI_EXPORT void mathieu_run_macro(void* h, int c, int inverted) {
+    G(h)->run_macro((HistoryElement)c, inverted != 0);
+}
+FFI_EXPORT int mathieu_history_is_single_macro(void* h, int c) {
+    return G(h)->history_is_single_macro((HistoryElement)c) ? 1 : 0;
+}
+
+// --- status line: the move-history notation, e.g. "L2 S R3 A" ---
+FFI_EXPORT void mathieu_history_str(void* h, char* out, int cap) {
+    typedef MathieuPermutationWithHistory::History Hist;
+    Hist hist = G(h)->getHistory();
+    std::string s;
+    for (Hist::const_iterator p = hist.begin(); p != hist.end(); ++p) {
+        HistoryElement e = *p;
+        if (Hist::is_swap(e)) {
+            s += "S";
+        } else if (Hist::is_left(e)) {
+            s += "L";
+            int n = -e; if (n > 1) s += std::to_string(n);
+        } else if (Hist::is_right(e)) {
+            s += "R";
+            int n = e; if (n > 1) s += std::to_string(n);
+        } else {
+            // macro: positive = A..E, negative = inverse (shown lowercase)
+            s += (e < 0) ? (char)('a' + ((-e) - 'A')) : (char)e;
+        }
+        s += ' ';
+    }
+    if (cap > 0) { std::strncpy(out, s.c_str(), cap - 1); out[cap - 1] = '\0'; }
 }
 
 } // extern "C"
