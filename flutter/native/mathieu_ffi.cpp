@@ -11,6 +11,7 @@
 //
 
 #include "m12.h"
+#include "mathieu_ffi.h"
 #include <string>
 #include <cstring>
 

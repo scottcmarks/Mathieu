@@ -1,0 +1,46 @@
+name: MathieuWatch
+options:
+  bundleIdPrefix: com.magnoliaheights
+  deploymentTarget:
+    watchOS: "11.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CLANG_CXX_LANGUAGE_STANDARD: "c++17"
+    GCC_TREAT_WARNINGS_AS_ERRORS: "NO"
+    HEADER_SEARCH_PATHS:
+      - $(HOME)/Mathieu/PlatformIndependent/Permutation
+      - $(HOME)/Mathieu/PlatformIndependent/M12/Permutation
+      - $(HOME)/Mathieu/flutter/native
+      - $(HOME)/Toolbox/PlatformIndependent
+      - $(HOME)/Toolbox/PlatformIndependent/Permutation
+
+targets:
+  MathieuWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: Sources
+      - path: Bridging
+      - path: ../flutter/native/mathieu_ffi.cpp
+        group: Engine
+      - path: ../PlatformIndependent/M12/Permutation/m12.cc
+        group: Engine
+      - path: ../../Toolbox/PlatformIndependent/rand_utils.c
+        group: Engine
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: M12
+        WKApplication: true
+        UILaunchScreen: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.magnoliaheights.MathieuWatch
+        SWIFT_OBJC_BRIDGING_HEADER: Bridging/Mathieu-Bridging-Header.h
+        TARGETED_DEVICE_FAMILY: "4"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: 23JBC9D428
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
