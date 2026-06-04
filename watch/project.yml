@@ -35,12 +35,14 @@ targets:
       properties:
         CFBundleDisplayName: M12
         WKApplication: true
+        WKWatchOnly: true
         UILaunchScreen: {}
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.magnoliaheights.MathieuWatch
         SWIFT_OBJC_BRIDGING_HEADER: Bridging/Mathieu-Bridging-Header.h
         TARGETED_DEVICE_FAMILY: "4"
+        SUPPORTED_PLATFORMS: "watchos watchsimulator"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: 23JBC9D428
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
