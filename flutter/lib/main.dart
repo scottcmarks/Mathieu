@@ -38,21 +38,28 @@ const _palette = <Color>[
   Color(0xFFFF0000), // red
 ];
 
+// Move durations (ms), echoing the legacy SMALL/LARGE_MOVE_DURATION feel.
+const _dRotate = 170, _dSwap = 280, _dMacro = 340, _dUndo = 220, _dBig = 340;
+
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
   @override
   State<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin {
   late final MathieuEngine _game;
   late int _n;
   late List<int> _colorOfBall;
+  late List<int> _prevArr, _currArr;
+  late final AnimationController _ctrl;
+  late final Animation<double> _t;
+
   bool _wasSolved = true;
   bool _sound = true;
-  bool _confirm = true; // legacy "confirm" preference (on by default)
-  bool _solving = false; // a scramble is active (legacy isSolving)
-  bool _alt = false; // one-shot invert modifier (the "Alt" key)
+  bool _confirm = true;
+  bool _solving = false;
+  bool _alt = false;
 
   @override
   void initState() {
@@ -60,6 +67,11 @@ class _GamePageState extends State<GamePage> {
     _game = MathieuEngine();
     _n = _game.n;
     _recomputeColors();
+    _currArr = _game.arrangement();
+    _prevArr = List<int>.of(_currArr);
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: _dRotate));
+    _t = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut);
+    _ctrl.value = 1;
   }
 
   void _recomputeColors() {
@@ -78,72 +90,61 @@ class _GamePageState extends State<GamePage> {
 
   @override
   void dispose() {
+    _ctrl.dispose();
     _game.dispose();
     super.dispose();
   }
 
-  // A move (left/right/swap): play its sound, then applaud on a fresh solve.
-  void _move(void Function() act, String sound) {
+  // Apply an engine action and tween the balls from the old to the new layout.
+  void _animatedMove(void Function() act, String? sound, int durationMs) {
     setState(() {
-      Sfx.play(sound);
+      if (sound != null) Sfx.play(sound);
+      _prevArr = _currArr;
       act();
+      _currArr = _game.arrangement();
       _alt = false;
       final solved = _game.isSolved;
       if (solved && !_wasSolved) Sfx.play('applause');
       _wasSolved = solved;
     });
+    _ctrl.duration = Duration(milliseconds: durationMs);
+    _ctrl.forward(from: 0);
   }
 
-  // Tap a macro key: play it (inverse if Alt is armed). No-op if undefined.
+  // Refresh layout with no tween (drag steps, macro-set expansions, selector).
+  void _instant(void Function() act, [String? sound]) {
+    setState(() {
+      if (sound != null) Sfx.play(sound);
+      act();
+      _currArr = _game.arrangement();
+      _prevArr = List<int>.of(_currArr);
+      _ctrl.value = 1;
+      _wasSolved = _game.isSolved;
+    });
+  }
+
+  // --- button / gesture moves ---
+  void _left() => _animatedMove(_game.left, 'left', _dRotate);
+  void _right() => _animatedMove(_game.right, 'right', _dRotate);
+  void _swap() => _animatedMove(_game.swap, 'swap', _dSwap);
+  void _rotateDrag(bool right) =>
+      _instant(right ? _game.right : _game.left, right ? 'right' : 'left');
+
   void _macroTap(int c) {
     if (!_game.macroDefined(c)) return;
-    setState(() {
-      Sfx.play('combo');
-      _game.runMacro(c, inverted: _alt);
-      _alt = false;
-      final solved = _game.isSolved;
-      if (solved && !_wasSolved) Sfx.play('applause');
-      _wasSolved = solved;
-    });
+    _animatedMove(() => _game.runMacro(c, inverted: _alt), 'combo', _dMacro);
   }
 
-  // Long-press a macro key: define it from the current move history
-  // (or erase it if the history is empty), matching the original "combo set".
   Future<void> _macroSet(int c) async {
-    // Legacy confirmSetCombo: skip the dialog when the macro is undefined, or
-    // when the history is just this one unchanged macro. The latter is the
-    // "force-expand" gesture — type a macro's letter, then re-set it, and
-    // set_macro() expands it in place so the status line reveals its definition.
     final letter = String.fromCharCode(c);
     if (_confirm && _game.macroDefined(c) && !_game.historyIsSingleMacro(c)) {
       final verb = _game.historyLength == 0 ? 'erase' : 'change';
       if (!await _ask('Combo Set!', 'This will $verb the meaning of $letter.')) return;
     }
-    setState(() {
-      Sfx.play('combo_set');
-      _game.setMacro(c); // expands the macro into the history when re-setting it
-      _alt = false;
-    });
+    _instant(() => _game.setMacro(c), 'combo_set');
   }
 
   void _toggleAlt() => setState(() => _alt = !_alt);
-
-  Future<void> _openSelector() async {
-    await Navigator.of(context).push(_flipRoute(_SwapSelectorPage(
-      current: MathieuEngine.swapIndex,
-      n: _n,
-      onSelected: (i) => setState(() {
-        // Changing the swap permutation invalidates the puzzle: reset the board
-        // and erase macros (they kept their meaning only for the old swap).
-        MathieuEngine.swapIndex = i;
-        _game.reset();
-        _game.eraseAllMacros();
-        _recomputeColors();
-        _solving = false;
-        _wasSolved = true;
-      }),
-    )));
-  }
 
   Future<bool> _ask(String title, String msg) async {
     if (!_confirm) return true;
@@ -161,59 +162,54 @@ class _GamePageState extends State<GamePage> {
     return ok ?? false;
   }
 
-  // Shake: new scramble (confirm if mid-solve). Legacy doShake.
   Future<void> _shake() async {
     Sfx.play('shake');
     if (_confirm && _solving &&
-        !await _ask('Shake!', 'This will create a new Sporadic M12 puzzle.')) {
-      return;
-    }
-    setState(() {
-      _game.random();
-      _solving = true;
-      _alt = false;
-      _wasSolved = _game.isSolved;
-    });
+        !await _ask('Shake!', 'This will create a new Sporadic M12 puzzle.')) return;
+    _animatedMove(_game.random, null, _dBig);
+    _solving = true;
   }
 
-  // Home: reset to the home (solved) position (confirm if mid-solve). Legacy doHome.
   Future<void> _home() async {
     Sfx.play('home');
     if (_confirm && _solving &&
-        !await _ask('Home!', 'This will reset Sporadic M12 to the home position.')) {
-      return;
-    }
-    setState(() {
-      _game.reset();
-      _solving = false;
-      _alt = false;
-      _wasSolved = true;
-    });
+        !await _ask('Home!', 'This will reset Sporadic M12 to the home position.')) return;
+    _animatedMove(_game.reset, null, _dBig);
+    _solving = false;
   }
 
-  // Restart: revert to the scrambled start, keeping macros. Legacy doRestart.
   Future<void> _restart() async {
     Sfx.play('restart');
     if (_confirm && _solving &&
-        !await _ask('Restart!', 'This will restart solving this puzzle.')) {
-      return;
-    }
-    setState(() {
-      _game.revert();
-      _alt = false;
-      _wasSolved = _game.isSolved;
-    });
+        !await _ask('Restart!', 'This will restart solving this puzzle.')) return;
+    _animatedMove(_game.revert, null, _dBig);
   }
 
-  // Alt makes Shake act as Restart (legacy shakeOrRestart).
-  void _shakeOrRestart() => _alt ? _restart() : _shake();
+  void _shakeOrRestart() {
+    if (_alt) {
+      _restart();
+    } else {
+      _shake();
+    }
+  }
 
-  // Undo a move; Alt undoes a single step (legacy undoStepOrMove).
-  void _undo() => setState(() {
-        _game.undo(move: !_alt);
-        _alt = false;
-        _wasSolved = _game.isSolved;
-      });
+  void _undo() => _animatedMove(() => _game.undo(move: !_alt), null, _dUndo);
+
+  Future<void> _openSelector() async {
+    await Navigator.of(context).push(_flipRoute(_SwapSelectorPage(
+      current: MathieuEngine.swapIndex,
+      n: _n,
+      onSelected: (i) {
+        MathieuEngine.swapIndex = i;
+        _instant(() {
+          _game.reset();
+          _game.eraseAllMacros();
+          _recomputeColors();
+          _solving = false;
+        });
+      },
+    )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +241,6 @@ class _GamePageState extends State<GamePage> {
       ),
       body: Column(
         children: [
-          // top corners: Shake (left, -> Restart when Alt) and Home (right)
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
             child: Row(
@@ -257,15 +252,20 @@ class _GamePageState extends State<GamePage> {
             ),
           ),
           Expanded(
-            child: _BallRing(
-              arrangement: _game.arrangement(),
-              colorOfBall: _colorOfBall,
-              onLeft: () => _move(_game.left, 'left'),
-              onRight: () => _move(_game.right, 'right'),
-              onSwap: () => _move(_game.swap, 'swap'),
+            child: AnimatedBuilder(
+              animation: _t,
+              builder: (context, _) => _BallRing(
+                prevArrangement: _prevArr,
+                arrangement: _currArr,
+                t: _t.value,
+                colorOfBall: _colorOfBall,
+                onLeft: _left,
+                onRight: _right,
+                onSwap: _swap,
+                onRotateDrag: _rotateDrag,
+              ),
             ),
           ),
-          // counters (moves / steps) + status line + Undo, like the original
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             child: Row(
@@ -307,7 +307,6 @@ class _GamePageState extends State<GamePage> {
               ],
             ),
           ),
-          // macro row: A B C D E + Alt
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Row(
@@ -324,11 +323,7 @@ class _GamePageState extends State<GamePage> {
                     ),
                   ),
                 const SizedBox(width: 8),
-                _MacroKey(
-                  label: 'Alt',
-                  highlighted: _alt,
-                  onTap: _toggleAlt,
-                ),
+                _MacroKey(label: 'Alt', highlighted: _alt, onTap: _toggleAlt),
               ],
             ),
           ),
@@ -339,171 +334,26 @@ class _GamePageState extends State<GamePage> {
   }
 }
 
-/// A top-corner action button (Shake / Restart / Home), styled like the legacy app.
-class _TopButton extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _TopButton(this.label, this.onTap);
-  @override
-  Widget build(BuildContext context) => FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: const Color(0xFF6A6A86),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-        ),
-        onPressed: onTap,
-        child: Text(label),
-      );
-}
-
-/// A macro key (A..E or Alt). Tap to play / toggle; long-press to define.
-class _MacroKey extends StatelessWidget {
-  final String label;
-  final bool highlighted;
-  final VoidCallback onTap;
-  final VoidCallback? onLongPress;
-  const _MacroKey({
-    required this.label,
-    required this.highlighted,
-    required this.onTap,
-    this.onLongPress,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: Container(
-        width: 46,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: highlighted ? const Color(0xFFFFC23D) : const Color(0xFF6A6A86),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black26),
-        ),
-        child: Text(label,
-            style: TextStyle(
-                color: highlighted ? Colors.black : Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16)),
-      ),
-    );
-  }
-}
-
-// A horizontal-flip page transition, evoking the original "flip to the back".
-Route<T> _flipRoute<T>(Widget page) {
-  return PageRouteBuilder<T>(
-    transitionDuration: const Duration(milliseconds: 450),
-    reverseTransitionDuration: const Duration(milliseconds: 450),
-    pageBuilder: (_, __, ___) => page,
-    transitionsBuilder: (_, anim, __, child) {
-      final rotate = Tween(begin: 1.0, end: 0.0).animate(
-          CurvedAnimation(parent: anim, curve: Curves.easeInOut));
-      return AnimatedBuilder(
-        animation: rotate,
-        builder: (context, _) {
-          final t = rotate.value; // 1 -> 0
-          final angle = t * math.pi; // half turn
-          final showFront = t < 0.5;
-          return Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001)
-              ..rotateY(angle),
-            child: showFront
-                ? const ColoredBox(color: _bg, child: SizedBox.expand())
-                : child,
-          );
-        },
-      );
-    },
-  );
-}
-
-/// The "back of the game": the swap-permutation selector. Lists all swaps with
-/// their cycle notation and difficulty; tap one to select it.
-class _SwapSelectorPage extends StatelessWidget {
-  final int current;
-  final int n;
-  final ValueChanged<int> onSelected;
-  const _SwapSelectorPage(
-      {required this.current, required this.n, required this.onSelected});
-
-  static String _cycles(List<int> perm) {
-    final seen = List<bool>.filled(perm.length, false);
-    final parts = <String>[];
-    for (var i = 0; i < perm.length; i++) {
-      if (seen[i] || perm[i] == i) {
-        seen[i] = true;
-        continue;
-      }
-      final cyc = <int>[];
-      var j = i;
-      while (!seen[j]) {
-        seen[j] = true;
-        cyc.add(j);
-        j = perm[j];
-      }
-      if (cyc.length > 1) parts.add('(${cyc.join(" ")})');
-    }
-    return parts.isEmpty ? '(identity)' : parts.join(' ');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final count = MathieuEngine.swapCount;
-    return Scaffold(
-      backgroundColor: _bg,
-      appBar: AppBar(
-        backgroundColor: _bg,
-        title: const Text('Swap Permutation'),
-      ),
-      body: Scrollbar(
-        child: ListView.builder(
-          itemCount: count,
-          itemBuilder: (context, i) {
-            final perm = MathieuEngine.swapPermutationAt(i, n);
-            final diff = MathieuEngine.swapDifficulty(i);
-            final sel = i == current;
-            return ListTile(
-              dense: true,
-              selected: sel,
-              selectedTileColor: const Color(0x33000000),
-              leading: sel
-                  ? const Icon(Icons.check, color: Colors.black87)
-                  : const SizedBox(width: 24),
-              title: Text('#${i + 1}    ${_cycles(perm)}',
-                  style: const TextStyle(
-                      color: Colors.black87, fontFamily: 'monospace')),
-              subtitle: Text('difficulty $diff',
-                  style: const TextStyle(color: Colors.black54)),
-              onTap: () {
-                onSelected(i);
-                Navigator.of(context).pop();
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-/// The ring of balls, with finger gestures (drag to rotate; pull apex ball
-/// down to swap) and the Swap/Left/Right controls centred inside the ring,
-/// matching the original layout. Geometry ported from BallRingView.mm.
+/// The ring of balls. Balls tween between their previous and current ring
+/// positions (arc paths) by [t]. Finger gestures: drag around to rotate
+/// (instant per wedge), pull the apex ball down to swap. Geometry ported from
+/// BallRingView.mm.
 class _BallRing extends StatefulWidget {
+  final List<int> prevArrangement;
   final List<int> arrangement;
+  final double t;
   final List<int> colorOfBall;
   final VoidCallback onLeft, onRight, onSwap;
+  final void Function(bool right) onRotateDrag;
   const _BallRing({
+    required this.prevArrangement,
     required this.arrangement,
+    required this.t,
     required this.colorOfBall,
     required this.onLeft,
     required this.onRight,
     required this.onSwap,
+    required this.onRotateDrag,
   });
 
   @override
@@ -511,11 +361,10 @@ class _BallRing extends StatefulWidget {
 }
 
 class _BallRingState extends State<_BallRing> {
-  static const _ballRadiusRatio = 0.1375; // MBallRadiusRatio from M12Constants.h
+  static const _ballRadiusRatio = 0.1375; // MBallRadiusRatio
 
   late Offset _center;
-  late double _circleR;
-  late double _ballR;
+  late double _circleR, _ballR;
   late Offset _apex;
 
   bool _swapMode = false, _swapFired = false;
@@ -523,11 +372,28 @@ class _BallRingState extends State<_BallRing> {
 
   int get _n => widget.arrangement.length;
 
+  double _angle(int slot) => (2 * math.pi / (_n - 1)) * (slot - 1) - math.pi / 2;
+
   Offset _slot(int i) {
     if (i == 0) return _apex;
-    final theta = (2 * math.pi / (_n - 1)) * (i - 1) - math.pi / 2;
-    return Offset(_center.dx + _circleR * math.cos(theta),
-        _center.dy + _circleR * math.sin(theta));
+    final a = _angle(i);
+    return Offset(_center.dx + _circleR * math.cos(a), _center.dy + _circleR * math.sin(a));
+  }
+
+  // Position of ball value v, interpolated from its previous to its current slot.
+  Offset _ballPos(int v, double t) {
+    final ps = widget.prevArrangement.indexOf(v);
+    final cs = widget.arrangement.indexOf(v);
+    if (ps == cs || t >= 1.0) return _slot(cs);
+    if (ps >= 1 && cs >= 1) {
+      final a0 = _angle(ps);
+      var da = _angle(cs) - a0;
+      while (da > math.pi) da -= 2 * math.pi;
+      while (da < -math.pi) da += 2 * math.pi;
+      final a = a0 + da * t;
+      return Offset(_center.dx + _circleR * math.cos(a), _center.dy + _circleR * math.sin(a));
+    }
+    return Offset.lerp(_slot(ps), _slot(cs), t)!;
   }
 
   void _onStart(DragStartDetails d) {
@@ -560,11 +426,11 @@ class _BallRingState extends State<_BallRing> {
     final step = 2 * math.pi / (_n - 1);
     while (_accum >= step) {
       _accum -= step;
-      widget.onRight();
+      widget.onRotateDrag(true);
     }
     while (_accum <= -step) {
       _accum += step;
-      widget.onLeft();
+      widget.onRotateDrag(false);
     }
   }
 
@@ -581,15 +447,14 @@ class _BallRingState extends State<_BallRing> {
 
       final children = <Widget>[];
 
-      // tags (gray "home" position numbers)
+      // tags (fixed gray "home" position numbers)
       for (var i = 0; i < _n; i++) {
         final tagPos = i == 0
             ? Offset(_center.dx, _apex.dy - 1.5 * _ballR)
             : () {
-                final theta = (2 * math.pi / (_n - 1)) * (i - 1) - math.pi / 2;
+                final a = _angle(i);
                 final rr = _circleR - 1.5 * _ballR;
-                return Offset(_center.dx + rr * math.cos(theta),
-                    _center.dy + rr * math.sin(theta));
+                return Offset(_center.dx + rr * math.cos(a), _center.dy + rr * math.sin(a));
               }();
         children.add(Positioned(
           left: tagPos.dx - _ballR,
@@ -601,15 +466,14 @@ class _BallRingState extends State<_BallRing> {
         ));
       }
 
-      // balls
-      for (var slot = 0; slot < _n; slot++) {
-        final ctr = _slot(slot);
-        final ballValue = widget.arrangement[slot];
-        final color = _palette[widget.colorOfBall[ballValue] % _palette.length];
+      // balls, by value, at their interpolated positions
+      for (var v = 0; v < _n; v++) {
+        final ctr = _ballPos(v, widget.t);
+        final color = _palette[widget.colorOfBall[v] % _palette.length];
         children.add(Positioned(
           left: ctr.dx - _ballR,
           top: ctr.dy - _ballR,
-          child: _Marble(value: ballValue, color: color, r: _ballR),
+          child: _Marble(value: v, color: color, r: _ballR),
         ));
       }
 
@@ -655,9 +519,151 @@ class _CtlButton extends StatelessWidget {
       );
 }
 
-/// The original iOS marble, ported from BallView.mm's CGContextDrawRadialGradient:
-/// a "sphere cap lit from above" — dark (0.6x) rim, brightening to full colour
-/// at a highlight 1/8 from the top, with a transparent anti-aliased edge.
+class _TopButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _TopButton(this.label, this.onTap);
+  @override
+  Widget build(BuildContext context) => FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: const Color(0xFF6A6A86),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        ),
+        onPressed: onTap,
+        child: Text(label),
+      );
+}
+
+class _MacroKey extends StatelessWidget {
+  final String label;
+  final bool highlighted;
+  final VoidCallback onTap;
+  final VoidCallback? onLongPress;
+  const _MacroKey({
+    required this.label,
+    required this.highlighted,
+    required this.onTap,
+    this.onLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Container(
+        width: 46,
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: highlighted ? const Color(0xFFFFC23D) : const Color(0xFF6A6A86),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.black26),
+        ),
+        child: Text(label,
+            style: TextStyle(
+                color: highlighted ? Colors.black : Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
+      ),
+    );
+  }
+}
+
+// A horizontal-flip page transition, evoking the original "flip to the back".
+Route<T> _flipRoute<T>(Widget page) {
+  return PageRouteBuilder<T>(
+    transitionDuration: const Duration(milliseconds: 450),
+    reverseTransitionDuration: const Duration(milliseconds: 450),
+    pageBuilder: (context, animation, secondary) => page,
+    transitionsBuilder: (context, anim, secondary, child) {
+      final rotate =
+          Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: anim, curve: Curves.easeInOut));
+      return AnimatedBuilder(
+        animation: rotate,
+        builder: (context, _) {
+          final t = rotate.value;
+          final showFront = t > 0.5;
+          return Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(t * math.pi),
+            child: showFront
+                ? const ColoredBox(color: _bg, child: SizedBox.expand())
+                : child,
+          );
+        },
+      );
+    },
+  );
+}
+
+/// The "back of the game": the swap-permutation selector.
+class _SwapSelectorPage extends StatelessWidget {
+  final int current;
+  final int n;
+  final ValueChanged<int> onSelected;
+  const _SwapSelectorPage(
+      {required this.current, required this.n, required this.onSelected});
+
+  static String _cycles(List<int> perm) {
+    final seen = List<bool>.filled(perm.length, false);
+    final parts = <String>[];
+    for (var i = 0; i < perm.length; i++) {
+      if (seen[i] || perm[i] == i) {
+        seen[i] = true;
+        continue;
+      }
+      final cyc = <int>[];
+      var j = i;
+      while (!seen[j]) {
+        seen[j] = true;
+        cyc.add(j);
+        j = perm[j];
+      }
+      if (cyc.length > 1) parts.add('(${cyc.join(" ")})');
+    }
+    return parts.isEmpty ? '(identity)' : parts.join(' ');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final count = MathieuEngine.swapCount;
+    return Scaffold(
+      backgroundColor: _bg,
+      appBar: AppBar(backgroundColor: _bg, title: const Text('Swap Permutation')),
+      body: Scrollbar(
+        child: ListView.builder(
+          itemCount: count,
+          itemBuilder: (context, i) {
+            final perm = MathieuEngine.swapPermutationAt(i, n);
+            final diff = MathieuEngine.swapDifficulty(i);
+            final sel = i == current;
+            return ListTile(
+              dense: true,
+              selected: sel,
+              selectedTileColor: const Color(0x33000000),
+              leading: sel
+                  ? const Icon(Icons.check, color: Colors.black87)
+                  : const SizedBox(width: 24),
+              title: Text('#${i + 1}    ${_cycles(perm)}',
+                  style: const TextStyle(color: Colors.black87, fontFamily: 'monospace')),
+              subtitle: Text('difficulty $diff',
+                  style: const TextStyle(color: Colors.black54)),
+              onTap: () {
+                onSelected(i);
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// The original iOS marble, ported from BallView.mm's CGContextDrawRadialGradient.
 class _Marble extends StatelessWidget {
   final int value;
   final Color color;
@@ -674,10 +680,7 @@ class _Marble extends StatelessWidget {
         painter: _MarblePainter(color),
         child: Center(
           child: Text('$value',
-              style: TextStyle(
-                  color: textColor,
-                  fontSize: r * 0.85,
-                  fontWeight: FontWeight.bold)),
+              style: TextStyle(color: textColor, fontSize: r * 0.85, fontWeight: FontWeight.bold)),
         ),
       ),
     );
@@ -691,15 +694,15 @@ class _MarblePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final r = size.width / 2;
-    final dark = Color.lerp(color, Colors.black, 0.4)!; // 0.6x brightness
+    final dark = Color.lerp(color, Colors.black, 0.4)!;
     final shader = ui.Gradient.radial(
-      Offset(r, r), // outer circle centre
-      r, // outer radius = width/2
+      Offset(r, r),
+      r,
       [color, dark, dark.withValues(alpha: 0)],
       [0.0, 0.95, 1.0],
       TileMode.clamp,
       null,
-      Offset(r, r / 4), // highlight focal point (midY/4 in BallView.mm)
+      Offset(r, r / 4),
       0.0,
     );
     canvas.drawCircle(Offset(r, r), r, Paint()..shader = shader);
