@@ -50,6 +50,7 @@ class _GamePageState extends State<GamePage> {
   late List<int> _colorOfBall;
   bool _wasSolved = true;
   bool _sound = true;
+  bool _alt = false; // one-shot invert modifier (the "Alt" key)
 
   @override
   void initState() {
@@ -84,10 +85,48 @@ class _GamePageState extends State<GamePage> {
     setState(() {
       Sfx.play(sound);
       act();
+      _alt = false;
       final solved = _game.isSolved;
       if (solved && !_wasSolved) Sfx.play('applause');
       _wasSolved = solved;
     });
+  }
+
+  // Tap a macro key: play it (inverse if Alt is armed). No-op if undefined.
+  void _macroTap(int c) {
+    if (!_game.macroDefined(c)) return;
+    setState(() {
+      Sfx.play('combo');
+      _game.runMacro(c, inverted: _alt);
+      _alt = false;
+      final solved = _game.isSolved;
+      if (solved && !_wasSolved) Sfx.play('applause');
+      _wasSolved = solved;
+    });
+  }
+
+  // Long-press a macro key: define it from the current move history
+  // (or erase it if the history is empty), matching the original "combo set".
+  void _macroSet(int c) {
+    setState(() {
+      Sfx.play('combo_set');
+      _game.setMacro(c);
+      _alt = false;
+    });
+  }
+
+  void _toggleAlt() => setState(() => _alt = !_alt);
+
+  Future<void> _openSelector() async {
+    await Navigator.of(context).push(_flipRoute(_SwapSelectorPage(
+      current: MathieuEngine.swapIndex,
+      n: _n,
+      onSelected: (i) => setState(() {
+        MathieuEngine.swapIndex = i;
+        _recomputeColors();
+        _wasSolved = _game.isSolved;
+      }),
+    )));
   }
 
   void _scramble() => setState(() {
@@ -116,6 +155,11 @@ class _GamePageState extends State<GamePage> {
         title: const Text('Sporadic M12'),
         actions: [
           IconButton(
+            tooltip: 'Swap permutation',
+            icon: const Icon(Icons.flip),
+            onPressed: _openSelector,
+          ),
+          IconButton(
             tooltip: 'Sound',
             icon: Icon(_sound ? Icons.volume_up : Icons.volume_off),
             onPressed: () => setState(() {
@@ -143,8 +187,51 @@ class _GamePageState extends State<GamePage> {
               onSwap: () => _move(_game.swap, 'swap'),
             ),
           ),
+          // status line: the move-history notation
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2C2C3A),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              _game.historyStr().isEmpty ? '—' : _game.historyStr(),
+              style: const TextStyle(
+                  color: Color(0xFF7DFF7D),
+                  fontFamily: 'monospace',
+                  fontSize: 15,
+                  letterSpacing: 1.0),
+            ),
+          ),
+          // macro row: A B C D E + Alt
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (final c in const [65, 66, 67, 68, 69])
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3),
+                    child: _MacroKey(
+                      label: String.fromCharCode(c),
+                      highlighted: _game.macroDefined(c),
+                      onTap: () => _macroTap(c),
+                      onLongPress: () => _macroSet(c),
+                    ),
+                  ),
+                const SizedBox(width: 8),
+                _MacroKey(
+                  label: 'Alt',
+                  highlighted: _alt,
+                  onTap: _toggleAlt,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 6, bottom: 10),
             child: Wrap(
               alignment: WrapAlignment.center,
               spacing: 10,
@@ -156,6 +243,142 @@ class _GamePageState extends State<GamePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// A macro key (A..E or Alt). Tap to play / toggle; long-press to define.
+class _MacroKey extends StatelessWidget {
+  final String label;
+  final bool highlighted;
+  final VoidCallback onTap;
+  final VoidCallback? onLongPress;
+  const _MacroKey({
+    required this.label,
+    required this.highlighted,
+    required this.onTap,
+    this.onLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Container(
+        width: 46,
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: highlighted ? const Color(0xFFFFC23D) : const Color(0xFF6A6A86),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.black26),
+        ),
+        child: Text(label,
+            style: TextStyle(
+                color: highlighted ? Colors.black : Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
+      ),
+    );
+  }
+}
+
+// A horizontal-flip page transition, evoking the original "flip to the back".
+Route<T> _flipRoute<T>(Widget page) {
+  return PageRouteBuilder<T>(
+    transitionDuration: const Duration(milliseconds: 450),
+    reverseTransitionDuration: const Duration(milliseconds: 450),
+    pageBuilder: (_, __, ___) => page,
+    transitionsBuilder: (_, anim, __, child) {
+      final rotate = Tween(begin: 1.0, end: 0.0).animate(
+          CurvedAnimation(parent: anim, curve: Curves.easeInOut));
+      return AnimatedBuilder(
+        animation: rotate,
+        builder: (context, _) {
+          final t = rotate.value; // 1 -> 0
+          final angle = t * math.pi; // half turn
+          final showFront = t < 0.5;
+          return Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(angle),
+            child: showFront
+                ? const ColoredBox(color: _bg, child: SizedBox.expand())
+                : child,
+          );
+        },
+      );
+    },
+  );
+}
+
+/// The "back of the game": the swap-permutation selector. Lists all swaps with
+/// their cycle notation and difficulty; tap one to select it.
+class _SwapSelectorPage extends StatelessWidget {
+  final int current;
+  final int n;
+  final ValueChanged<int> onSelected;
+  const _SwapSelectorPage(
+      {required this.current, required this.n, required this.onSelected});
+
+  static String _cycles(List<int> perm) {
+    final seen = List<bool>.filled(perm.length, false);
+    final parts = <String>[];
+    for (var i = 0; i < perm.length; i++) {
+      if (seen[i] || perm[i] == i) {
+        seen[i] = true;
+        continue;
+      }
+      final cyc = <int>[];
+      var j = i;
+      while (!seen[j]) {
+        seen[j] = true;
+        cyc.add(j);
+        j = perm[j];
+      }
+      if (cyc.length > 1) parts.add('(${cyc.join(" ")})');
+    }
+    return parts.isEmpty ? '(identity)' : parts.join(' ');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final count = MathieuEngine.swapCount;
+    return Scaffold(
+      backgroundColor: _bg,
+      appBar: AppBar(
+        backgroundColor: _bg,
+        title: const Text('Swap Permutation'),
+      ),
+      body: Scrollbar(
+        child: ListView.builder(
+          itemCount: count,
+          itemBuilder: (context, i) {
+            final perm = MathieuEngine.swapPermutationAt(i, n);
+            final diff = MathieuEngine.swapDifficulty(i);
+            final sel = i == current;
+            return ListTile(
+              dense: true,
+              selected: sel,
+              selectedTileColor: const Color(0x33000000),
+              leading: sel
+                  ? const Icon(Icons.check, color: Colors.black87)
+                  : const SizedBox(width: 24),
+              title: Text('#${i + 1}    ${_cycles(perm)}',
+                  style: const TextStyle(
+                      color: Colors.black87, fontFamily: 'monospace')),
+              subtitle: Text('difficulty $diff',
+                  style: const TextStyle(color: Colors.black54)),
+              onTap: () {
+                onSelected(i);
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        ),
       ),
     );
   }
