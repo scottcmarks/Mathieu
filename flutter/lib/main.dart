@@ -11,17 +11,17 @@ void main() {
   runApp(const MathieuApp());
 }
 
-// Background lavender-grey, matching the original App Store screenshots.
-const _bg = Color(0xFF9C9CB0);
+// The game plays on black, like the 2.0.6 app.
+const _bg = Color(0xFF000000);
 
 class MathieuApp extends StatelessWidget {
   const MathieuApp({super.key});
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Mathieu M12',
+        title: 'Sporadic M12',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
           scaffoldBackgroundColor: _bg,
           useMaterial3: true,
         ),
@@ -61,6 +61,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   bool _confirm = true;
   bool _solving = false;
   bool _alt = false;
+  double _animSpeed = 1.0; // 1.0 = base durations; higher = faster
 
   @override
   void initState() {
@@ -107,7 +108,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
       _alt = false;
       if (success) _checkSuccess();
     });
-    _ctrl.duration = Duration(milliseconds: durationMs);
+    _ctrl.duration = Duration(milliseconds: (durationMs / _animSpeed).round().clamp(1, 4000));
     _ctrl.forward(from: 0);
   }
 
@@ -206,19 +207,29 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
 
   void _undo() => _animatedMove(() => _game.undo(move: !_alt), null, _dUndo, success: true);
 
-  Future<void> _openSelector() async {
-    await Navigator.of(context).push(_flipRoute(_SwapSelectorPage(
-      current: MathieuEngine.swapIndex,
+  void _selectSwap(int i) {
+    MathieuEngine.swapIndex = i;
+    _instant(() {
+      _game.reset();
+      _game.eraseAllMacros();
+      _recomputeColors();
+      _solving = false;
+    });
+  }
+
+  Future<void> _openSettings() async {
+    await Navigator.of(context).push(_flipRoute(_SettingsPage(
+      confirm: _confirm,
+      sound: _sound,
+      animSpeed: _animSpeed,
       n: _n,
-      onSelected: (i) {
-        MathieuEngine.swapIndex = i;
-        _instant(() {
-          _game.reset();
-          _game.eraseAllMacros();
-          _recomputeColors();
-          _solving = false;
-        });
-      },
+      onConfirm: (v) => setState(() => _confirm = v),
+      onSound: (v) => setState(() {
+        _sound = v;
+        Sfx.enabled = v;
+      }),
+      onAnimSpeed: (v) => setState(() => _animSpeed = v),
+      onSwapSelected: _selectSwap,
     )));
   }
 
@@ -231,22 +242,9 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
         title: const Text('Sporadic M12'),
         actions: [
           IconButton(
-            tooltip: 'Swap permutation',
+            tooltip: 'Settings',
             icon: const Icon(Icons.flip),
-            onPressed: _openSelector,
-          ),
-          IconButton(
-            tooltip: 'Sound',
-            icon: Icon(_sound ? Icons.volume_up : Icons.volume_off),
-            onPressed: () => setState(() {
-              _sound = !_sound;
-              Sfx.enabled = _sound;
-            }),
-          ),
-          IconButton(
-            tooltip: _confirm ? 'Confirmations on' : 'Confirmations off',
-            icon: Icon(_confirm ? Icons.help : Icons.help_outline),
-            onPressed: () => setState(() => _confirm = !_confirm),
+            onPressed: _openSettings,
           ),
         ],
       ),
@@ -257,8 +255,9 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _TopButton(_alt ? 'Restart' : 'Shake', _shakeOrRestart),
-                _TopButton('Home', _home),
+                _TopButton(_alt ? Icons.refresh : Icons.cancel_outlined,
+                    _alt ? 'Restart' : 'Shake', _shakeOrRestart),
+                _TopButton(Icons.arrow_circle_down_outlined, 'Home', _home),
               ],
             ),
           ),
@@ -278,43 +277,40 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             child: Row(
               children: [
                 SizedBox(
-                  width: 40,
+                  width: 36,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('${_game.moves}',
-                          style: const TextStyle(fontSize: 13, color: Colors.black87)),
+                          style: const TextStyle(fontSize: 12, color: Colors.white70)),
                       Text('${_game.steps}',
-                          style: const TextStyle(fontSize: 13, color: Colors.black54)),
+                          style: const TextStyle(fontSize: 12, color: Colors.white38)),
                     ],
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2C2C3A),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      _game.historyStr().isEmpty ? '—' : _game.historyStr(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: Color(0xFF7DFF7D),
-                          fontFamily: 'monospace',
-                          fontSize: 15,
-                          letterSpacing: 1.0),
-                    ),
+                  child: Text(
+                    _game.historyStr(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: Colors.white54, fontFamily: 'monospace', fontSize: 14),
                   ),
                 ),
-                const SizedBox(width: 8),
-                OutlinedButton(onPressed: _undo, child: Text(_alt ? 'Step' : 'Undo')),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: _undo,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Text(_alt ? 'Step' : 'Undo',
+                        style: const TextStyle(color: Colors.white, fontSize: 15)),
+                  ),
+                ),
               ],
             ),
           ),
@@ -324,17 +320,14 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (final c in const [65, 66, 67, 68, 69])
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: _MacroKey(
-                      label: String.fromCharCode(c),
-                      highlighted: _game.macroDefined(c),
-                      onTap: () => _macroTap(c),
-                      onLongPress: () => _macroSet(c),
-                    ),
+                  _MacroKey(
+                    label: String.fromCharCode(c),
+                    bright: _game.macroDefined(c),
+                    onTap: () => _macroTap(c),
+                    onLongPress: () => _macroSet(c),
                   ),
-                const SizedBox(width: 8),
-                _MacroKey(label: 'Alt', highlighted: _alt, onTap: _toggleAlt),
+                const SizedBox(width: 12),
+                _MacroKey(label: 'Alt', bright: true, armed: _alt, onTap: _toggleAlt),
               ],
             ),
           ),
@@ -559,7 +552,7 @@ class _BallRingState extends State<_BallRing> with TickerProviderStateMixin {
           width: _ballR * 2,
           child: Text('$i',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black38, fontSize: tagFont)),
+              style: TextStyle(color: Colors.white38, fontSize: tagFont)),
         ));
       }
 
@@ -606,63 +599,63 @@ class _CtlButton extends StatelessWidget {
   final VoidCallback onTap;
   const _CtlButton(this.label, this.onTap);
   @override
-  Widget build(BuildContext context) => FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: const Color(0xFF6A6A86),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          minimumSize: const Size(64, 36),
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+          child: Text(label,
+              style: const TextStyle(color: Colors.white, fontSize: 17)),
         ),
-        onPressed: onTap,
-        child: Text(label),
       );
 }
 
 class _TopButton extends StatelessWidget {
+  final IconData icon;
   final String label;
   final VoidCallback onTap;
-  const _TopButton(this.label, this.onTap);
+  const _TopButton(this.icon, this.label, this.onTap);
   @override
-  Widget build(BuildContext context) => FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: const Color(0xFF6A6A86),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Colors.white70, size: 30),
+            Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+          ],
         ),
-        onPressed: onTap,
-        child: Text(label),
       );
 }
 
 class _MacroKey extends StatelessWidget {
   final String label;
-  final bool highlighted;
+  final bool bright; // defined (A-E) or enabled
+  final bool armed; // Alt armed -> gold
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
   const _MacroKey({
     required this.label,
-    required this.highlighted,
+    required this.bright,
+    this.armed = false,
     required this.onTap,
     this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
+    final color = armed
+        ? const Color(0xFFFFC23D)
+        : (bright ? Colors.white : Colors.white30);
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       onLongPress: onLongPress,
-      child: Container(
-        width: 46,
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: highlighted ? const Color(0xFFFFC23D) : const Color(0xFF6A6A86),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black26),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Text(label,
-            style: TextStyle(
-                color: highlighted ? Colors.black : Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16)),
+            style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 18)),
       ),
     );
   }
@@ -697,6 +690,142 @@ Route<T> _flipRoute<T>(Widget page) {
   );
 }
 
+/// The "back of the game": settings (white), reached by a flip. Shows the
+/// current swap permutation (cycle notation) with an info button to the full
+/// selector, plus Confirmation, Sound Effects and Animation Speed.
+class _SettingsPage extends StatefulWidget {
+  final bool confirm, sound;
+  final double animSpeed;
+  final int n;
+  final ValueChanged<bool> onConfirm, onSound;
+  final ValueChanged<double> onAnimSpeed;
+  final ValueChanged<int> onSwapSelected;
+  const _SettingsPage({
+    required this.confirm,
+    required this.sound,
+    required this.animSpeed,
+    required this.n,
+    required this.onConfirm,
+    required this.onSound,
+    required this.onAnimSpeed,
+    required this.onSwapSelected,
+  });
+  @override
+  State<_SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<_SettingsPage> {
+  late bool _confirm = widget.confirm;
+  late bool _sound = widget.sound;
+  late double _animSpeed = widget.animSpeed;
+  late int _swapIndex = MathieuEngine.swapIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    final cycles = _SwapSelectorPage.cycles(MathieuEngine.swapPermutationAt(_swapIndex, widget.n));
+    const labelStyle = TextStyle(color: Colors.black87, fontSize: 17);
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF2F2F7),
+        foregroundColor: Colors.blue,
+        centerTitle: true,
+        title: const Text('M₁₂', style: TextStyle(color: Colors.black)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Done')),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        children: [
+          const Center(child: Text('Current Swap Permutation', style: labelStyle)),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(cycles,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.black, fontSize: 19, fontWeight: FontWeight.w500)),
+              ),
+              IconButton(
+                icon: const Icon(Icons.info_outline, color: Colors.blue),
+                onPressed: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => _SwapSelectorPage(
+                      current: _swapIndex,
+                      n: widget.n,
+                      onSelected: (i) {
+                        setState(() => _swapIndex = i);
+                        widget.onSwapSelected(i);
+                      },
+                    ),
+                  ));
+                },
+              ),
+            ],
+          ),
+          const Divider(height: 36),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Confirmation', style: labelStyle),
+                    SizedBox(height: 4),
+                    Text(
+                      'When solving, confirm Shake, Restart and Home. '
+                      'Confirm combo set or erase of a previously-set combo.',
+                      style: TextStyle(color: Colors.black54, fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+              Switch(
+                value: _confirm,
+                onChanged: (v) {
+                  setState(() => _confirm = v);
+                  widget.onConfirm(v);
+                },
+              ),
+            ],
+          ),
+          const Divider(height: 36),
+          Row(
+            children: [
+              const Expanded(child: Text('Sound Effects', style: labelStyle)),
+              Switch(
+                value: _sound,
+                onChanged: (v) {
+                  setState(() => _sound = v);
+                  widget.onSound(v);
+                },
+              ),
+            ],
+          ),
+          const Divider(height: 36),
+          const Text('Animation Speed', style: labelStyle),
+          Slider(
+            value: _animSpeed,
+            min: 0.3,
+            max: 2.5,
+            onChanged: (v) {
+              setState(() => _animSpeed = v);
+              widget.onAnimSpeed(v);
+            },
+          ),
+          const SizedBox(height: 24),
+          const Text('Sporadic M12 2.1.0',
+              style: TextStyle(color: Colors.black38, fontSize: 12)),
+        ],
+      ),
+    );
+  }
+}
+
 /// The "back of the game": the swap-permutation selector.
 class _SwapSelectorPage extends StatelessWidget {
   final int current;
@@ -705,7 +834,7 @@ class _SwapSelectorPage extends StatelessWidget {
   const _SwapSelectorPage(
       {required this.current, required this.n, required this.onSelected});
 
-  static String _cycles(List<int> perm) {
+  static String cycles(List<int> perm) {
     final seen = List<bool>.filled(perm.length, false);
     final parts = <String>[];
     for (var i = 0; i < perm.length; i++) {
@@ -729,8 +858,12 @@ class _SwapSelectorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final count = MathieuEngine.swapCount;
     return Scaffold(
-      backgroundColor: _bg,
-      appBar: AppBar(backgroundColor: _bg, title: const Text('Swap Permutation')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF2F2F7),
+        foregroundColor: Colors.black,
+        title: const Text('Swap Permutation'),
+      ),
       body: Scrollbar(
         child: ListView.builder(
           itemCount: count,
@@ -745,7 +878,7 @@ class _SwapSelectorPage extends StatelessWidget {
               leading: sel
                   ? const Icon(Icons.check, color: Colors.black87)
                   : const SizedBox(width: 24),
-              title: Text('#${i + 1}    ${_cycles(perm)}',
+              title: Text('#${i + 1}    ${cycles(perm)}',
                   style: const TextStyle(color: Colors.black87, fontFamily: 'monospace')),
               subtitle: Text('difficulty $diff',
                   style: const TextStyle(color: Colors.black54)),
@@ -770,7 +903,6 @@ class _Marble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = color.computeLuminance() > 0.55 ? Colors.black87 : Colors.white;
     return SizedBox(
       width: r * 2,
       height: r * 2,
@@ -778,7 +910,10 @@ class _Marble extends StatelessWidget {
         painter: _MarblePainter(color),
         child: Center(
           child: Text('$value',
-              style: TextStyle(color: textColor, fontSize: r * 0.85, fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  color: Colors.black, // dark numerals on every marble, as in 2.0.6
+                  fontSize: r * 0.8,
+                  fontWeight: FontWeight.bold)),
         ),
       ),
     );
