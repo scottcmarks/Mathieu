@@ -56,7 +56,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   late final AnimationController _ctrl;
   late final Animation<double> _t;
 
-  bool _wasSolved = true;
+  bool _notedSuccess = true; // legacy haveNotedSuccess; cleared only by a shake
   bool _sound = true;
   bool _confirm = true;
   bool _solving = false;
@@ -97,43 +97,52 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   }
 
   // Apply an engine action and tween the balls from the old to the new layout.
-  void _animatedMove(void Function() act, String? sound, int durationMs) {
+  // [success] true for "play" moves that can solve the puzzle (rotate/swap/macro/undo).
+  void _animatedMove(void Function() act, String? sound, int durationMs, {bool success = false}) {
     setState(() {
       if (sound != null) Sfx.play(sound);
       _prevArr = _currArr;
       act();
       _currArr = _game.arrangement();
       _alt = false;
-      final solved = _game.isSolved;
-      if (solved && !_wasSolved) Sfx.play('applause');
-      _wasSolved = solved;
+      if (success) _checkSuccess();
     });
     _ctrl.duration = Duration(milliseconds: durationMs);
     _ctrl.forward(from: 0);
   }
 
   // Refresh layout with no tween (drag steps, macro-set expansions, selector).
-  void _instant(void Function() act, [String? sound]) {
+  void _instant(void Function() act, {String? sound, bool success = false}) {
     setState(() {
       if (sound != null) Sfx.play(sound);
       act();
       _currArr = _game.arrangement();
       _prevArr = List<int>.of(_currArr);
       _ctrl.value = 1;
-      _wasSolved = _game.isSolved;
+      if (success) _checkSuccess();
     });
   }
 
-  // --- button / gesture moves ---
-  void _left() => _animatedMove(_game.left, 'left', _dRotate);
-  void _right() => _animatedMove(_game.right, 'right', _dRotate);
-  void _swap() => _animatedMove(_game.swap, 'swap', _dSwap);
-  void _rotateDrag(bool right) =>
-      _instant(right ? _game.right : _game.left, right ? 'right' : 'left');
+  // Applause only the first time a *scrambled* puzzle is brought home. The flag
+  // clears only on a new shake, so reaching home by Home/reset, or undoing back
+  // to solved after you've already solved it, does not (re-)applaud.
+  void _checkSuccess() {
+    if (_solving && _game.isSolved && !_notedSuccess) {
+      Sfx.play('applause');
+      _notedSuccess = true;
+    }
+  }
+
+  // --- button / gesture moves (success: can solve the puzzle) ---
+  void _left() => _animatedMove(_game.left, 'left', _dRotate, success: true);
+  void _right() => _animatedMove(_game.right, 'right', _dRotate, success: true);
+  void _swap() => _animatedMove(_game.swap, 'swap', _dSwap, success: true);
+  void _rotateDrag(bool right) => _instant(right ? _game.right : _game.left,
+      sound: right ? 'right' : 'left', success: true);
 
   void _macroTap(int c) {
     if (!_game.macroDefined(c)) return;
-    _animatedMove(() => _game.runMacro(c, inverted: _alt), 'combo', _dMacro);
+    _animatedMove(() => _game.runMacro(c, inverted: _alt), 'combo', _dMacro, success: true);
   }
 
   Future<void> _macroSet(int c) async {
@@ -142,7 +151,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
       final verb = _game.historyLength == 0 ? 'erase' : 'change';
       if (!await _ask('Combo Set!', 'This will $verb the meaning of $letter.')) return;
     }
-    _instant(() => _game.setMacro(c), 'combo_set');
+    _instant(() => _game.setMacro(c), sound: 'combo_set');
   }
 
   void _toggleAlt() => setState(() => _alt = !_alt);
@@ -169,6 +178,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
         !await _ask('Shake!', 'This will create a new Sporadic M12 puzzle.')) return;
     _animatedMove(_game.random, null, _dBig);
     _solving = true;
+    _notedSuccess = false; // a fresh puzzle can be applauded once
   }
 
   Future<void> _home() async {
@@ -194,7 +204,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
     }
   }
 
-  void _undo() => _animatedMove(() => _game.undo(move: !_alt), null, _dUndo);
+  void _undo() => _animatedMove(() => _game.undo(move: !_alt), null, _dUndo, success: true);
 
   Future<void> _openSelector() async {
     await Navigator.of(context).push(_flipRoute(_SwapSelectorPage(
