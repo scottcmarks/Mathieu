@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'mathieu_ffi.dart';
@@ -42,6 +43,37 @@ const _palette = <Color>[
 // Move durations (ms), echoing the legacy SMALL/LARGE_MOVE_DURATION feel.
 const _dRotate = 170, _dSwap = 460, _dMacro = 460, _dUndo = 220, _dBig = 460;
 
+// Map ball value -> palette index from a swap permutation: each disjoint 2-cycle
+// gets the next colour, so a swapped pair shares a colour.
+List<int> colorIndicesFor(List<int> swapPerm) {
+  final n = swapPerm.length;
+  final c = List<int>.filled(n, -1);
+  var next = 0;
+  for (var i = 0; i < n; i++) {
+    if (c[i] == -1) {
+      c[i] = next;
+      c[swapPerm[i]] = next;
+      next++;
+    }
+  }
+  return c;
+}
+
+// The 2.0.6 marble: dark (0.6x) rim brightening to a highlight 1/4 from the top.
+ui.Gradient marbleShader(Color color, Offset center, double r) {
+  final dark = Color.lerp(color, Colors.black, 0.4)!;
+  return ui.Gradient.radial(
+    center,
+    r,
+    [color, dark, dark.withValues(alpha: 0)],
+    [0.0, 0.95, 1.0],
+    TileMode.clamp,
+    null,
+    Offset(center.dx, center.dy - 0.75 * r),
+    0.0,
+  );
+}
+
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
   @override
@@ -77,17 +109,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   }
 
   void _recomputeColors() {
-    final sp = MathieuEngine.swapPermutation(_n);
-    final c = List<int>.filled(_n, -1);
-    var next = 0;
-    for (var i = 0; i < _n; i++) {
-      if (c[i] == -1) {
-        c[i] = next;
-        c[sp[i]] = next;
-        next++;
-      }
-    }
-    _colorOfBall = c;
+    _colorOfBall = colorIndicesFor(MathieuEngine.swapPermutation(_n));
   }
 
   @override
@@ -737,16 +759,17 @@ class _SettingsPageState extends State<_SettingsPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         children: [
           const Center(child: Text('Current Swap Permutation', style: labelStyle)),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
+          // preview: the home ring coloured by this swap permutation
+          Center(
+            child: _SwapPreview(
+                colorIndicesFor(MathieuEngine.swapPermutationAt(_swapIndex, widget.n))),
+          ),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(
-                child: Text(cycles,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.black, fontSize: 19, fontWeight: FontWeight.w500)),
-              ),
+              Flexible(child: cycleLabel(cycles)),
               IconButton(
                 icon: const Icon(Icons.info_outline, color: Colors.blue),
                 onPressed: () async {
@@ -925,20 +948,77 @@ class _MarblePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final r = size.width / 2;
-    final dark = Color.lerp(color, Colors.black, 0.4)!;
-    final shader = ui.Gradient.radial(
-      Offset(r, r),
-      r,
-      [color, dark, dark.withValues(alpha: 0)],
-      [0.0, 0.95, 1.0],
-      TileMode.clamp,
-      null,
-      Offset(r, r / 4),
-      0.0,
-    );
-    canvas.drawCircle(Offset(r, r), r, Paint()..shader = shader);
+    final c = Offset(r, r);
+    canvas.drawCircle(c, r, Paint()..shader = marbleShader(color, c, r));
   }
 
   @override
   bool shouldRepaint(_MarblePainter old) => old.color != color;
+}
+
+// Cycle notation with smaller parentheses, e.g. ((0 1) (2 3) ...).
+Widget cycleLabel(String s) {
+  final spans = <TextSpan>[];
+  for (final ch in s.split('')) {
+    final paren = ch == '(' || ch == ')';
+    spans.add(TextSpan(
+      text: ch,
+      style: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w500,
+        fontSize: paren ? 13 : 19,
+      ),
+    ));
+  }
+  return RichText(textAlign: TextAlign.center, text: TextSpan(children: spans));
+}
+
+/// Small preview of the home ring drawn with just the coloured balls, reusing
+/// the same marble rendering as the main ring (the "swap permutation preview").
+class _SwapPreview extends StatelessWidget {
+  final List<int> colorOfBall;
+  const _SwapPreview(this.colorOfBall);
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        width: 132,
+        height: 138,
+        child: CustomPaint(painter: _RingPreviewPainter(colorOfBall)),
+      );
+}
+
+class _RingPreviewPainter extends CustomPainter {
+  final List<int> colorOfBall;
+  _RingPreviewPainter(this.colorOfBall);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final n = colorOfBall.length;
+    final halfW = size.width / 2;
+    final ballR = 0.1375 * halfW;
+    final circleR = halfW - 2 * ballR;
+    final center = Offset(size.width / 2, circleR + 2.5 * ballR + ballR);
+
+    Offset slot(int i) {
+      if (i == 0) return center - Offset(0, circleR + 2.5 * ballR);
+      final a = (2 * math.pi / (n - 1)) * (i - 1) - math.pi / 2;
+      return center + Offset(circleR * math.cos(a), circleR * math.sin(a));
+    }
+
+    for (var v = 0; v < n; v++) {
+      final c = slot(v); // home position: ball v at slot v
+      final color = _palette[colorOfBall[v] % _palette.length];
+      canvas.drawCircle(c, ballR, Paint()..shader = marbleShader(color, c, ballR));
+      final tp = TextPainter(
+        text: TextSpan(
+          text: '$v',
+          style: TextStyle(color: Colors.black, fontSize: ballR * 0.85, fontWeight: FontWeight.bold),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, c - Offset(tp.width / 2, tp.height / 2));
+    }
+  }
+
+  @override
+  bool shouldRepaint(_RingPreviewPainter old) => !listEquals(old.colorOfBall, colorOfBall);
 }
