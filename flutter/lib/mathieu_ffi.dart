@@ -5,6 +5,7 @@
 // (Web uses a separate js_interop path — added later.)
 
 import 'dart:ffi';
+import 'dart:io' show Platform;
 import 'package:ffi/ffi.dart';
 
 // ---- native function typedefs ----
@@ -38,7 +39,12 @@ typedef _HistStrC = Void Function(Pointer<Void>, Pointer<Uint8>, Int32);
 typedef _HistStr = void Function(Pointer<Void>, Pointer<Uint8>, int);
 
 DynamicLibrary _open() {
-  // iOS/macOS: symbols are in the process. Others: a named shared library.
+  // iOS/macOS: the engine is compiled into the app, so symbols are in-process.
+  // Android/Linux: a shared object; Windows: a DLL.
+  if (Platform.isAndroid || Platform.isLinux) {
+    return DynamicLibrary.open('libmathieu_engine.so');
+  }
+  if (Platform.isWindows) return DynamicLibrary.open('mathieu_engine.dll');
   return DynamicLibrary.process();
 }
 
