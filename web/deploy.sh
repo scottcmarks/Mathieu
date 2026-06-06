@@ -15,11 +15,13 @@ DEST="$DEST_HOST:public_html/sporadicgames/m12"
 SSH="ssh -p $DEST_PORT"
 
 cd "$ROOT/flutter"
+./tool/stamp_build.sh                            # refresh the beta build tell
 source "$HOME/emsdk/emsdk_env.sh" >/dev/null 2>&1 || true
 ./native/build_wasm.sh
-# base-href MUST match the deploy subfolder or the app's assets 404
-flutter build web --base-href /sporadicgames/m12/app/
-flutter build apk --release
+# base-href MUST match the deploy subfolder or the app's assets 404.
+# --dart-define=BETA=true keeps the build tell visible even in release builds.
+flutter build web --base-href /sporadicgames/m12/app/ --dart-define=BETA=true
+flutter build apk --release --dart-define=BETA=true
 
 rm -rf "$WEB/app" && cp -R build/web "$WEB/app"
 cp build/app/outputs/flutter-apk/app-release.apk "$WEB/mathieu.apk"
