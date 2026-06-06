@@ -195,6 +195,22 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
 
   void _toggleAlt() => setState(() => _alt = !_alt);
 
+  // History display: the engine writes an inverse macro as a lowercase letter
+  // (a..e); show it as A⁻¹..E⁻¹ (capital + superscript), like the buttons.
+  String _histDisplay() {
+    final raw = _game.historyStr();
+    final sb = StringBuffer();
+    for (final unit in raw.codeUnits) {
+      if (unit >= 0x61 && unit <= 0x65) {
+        sb.write(String.fromCharCode(unit - 0x20)); // a..e -> A..E
+        sb.write('⁻¹'); // ⁻¹
+      } else {
+        sb.writeCharCode(unit);
+      }
+    }
+    return sb.toString();
+  }
+
   Future<bool> _ask(String title, String msg) async {
     if (!_confirm) return true;
     final ok = await showDialog<bool>(
@@ -335,11 +351,14 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
                 ),
                 Expanded(
                   child: Text(
-                    _game.historyStr(),
+                    _histDisplay(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        color: Colors.white54, fontFamily: 'monospace', fontSize: 14),
+                        color: Colors.white54,
+                        fontFamily: 'monospace',
+                        fontSize: 14,
+                        letterSpacing: -0.5),
                   ),
                 ),
                 GestureDetector(
