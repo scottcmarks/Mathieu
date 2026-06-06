@@ -98,6 +98,12 @@ struct GameView: View {
                         .handGestureShortcut(.primaryAction)
                 }
                 .padding(.bottom, 2)
+                #if DEBUG
+                // Beta build tell: identify exactly which build is installed.
+                Text(BuildInfo.tell)
+                    .font(.system(size: 9, design: .monospaced))
+                    .foregroundStyle(Color.yellow.opacity(0.6))
+                #endif
             }
             .navigationTitle("M12")
             .toolbar {

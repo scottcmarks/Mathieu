@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'mathieu_ffi.dart';
 import 'sounds.dart';
+import 'build_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,13 @@ void main() async {
 
 // The game plays on black, like the 2.0.6 app.
 const _bg = Color(0xFF000000);
+
+// Beta "build tell": show the version/rev/time stamp on the running app so a
+// specific installed beta build is identifiable at a glance. Hidden in store
+// (release) builds unless --dart-define=BETA=true is passed (e.g. TestFlight).
+const bool _showBuildTell =
+    !kReleaseMode || bool.fromEnvironment('BETA', defaultValue: false);
+const String _buildTell = '$kBuildVersion · $kBuildRev · $kBuildTime';
 
 class MathieuApp extends StatelessWidget {
   const MathieuApp({super.key});
@@ -278,7 +286,9 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
+        children: [
+          Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
@@ -365,6 +375,23 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
             padding: const EdgeInsets.only(top: 8, bottom: 12),
             child: Image.asset('assets/images/sporadic_games_logo.png', height: 22),
           ),
+        ],
+          ),
+          if (_showBuildTell)
+            Positioned(
+              top: 2,
+              right: 8,
+              child: IgnorePointer(
+                child: Text(
+                  _buildTell,
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontFamily: 'monospace',
+                    color: Colors.amber.withValues(alpha: 0.65),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

@@ -21,6 +21,10 @@ targets:
   MathieuWatch:
     type: application
     platform: watchOS
+    preBuildScripts:
+      - name: Stamp BuildInfo
+        script: '"$SRCROOT/tool/stamp_watch.sh"'
+        basedOnDependencyAnalysis: false
     sources:
       - path: Sources
       - path: Bridging
@@ -40,6 +44,8 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.magnoliaheights.MathieuWatch
+        MARKETING_VERSION: "2.1.0"
+        CURRENT_PROJECT_VERSION: "283"
         SWIFT_OBJC_BRIDGING_HEADER: Bridging/Mathieu-Bridging-Header.h
         TARGETED_DEVICE_FAMILY: "4"
         SUPPORTED_PLATFORMS: "watchos watchsimulator"
