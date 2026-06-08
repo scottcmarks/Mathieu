@@ -19,11 +19,11 @@ VIEW = os.path.join(HERE, "viewer")
 
 # --- geometry constants (must match swap_toy_render.scad / index.html) ---
 N=11; R=50.0; AE=0.55; base_th=14; track_depth=7; ball_d=18.0
-ballZ    = base_th - track_depth + ball_d/2 - 1      # 15
-carrierZ = base_th - track_depth + 1                 # 8
-backZ    = -(ball_d/2)                               # -9
-gearZ    = 0
-carouselZ= ballZ - ball_d/2                          # 6
+ballZ    = 11        # unified channel height (matches viewer/disc)
+carrierZ = 8         # rotor engaged (swap)
+carrierRetZ = -9     # rotor retracted (spin/rest) — clears the travelling balls
+backZ    = -16       # (2,9) swing plane is BELOW the rim gear (ball top < gear bottom)
+gearZ    = -5        # rim gear sits below the ball bottoms (z=2) so it never clips them
 THRESH   = 8.0    # mm^3 — below this is treated as touching/seating, not a clash
 
 def angleOf(i): return -90 + (i-1)*(360.0/N)
@@ -64,18 +64,18 @@ def ball_T(b, mode, p):
     if p<0.22:
         z=ballZ+(backZ-ballZ)*smooth(p/0.22); return tr(A[0],A[1],z)
     if p<0.78:
-        a=(p-0.22)/0.56; c,s=math.cos(a*math.pi),math.sin(a*math.pi)
+        a=(p-0.22)/0.56; c,s=math.cos(-a*math.pi),math.sin(-a*math.pi)  # swing INWARD (stay inside the ring)
         return tr(M[0]+off[0]*c-off[1]*s, M[1]+off[0]*s+off[1]*c, backZ)
     a=(p-0.78)/0.22; z=backZ+(ballZ-backZ)*smooth(a); return tr(B[0],B[1],z)
 
 def carrier_T(idx, mode, p):
     M=mid(idx); ang=baseAng(idx)
-    if mode=="swap":
-        if idx==CROSS:
-            a=max(0,min(1,(p-0.22)/0.56)); return tr(M[0],M[1],backZ)@rotz(ang+a*math.pi)
-        ang=ang+smooth(p)*math.pi
-    z = backZ if idx==CROSS else carrierZ
-    return tr(M[0],M[1],z)@rotz(ang)
+    if idx==CROSS:                                  # (2,9) back arm
+        a = max(0,min(1,(p-0.22)/0.56)) if mode=="swap" else 0
+        return tr(M[0],M[1],backZ)@rotz(ang + a*math.pi)
+    # front rotor: engages UP (carrierZ) only for a swap, retracts DOWN otherwise
+    if mode=="swap": return tr(M[0],M[1],carrierZ)@rotz(ang + smooth(p)*math.pi)
+    return tr(M[0],M[1],carrierRetZ)@rotz(ang)
 
 def ring_T(mode,p):
     rot = -smooth(p)*math.pi*0.13 if mode=="swap" else 0

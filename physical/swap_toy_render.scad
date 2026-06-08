@@ -78,8 +78,9 @@ module disc_body() {
             cylinder(h = top - ch_floor + 1, r = ch_out);
             translate([0,0,-0.1]) cylinder(h = top - ch_floor + 1.2, r = ch_in);
         }
-        // neighbour swap pockets: round widenings of the channel
-        for (idx = [2:len(pairs)-1]) {
+        // swap pockets: round widenings at every pair EXCEPT the (2,9) cross
+        // (apex idx 0 included so the apex swap has a carved region too)
+        for (idx = [0:len(pairs)-1]) if (idx != 1) {
             a = P(pairs[idx][0]); b = P(pairs[idx][1]);
             rsw = chord_len(idx)/2 + ball_d/2 + 1.5;
             translate([(a[0]+b[0])/2,(a[1]+b[1])/2, ch_floor])
@@ -177,10 +178,20 @@ module pinion() {
 module ring_gear() {
     rin = 55; band = 6; n = 40; tw = 2.4; tl = 2.6;
     difference() {
-        cylinder(h = gear_h, r = rin + band);
-        translate([0,0,-0.1]) cylinder(h = gear_h + 0.2, r = rin);
+        union() {
+            difference() {
+                cylinder(h = gear_h, r = rin + band);
+                translate([0,0,-0.1]) cylinder(h = gear_h + 0.2, r = rin);
+            }
+            for (i = [0:n-1]) rotate([0,0,360/n*i]) translate([rin - tl, -tw/2, 0]) cube([tl, tw, gear_h]);
+        }
+        // (2,9) drop gaps: a wide ARC at each (the gear rotates, so the gap must
+        // stay under the ball through the whole swing) — clear of the pinion angles
+        for (s = [2,9]) for (da = [-26,-13,0,13,26]) {
+            a = angleOf(s) + da;
+            translate([R*cos(a), -R*sin(a), -1]) cylinder(h = gear_h+2, d = ball_d+8);
+        }
     }
-    for (i = [0:n-1]) rotate([0,0,360/n*i]) translate([rin - tl, -tw/2, 0]) cube([tl, tw, gear_h]);
 }
 // a snap-in bearing/bushing for the load-bearing pivots: outer body + snap
 // flange + a snap groove, with a shaft bore through the middle.

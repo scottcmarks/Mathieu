@@ -481,9 +481,20 @@ interference checker (`check_interference.py`, trimesh + manifold boolean volume
 - **Colour = light:** each position emits its swap-pair colour onto whatever ball
   is in it (no physical colour rings to collide with).
 
-### Open (next pass): the ball channel
-The interference checker flags that there is **no real ring channel** yet — balls
-embed in the solid carousel/disc except inside the pockets. Fix: cut a continuous
-ring **channel/collar** (deep enough to hold the balls, widened at each swap pair
-for the in-plane orbit), with the carousel as its moving pocket-floor; then drive
-the checker to a clean "no clashes" result.
+### The ball channel — DONE (checker PASSES)
+The channel is now **carved into the disc** as one part: a continuous ring groove,
+widened into round **swap pockets** at every pair (apex included) except the (2,9)
+cross, which has through-holes. All balls ride at **one height** (2 & 9 line up at
+rest); the rim gear sits in a **bay below the ball bottoms** and only rotates; the
+front rotors **retract during spin** and rise to engage for a swap; the **(2,9)
+swing plane is below the rim gear** so the cross balls never clip it. The
+interference checker (`check_interference.py`, run as the last step of
+`make_parts.sh`) reports **PASS — no parts pass through each other** (only legit
+seat-contacts remain).
+
+### Open (next pass)
+- The **windowed top shell** (caps poke through; mechanism fully hidden — completes
+  the BackSpin enclosure and actually conceals the (2,9) ring).
+- Make the **equatorial-ring cam** and its drive arms explicit (and add the ring +
+  arms to the interference checker so their motion is gated too).
+- Detents / the indexing carrier for the spin.

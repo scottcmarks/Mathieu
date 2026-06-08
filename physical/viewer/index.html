@@ -57,8 +57,9 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 const N=11, R=50, apexExtra=0.55;
 const base_th=14, track_depth=7, ball_d=18;
 const ballZ    = 11;                                      // ALL balls ride the channel at one height (2 & 9 line up)
-const carrierZ = 8;
-const backZ    = -9;                                      // (2,9) swing depth: below the channel, clears other balls
+const carrierZ = 8;                                       // rotor engaged (swap)
+const carrierRetZ = -9;                                   // rotor retracted (spin/rest) — clears travelling balls
+const backZ    = -16;                                     // (2,9) swing plane: below the rim gear
 function angleOf(slot){ return -90 + (slot-1)*(360/N); }            // ring slots 1..11
 function P(i){
   if(i===0) return [0, (1+apexExtra)*R];
@@ -122,7 +123,7 @@ let carousel=null;       // indexing channel for the ring (Spin)
 let backArm=null, backArmBase=0;   // the (2,9) through-the-back rotor (Swap)
 let ringGear=null;                 // rim gear, housed in a bay BELOW the balls (stays in place)
 let caseBottom=null;               // BackSpin-style bottom shell with mounting posts
-const gearZ=0;                     // fixed: it rotates, never translates (no pass-through)
+const gearZ=-5;                    // rim gear in its bay below the ball bottoms; rotates, never translates
 const carouselZ = ballZ - ball_d/2;
 const backArmZ  = backZ;
 const bearings=[];                 // snap-in bearings at the load-bearing pivots
@@ -165,10 +166,10 @@ function build(){
       return;
     }
     const m=new THREE.Mesh(geo['carrier'+idx], carrierMat);
-    m.position.set((a[0]+b[0])/2,(a[1]+b[1])/2, carrierZ); m.rotation.z=ang;
+    m.position.set((a[0]+b[0])/2,(a[1]+b[1])/2, carrierRetZ); m.rotation.z=ang;  // rests retracted
     const pin=new THREE.Mesh(geo.pinion, carrierMat);    // pinion rides the rotor axis
-    pin.position.z = gearZ - carrierZ; m.add(pin);   // pinion drops to the gear-bay plane
-    root.add(m); carriers[idx]={mesh:m, baseAng:ang, baseZ:carrierZ};
+    pin.position.z = gearZ - carrierRetZ; m.add(pin);
+    root.add(m); carriers[idx]={mesh:m, baseAng:ang, baseZ:carrierRetZ};
   });
   // per-socket coloured lights: the POSITION emits its colour onto whatever ball
   // sits there. Light isn't matter, so nothing has to pass through anything.
@@ -334,8 +335,9 @@ function tick(now){
       if(carousel) carousel.rotation.z = e*(2*Math.PI/N);
     } else {                                   // swap: rim gear rotates in its bay, rotors turn 180° in-plane
       const ra = rotorAngle(p)*anim.dir;
+      const eng = p<0.18 ? smooth(p/0.18) : p>0.82 ? smooth((1-p)/0.18) : 1;  // rotors rise to engage, retract after
       if(ringGear) ringGear.rotation.z = -ra*0.13;          // small ring travel, big pinion travel
-      carriers.forEach(c=>{ if(c) c.mesh.rotation.z = c.baseAng + ra; });
+      carriers.forEach(c=>{ if(c){ c.mesh.rotation.z = c.baseAng + ra; c.mesh.position.z = carrierRetZ + eng*(carrierZ-carrierRetZ); } });
       for(const mv of anim.moves){
         if(mv.kind==='rot'){ const [x,y]=rot2(mv.off[0],mv.off[1], ra); mv.ball.position.set(mv.M[0]+x, mv.M[1]+y, ballZ); }
         else mv.ball.position.copy(mv.path(p));
