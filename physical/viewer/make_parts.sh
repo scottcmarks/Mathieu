@@ -7,7 +7,12 @@ set -euo pipefail
 cd "$(dirname "$0")"
 OSC="${OPENSCAD:-/opt/homebrew/bin/openscad}"
 SRC=../swap_toy_render.scad
-"$OSC" -o disc.stl -D 'MODE="disc"' "$SRC"
-for n in $(seq 0 11); do "$OSC" -o "ball$n.stl"    -D 'MODE="ball"'    -D BALL=$n  "$SRC"; done
+"$OSC" -o disc.stl     -D 'MODE="disc"'     "$SRC"
+"$OSC" -o carousel.stl -D 'MODE="carousel"' "$SRC"
+"$OSC" -o ring.stl     -D 'MODE="ring"'     "$SRC"
+for n in $(seq 0 11); do
+  "$OSC" -o "ball$n.stl" -D 'MODE="ball"' -D BALL=$n "$SRC"
+  "$OSC" -o "num$n.stl"  -D 'MODE="num"'  -D BALL=$n "$SRC"
+done
 for i in $(seq 0 5);  do "$OSC" -o "carrier$i.stl" -D 'MODE="carrier"' -D PAIR=$i  "$SRC"; done
 echo "Done. Start the viewer with: ./view.sh"

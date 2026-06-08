@@ -38,9 +38,10 @@ R   = pitch_dia/2;
 $fn = 64;
 
 /* ---------------- Slot positions ---------------- */
+function angleOf(i) = -90 + (i - 1) * (360 / N);   // ring slots 1..11 (degrees)
 function slot_xy(i) =
     (i == 0) ? [0, -(1 + apex_extra) * R]
-             : let(a = -90 + (i - 1) * (360 / N)) [R*cos(a), R*sin(a)];
+             : let(a = angleOf(i)) [R*cos(a), R*sin(a)];
 function P(i) = let(p = slot_xy(i)) [p[0], -p[1]];
 
 pairs = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];
@@ -54,8 +55,11 @@ module stadium2d(a, b, w) {
     hull() { translate(a) circle(d=w); translate(b) circle(d=w); }
 }
 
-// Clear glass disc with oblong wells cut through the top so you see inside.
+// Clear glass disc. The five local pairs get oblong front wells; the (2,9)
+// cross pair gets TWO round through-holes instead (its swap routes via the back
+// arm, not a front channel) so the geometry tells the truth about the mechanism.
 module disc_body() {
+    hole_d = ball_d + 3;
     difference() {
         union() {
             cylinder(h = base_th, r = R + margin);
@@ -65,19 +69,56 @@ module disc_body() {
                     translate([0,0,-0.1]) cylinder(h = rim_h+0.2, r = R + margin - 4);
                 }
         }
-        for (pr = pairs) {
-            a = P(pr[0]); b = P(pr[1]);
-            translate([0,0,base_th - track_depth])
-                linear_extrude(track_depth + rim_h + 1) stadium2d(a, b, track_w);
+        for (idx = [0:len(pairs)-1]) {
+            pr = pairs[idx];
+            if (idx == 1) {                       // (2,9): through-holes at each end
+                for (s = pr) {
+                    p = P(s);
+                    translate([p[0], p[1], -1]) cylinder(h = base_th + rim_h + 2, d = hole_d);
+                }
+            } else {                              // local pair: oblong front well
+                a = P(pr[0]); b = P(pr[1]);
+                translate([0,0,base_th - track_depth])
+                    linear_extrude(track_depth + rim_h + 1) stadium2d(a, b, track_w);
+            }
         }
     }
 }
 
-// A numbered ball, centred at the origin (viewer places + colours it).
-module ball_at_origin(n) {
-    sphere(d = ball_d);
-    translate([0,0,ball_d/2 - 1.0])
-        linear_extrude(1.4) text(str(n), size = ball_d*0.45, halign="center", valign="center");
+// Indexing carousel: a circular channel (annulus) with 11 radial dividers, one
+// pocket per ring slot 1..11. Spin rotates this one detent (360/11 deg). Base at
+// z=0; the viewer drops it so the balls sit in the channel. Apex (0) is NOT on it.
+module carousel() {
+    ch_w = ball_d + 6; ch_h = ball_d*0.62; wall = 1.6;
+    color("#7f8aa0") {
+        difference() {
+            cylinder(h = ch_h, r = R + ch_w/2);
+            translate([0,0,-0.1]) cylinder(h = ch_h+0.2, r = R - ch_w/2);
+        }
+        for (i = [1:11]) {                        // dividers between pockets
+            a = angleOf(i) + (360/N)/2;
+            rotate([0,0,a]) translate([R - ch_w/2, -wall/2, 0]) cube([ch_w, wall, ch_h]);
+        }
+    }
+}
+
+// Clear ball, centred at origin. The number is a SEPARATE part (so it can be
+// black on a clear ball); the colour lives on the fixed position ring, not here.
+module ball_at_origin(n) { sphere(d = ball_d); }
+
+// A numeral solid, centred at origin (viewer places it at the ball's top, black).
+module num_at_origin(n) {
+    linear_extrude(1.6) text(str(n), size = ball_d*0.52, halign="center", valign="center");
+}
+
+// A position ring/collar, centred at origin (viewer places one at every slot and
+// colours it by the slot's swap-pair). These stay with the POSITION, not the ball.
+module ring_at_origin() {
+    inr = ball_d/2 + 1.2; outr = ball_d/2 + 4.2; h = 5.5;
+    difference() {
+        cylinder(h = h, r = outr);
+        translate([0,0,-0.1]) cylinder(h = h+0.2, r = inr);
+    }
 }
 
 // A carrier bar of length L along +x, centred at the origin: end cups + hub.
@@ -105,7 +146,10 @@ module assembly() {
 }
 
 /* ---------------- Export switch ---------------- */
-if      (MODE == "disc")    disc_body();
-else if (MODE == "ball")    ball_at_origin(BALL);
-else if (MODE == "carrier") carrier_origin(chord_len(PAIR));
-else                        assembly();
+if      (MODE == "disc")     disc_body();
+else if (MODE == "ball")     ball_at_origin(BALL);
+else if (MODE == "num")      num_at_origin(BALL);
+else if (MODE == "ring")     ring_at_origin();
+else if (MODE == "carrier")  carrier_origin(chord_len(PAIR));
+else if (MODE == "carousel") carousel();
+else                         assembly();
