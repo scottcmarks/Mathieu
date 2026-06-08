@@ -39,7 +39,7 @@
   <button id="auto">⏸ auto-rotate</button>
   <button id="reset">reset view</button>
 </div>
-<div id="hint">drag = orbit · scroll = zoom · Swap = push the 0 ball either way; the rim gear (housed in a bay below, never moving up/down) drives every rotor 180° in-plane in its round pocket; the (2,9) pair is cammed down by an equatorial ring (off the swap gear) onto the idler arm, swung, then ridden back up (works upside-down) · Spin: carousel advances one pocket, apex 0 stays · Blow-up: explode the parts</div>
+<div id="hint">drag = orbit · scroll = zoom · Swap = push the 0 ball either way; the rim gear (housed in a bay below, never moving up/down) drives every rotor 180° in-plane in its round pocket; the (2,9) pair: a two-paddle FORK reaches out (only during a swap) to take the ball onto the idler arm, swing it under, and place the returning ball — tucked away during Spin so the balls run free · Spin: ring advances one slot, apex 0 stays · Blow-up: explode the parts</div>
 
 <script type="importmap">
 { "imports": {
@@ -127,8 +127,8 @@ const gearZ=-5;                    // rim gear in its bay below the ball bottoms
 const carouselZ = ballZ - ball_d/2;
 const backArmZ  = backZ;
 const bearings=[];                 // snap-in bearings at the load-bearing pivots
-const pushers=[];                  // equatorial rings at slots 2&9 that push the ball down
-const ringTuckZ=11, ringPushZ=-6;   // at the ball equator (concealed once top shell added) vs pushed-down
+const forks=[];                    // two-paddle forks at slots 2&9: reach out through a door,
+const forkRetract=14;              // take the ball to the idler arm, place the new one, tuck back
 let explodeT=0, explodeTarget=0;   // 0 = assembled, 1 = blown-up
 const tmpA=new THREE.Color(), tmpB=new THREE.Color();   // colour-lerp scratch
 function build(){
@@ -177,18 +177,23 @@ function build(){
     const p=P(s); const L=new THREE.PointLight(posColor[s], 13, 42, 2.0);
     L.position.set(p[0], p[1], ballZ+9); root.add(L);
   }
-  // equatorial-ring pushers at slots 2 & 9: a ring that rests just below the
-  // surface on the deep ball's shoulder (opening 7 > window 6.5 so it's hidden
-  // behind the top), drops to shove the ball onto the idler arm, then rides the
-  // arriving ball back up. A drive arm links each ring inward to the gear/cam.
-  const ringGeo=new THREE.TorusGeometry(10,1.3,12,30);    // bigger O (opening ~8.7), same section
-  const pmatR=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.8, roughness:0.4});
-  for(const s of [2,9]){ const p=P(s); const m=new THREE.Mesh(ringGeo,pmatR);
-    m.position.set(p[0],p[1],ringTuckZ);
-    const da=Math.atan2(-p[1],-p[0]);                      // drive arm toward centre
-    const arm=new THREE.Mesh(new THREE.BoxGeometry(34,2.4,2.4), pmatR);
-    arm.position.set(Math.cos(da)*17, Math.sin(da)*17, 0); arm.rotation.z=da; m.add(arm);
-    root.add(m); pushers.push(m); }
+  // two-paddle FORK at slots 2 & 9: lives at the channel's inner edge and, only
+  // during a swap, reaches out through a door to cradle the ball and hand it to
+  // the idler arm — so during spin it's tucked away and the balls run free.
+  const forkMat=new THREE.MeshStandardMaterial({color:0xb24a3a, metalness:0.5, roughness:0.4});
+  const paddleGeo=new THREE.TorusGeometry(7,1.4,8,18, Math.PI);   // ~180° curved paddle
+  for(const s of [2,9]){
+    const p=P(s); const inDir=Math.atan2(-p[1],-p[0]);    // toward centre (the door)
+    const g=new THREE.Group();
+    const p1=new THREE.Mesh(paddleGeo,forkMat); p1.rotation.x=Math.PI/2; p1.position.z= 3.5;
+    const p2=new THREE.Mesh(paddleGeo,forkMat); p2.rotation.x=Math.PI/2; p2.position.z=-3.5;
+    const stem=new THREE.Mesh(new THREE.BoxGeometry(forkRetract+8,3,3),forkMat);
+    stem.position.set(Math.cos(inDir)*((forkRetract+8)/2), Math.sin(inDir)*((forkRetract+8)/2), 0);
+    stem.rotation.z=inDir; g.add(p1,p2,stem);
+    g.userData={slot:s, inx:Math.cos(inDir), iny:Math.sin(inDir)};
+    g.position.set(p[0]+g.userData.inx*forkRetract, p[1]+g.userData.iny*forkRetract, ballZ); // tucked inside
+    g.visible=false; root.add(g); forks.push(g);   // appears only during a swap
+  }
 
   // milky diffuser balls (tinted by current socket) with black raised numbers
   for(let b=0;b<12;b++){
@@ -216,7 +221,7 @@ function applyExplode(eT){
   if(ringGear){ ringGear.position.z = gearZ - 36*eT; ringGear.rotation.z=0; }
   if(caseBottom) caseBottom.position.z = -3 - 60*eT;
   for(const b of bearings) b.mesh.position.z = b.baseZ + 58*eT;
-  for(const pr of pushers) pr.position.z = ringTuckZ + 70*eT;
+  setForks(0, eT);
 }
 
 /* --- path generators (model coords) --- */
@@ -252,9 +257,16 @@ const clamp = (t,a,b) => Math.min(b, Math.max(a, t));
 const rotorAngle = p => smooth(p)*Math.PI;
 // equatorial ring: drop to push the ball down (0..0.22), wait while the arm
 // swings, then ride the arriving ball back up and tuck away (0.78..1).
-const ringZof = p => p<0.22 ? ringTuckZ + (ringPushZ-ringTuckZ)*smooth(p/0.22)
-                   : p<0.78 ? ringPushZ
-                   : ringPushZ + (ringTuckZ-ringPushZ)*smooth((p-0.78)/0.22);
+// fork reach: 0 = tucked inside (door closed), 1 = reached out to the ball.
+// Reaches out to GRAB at the start, tucks during the swing, reaches to PLACE at end.
+const forkReach = p => p<0.30 ? Math.sin((p/0.30)*Math.PI)
+                     : p>0.70 ? Math.sin(((p-0.70)/0.30)*Math.PI)
+                     : 0;
+function setForks(fr, eT){
+  for(const g of forks){ const p=P(g.userData.slot);
+    g.position.set(p[0]+g.userData.inx*forkRetract*(1-fr), p[1]+g.userData.iny*forkRetract*(1-fr), ballZ + (eT||0)*50);
+    g.visible = fr>0.02 || (eT||0)>0.02; }
+}
 
 /* --- animation driver --- */
 let anim=null;   // {p, dur, moves:[{ball, path}], kind, dir}
@@ -301,7 +313,7 @@ function finish(){
   if(carousel) carousel.rotation.z=0;
   if(ringGear) ringGear.rotation.z=0;
   if(backArm) backArm.position.z=backArmZ;
-  for(const pr of pushers) pr.position.z=ringTuckZ;
+  setForks(0, 0);
   anim=null; setBusy(false);
 }
 function setBusy(b){ for(const id of ['swap','spin']) document.getElementById(id).disabled=b; }
@@ -346,8 +358,8 @@ function tick(now){
         const a=clamp((p-0.22)/0.56,0,1); backArm.rotation.z = backArmBase + a*Math.PI*anim.dir;
         backArm.position.z = backArmZ + (p>0.78 ? smooth((p-0.78)/0.22)*5 : 0);  // nudge up to re-seat
       }
-      // equatorial rings push 2&9 down, wait, then ride the arriving ball up
-      for(const pr of pushers) pr.position.z = ringZof(p);
+      // fork reaches out to take/place the (2,9) balls, tucked during the swing
+      setForks(forkReach(p), 0);
     }
     if(anim.p>=1) finish();
   } else if (explodeT>0.001 || explodeTarget>0.001){
