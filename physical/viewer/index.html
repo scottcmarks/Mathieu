@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sporadic M12 swap toy — 3D viewer</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;
+            font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:12px;top:10px;opacity:.9;pointer-events:none}
+  #hud b{color:#fff}
+  #hint{position:fixed;left:12px;bottom:10px;opacity:.55;max-width:46ch}
+  button{pointer-events:auto;background:#1d2230;color:#e7ebf3;border:1px solid #39425a;
+         border-radius:7px;padding:6px 11px;margin-left:6px;cursor:pointer;font:inherit}
+  button.primary{background:#2d6cf0;border-color:#2d6cf0;color:#fff;font-weight:600}
+  button.alt{background:#7a3fd0;border-color:#7a3fd0;color:#fff;font-weight:600}
+  button:disabled{opacity:.45;cursor:default}
+  #bar{position:fixed;right:12px;top:10px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>Sporadic M12 — the two generators</b><br>
+  swap #22 = (0 1)(2 9)(3 4)(5 6)(7 8)(10 11)<br>
+  spin = 11-cycle of 1..11, position 0 fixed<br>
+  <span style="color:#f2c200">●</span> (0,1)
+  <span style="color:#d23b3b">●</span> (2,9) bridge
+  <span style="color:#3fae57">●</span><span style="color:#e8842b">●</span><span style="color:#3f76d2">●</span><span style="color:#8a4fd0">●</span> neighbours
+</div>
+<div id="bar">
+  <button id="swap" class="primary">Swap</button>
+  <button id="spin" class="alt">Spin ↻</button>
+  <button id="auto">⏸ auto-rotate</button>
+  <button id="reset">reset view</button>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · Swap = every pair trades (the (2,9) pair routes behind the glass — the bridge) · Spin = ring advances one step, apex 0 stays</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader }     from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* --- geometry mirrors swap_toy_render.scad (DESIGN.md P(i) coords) --- */
+const N=11, R=50, apexExtra=0.55;
+const base_th=14, track_depth=7, ball_d=18;
+const ballZ    = base_th - track_depth + ball_d/2 - 1;   // 15  (front seat)
+const carrierZ = base_th - track_depth + 1;              // 8
+const backZ    = -(ball_d/2 + 3);                         // -12 (behind the disc)
+function angleOf(slot){ return -90 + (slot-1)*(360/N); }            // ring slots 1..11
+function P(i){
+  if(i===0) return [0, (1+apexExtra)*R];
+  const a=angleOf(i)*Math.PI/180; return [R*Math.cos(a), -R*Math.sin(a)];
+}
+const rest = s => new THREE.Vector3(P(s)[0], P(s)[1], ballZ);
+
+const pairs = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];
+const hues  = [0xf2c200,0xd23b3b,0x3fae57,0xe8842b,0x3f76d2,0x8a4fd0];
+const CROSS = 1;                                  // index of the (2,9) pair
+// colour each ball by the pair its HOME slot belongs to
+const ballHue = (()=>{ const m={}; pairs.forEach((pr,idx)=>{m[pr[0]]=hues[idx];m[pr[1]]=hues[idx];}); return m; })();
+
+// permutations on slots
+const swapMap = (()=>{ const m=[...Array(12).keys()]; pairs.forEach(([i,j])=>{m[i]=j;m[j]=i;}); return m; })();
+const spinMap = (()=>{ const m=[...Array(12).keys()]; for(let s=1;s<=11;s++) m[s]=(s%11)+1; return m; })();
+
+/* --- renderer / scene --- */
+const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('c'), antialias:true});
+renderer.setSize(innerWidth, innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0d0f15);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.5, 5000);
+camera.position.set(150,150,210);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x202028, 0.6));
+const key=new THREE.DirectionalLight(0xffffff,1.4); key.position.set(120,220,160); scene.add(key);
+const root = new THREE.Group(); root.rotation.x = -Math.PI/2; scene.add(root);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping=true; controls.autoRotate=true; controls.autoRotateSpeed=1.0;
+
+/* --- materials --- */
+const glassMat = new THREE.MeshPhysicalMaterial({color:0xcfe6ff, metalness:0, roughness:0.06,
+  transmission:1.0, thickness:8, ior:1.5, transparent:true, side:THREE.DoubleSide,
+  envMapIntensity:1.2, clearcoat:0.4});
+const carrierMat = new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.9, roughness:0.35});
+const ballMat = i => new THREE.MeshPhysicalMaterial({color:ballHue[i], roughness:0.22, metalness:0.0,
+  clearcoat:0.7, clearcoatRoughness:0.18, envMapIntensity:1.1});
+
+/* --- load parts --- */
+const loader = new STLLoader();
+const files = ['disc', ...Array.from({length:12},(_,n)=>'ball'+n), ...Array.from({length:6},(_,i)=>'carrier'+i)];
+const geo={}; let loaded=0;
+files.forEach(name => loader.load(name+'.stl', g => { geo[name]=g; if(++loaded===files.length) build(); },
+                                  undefined, e => console.warn('missing', name, e)));
+
+const balls=[];          // balls[b] = mesh, .userData.slot = current slot
+const carriers=[];       // carriers[idx] = {mesh, baseAng}  (none for the (2,9) cross)
+function build(){
+  root.add(new THREE.Mesh(geo.disc, glassMat));
+  pairs.forEach((pr,idx)=>{
+    if(idx===CROSS) return;                       // (2,9) has no front bar — it's the bridge
+    const a=P(pr[0]), b=P(pr[1]);
+    const m=new THREE.Mesh(geo['carrier'+idx], carrierMat);
+    const ang=Math.atan2(b[1]-a[1], b[0]-a[0]);
+    m.position.set((a[0]+b[0])/2,(a[1]+b[1])/2, carrierZ); m.rotation.z=ang;
+    root.add(m); carriers[idx]={mesh:m, baseAng:ang};
+  });
+  for(let b=0;b<12;b++){
+    const m=new THREE.Mesh(geo['ball'+b], ballMat(b));
+    m.position.copy(rest(b)); m.userData.slot=b; root.add(m); balls[b]=m;
+  }
+  frameAll();
+}
+function frameAll(){
+  const box=new THREE.Box3().setFromObject(root), c=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
+  root.position.set(0, root.position.y, 0); root.position.sub(new THREE.Vector3(c.x,0,c.z));
+  controls.target.set(0, s.y*0.1, 0);
+  const r=Math.max(s.x,s.z); camera.position.set(r*0.9, r*0.9, r*1.5); controls.update();
+}
+
+/* --- path generators (model coords) --- */
+function rot2(x,y,t){ const c=Math.cos(t),s=Math.sin(t); return [x*c-y*s, x*s+y*c]; }
+// neighbour / apex: rotate the ball's offset about the pair midpoint by 180°
+function rotPath(from,to){
+  const A=P(from),B=P(to); const M=[(A[0]+B[0])/2,(A[1]+B[1])/2]; const off=[A[0]-M[0],A[1]-M[1]];
+  return p=>{ const [x,y]=rot2(off[0],off[1], p*Math.PI); return new THREE.Vector3(M[0]+x, M[1]+y, ballZ); };
+}
+// (2,9): descend behind the disc, cross on the underside (bowed by `side`), rise
+function backPath(from,to,side){
+  const A=new THREE.Vector3(P(from)[0],P(from)[1],ballZ), B=new THREE.Vector3(P(to)[0],P(to)[1],ballZ);
+  const dir=new THREE.Vector2(B.x-A.x, B.y-A.y); const perp=new THREE.Vector2(-dir.y,dir.x).normalize().multiplyScalar(16*side);
+  return p=>{
+    if(p<0.25){ const a=p/0.25; return new THREE.Vector3(A.x,A.y, THREE.MathUtils.lerp(ballZ,backZ,smooth(a))); }
+    if(p<0.75){ const a=(p-0.75>=0)?1:(p-0.25)/0.5; const bow=Math.sin(a*Math.PI);
+      return new THREE.Vector3(THREE.MathUtils.lerp(A.x,B.x,a)+perp.x*bow,
+                               THREE.MathUtils.lerp(A.y,B.y,a)+perp.y*bow, backZ); }
+    const a=(p-0.75)/0.25; return new THREE.Vector3(B.x,B.y, THREE.MathUtils.lerp(backZ,ballZ,smooth(a)));
+  };
+}
+// spin: glide along the pitch circle forward one ring step
+function arcPath(from){
+  const a0=angleOf(from);
+  return p=>{ const a=(a0+p*(360/N))*Math.PI/180; return new THREE.Vector3(R*Math.cos(a), -R*Math.sin(a), ballZ); };
+}
+const smooth = t => t*t*(3-2*t);
+
+/* --- animation driver --- */
+let anim=null;   // {p, dur, moves:[{ball, path}], kind}
+function startSwap(){
+  if(anim) return;
+  const moves=[];
+  pairs.forEach((pr,idx)=>{
+    const [i,j]=pr;
+    if(idx===CROSS){ moves.push({ball:ballAt(i), path:backPath(i,j,+1)}); moves.push({ball:ballAt(j), path:backPath(j,i,-1)}); }
+    else { moves.push({ball:ballAt(i), path:rotPath(i,j)}); moves.push({ball:ballAt(j), path:rotPath(j,i)}); }
+  });
+  anim={p:0, dur:1.1, moves, kind:'swap', apply:swapMap};
+  setBusy(true);
+}
+function startSpin(){
+  if(anim) return;
+  const moves=[];
+  for(let s=1;s<=11;s++){ const to=spinMap[s]; moves.push({ball:ballAt(s), path:arcPath(s)}); }
+  anim={p:0, dur:0.9, moves, kind:'spin', apply:spinMap};
+  setBusy(true);
+}
+function ballAt(slot){ return balls.find(m=>m.userData.slot===slot); }
+
+function finish(){
+  // commit new slots
+  const ns={}; for(const m of balls) ns[m.userData.slot]=m;   // snapshot
+  const map=anim.apply;
+  for(const m of balls){ m.userData.slot = map[m.userData.slot]; m.position.copy(rest(m.userData.slot)); }
+  // rotate neighbour carriers back to rest visual (they made a half turn)
+  carriers.forEach(c=>{ if(c) c.mesh.rotation.z=c.baseAng; });
+  anim=null; setBusy(false);
+}
+function setBusy(b){ for(const id of ['swap','spin']) document.getElementById(id).disabled=b; }
+
+/* --- ui --- */
+document.getElementById('swap').onclick = startSwap;
+document.getElementById('spin').onclick = startSpin;
+document.getElementById('auto').onclick = e=>{controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate';};
+document.getElementById('reset').onclick = frameAll;
+addEventListener('resize', ()=>{camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);});
+
+let last=performance.now();
+function tick(now){
+  requestAnimationFrame(tick);
+  const dt=(now-last)/1000; last=now;
+  if(anim){
+    anim.p=Math.min(1, anim.p + dt/anim.dur);
+    const e=smooth(anim.p);
+    for(const mv of anim.moves) mv.ball.position.copy(mv.path(e));
+    if(anim.kind==='swap') carriers.forEach(c=>{ if(c) c.mesh.rotation.z=c.baseAng + e*Math.PI; });
+    if(anim.p>=1) finish();
+  }
+  controls.update(); renderer.render(scene, camera);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
