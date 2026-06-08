@@ -39,7 +39,7 @@
   <button id="auto">⏸ auto-rotate</button>
   <button id="reset">reset view</button>
 </div>
-<div id="hint">drag = orbit · scroll = zoom · Swap = push the 0 ball either way; the rim gear (housed in a bay below, never moving up/down) drives every rotor 180° in-plane in its round pocket; the (2,9) pair is pushed down by the two red pushrods into the back arm, swung, and re-seated (works upside-down) · Spin: carousel advances one pocket, apex 0 stays · Blow-up: explode the parts</div>
+<div id="hint">drag = orbit · scroll = zoom · Swap = push the 0 ball either way; the rim gear (housed in a bay below, never moving up/down) drives every rotor 180° in-plane in its round pocket; the (2,9) pair is cammed down by an equatorial ring (off the swap gear) onto the idler arm, swung, then ridden back up (works upside-down) · Spin: carousel advances one pocket, apex 0 stays · Blow-up: explode the parts</div>
 
 <script type="importmap">
 { "imports": {
@@ -57,6 +57,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 const N=11, R=50, apexExtra=0.55;
 const base_th=14, track_depth=7, ball_d=18;
 const ballZ    = base_th - track_depth + ball_d/2 - 1;   // 15  (front seat)
+const deepZ    = 8;                                       // slots 2 & 9 sit deep, captive under a small window
 const carrierZ = base_th - track_depth + 1;              // 8
 const backZ    = -(ball_d/2);                             // -9 (just behind the disc; still visible through the glass)
 function angleOf(slot){ return -90 + (slot-1)*(360/N); }            // ring slots 1..11
@@ -64,7 +65,8 @@ function P(i){
   if(i===0) return [0, (1+apexExtra)*R];
   const a=angleOf(i)*Math.PI/180; return [R*Math.cos(a), -R*Math.sin(a)];
 }
-const rest = s => new THREE.Vector3(P(s)[0], P(s)[1], ballZ);
+const zOf  = s => (s===2||s===9) ? deepZ : ballZ;        // 2&9 are deep windowed positions
+const rest = s => new THREE.Vector3(P(s)[0], P(s)[1], zOf(s));
 
 const pairs = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];
 // official Sporadic M12 palette (from SporadicM12.inc), one hue per swap-pair
@@ -107,7 +109,7 @@ const numMat = new THREE.MeshStandardMaterial({color:0x0a0a0a, metalness:0.0, ro
 
 /* --- load parts --- */
 const loader = new STLLoader();
-const files = ['disc','carousel','ringgear','pinion','bearing',
+const files = ['disc','carousel','ringgear','pinion','bearing','casebottom',
   ...Array.from({length:12},(_,n)=>'ball'+n),
   ...Array.from({length:12},(_,n)=>'num'+n),
   ...Array.from({length:6},(_,i)=>'carrier'+i)];
@@ -119,12 +121,14 @@ const balls=[];          // balls[b] = mesh, .userData.slot = current slot
 const carriers=[];       // carriers[idx] = {mesh, baseAng}  (none for the (2,9) cross)
 let carousel=null;       // indexing channel for the ring (Spin)
 let backArm=null, backArmBase=0;   // the (2,9) through-the-back rotor (Swap)
-let ringGear=null;                 // rim gear, housed in a bay BELOW the balls
+let ringGear=null;                 // rim gear, housed in a bay BELOW the balls (stays in place)
+let caseBottom=null;               // BackSpin-style bottom shell with mounting posts
 const gearZ=0;                     // fixed: it rotates, never translates (no pass-through)
 const carouselZ = ballZ - ball_d/2;
 const backArmZ  = backZ;
 const bearings=[];                 // snap-in bearings at the load-bearing pivots
-const pushrods=[]; const pushRestZ=34;   // cam-driven plungers that push 2&9 down
+const pushers=[];                  // equatorial rings at slots 2&9 that push the ball down
+const ringTuckZ=12.5, ringPushZ=2;   // concealed just below the surface vs pushed-down
 let explodeT=0, explodeTarget=0;   // 0 = assembled, 1 = blown-up
 const tmpA=new THREE.Color(), tmpB=new THREE.Color();   // colour-lerp scratch
 function build(){
@@ -135,6 +139,11 @@ function build(){
     {color:0x8590a3, metalness:0.55, roughness:0.5, transparent:true, opacity:0.85}));
   carousel.position.set(0,0, carouselZ);
   root.add(carousel);
+
+  // BackSpin-style case bottom: posts at z 0..8 carry the bearings the rotors spin on
+  caseBottom = new THREE.Mesh(geo.casebottom, new THREE.MeshStandardMaterial(
+    {color:0x4a5160, metalness:0.4, roughness:0.65, transparent:true, opacity:0.5}));
+  caseBottom.position.set(0,0,-3); root.add(caseBottom);
 
   // snap-in bearings at the load-bearing pivots: every rotor axis + the centre
   const bmat=new THREE.MeshStandardMaterial({color:0x6e7686, metalness:0.7, roughness:0.4});
@@ -172,12 +181,18 @@ function build(){
     const p=P(s); const L=new THREE.PointLight(posColor[s], 13, 42, 2.0);
     L.position.set(p[0], p[1], ballZ+9); root.add(L);
   }
-  // cam-driven pushrods above slots 2 & 9 — they positively push those balls
-  // down into the back arm (and the arm re-seats them up), so it works upside-down
-  const prGeo=new THREE.CylinderGeometry(2.6,2.6,18,20); prGeo.rotateX(Math.PI/2); // axis -> Z
-  const prMat=new THREE.MeshStandardMaterial({color:0xcf5a3a, metalness:0.5, roughness:0.4});
-  for(const s of [2,9]){ const p=P(s); const m=new THREE.Mesh(prGeo,prMat);
-    m.position.set(p[0],p[1],pushRestZ); m.visible=false; root.add(m); pushrods.push(m); }
+  // equatorial-ring pushers at slots 2 & 9: a ring that rests just below the
+  // surface on the deep ball's shoulder (opening 7 > window 6.5 so it's hidden
+  // behind the top), drops to shove the ball onto the idler arm, then rides the
+  // arriving ball back up. A drive arm links each ring inward to the gear/cam.
+  const ringGeo=new THREE.TorusGeometry(8.3,1.3,12,30);   // opening ~7, outer ~9.6
+  const pmatR=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.8, roughness:0.4});
+  for(const s of [2,9]){ const p=P(s); const m=new THREE.Mesh(ringGeo,pmatR);
+    m.position.set(p[0],p[1],ringTuckZ);
+    const da=Math.atan2(-p[1],-p[0]);                      // drive arm toward centre
+    const arm=new THREE.Mesh(new THREE.BoxGeometry(34,2.4,2.4), pmatR);
+    arm.position.set(Math.cos(da)*17, Math.sin(da)*17, 0); arm.rotation.z=da; m.add(arm);
+    root.add(m); pushers.push(m); }
 
   // milky diffuser balls (tinted by current socket) with black raised numbers
   for(let b=0;b<12;b++){
@@ -203,8 +218,9 @@ function applyExplode(eT){
   if(backArm){ backArm.position.z = backArmZ - 52*eT; backArm.rotation.z=backArmBase; }
   if(carousel) carousel.position.z = carouselZ + 24*eT;
   if(ringGear){ ringGear.position.z = gearZ - 36*eT; ringGear.rotation.z=0; }
+  if(caseBottom) caseBottom.position.z = -3 - 60*eT;
   for(const b of bearings) b.mesh.position.z = b.baseZ + 58*eT;
-  for(const pr of pushrods){ pr.visible = eT>0.02; pr.position.z = pushRestZ + 84*eT; }
+  for(const pr of pushers) pr.position.z = ringTuckZ + 70*eT;
 }
 
 /* --- path generators (model coords) --- */
@@ -222,21 +238,27 @@ function rotPath(from,to){
 function backArmPath(from,to,dir){
   const A=P(from), B=P(to); const M=[(A[0]+B[0])/2,(A[1]+B[1])/2]; const off=[A[0]-M[0],A[1]-M[1]];
   return p=>{
-    if(p<0.22){ const a=p/0.22; return new THREE.Vector3(A[0],A[1], THREE.MathUtils.lerp(ballZ,backZ,smooth(a))); }
+    if(p<0.22){ const a=p/0.22; return new THREE.Vector3(A[0],A[1], THREE.MathUtils.lerp(deepZ,backZ,smooth(a))); }
     if(p<0.78){ const a=(p-0.22)/0.56; const [x,y]=rot2(off[0],off[1], a*Math.PI*dir);
                 return new THREE.Vector3(M[0]+x, M[1]+y, backZ); }
-    const a=(p-0.78)/0.22; return new THREE.Vector3(B[0],B[1], THREE.MathUtils.lerp(backZ,ballZ,smooth(a)));
+    const a=(p-0.78)/0.22; return new THREE.Vector3(B[0],B[1], THREE.MathUtils.lerp(backZ,deepZ,smooth(a)));
   };
 }
 // spin: glide along the pitch circle forward one ring step
 function arcPath(from){
-  const a0=angleOf(from);
-  return p=>{ const a=(a0+p*(360/N))*Math.PI/180; return new THREE.Vector3(R*Math.cos(a), -R*Math.sin(a), ballZ); };
+  const a0=angleOf(from); const z0=zOf(from), z1=zOf(from%11+1);  // sink/rise through deep slots
+  return p=>{ const a=(a0+p*(360/N))*Math.PI/180;
+    return new THREE.Vector3(R*Math.cos(a), -R*Math.sin(a), z0+(z1-z0)*p); };
 }
 const smooth = t => t*t*(3-2*t);
 const clamp = (t,a,b) => Math.min(b, Math.max(a, t));
 // swap timeline: rotors turn 0 → 180° (eased); no vertical motion anywhere
 const rotorAngle = p => smooth(p)*Math.PI;
+// equatorial ring: drop to push the ball down (0..0.22), wait while the arm
+// swings, then ride the arriving ball back up and tuck away (0.78..1).
+const ringZof = p => p<0.22 ? ringTuckZ + (ringPushZ-ringTuckZ)*smooth(p/0.22)
+                   : p<0.78 ? ringPushZ
+                   : ringPushZ + (ringTuckZ-ringPushZ)*smooth((p-0.78)/0.22);
 
 /* --- animation driver --- */
 let anim=null;   // {p, dur, moves:[{ball, path}], kind, dir}
@@ -283,7 +305,7 @@ function finish(){
   if(carousel) carousel.rotation.z=0;
   if(ringGear) ringGear.rotation.z=0;
   if(backArm) backArm.position.z=backArmZ;
-  for(const pr of pushrods){ pr.position.z=pushRestZ; pr.visible=false; }
+  for(const pr of pushers) pr.position.z=ringTuckZ;
   anim=null; setBusy(false);
 }
 function setBusy(b){ for(const id of ['swap','spin']) document.getElementById(id).disabled=b; }
@@ -327,9 +349,8 @@ function tick(now){
         const a=clamp((p-0.22)/0.56,0,1); backArm.rotation.z = backArmBase + a*Math.PI*anim.dir;
         backArm.position.z = backArmZ + (p>0.78 ? smooth((p-0.78)/0.22)*5 : 0);  // nudge up to re-seat
       }
-      // pushrods plunge to drive 2&9 down (first gear-step), then retract
-      const plunge = p<0.22 ? smooth(p/0.22) : (p<0.4 ? 1-smooth((p-0.22)/0.18) : 0);
-      for(const pr of pushrods){ pr.visible = plunge>0.001; pr.position.z = pushRestZ - plunge*18; }
+      // equatorial rings push 2&9 down, wait, then ride the arriving ball up
+      for(const pr of pushers) pr.position.z = ringZof(p);
     }
     if(anim.p>=1) finish();
   } else if (explodeT>0.001 || explodeTarget>0.001){

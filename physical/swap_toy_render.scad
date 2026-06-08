@@ -71,10 +71,12 @@ module disc_body() {
         }
         for (idx = [0:len(pairs)-1]) {
             pr = pairs[idx];
-            if (idx == 1) {                       // (2,9): through-holes at each end
+            if (idx == 1) {                       // (2,9): small top WINDOW + wide bore below
+                win_d = 13; win_bot = 11;         // cap pokes through window; ball captive
                 for (s = pr) {
                     p = P(s);
-                    translate([p[0], p[1], -1]) cylinder(h = base_th + rim_h + 2, d = hole_d);
+                    translate([p[0], p[1], win_bot]) cylinder(h = base_th+rim_h-win_bot+2, d = win_d);
+                    translate([p[0], p[1], -1])      cylinder(h = win_bot+1, d = ball_d + 3);
                 }
             } else if (idx != 0) {                // neighbour pair: round swap pocket
                 a = P(pr[0]); b = P(pr[1]);
@@ -88,19 +90,20 @@ module disc_body() {
     }
 }
 
-// Indexing carousel: a circular channel (annulus) with 11 radial dividers, one
-// pocket per ring slot 1..11. Spin rotates this one detent (360/11 deg). Base at
-// z=0; the viewer drops it so the balls sit in the channel. Apex (0) is NOT on it.
+// The CAPTURE CHANNEL: a real trough (inner + outer walls) the balls ride in,
+// NOT a solid ring. Radial gaps at each swap pair let a ball bulge out into its
+// swap pocket instead of plowing through a wall.
 module carousel() {
-    ch_w = ball_d + 6; ch_h = ball_d*0.62; wall = 1.6;
-    color("#7f8aa0") {
-        difference() {
-            cylinder(h = ch_h, r = R + ch_w/2);
-            translate([0,0,-0.1]) cylinder(h = ch_h+0.2, r = R - ch_w/2);
+    inr = R - (ball_d/2 + 2); outr = R + (ball_d/2 + 2); wt = 2; h = ball_d*0.8;
+    difference() {
+        union() {
+            difference() { cylinder(h=h, r=inr+wt); translate([0,0,-0.1]) cylinder(h=h+0.2, r=inr); }   // inner wall
+            difference() { cylinder(h=h, r=outr);   translate([0,0,-0.1]) cylinder(h=h+0.2, r=outr-wt); } // outer wall
         }
-        for (i = [1:11]) {                        // dividers between pockets
-            a = angleOf(i) + (360/N)/2;
-            rotate([0,0,a]) translate([R - ch_w/2, -wall/2, 0]) cube([ch_w, wall, ch_h]);
+        for (idx = [1:len(pairs)-1]) {            // gaps at swap-pair midpoints
+            a = P(pairs[idx][0]); b = P(pairs[idx][1]);
+            ma = atan2((a[1]+b[1])/2, (a[0]+b[0])/2);
+            rotate([0,0,ma]) translate([0,-(ball_d+4)/2,-1]) cube([outr+5, ball_d+4, h+2]);
         }
     }
 }
@@ -120,7 +123,7 @@ module num_at_origin(n) {
              [phi,0,1],[phi,0,-1],[-phi,0,1],[-phi,0,-1] ];   // dodeca face centres
     r  = ball_d/2;                // OUTER face flush with the surface (recessed inward)
     t  = 0.6;                     // numeral goes inward; nothing protrudes (balls roll)
-    sz = ball_d*0.30;             // slightly smaller
+    sz = ball_d*0.26;             // smaller still, so 10/11 aren't crowded
     for (i = [0:len(dirs)-1]) {
         d = dirs[i] / nv;
         rotate([0,0, atan2(d[1], d[0])]) rotate([0, acos(d[2]), 0])
@@ -192,12 +195,21 @@ module bearing() {
     }
 }
 
-// the lift deck: a thin platform that carries the swap layer up off the carousel
-module deck() {
+// Case bottom shell (BackSpin-style enclosure): a dish everything mounts to,
+// with snap-on axle POSTS (rods) at each rotor pivot + the centre. Bearings
+// (MF105) snap onto the posts; the rotors, idler arm, and carousel spin on them.
+// The mating top shell (with ball windows) is the other half.
+module case_bottom() {
+    floor_th = 3; wallh = base_th + 2;
     difference() {
-        cylinder(h = 2.5, r = R + margin - 3);
-        translate([0,0,-0.1]) cylinder(h = 2.7, d = 22);
+        cylinder(h = wallh, r = R + margin + 1);
+        translate([0,0,floor_th]) cylinder(h = wallh, r = R + margin - 2);   // hollow interior
     }
+    for (idx = [0:len(pairs)-1]) {                       // axle posts at the rotor pivots
+        a = P(pairs[idx][0]); b = P(pairs[idx][1]);
+        translate([(a[0]+b[0])/2,(a[1]+b[1])/2,floor_th]) cylinder(h = carrier_z, d = 4.8);
+    }
+    translate([0,0,floor_th]) cylinder(h = carrier_z, d = 7.8);              // central post (608 bore)
 }
 
 /* ---------------- Full static assembly ---------------- */
@@ -226,5 +238,5 @@ else if (MODE == "carousel") carousel();
 else if (MODE == "bearing")  bearing();
 else if (MODE == "pinion")   pinion();
 else if (MODE == "ringgear") ring_gear();
-else if (MODE == "deck")     deck();
+else if (MODE == "casebottom") case_bottom();
 else                         assembly();

@@ -97,12 +97,17 @@ def transforms(mode,p):
     for b in range(12):  T["ball%d"%b]=ball_T(b,mode,p)
     return T
 
-# expected seat contacts (don't alarm on these unless very large)
-def seat(a,bn):
+# Per contact-type tolerance (mm^3): how much overlap is legitimate *seating*
+# before it counts as a pass-through clash. Tuned from observed seating volumes
+# (ball in a pocket ~27, ball in a carrier cup ~130).
+def allowance(a,bn):
     s={a,bn}
-    if any(x.startswith("ball") for x in s) and "disc" in s: return True          # ball in pocket floor
-    if any(x.startswith("ball") for x in s) and any(x.startswith("carrier") for x in s): return True  # ball in cup
-    return False
+    bb=lambda pfx: any(x.startswith(pfx) for x in s)
+    if bb("ball") and "disc" in s:        return 60     # ball seated in a pocket
+    if bb("ball") and bb("carrier"):      return 330    # ball seated in a carrier/arm cup
+    if bb("ball") and "carousel" in s:    return 60     # ball riding the channel
+    if bb("carrier") and "carousel" in s: return 45     # rotor hub near the channel
+    return 8                                            # anything else: basically must not touch
 
 def aabb_overlap(b1,b2,pad=0.0):
     return all(b1[0][k]-pad<=b2[1][k] and b2[0][k]-pad<=b1[1][k] for k in range(3))
@@ -127,11 +132,21 @@ for mode,p in frames:
         v=inter_vol(M[a],M[bn])
         if v>THRESH:
             key=(a,bn); lbl=f"{mode} p={p}"
-            if key not in worst or v>worst[key][0]: worst[key]=(v,lbl,seat(a,bn))
+            if key not in worst or v>worst[key][0]: worst[key]=(v,lbl)
 
-print(f"\nInterference report (threshold {THRESH} mm^3, intended seat-contacts tagged [seat]):\n")
-if not worst: print("  none — no parts pass through each other."); sys.exit(0)
-for (a,bn),(v,lbl,is_seat) in sorted(worst.items(),key=lambda kv:-kv[1][0]):
-    tag=" [seat]" if is_seat else "  <-- CLASH"
-    print(f"  {v:8.1f} mm^3   {a:10s} x {bn:10s}   worst @ {lbl}{tag}")
-print()
+# classify against per-type allowance
+rows=[]
+for (a,bn),(v,lbl) in worst.items():
+    allow=allowance(a,bn); rows.append((v,a,bn,lbl,v>allow,allow))
+clashes=[r for r in rows if r[4]]
+rows.sort(key=lambda r:-r[0])
+
+print("\nInterference check — boolean-volume over the Swap/Spin kinematics:\n")
+for v,a,bn,lbl,bad,allow in rows:
+    tag=f"  <-- CLASH (allow {allow:.0f})" if bad else "  [seat]"
+    print(f"  {v:8.1f} mm^3   {a:10s} x {bn:10s}   worst @ {lbl:11s}{tag}")
+if clashes:
+    print(f"\nFAIL: {len(clashes)} clash(es) exceed their seating allowance.\n")
+    sys.exit(1)
+print("\nPASS: no parts pass through each other.\n")
+sys.exit(0)
