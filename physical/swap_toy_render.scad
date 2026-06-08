@@ -76,11 +76,14 @@ module disc_body() {
                     p = P(s);
                     translate([p[0], p[1], -1]) cylinder(h = base_th + rim_h + 2, d = hole_d);
                 }
-            } else {                              // local pair: oblong front well
+            } else if (idx != 0) {                // neighbour pair: round swap pocket
                 a = P(pr[0]); b = P(pr[1]);
-                translate([0,0,base_th - track_depth])
-                    linear_extrude(track_depth + rim_h + 1) stadium2d(a, b, track_w);
+                mx = (a[0]+b[0])/2; my = (a[1]+b[1])/2;
+                rsw = chord_len(idx)/2 + ball_d/2 + 1.5;   // holds the in-plane 180° orbit
+                translate([mx, my, base_th - track_depth])
+                    cylinder(h = track_depth + rim_h + 1, r = rsw);
             }
+            // apex pair (idx 0) has no well — ball 0 sits outboard, off the disc
         }
     }
 }
@@ -106,9 +109,24 @@ module carousel() {
 // black on a clear ball); the colour lives on the fixed position ring, not here.
 module ball_at_origin(n) { sphere(d = ball_d); }
 
-// A numeral solid, centred at origin (viewer places it at the ball's top, black).
+// The number repeated on all 12 dodecahedron faces of the ball, barely proud of
+// the surface (the balls roll, so it can't stick up) — a number always faces you.
+// Centred at origin to match the ball; viewer renders these black.
 module num_at_origin(n) {
-    linear_extrude(1.6) text(str(n), size = ball_d*0.52, halign="center", valign="center");
+    phi = (1 + sqrt(5)) / 2;
+    nv  = sqrt(1 + phi*phi);
+    dirs = [ [0,1,phi],[0,1,-phi],[0,-1,phi],[0,-1,-phi],
+             [1,phi,0],[1,-phi,0],[-1,phi,0],[-1,-phi,0],
+             [phi,0,1],[phi,0,-1],[-phi,0,1],[-phi,0,-1] ];   // dodeca face centres
+    r  = ball_d/2;                // OUTER face flush with the surface (recessed inward)
+    t  = 0.6;                     // numeral goes inward; nothing protrudes (balls roll)
+    sz = ball_d*0.30;             // slightly smaller
+    for (i = [0:len(dirs)-1]) {
+        d = dirs[i] / nv;
+        rotate([0,0, atan2(d[1], d[0])]) rotate([0, acos(d[2]), 0])
+            translate([0,0,r - t]) rotate([0,0, i*40])   // various angles
+            linear_extrude(t) text(str(n), size = sz, halign="center", valign="center");
+    }
 }
 
 // A position ring/collar, centred at origin (viewer places one at every slot and
@@ -121,12 +139,65 @@ module ring_at_origin() {
     }
 }
 
-// A carrier bar of length L along +x, centred at the origin: end cups + hub.
+// A carrier/swing-arm of length L along +x, centred at origin. Each end has a
+// seat cup with a partial retaining rut so a ball can't fall off mid-swing (the
+// (2,9) arm especially must hold when the toy is vertical/upside-down).
 module carrier_origin(L) {
-    cup = ball_d*0.9;
-    linear_extrude(carrier_th)
-        hull() { translate([-L/2,0]) circle(d=cup); translate([L/2,0]) circle(d=cup); }
+    cup = ball_d*0.92; wall = ball_d*0.34;
+    difference() {
+        union() {
+            linear_extrude(carrier_th)
+                hull() { translate([-L/2,0]) circle(d=cup); translate([L/2,0]) circle(d=cup); }
+            for (s = [-1,1]) translate([s*L/2, 0, carrier_th-0.01])   // retaining rut walls
+                difference() {
+                    cylinder(h = wall, d = cup);
+                    translate([0,0,-0.1]) cylinder(h = wall+0.2, d = cup-2.6);
+                }
+        }
+        for (s = [-1,1]) translate([s*L/2, 0, carrier_th + wall*0.55])  // concave seat cups
+            sphere(d = ball_d*0.98);
+    }
     cylinder(h = carrier_th + 3, d = 6);   // pivot hub
+}
+
+// --- drive train (schematic gears so the motion has a visible cause) ---
+gear_h = 5;
+// rotor pinion: small external gear, centred at origin
+module pinion() {
+    pr = 7; n = 10; tw = 2.4; tl = 2.6;
+    cylinder(h = gear_h, r = pr - 1);
+    for (i = [0:n-1]) rotate([0,0,360/n*i]) translate([pr-tl, -tw/2, 0]) cube([tl+0.6, tw, gear_h]);
+    cylinder(h = gear_h + 3, d = 4);                 // hub / shaft
+}
+// the rim ring gear: an annulus with INWARD teeth that the rotor pinions mesh
+module ring_gear() {
+    rin = 55; band = 6; n = 40; tw = 2.4; tl = 2.6;
+    difference() {
+        cylinder(h = gear_h, r = rin + band);
+        translate([0,0,-0.1]) cylinder(h = gear_h + 0.2, r = rin);
+    }
+    for (i = [0:n-1]) rotate([0,0,360/n*i]) translate([rin - tl, -tw/2, 0]) cube([tl, tw, gear_h]);
+}
+// a snap-in bearing/bushing for the load-bearing pivots: outer body + snap
+// flange + a snap groove, with a shaft bore through the middle.
+module bearing() {
+    od = 10; bore = 4.2; h = 5; fl = 1.3;
+    difference() {
+        union() {
+            cylinder(h = h, d = od);
+            translate([0,0,h-1]) cylinder(h = 1, d = od + 2*fl);   // top snap flange
+            translate([0,0,1.2]) cylinder(h = 1.0, d = od + 1.4);  // snap detent ring
+        }
+        translate([0,0,-0.1]) cylinder(h = h + 1.2, d = bore);     // shaft bore
+    }
+}
+
+// the lift deck: a thin platform that carries the swap layer up off the carousel
+module deck() {
+    difference() {
+        cylinder(h = 2.5, r = R + margin - 3);
+        translate([0,0,-0.1]) cylinder(h = 2.7, d = 22);
+    }
 }
 
 /* ---------------- Full static assembly ---------------- */
@@ -152,4 +223,8 @@ else if (MODE == "num")      num_at_origin(BALL);
 else if (MODE == "ring")     ring_at_origin();
 else if (MODE == "carrier")  carrier_origin(chord_len(PAIR));
 else if (MODE == "carousel") carousel();
+else if (MODE == "bearing")  bearing();
+else if (MODE == "pinion")   pinion();
+else if (MODE == "ringgear") ring_gear();
+else if (MODE == "deck")     deck();
 else                         assembly();

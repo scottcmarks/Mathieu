@@ -10,6 +10,9 @@ SRC=../swap_toy_render.scad
 "$OSC" -o disc.stl     -D 'MODE="disc"'     "$SRC"
 "$OSC" -o carousel.stl -D 'MODE="carousel"' "$SRC"
 "$OSC" -o ring.stl     -D 'MODE="ring"'     "$SRC"
+"$OSC" -o ringgear.stl -D 'MODE="ringgear"' "$SRC"
+"$OSC" -o pinion.stl   -D 'MODE="pinion"'   "$SRC"
+"$OSC" -o bearing.stl  -D 'MODE="bearing"'  "$SRC"
 for n in $(seq 0 11); do
   "$OSC" -o "ball$n.stl" -D 'MODE="ball"' -D BALL=$n "$SRC"
   "$OSC" -o "num$n.stl"  -D 'MODE="num"'  -D BALL=$n "$SRC"

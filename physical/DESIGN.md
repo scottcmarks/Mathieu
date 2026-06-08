@@ -455,3 +455,35 @@ chosen.
 ### Suggested build order for prototypers
 single neighbor-rotor coupon → 5-rotor + drive (skip bridge, hand-swap 2/9) → add carousel +
 mode switch → finally the (2,9) bridge.
+
+---
+
+## 11. Addendum — interactive viewer & mechanism refinements
+
+Worked out in the live 3D viewer (`viewer/index.html`) and validated with the
+interference checker (`check_interference.py`, trimesh + manifold boolean volumes):
+
+- **Bearings:** snap-in flanged **MF105ZZ** (5 mm bore × 10 mm OD × 4 mm) at each
+  rotor pivot; central axis a **608ZZ** (8 × 22 × 7). Print the bore at OD+~0.1 mm
+  with a ~0.35 mm retaining lip; flanged race seats against a shoulder. (igus
+  JFM/JSM clip-in flanged sleeves are the all-plastic alternative.) Scale a size
+  down (MF85 / 688) for a ~70 mm toy.
+- **Rim gear** is housed in a bay **below** the balls and **only rotates** (never
+  translates) — a descending gear would pass through the disc.
+- **Neighbour/apex swaps** happen **in-plane** inside round swap pockets (no lift).
+- **(2,9) transfer is positively driven both ways** (must work upside-down): a
+  face cam on the (2,9) idler drives two **pushrods** that shove balls 2 & 9 down
+  through the holes into the back swing-arm's **cups + retaining ruts** (first
+  gear-step), the arm rotates 180°, then the arm/cam re-seats them up. Continuous
+  rut capture means a ball is never momentarily free.
+- **Tokens:** clear milky balls; the digit is repeated on all 12 dodecahedral
+  faces, **flush with the surface** (recessed, not embossed) so they roll.
+- **Colour = light:** each position emits its swap-pair colour onto whatever ball
+  is in it (no physical colour rings to collide with).
+
+### Open (next pass): the ball channel
+The interference checker flags that there is **no real ring channel** yet — balls
+embed in the solid carousel/disc except inside the pockets. Fix: cut a continuous
+ring **channel/collar** (deep enough to hold the balls, widened at each swap pair
+for the in-plane orbit), with the carousel as its moving pocket-floor; then drive
+the checker to a clean "no clashes" result.

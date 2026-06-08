@@ -3,3 +3,7 @@
 viewer/*.stl
 # OpenSCAD turntable frames
 renders/
+# interference-checker virtualenv + caches
+.venv/
+__pycache__/
+*.pyc

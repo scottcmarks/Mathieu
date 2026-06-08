@@ -33,12 +33,13 @@
   <span style="color:#ffff00">●</span>(10,11)
 </div>
 <div id="bar">
-  <button id="swap" class="primary">Swap</button>
+  <button id="swap" class="primary">Push 0 ⇄ (Swap)</button>
   <button id="spin" class="alt">Spin ↻</button>
+  <button id="explode">⇱ Blow-up</button>
   <button id="auto">⏸ auto-rotate</button>
   <button id="reset">reset view</button>
 </div>
-<div id="hint">drag = orbit · scroll = zoom · Swap = every pair trades (the (2,9) pair routes behind the glass — the bridge) · Spin = ring advances one step, apex 0 stays</div>
+<div id="hint">drag = orbit · scroll = zoom · Swap = push the 0 ball either way; the rim gear (housed in a bay below, never moving up/down) drives every rotor 180° in-plane in its round pocket; the (2,9) pair is pushed down by the two red pushrods into the back arm, swung, and re-seated (works upside-down) · Spin: carousel advances one pocket, apex 0 stays · Blow-up: explode the parts</div>
 
 <script type="importmap">
 { "imports": {
@@ -57,7 +58,7 @@ const N=11, R=50, apexExtra=0.55;
 const base_th=14, track_depth=7, ball_d=18;
 const ballZ    = base_th - track_depth + ball_d/2 - 1;   // 15  (front seat)
 const carrierZ = base_th - track_depth + 1;              // 8
-const backZ    = -(ball_d/2 + 3);                         // -12 (behind the disc)
+const backZ    = -(ball_d/2);                             // -9 (just behind the disc; still visible through the glass)
 function angleOf(slot){ return -90 + (slot-1)*(360/N); }            // ring slots 1..11
 function P(i){
   if(i===0) return [0, (1+apexExtra)*R];
@@ -94,20 +95,19 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping=true; controls.autoRotate=true; controls.autoRotateSpeed=1.0;
 
 /* --- materials --- */
-const glassMat = new THREE.MeshPhysicalMaterial({color:0xcfe6ff, metalness:0, roughness:0.06,
-  transmission:1.0, thickness:8, ior:1.5, transparent:true, side:THREE.DoubleSide,
-  envMapIntensity:1.2, clearcoat:0.4});
+// translucent (NOT transmission) — cheap, so orbiting stays smooth
+const glassMat = new THREE.MeshStandardMaterial({color:0xbcd2ff, transparent:true, opacity:0.16,
+  roughness:0.2, metalness:0.0, side:THREE.DoubleSide, envMapIntensity:1.0, depthWrite:false});
 const carrierMat = new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.9, roughness:0.35});
 // milky diffuser balls, tinted (fairly uniformly) by the colour of the socket
 // they're currently in; black raised numbers stay legible on the milky body.
-function makeBallMat(hex){ return new THREE.MeshPhysicalMaterial({color:hex, emissive:hex,
-  emissiveIntensity:0.4, roughness:0.6, metalness:0.0, transmission:0.2, thickness:10,
-  ior:1.3, transparent:true, envMapIntensity:0.6}); }
+function makeBallMat(hex){ return new THREE.MeshStandardMaterial({color:hex, emissive:hex,
+  emissiveIntensity:0.45, roughness:0.7, metalness:0.0, transparent:true, opacity:0.92}); }
 const numMat = new THREE.MeshStandardMaterial({color:0x0a0a0a, metalness:0.0, roughness:0.55});
 
 /* --- load parts --- */
 const loader = new STLLoader();
-const files = ['disc','carousel',
+const files = ['disc','carousel','ringgear','pinion','bearing',
   ...Array.from({length:12},(_,n)=>'ball'+n),
   ...Array.from({length:12},(_,n)=>'num'+n),
   ...Array.from({length:6},(_,i)=>'carrier'+i)];
@@ -119,6 +119,13 @@ const balls=[];          // balls[b] = mesh, .userData.slot = current slot
 const carriers=[];       // carriers[idx] = {mesh, baseAng}  (none for the (2,9) cross)
 let carousel=null;       // indexing channel for the ring (Spin)
 let backArm=null, backArmBase=0;   // the (2,9) through-the-back rotor (Swap)
+let ringGear=null;                 // rim gear, housed in a bay BELOW the balls
+const gearZ=0;                     // fixed: it rotates, never translates (no pass-through)
+const carouselZ = ballZ - ball_d/2;
+const backArmZ  = backZ;
+const bearings=[];                 // snap-in bearings at the load-bearing pivots
+const pushrods=[]; const pushRestZ=34;   // cam-driven plungers that push 2&9 down
+let explodeT=0, explodeTarget=0;   // 0 = assembled, 1 = blown-up
 const tmpA=new THREE.Color(), tmpB=new THREE.Color();   // colour-lerp scratch
 function build(){
   root.add(new THREE.Mesh(geo.disc, glassMat));
@@ -126,8 +133,23 @@ function build(){
   // indexing carousel channel that the 11 ring balls ride during Spin
   carousel = new THREE.Mesh(geo.carousel, new THREE.MeshStandardMaterial(
     {color:0x8590a3, metalness:0.55, roughness:0.5, transparent:true, opacity:0.85}));
-  carousel.position.set(0,0, ballZ - ball_d/2);
+  carousel.position.set(0,0, carouselZ);
   root.add(carousel);
+
+  // snap-in bearings at the load-bearing pivots: every rotor axis + the centre
+  const bmat=new THREE.MeshStandardMaterial({color:0x6e7686, metalness:0.7, roughness:0.4});
+  const hubs = pairs.map((pr,idx)=>{ const a=P(pr[0]),b=P(pr[1]);
+    return [(a[0]+b[0])/2,(a[1]+b[1])/2, idx===CROSS?backArmZ:carrierZ-3]; });
+  hubs.push([0,0,carouselZ-3]);                 // central carousel bearing
+  for(const [x,y,z] of hubs){
+    const m=new THREE.Mesh(geo.bearing,bmat); m.position.set(x,y,z); root.add(m);
+    bearings.push({mesh:m, baseZ:z});
+  }
+
+  // swap drive: a rim gear housed in a bay below the balls, permanently meshed
+  ringGear = new THREE.Mesh(geo.ringgear, new THREE.MeshStandardMaterial(
+    {color:0xb2b8c4, metalness:0.85, roughness:0.4}));
+  ringGear.position.set(0,0,gearZ); root.add(ringGear);
 
   pairs.forEach((pr,idx)=>{
     const a=P(pr[0]), b=P(pr[1]);
@@ -140,20 +162,29 @@ function build(){
     }
     const m=new THREE.Mesh(geo['carrier'+idx], carrierMat);
     m.position.set((a[0]+b[0])/2,(a[1]+b[1])/2, carrierZ); m.rotation.z=ang;
-    root.add(m); carriers[idx]={mesh:m, baseAng:ang};
+    const pin=new THREE.Mesh(geo.pinion, carrierMat);    // pinion rides the rotor axis
+    pin.position.z = gearZ - carrierZ; m.add(pin);   // pinion drops to the gear-bay plane
+    root.add(m); carriers[idx]={mesh:m, baseAng:ang, baseZ:carrierZ};
   });
   // per-socket coloured lights: the POSITION emits its colour onto whatever ball
   // sits there. Light isn't matter, so nothing has to pass through anything.
   for(let s=0;s<12;s++){
-    const p=P(s); const L=new THREE.PointLight(posColor[s], 22, 44, 2.0);
+    const p=P(s); const L=new THREE.PointLight(posColor[s], 13, 42, 2.0);
     L.position.set(p[0], p[1], ballZ+9); root.add(L);
   }
+  // cam-driven pushrods above slots 2 & 9 — they positively push those balls
+  // down into the back arm (and the arm re-seats them up), so it works upside-down
+  const prGeo=new THREE.CylinderGeometry(2.6,2.6,18,20); prGeo.rotateX(Math.PI/2); // axis -> Z
+  const prMat=new THREE.MeshStandardMaterial({color:0xcf5a3a, metalness:0.5, roughness:0.4});
+  for(const s of [2,9]){ const p=P(s); const m=new THREE.Mesh(prGeo,prMat);
+    m.position.set(p[0],p[1],pushRestZ); m.visible=false; root.add(m); pushrods.push(m); }
+
   // milky diffuser balls (tinted by current socket) with black raised numbers
   for(let b=0;b<12;b++){
     const g=new THREE.Group();
     const mat=makeBallMat(posColor[b]);
     g.add(new THREE.Mesh(geo['ball'+b], mat));
-    const num=new THREE.Mesh(geo['num'+b], numMat); num.position.z=numLocalZ; g.add(num);
+    const num=new THREE.Mesh(geo['num'+b], numMat); g.add(num);  // numbers wrap the whole ball
     g.position.copy(rest(b)); g.userData.slot=b; g.userData.mat=mat; root.add(g); balls[b]=g;
   }
   frameAll();
@@ -163,6 +194,17 @@ function frameAll(){
   root.position.set(0, root.position.y, 0); root.position.sub(new THREE.Vector3(c.x,0,c.z));
   controls.target.set(0, s.y*0.1, 0);
   const r=Math.max(s.x,s.z); camera.position.set(r*0.9, r*0.9, r*1.5); controls.update();
+}
+
+// exploded view: separate the layers along z (assembled at eT=0, blown up at eT=1)
+function applyExplode(eT){
+  for(const g of balls){ const r=rest(g.userData.slot); g.position.set(r.x, r.y, r.z + 70*eT); }
+  carriers.forEach(c=>{ if(c){ c.mesh.position.z = c.baseZ + 44*eT; c.mesh.rotation.z=c.baseAng; } });
+  if(backArm){ backArm.position.z = backArmZ - 52*eT; backArm.rotation.z=backArmBase; }
+  if(carousel) carousel.position.z = carouselZ + 24*eT;
+  if(ringGear){ ringGear.position.z = gearZ - 36*eT; ringGear.rotation.z=0; }
+  for(const b of bearings) b.mesh.position.z = b.baseZ + 58*eT;
+  for(const pr of pushrods){ pr.visible = eT>0.02; pr.position.z = pushRestZ + 84*eT; }
 }
 
 /* --- path generators (model coords) --- */
@@ -177,11 +219,11 @@ function rotPath(from,to){
 // (2,9): drop through the hole to the BACK, ride the 180° back-arm across, rise.
 // Both balls sit at opposite ends of the arm so they stay diametrically opposite
 // (never collide) and there are no other balls on the back to hit.
-function backArmPath(from,to){
+function backArmPath(from,to,dir){
   const A=P(from), B=P(to); const M=[(A[0]+B[0])/2,(A[1]+B[1])/2]; const off=[A[0]-M[0],A[1]-M[1]];
   return p=>{
     if(p<0.22){ const a=p/0.22; return new THREE.Vector3(A[0],A[1], THREE.MathUtils.lerp(ballZ,backZ,smooth(a))); }
-    if(p<0.78){ const a=(p-0.22)/0.56; const [x,y]=rot2(off[0],off[1], a*Math.PI);
+    if(p<0.78){ const a=(p-0.22)/0.56; const [x,y]=rot2(off[0],off[1], a*Math.PI*dir);
                 return new THREE.Vector3(M[0]+x, M[1]+y, backZ); }
     const a=(p-0.78)/0.22; return new THREE.Vector3(B[0],B[1], THREE.MathUtils.lerp(backZ,ballZ,smooth(a)));
   };
@@ -192,20 +234,29 @@ function arcPath(from){
   return p=>{ const a=(a0+p*(360/N))*Math.PI/180; return new THREE.Vector3(R*Math.cos(a), -R*Math.sin(a), ballZ); };
 }
 const smooth = t => t*t*(3-2*t);
+const clamp = (t,a,b) => Math.min(b, Math.max(a, t));
+// swap timeline: rotors turn 0 → 180° (eased); no vertical motion anywhere
+const rotorAngle = p => smooth(p)*Math.PI;
 
 /* --- animation driver --- */
-let anim=null;   // {p, dur, moves:[{ball, path}], kind}
+let anim=null;   // {p, dur, moves:[{ball, path}], kind, dir}
+let swapDir=1;   // the 0-ball pushed in vs out -> rotors turn opposite ways
 function startSwap(){
   if(anim) return;
+  const dir = swapDir; swapDir = -swapDir;            // alternate: push 0 in vs out
   const moves=[];
   pairs.forEach((pr,idx)=>{
     const [i,j]=pr;
-    if(idx===CROSS){ moves.push({ball:ballAt(i), path:backArmPath(i,j), c0:posColor[i], c1:posColor[j]});
-                     moves.push({ball:ballAt(j), path:backArmPath(j,i), c0:posColor[j], c1:posColor[i]}); }
-    else { moves.push({ball:ballAt(i), path:rotPath(i,j), c0:posColor[i], c1:posColor[j]});
-           moves.push({ball:ballAt(j), path:rotPath(j,i), c0:posColor[j], c1:posColor[i]}); }
+    if(idx===CROSS){                                   // (2,9): drop to the back arm
+      moves.push({kind:'back', ball:ballAt(i), path:backArmPath(i,j,dir)});
+      moves.push({kind:'back', ball:ballAt(j), path:backArmPath(j,i,dir)});
+    } else {                                           // neighbour/apex: rotor 180° in place
+      const A=P(i),B=P(j); const M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+      moves.push({kind:'rot', ball:ballAt(i), M, off:[A[0]-M[0],A[1]-M[1]]});
+      moves.push({kind:'rot', ball:ballAt(j), M, off:[B[0]-M[0],B[1]-M[1]]});
+    }
   });
-  anim={p:0, dur:1.1, moves, kind:'swap', apply:swapMap};
+  anim={p:0, dur:1.5, moves, kind:'swap', apply:swapMap, dir};
   setBusy(true);
 }
 function startSpin(){
@@ -227,16 +278,25 @@ function finish(){
     const c=tmpA.set(posColor[m.userData.slot]); m.userData.mat.color.copy(c); m.userData.mat.emissive.copy(c);
   }
   // reset moving mechanism to rest visuals (half-turns / index are symmetric)
-  carriers.forEach(c=>{ if(c) c.mesh.rotation.z=c.baseAng; });
+  carriers.forEach(c=>{ if(c){ c.mesh.rotation.z=c.baseAng; c.mesh.position.z=c.baseZ; } });
   if(backArm) backArm.rotation.z=backArmBase;
   if(carousel) carousel.rotation.z=0;
+  if(ringGear) ringGear.rotation.z=0;
+  if(backArm) backArm.position.z=backArmZ;
+  for(const pr of pushrods){ pr.position.z=pushRestZ; pr.visible=false; }
   anim=null; setBusy(false);
 }
 function setBusy(b){ for(const id of ['swap','spin']) document.getElementById(id).disabled=b; }
 
 /* --- ui --- */
-document.getElementById('swap').onclick = startSwap;
-document.getElementById('spin').onclick = startSpin;
+const exploded = ()=> explodeT>0.01 || explodeTarget>0;
+document.getElementById('swap').onclick = ()=>{ if(!exploded()) startSwap(); };
+document.getElementById('spin').onclick = ()=>{ if(!exploded()) startSpin(); };
+document.getElementById('explode').onclick = e=>{
+  if(anim) return;
+  explodeTarget = explodeTarget>0 ? 0 : 1;
+  e.target.textContent = explodeTarget ? '⇲ Assemble' : '⇱ Blow-up';
+};
 document.getElementById('auto').onclick = e=>{controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate';};
 document.getElementById('reset').onclick = frameAll;
 addEventListener('resize', ()=>{camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);});
@@ -247,17 +307,35 @@ function tick(now){
   const dt=(now-last)/1000; last=now;
   if(anim){
     anim.p=Math.min(1, anim.p + dt/anim.dur);
-    const e=smooth(anim.p);
-    for(const mv of anim.moves){
-      mv.ball.position.copy(mv.path(e));
-      if(mv.c0!==mv.c1){ const m=mv.ball.userData.mat; m.color.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1), e); m.emissive.copy(m.color); }
+    const p=anim.p;
+    if(anim.kind==='spin'){
+      const e=smooth(p);
+      for(const mv of anim.moves){
+        mv.ball.position.copy(mv.path(e));
+        if(mv.c0!==mv.c1){ const m=mv.ball.userData.mat; m.color.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1), e); m.emissive.copy(m.color); }
+      }
+      if(carousel) carousel.rotation.z = e*(2*Math.PI/N);
+    } else {                                   // swap: rim gear rotates in its bay, rotors turn 180° in-plane
+      const ra = rotorAngle(p)*anim.dir;
+      if(ringGear) ringGear.rotation.z = -ra*0.13;          // small ring travel, big pinion travel
+      carriers.forEach(c=>{ if(c) c.mesh.rotation.z = c.baseAng + ra; });
+      for(const mv of anim.moves){
+        if(mv.kind==='rot'){ const [x,y]=rot2(mv.off[0],mv.off[1], ra); mv.ball.position.set(mv.M[0]+x, mv.M[1]+y, ballZ); }
+        else mv.ball.position.copy(mv.path(p));
+      }
+      if(backArm){
+        const a=clamp((p-0.22)/0.56,0,1); backArm.rotation.z = backArmBase + a*Math.PI*anim.dir;
+        backArm.position.z = backArmZ + (p>0.78 ? smooth((p-0.78)/0.22)*5 : 0);  // nudge up to re-seat
+      }
+      // pushrods plunge to drive 2&9 down (first gear-step), then retract
+      const plunge = p<0.22 ? smooth(p/0.22) : (p<0.4 ? 1-smooth((p-0.22)/0.18) : 0);
+      for(const pr of pushrods){ pr.visible = plunge>0.001; pr.position.z = pushRestZ - plunge*18; }
     }
-    if(anim.kind==='swap'){
-      carriers.forEach(c=>{ if(c) c.mesh.rotation.z=c.baseAng + e*Math.PI; });
-      if(backArm){ const a=Math.min(1,Math.max(0,(e-0.22)/0.56)); backArm.rotation.z=backArmBase + a*Math.PI; }
-    }
-    if(anim.kind==='spin' && carousel) carousel.rotation.z = e*(2*Math.PI/N);
     if(anim.p>=1) finish();
+  } else if (explodeT>0.001 || explodeTarget>0.001){
+    explodeT += (explodeTarget - explodeT)*0.12;
+    if(Math.abs(explodeTarget - explodeT) < 0.002) explodeT = explodeTarget;
+    applyExplode(explodeT);
   }
   controls.update(); renderer.render(scene, camera);
 }

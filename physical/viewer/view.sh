@@ -5,6 +5,10 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 PORT="${1:-8731}"
-echo "Serving M12 toy viewer at http://localhost:$PORT/  (Ctrl-C to stop)"
+LAN=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null)
+echo "M12 toy viewer:"
+echo "  this Mac : http://localhost:$PORT/"
+[ -n "$LAN" ] && echo "  on phone : http://$LAN:$PORT/   (same Wi-Fi)"
+echo "(Ctrl-C to stop)"
 ( sleep 1; open "http://localhost:$PORT/" ) &
-exec python3 -m http.server "$PORT"
+exec python3 -m http.server "$PORT"   # binds 0.0.0.0 -> reachable on the LAN
