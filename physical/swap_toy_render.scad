@@ -55,11 +55,15 @@ module stadium2d(a, b, w) {
     hull() { translate(a) circle(d=w); translate(b) circle(d=w); }
 }
 
-// Clear glass disc. The five local pairs get oblong front wells; the (2,9)
-// cross pair gets TWO round through-holes instead (its swap routes via the back
-// arm, not a front channel) so the geometry tells the truth about the mechanism.
+// The disc IS the capture channel: a continuous ring groove (all balls ride in
+// it at one height, so 2 & 9 line up with the rest), widened into round pockets
+// at the neighbour swap pairs, with full through-holes at 2 & 9 (the idler arm
+// supports them at rest and carries them down/around during a swap).
+ch_in    = R - (ball_d/2 + 2);   // 39  channel inner radius
+ch_out   = R + (ball_d/2 + 2);   // 61  channel outer radius
+ch_floor = 2;                    // channel floor height
 module disc_body() {
-    hole_d = ball_d + 3;
+    top = base_th + rim_h;
     difference() {
         union() {
             cylinder(h = base_th, r = R + margin);
@@ -69,24 +73,21 @@ module disc_body() {
                     translate([0,0,-0.1]) cylinder(h = rim_h+0.2, r = R + margin - 4);
                 }
         }
-        for (idx = [0:len(pairs)-1]) {
-            pr = pairs[idx];
-            if (idx == 1) {                       // (2,9): small top WINDOW + wide bore below
-                win_d = 13; win_bot = 11;         // cap pokes through window; ball captive
-                for (s = pr) {
-                    p = P(s);
-                    translate([p[0], p[1], win_bot]) cylinder(h = base_th+rim_h-win_bot+2, d = win_d);
-                    translate([p[0], p[1], -1])      cylinder(h = win_bot+1, d = ball_d + 3);
-                }
-            } else if (idx != 0) {                // neighbour pair: round swap pocket
-                a = P(pr[0]); b = P(pr[1]);
-                mx = (a[0]+b[0])/2; my = (a[1]+b[1])/2;
-                rsw = chord_len(idx)/2 + ball_d/2 + 1.5;   // holds the in-plane 180° orbit
-                translate([mx, my, base_th - track_depth])
-                    cylinder(h = track_depth + rim_h + 1, r = rsw);
-            }
-            // apex pair (idx 0) has no well — ball 0 sits outboard, off the disc
+        // continuous channel groove carved into the disc
+        translate([0,0,ch_floor]) difference() {
+            cylinder(h = top - ch_floor + 1, r = ch_out);
+            translate([0,0,-0.1]) cylinder(h = top - ch_floor + 1.2, r = ch_in);
         }
+        // neighbour swap pockets: round widenings of the channel
+        for (idx = [2:len(pairs)-1]) {
+            a = P(pairs[idx][0]); b = P(pairs[idx][1]);
+            rsw = chord_len(idx)/2 + ball_d/2 + 1.5;
+            translate([(a[0]+b[0])/2,(a[1]+b[1])/2, ch_floor])
+                cylinder(h = top - ch_floor + 1, r = rsw);
+        }
+        // (2,9): full through-holes (ball drops to the idler arm below)
+        for (s = pairs[1]) { p = P(s); translate([p[0],p[1],-1]) cylinder(h = top+2, d = ball_d+3); }
+        // apex pair (idx 0): no well — ball 0 sits outboard, off the disc
     }
 }
 

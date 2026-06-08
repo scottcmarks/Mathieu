@@ -56,17 +56,16 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 /* --- geometry mirrors swap_toy_render.scad (DESIGN.md P(i) coords) --- */
 const N=11, R=50, apexExtra=0.55;
 const base_th=14, track_depth=7, ball_d=18;
-const ballZ    = base_th - track_depth + ball_d/2 - 1;   // 15  (front seat)
-const deepZ    = 8;                                       // slots 2 & 9 sit deep, captive under a small window
-const carrierZ = base_th - track_depth + 1;              // 8
-const backZ    = -(ball_d/2);                             // -9 (just behind the disc; still visible through the glass)
+const ballZ    = 11;                                      // ALL balls ride the channel at one height (2 & 9 line up)
+const carrierZ = 8;
+const backZ    = -9;                                      // (2,9) swing depth: below the channel, clears other balls
 function angleOf(slot){ return -90 + (slot-1)*(360/N); }            // ring slots 1..11
 function P(i){
   if(i===0) return [0, (1+apexExtra)*R];
   const a=angleOf(i)*Math.PI/180; return [R*Math.cos(a), -R*Math.sin(a)];
 }
-const zOf  = s => (s===2||s===9) ? deepZ : ballZ;        // 2&9 are deep windowed positions
-const rest = s => new THREE.Vector3(P(s)[0], P(s)[1], zOf(s));
+const zOf  = () => ballZ;                                // all positions at one height
+const rest = s => new THREE.Vector3(P(s)[0], P(s)[1], ballZ);
 
 const pairs = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];
 // official Sporadic M12 palette (from SporadicM12.inc), one hue per swap-pair
@@ -109,7 +108,7 @@ const numMat = new THREE.MeshStandardMaterial({color:0x0a0a0a, metalness:0.0, ro
 
 /* --- load parts --- */
 const loader = new STLLoader();
-const files = ['disc','carousel','ringgear','pinion','bearing','casebottom',
+const files = ['disc','ringgear','pinion','bearing','casebottom',
   ...Array.from({length:12},(_,n)=>'ball'+n),
   ...Array.from({length:12},(_,n)=>'num'+n),
   ...Array.from({length:6},(_,i)=>'carrier'+i)];
@@ -128,17 +127,13 @@ const carouselZ = ballZ - ball_d/2;
 const backArmZ  = backZ;
 const bearings=[];                 // snap-in bearings at the load-bearing pivots
 const pushers=[];                  // equatorial rings at slots 2&9 that push the ball down
-const ringTuckZ=12.5, ringPushZ=2;   // concealed just below the surface vs pushed-down
+const ringTuckZ=11, ringPushZ=-6;   // at the ball equator (concealed once top shell added) vs pushed-down
 let explodeT=0, explodeTarget=0;   // 0 = assembled, 1 = blown-up
 const tmpA=new THREE.Color(), tmpB=new THREE.Color();   // colour-lerp scratch
 function build(){
   root.add(new THREE.Mesh(geo.disc, glassMat));
 
-  // indexing carousel channel that the 11 ring balls ride during Spin
-  carousel = new THREE.Mesh(geo.carousel, new THREE.MeshStandardMaterial(
-    {color:0x8590a3, metalness:0.55, roughness:0.5, transparent:true, opacity:0.85}));
-  carousel.position.set(0,0, carouselZ);
-  root.add(carousel);
+  // (channel is carved into the disc now — no separate carousel ring)
 
   // BackSpin-style case bottom: posts at z 0..8 carry the bearings the rotors spin on
   caseBottom = new THREE.Mesh(geo.casebottom, new THREE.MeshStandardMaterial(
@@ -185,7 +180,7 @@ function build(){
   // surface on the deep ball's shoulder (opening 7 > window 6.5 so it's hidden
   // behind the top), drops to shove the ball onto the idler arm, then rides the
   // arriving ball back up. A drive arm links each ring inward to the gear/cam.
-  const ringGeo=new THREE.TorusGeometry(8.3,1.3,12,30);   // opening ~7, outer ~9.6
+  const ringGeo=new THREE.TorusGeometry(10,1.3,12,30);    // bigger O (opening ~8.7), same section
   const pmatR=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.8, roughness:0.4});
   for(const s of [2,9]){ const p=P(s); const m=new THREE.Mesh(ringGeo,pmatR);
     m.position.set(p[0],p[1],ringTuckZ);
@@ -238,10 +233,10 @@ function rotPath(from,to){
 function backArmPath(from,to,dir){
   const A=P(from), B=P(to); const M=[(A[0]+B[0])/2,(A[1]+B[1])/2]; const off=[A[0]-M[0],A[1]-M[1]];
   return p=>{
-    if(p<0.22){ const a=p/0.22; return new THREE.Vector3(A[0],A[1], THREE.MathUtils.lerp(deepZ,backZ,smooth(a))); }
+    if(p<0.22){ const a=p/0.22; return new THREE.Vector3(A[0],A[1], THREE.MathUtils.lerp(ballZ,backZ,smooth(a))); }
     if(p<0.78){ const a=(p-0.22)/0.56; const [x,y]=rot2(off[0],off[1], a*Math.PI*dir);
                 return new THREE.Vector3(M[0]+x, M[1]+y, backZ); }
-    const a=(p-0.78)/0.22; return new THREE.Vector3(B[0],B[1], THREE.MathUtils.lerp(backZ,deepZ,smooth(a)));
+    const a=(p-0.78)/0.22; return new THREE.Vector3(B[0],B[1], THREE.MathUtils.lerp(backZ,ballZ,smooth(a)));
   };
 }
 // spin: glide along the pitch circle forward one ring step

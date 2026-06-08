@@ -89,10 +89,10 @@ def load(name):
     m=trimesh.load(os.path.join(VIEW,name+".stl"))   # process=True merges verts -> watertight
     if not m.is_watertight: m.merge_vertices(); m.fix_normals()
     return m
-base={n:load(n) for n in ["disc","carousel","ringgear"]+["carrier%d"%i for i in range(6)]+["ball%d"%b for b in range(12)]}
+base={n:load(n) for n in ["disc","ringgear"]+["carrier%d"%i for i in range(6)]+["ball%d"%b for b in range(12)]}
 
 def transforms(mode,p):
-    T={"disc":np.eye(4),"carousel":carousel_T(mode,p),"ringgear":ring_T(mode,p)}
+    T={"disc":np.eye(4),"ringgear":ring_T(mode,p)}
     for idx in range(6): T["carrier%d"%idx]=carrier_T(idx,mode,p)
     for b in range(12):  T["ball%d"%b]=ball_T(b,mode,p)
     return T

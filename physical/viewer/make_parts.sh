@@ -7,9 +7,9 @@ set -euo pipefail
 cd "$(dirname "$0")"
 OSC="${OPENSCAD:-/opt/homebrew/bin/openscad}"
 SRC=../swap_toy_render.scad
-"$OSC" -o disc.stl     -D 'MODE="disc"'     "$SRC"
-"$OSC" -o carousel.stl -D 'MODE="carousel"' "$SRC"
-"$OSC" -o ringgear.stl -D 'MODE="ringgear"' "$SRC"
+"$OSC" -o disc.stl       -D 'MODE="disc"'       "$SRC"
+"$OSC" -o casebottom.stl -D 'MODE="casebottom"' "$SRC"
+"$OSC" -o ringgear.stl   -D 'MODE="ringgear"'   "$SRC"
 "$OSC" -o pinion.stl   -D 'MODE="pinion"'   "$SRC"
 "$OSC" -o bearing.stl  -D 'MODE="bearing"'  "$SRC"
 for n in $(seq 0 11); do
