@@ -22,12 +22,16 @@
 <div id="hud"><b>M12 series · 01 — channel plate (2 clear layers)</b><br>
   bottom + mid (clear) = a 60%-of-ball channel structure that retains the balls.
   Ball 0 sits at the end of a straight chute to ball 1.<br>
-  Spin (rotate the ring) / Swap (perm #22, each ball on its channel); toggle layers →</div>
+  Spin (rotate the ring) / Swap (perm #22) / Push 0 (one input drives the whole
+  swap through the gearing — 1 &amp; 9 duck under); toggle layers →</div>
 <div id="bar"><button id="spin" class="primary">Spin ↻</button>
   <button id="swap">Swap ⇄</button>
+  <button id="push">Push 0 ⤓</button>
   <label class="cb"><input type="checkbox" id="cbBottom" checked>bottom</label>
   <label class="cb"><input type="checkbox" id="cbMid" checked>mid</label>
   <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
+  <label class="cb"><input type="checkbox" id="cbUnder">under</label>
+  <label class="cb"><input type="checkbox" id="cbGears">gears</label>
   <button id="auto">▶ auto-rotate</button><button id="reset">reset view</button></div>
 <div id="hint">drag = orbit · scroll = zoom · uncheck a layer to see inside the clear plate</div>
 
@@ -75,9 +79,34 @@ function makeBallMat(hex){
 }
 const numMat=new THREE.MeshStandardMaterial({color:0x0a0a0a, roughness:0.55});
 
+// --- schematic mechanism layer (sits just below the plate) ---
+const gearMat=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.85, roughness:0.4});
+let gearLayer=null; const gearParts=[];          // {obj,span} — rotated by the push input
+function makeGear(r, teeth, th){
+  const g=new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.CylinderGeometry(r-1.3, r-1.3, th, 40).rotateX(Math.PI/2), gearMat));
+  const tg=new THREE.BoxGeometry(2.6, 2.0, th);
+  for(let i=0;i<teeth;i++){ const a=2*Math.PI*i/teeth; const t=new THREE.Mesh(tg, gearMat);
+    t.position.set((r-0.4)*Math.cos(a),(r-0.4)*Math.sin(a),0); t.rotation.z=a; g.add(t); }
+  g.add(new THREE.Mesh(new THREE.CylinderGeometry(2,2,th+1.5,16).rotateX(Math.PI/2), gearMat)); // hub
+  return g;
+}
+// a ring gear — hollow centre, thick rim (strong IRL), external teeth
+function makeRingGear(outerR, wall, teeth, th){
+  const g=new THREE.Group();
+  const sh=new THREE.Shape(); sh.absarc(0,0,outerR-1.3,0,Math.PI*2,false);
+  const hole=new THREE.Path(); hole.absarc(0,0,outerR-1.3-wall,0,Math.PI*2,true); sh.holes.push(hole);
+  const body=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:th,bevelEnabled:false}), gearMat);
+  body.geometry.translate(0,0,-th/2); g.add(body);
+  const tg=new THREE.BoxGeometry(2.6,2.0,th);
+  for(let i=0;i<teeth;i++){ const a=2*Math.PI*i/teeth; const t=new THREE.Mesh(tg, gearMat);
+    t.position.set((outerR-0.4)*Math.cos(a),(outerR-0.4)*Math.sin(a),0); t.rotation.z=a; g.add(t); }
+  return g;
+}
+
 const loader=new STLLoader();
-let bottomMesh=null, midMesh=null, ballsGroup=null; const geo={}; const balls={};
-const files=['plate_bottom','plate_mid', ...Array.from({length:12},(_,i)=>'ball'+i),
+let bottomMesh=null, midMesh=null, underMesh=null, ballsGroup=null; const geo={}; const balls={};
+const files=['plate_bottom','plate_mid','plate_under', ...Array.from({length:12},(_,i)=>'ball'+i),
                                          ...Array.from({length:12},(_,i)=>'num'+i)];
 let n=0;
 files.forEach(name=>{
@@ -91,6 +120,7 @@ const gameColor={0:0xffffff,1:0xffffff,2:0xcc0000,3:0x00cc00,4:0x00cc00,5:0xff99
 function build(){
   bottomMesh=new THREE.Mesh(geo.plate_bottom, plateMat); root.add(bottomMesh);
   midMesh=new THREE.Mesh(geo.plate_mid, plateMat); midMesh.position.z=eq; root.add(midMesh);
+  underMesh=new THREE.Mesh(geo.plate_under, plateMat); underMesh.visible=false; root.add(underMesh);
   ballsGroup=new THREE.Group(); root.add(ballsGroup);
   // coloured LIGHTS at each spot — they tint the milky ball that sits there, so
   // colour belongs to the position (a ball takes on whatever spot it's over).
@@ -110,8 +140,18 @@ function build(){
     g.scale.setScalar(ballScale);
     g.position.set(p[0],p[1],ballZ); g.userData={slot:s, mat}; ballsGroup.add(g); balls[s]=g;
   }
+  // ---- schematic gearing under the plate (toggle with 'gears') ----
+  // The 0-rack push -> central drive ring -> all swap rotors, in unison.
+  gearLayer=new THREE.Group(); gearLayer.position.z=-7; gearLayer.visible=false; root.add(gearLayer);
+  const addGear=(g,span,x,y)=>{ g.position.set(x,y,0); g.userData.base=0; gearParts.push({obj:g,span}); gearLayer.add(g); return g; };
+  addGear(makeRingGear(40,12,40,5), THREE.MathUtils.degToRad(-50), 0, 0);   // central drive RING (hollow, thick rim)
+  for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){ const A=P(i),B=P(j);     // four neighbour rotors (180°/push)
+    addGear(makeGear(13,13,5), Math.PI, (A[0]+B[0])/2, (A[1]+B[1])/2); }
+  { const p=P(0); addGear(makeGear(8,8,5), THREE.MathUtils.degToRad(220), p[0], p[1]-4); }  // input pinion under ball 0
   frameAll();
 }
+function updateGears(e){ for(const gp of gearParts) gp.obj.rotation.z = gp.obj.userData.base + gp.span*e; }
+function commitGears(){ for(const gp of gearParts) gp.obj.userData.base += gp.span; }
 function frameAll(){
   const box=new THREE.Box3().setFromObject(root), c2=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
   root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,s.y*0.1,0);
@@ -159,16 +199,48 @@ function startSwap(){ if(anim) return;
     addPair(2,9, e=>arc(e), e=>arc(1-e)); }            // 2-9 constant-radius arc
   anim={p:0,dur:1.2,kind:'swap',moves,apply:map};
 }
-function finishAnim(){ for(const g of Object.values(balls)){ g.userData.slot=anim.apply[g.userData.slot];
+// PUSH 0: one input (0-ball pushed down the chute) drives the whole perm #22 in
+// unison via the gearing — the 1 and 9 balls duck under and resurface in place.
+const underZ=-11, dn=0.24, up=0.76;                    // under-lane height + ramp-down/up fractions
+const lin=(p,q)=>e=>[p[0]+(q[0]-p[0])*e, p[1]+(q[1]-p[1])*e];
+// a ramp-down → under-lane traverse → ramp-up motion from seat A out to seat B
+function underSeg(A,B,trav){ return {
+  path:e=> e<dn ? A : e>up ? B : trav((e-dn)/(up-dn)),
+  zf:  e=> e<dn ? ballZ+(underZ-ballZ)*(e/dn)
+        : e>up ? underZ+(ballZ-underZ)*((e-up)/(1-up))
+        : underZ }; }
+function startPush(){ if(anim) return;
+  const moves=[], map={};
+  const add=(s,path,zf)=>moves.push({g:ballAt(s), c0:gameColor[s], c1:gameColor[s], path, zf});
+  for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){     // neighbour pairs swing 180° (both on top)
+    const A=P(i),B=P(j),M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+    const orbit=o=>e=>{ const t=e*Math.PI,c=Math.cos(t),s=Math.sin(t);
+      return [M[0]+o[0]*c-o[1]*s, M[1]+o[0]*s+o[1]*c]; };
+    add(i, orbit([A[0]-M[0],A[1]-M[1]])); add(j, orbit([B[0]-M[0],B[1]-M[1]])); map[i]=j; map[j]=i;
+  }
+  { add(0, lin(P(0),P(1)));                            // 0 slides IN on top, nestles in 1's detent
+    const s1=underSeg(P(1),P(0), lin(P(1),P(0)));      // 1 ramps down, runs under, pops up outboard
+    add(1, s1.path, s1.zf); map[0]=1; map[1]=0; }
+  { const fwd=arcPath(P(2),P(9),14);
+    add(2, e=>fwd(e));                                 // 2 rides the over-arc
+    const s9=underSeg(P(9),P(2), t=>fwd(1-t));         // 9 ramps down, rides the under-arc beneath 2, pops up
+    add(9, s9.path, s9.zf); map[2]=9; map[9]=2; }
+  anim={p:0,dur:1.6,kind:'push',moves,apply:map};
+}
+function finishAnim(){ if(anim.kind==='push') commitGears();
+  for(const g of Object.values(balls)){ g.userData.slot=anim.apply[g.userData.slot];
     const p=P(g.userData.slot); g.position.set(p[0],p[1],ballZ);
     const c=gameColor[g.userData.slot]; g.userData.mat.color.copy(tmpA.set(c)).lerp(milkW,MILK); g.userData.mat.emissive.set(c);
   } anim=null; }
 
 document.getElementById('spin').onclick=startSpin;
 document.getElementById('swap').onclick=startSwap;
+document.getElementById('push').onclick=startPush;
 document.getElementById('cbBottom').onchange=e=>{ if(bottomMesh) bottomMesh.visible=e.target.checked; };
 document.getElementById('cbMid').onchange=e=>{ if(midMesh) midMesh.visible=e.target.checked; };
 document.getElementById('cbBalls').onchange=e=>{ if(ballsGroup) ballsGroup.visible=e.target.checked; };
+document.getElementById('cbUnder').onchange=e=>{ if(underMesh) underMesh.visible=e.target.checked; };
+document.getElementById('cbGears').onchange=e=>{ if(gearLayer) gearLayer.visible=e.target.checked; };
 document.getElementById('auto').onclick=e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
 document.getElementById('reset').onclick=frameAll;
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);});
@@ -177,7 +249,8 @@ let last=performance.now();
 (function tick(now){ requestAnimationFrame(tick);
   const dt=((now||0)-last)/1000; last=now||0;
   if(anim){ anim.p=Math.min(1, anim.p + dt/anim.dur); const e=smooth(anim.p);
-    for(const mv of anim.moves){ const xy=mv.path(e); mv.g.position.set(xy[0],xy[1],ballZ);
+    if(anim.kind==='push') updateGears(e);
+    for(const mv of anim.moves){ const xy=mv.path(e); mv.g.position.set(xy[0],xy[1], mv.zf?mv.zf(e):ballZ);
       if(mv.c0!==mv.c1){ const m=mv.g.userData.mat;
         m.emissive.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1),e);
         m.color.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1),e).lerp(milkW,MILK); } }

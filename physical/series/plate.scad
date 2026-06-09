@@ -27,6 +27,10 @@ ann_in  = 0;                           // no central hole — full disc now
 margin  = (R + 2*ball_d) - (R*cos(180/N) + nbchord/2 + (ball_d/2+0.5));   // current swap-ring margin
 ann_out = (R + nbchord/2) + nbchord/2 + (ball_d/2+0.5) + margin;          // apex-ring outer + margin
 swap_pairs = [[3,4],[5,6],[7,8],[10,11]];   // the four neighbour-pair swap channels (0-1 is the straight chute)
+// the four transfer seats where a ball ducks under / pops up (1,9 down; 0,2 up):
+xfer_pts  = [Pp(0), Pp(1), Pp(2), Pp(9)];
+under_z   = -11;                       // ball-centre height of the sub-surface lane
+under_bot = under_z - rb - 1;          // floor of the lower channel layer (~-21)
 MODE = "bottom";
 
 module annulus(h) { difference() { cylinder(h=h, r=ann_out); translate([0,0,-0.1]) cylinder(h=h+0.2, r=ann_in); } }
@@ -36,7 +40,7 @@ module swap_torus(i,j) { a=Pp(i); b=Pp(j); Rmaj=norm([a[0]-b[0],a[1]-b[1]])/2;
 // constant-radius circular-arc channel (a single clean arc, tube cross-section) from
 // a to b, bowing by sagitta `sag` toward the +normal of a->b. Built as a smooth
 // chain of capsules at ball-centre height.
-module arc_chute(a, b, sag, segs=56) {
+module arc_chute(a, b, sag, z=eq, segs=56) {
     c    = norm([b[0]-a[0], b[1]-a[1]]);
     arcR = (c*c/4 + sag*sag) / (2*sag);                 // radius giving that sagitta
     ux=(b[0]-a[0])/c; uy=(b[1]-a[1])/c;  nx=-uy; ny=ux; // +normal = bulge direction
@@ -46,26 +50,45 @@ module arc_chute(a, b, sag, segs=56) {
     daw=(a1-a0) - 360*round((a1-a0)/360);               // signed minor-arc sweep
     for (i=[0:segs-1]) hull()
         for (k=[i,i+1]) let(an=a0+daw*k/segs)
-            translate([cx+arcR*cos(an), cy+arcR*sin(an), eq]) sphere(r=tube, $fn=20);
+            translate([cx+arcR*cos(an), cy+arcR*sin(an), z]) sphere(r=tube, $fn=20);
 }
+// straight tube channel between two planar points at height z
+module straight_chute(a, b, z=eq) {
+    hull() { translate([a[0],a[1],z]) sphere(r=tube,$fn=30);
+             translate([b[0],b[1],z]) sphere(r=tube,$fn=30); }
+}
+// vertical / ramp drop at a planar point, from z0 to z1
+module vchute(p, z0, z1) {
+    hull() { translate([p[0],p[1],z0]) sphere(r=tube,$fn=24);
+             translate([p[0],p[1],z1]) sphere(r=tube,$fn=24); }
+}
+module zero_chute() { straight_chute(Pp(1), Pp(0)); }     // 0-1 surface chute (ball 0 nests outboard)
 // the (2 9) cross-ring swap — a gentle constant-radius arc bowing toward centre
 module cross_chute() { arc_chute(Pp(2), Pp(9), 14); }
-// spin ring + four neighbour swap loops + the 2-9 cross arc + the 0-1 straight chute
-module channels() { spin_torus(); for (pr=swap_pairs) swap_torus(pr[0],pr[1]); cross_chute(); zero_chute(); }
+// surface channels + the vertical wells where 0,1,2,9 pass between levels
+module channels() {
+    spin_torus(); for (pr=swap_pairs) swap_torus(pr[0],pr[1]); cross_chute(); zero_chute();
+    for (p=xfer_pts) vchute(p, -1, clear_top+1);          // wells through the main plate
+}
 
 module plate_bottom() { difference() { annulus(eq); channels(); } }
 module plate_mid()    { h=clear_top-eq;    difference() { annulus(h); translate([0,0,-eq])        channels();    } }
-// a straight chute of SPIN-CHANNEL diameter running radially from ball 1 (in the
-// spin ring) out to ball 0; ball 0 nests at its outboard end.
-module zero_chute() {
-    a = Pp(1); b = Pp(0);
-    translate([0,0,eq]) hull() {
-        translate(a) sphere(r = tube, $fn = 30);
-        translate(b) sphere(r = tube, $fn = 30);
+
+// ---- lower layer: the under-lane that lets ball 9 pass beneath 2 and ball 1
+//      travel from its seat back out to the 0-seat, each with ramps to the surface.
+module under_channels() {
+    arc_chute(Pp(2), Pp(9), 14, under_z);                 // 9's under-arc (directly beneath the over-arc)
+    straight_chute(Pp(1), Pp(0), under_z);                // 1's return run
+    for (p=xfer_pts) vchute(p, under_z, 1);               // ramps up to the main plate
+}
+module plate_under() {
+    difference() {
+        translate([0,0,under_bot]) cylinder(h = -under_bot, r = ann_out);   // clear slab below the plate
+        under_channels();
     }
 }
-// (opaque cover dropped — bottom+mid clear plate alone retains the balls)
 
 if      (MODE=="bottom") plate_bottom();
 else if (MODE=="mid")    plate_mid();
-else { plate_bottom(); translate([0,0,eq]) plate_mid(); }
+else if (MODE=="under")  plate_under();
+else { plate_under(); plate_bottom(); translate([0,0,eq]) plate_mid(); }
