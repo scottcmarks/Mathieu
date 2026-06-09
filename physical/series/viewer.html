@@ -19,19 +19,17 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<div id="hud"><b>M12 series · 01 — channel plate (3 layers)</b><br>
-  bottom + mid (clear) = a 60%-of-ball channel structure; cover (opaque, top 40%)
-  is open only over the spin ring.<br>
-  Spin / Swap pairs; toggle layers with the checkboxes →</div>
+<div id="hud"><b>M12 series · 01 — channel plate (2 clear layers)</b><br>
+  bottom + mid (clear) = a 60%-of-ball channel structure that retains the balls.
+  Ball 0 sits at the end of a straight chute to ball 1.<br>
+  Spin (rotate the ring) / Swap (perm #22, each ball on its channel); toggle layers →</div>
 <div id="bar"><button id="spin" class="primary">Spin ↻</button>
-  <button id="swap">Swap pairs</button>
+  <button id="swap">Swap ⇄</button>
   <label class="cb"><input type="checkbox" id="cbBottom" checked>bottom</label>
   <label class="cb"><input type="checkbox" id="cbMid" checked>mid</label>
-  <label class="cb"><input type="checkbox" id="cbCover" checked>cover</label>
   <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
-  <label class="cb"><input type="checkbox" id="cbGears" checked>gears</label>
-  <button id="auto">⏸ auto-rotate</button><button id="reset">reset view</button></div>
-<div id="hint">drag = orbit · scroll = zoom · uncheck a layer to see inside · the opaque cover hides the swaps but is open over the spin ring</div>
+  <button id="auto">▶ auto-rotate</button><button id="reset">reset view</button></div>
+<div id="hint">drag = orbit · scroll = zoom · uncheck a layer to see inside the clear plate</div>
 
 <script type="importmap">
 { "imports": {
@@ -59,26 +57,27 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
 const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
 const camera=new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.5, 5000); camera.position.set(140,150,200);
-scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.4));   // dim, so the ball colours read
-const key=new THREE.DirectionalLight(0xffffff,0.7); key.position.set(120,220,160); scene.add(key);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.35));  // low white fill — keep colours saturated
+const key=new THREE.DirectionalLight(0xffffff,0.85); key.position.set(120,220,160); scene.add(key);  // crisp top highlight
 const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
 const controls=new OrbitControls(camera, renderer.domElement);
-controls.enableDamping=true; controls.autoRotate=true; controls.autoRotateSpeed=1.0;
+controls.enableDamping=true; controls.autoRotate=false; controls.autoRotateSpeed=1.0;
 
-const coverMat=new THREE.MeshStandardMaterial({color:0x3a3f4a, metalness:0.2, roughness:0.7});  // opaque cover
 const plateMat=new THREE.MeshStandardMaterial({color:0xbcd2ff, transparent:true, opacity:0.16,
   roughness:0.18, metalness:0, side:THREE.DoubleSide, depthWrite:false, envMapIntensity:1.0});
-// milky ball tinted by its position colour (glows that hue, visible from the top)
+// ball: saturated body colour that also self-glows its hue, so it reads strongly
+// (incl. blue) from the top and still picks up the coloured spot light.
+const MILK=0.12;                                   // tiny lift toward white (was 0.4 — too washed)
 const tmpA=new THREE.Color(), tmpB=new THREE.Color(), milkW=new THREE.Color(0xffffff);
 function makeBallMat(hex){
-  return new THREE.MeshStandardMaterial({color:new THREE.Color(hex).lerp(milkW,0.4),
-    emissive:hex, emissiveIntensity:0.55, roughness:0.7, metalness:0});
+  return new THREE.MeshStandardMaterial({color:new THREE.Color(hex).lerp(milkW,MILK),
+    emissive:hex, emissiveIntensity:0.85, roughness:0.4, metalness:0.05});
 }
 const numMat=new THREE.MeshStandardMaterial({color:0x0a0a0a, roughness:0.55});
 
 const loader=new STLLoader();
-let bottomMesh=null, midMesh=null, coverMesh=null, gearsMesh=null, ballsGroup=null; const geo={}; const balls={};
-const files=['plate_bottom','plate_mid','plate_cover','plate_gears', ...Array.from({length:12},(_,i)=>'ball'+i),
+let bottomMesh=null, midMesh=null, ballsGroup=null; const geo={}; const balls={};
+const files=['plate_bottom','plate_mid', ...Array.from({length:12},(_,i)=>'ball'+i),
                                          ...Array.from({length:12},(_,i)=>'num'+i)];
 let n=0;
 files.forEach(name=>{
@@ -92,15 +91,12 @@ const gameColor={0:0xffffff,1:0xffffff,2:0xcc0000,3:0x00cc00,4:0x00cc00,5:0xff99
 function build(){
   bottomMesh=new THREE.Mesh(geo.plate_bottom, plateMat); root.add(bottomMesh);
   midMesh=new THREE.Mesh(geo.plate_mid, plateMat); midMesh.position.z=eq; root.add(midMesh);
-  coverMesh=new THREE.Mesh(geo.plate_cover, coverMat); coverMesh.position.z=clear_top; root.add(coverMesh);
-  gearsMesh=new THREE.Mesh(geo.plate_gears, new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.85, roughness:0.4}));
-  root.add(gearsMesh);
   ballsGroup=new THREE.Group(); root.add(ballsGroup);
   // coloured LIGHTS at each spot — they tint the milky ball that sits there, so
   // colour belongs to the position (a ball takes on whatever spot it's over).
   const fixGeo=new THREE.CircleGeometry(4,20);
   for(let s=0;s<=11;s++){ const p=P(s);
-    const L=new THREE.PointLight(gameColor[s], 9, 26, 2.0); L.position.set(p[0],p[1],ballZ-2); root.add(L);
+    const L=new THREE.PointLight(gameColor[s], 18, 34, 2.0); L.position.set(p[0],p[1],ballZ-2); root.add(L);
     const fix=new THREE.Mesh(fixGeo, new THREE.MeshStandardMaterial(
       {color:gameColor[s], emissive:gameColor[s], emissiveIntensity:1.0, roughness:0.5}));
     fix.position.set(p[0],p[1],2); root.add(fix);          // the visible light on the floor
@@ -124,7 +120,6 @@ function frameAll(){
 
 const smooth=t=>t*t*(3-2*t);
 const ballAt=s=>Object.values(balls).find(g=>g.userData.slot===s);
-const neighborPairs=[[0,1],[3,4],[5,6],[7,8],[10,11]];
 let anim=null;  // {p,dur,kind,moves:[{g,path}],apply}
 
 function startSpin(){ if(anim) return;
@@ -135,30 +130,45 @@ function startSpin(){ if(anim) return;
   const map={0:0}; for(let s=1;s<=11;s++) map[s]=(s%11)+1;   // apex 0 stays put
   anim={p:0,dur:0.9,kind:'spin',moves,apply:map};
 }
+// e->[x,y] along a constant-radius arc from a to b (matches plate.scad arc_chute)
+function arcPath(a,b,sag){
+  const c=Math.hypot(b[0]-a[0],b[1]-a[1]);
+  const arcR=(c*c/4+sag*sag)/(2*sag);
+  const ux=(b[0]-a[0])/c, uy=(b[1]-a[1])/c, nx=-uy, ny=ux;
+  const mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2;
+  const cx=mx-(arcR-sag)*nx, cy=my-(arcR-sag)*ny;
+  const a0=Math.atan2(a[1]-cy,a[0]-cx); let daw=Math.atan2(b[1]-cy,b[0]-cx)-a0;
+  daw-=2*Math.PI*Math.round(daw/(2*Math.PI));
+  return e=>{ const an=a0+daw*e; return [cx+arcR*Math.cos(an), cy+arcR*Math.sin(an)]; };
+}
+// full perm #22 swap = (0 1)(2 9)(3 4)(5 6)(7 8)(10 11), each ball on its channel
 function startSwap(){ if(anim) return;
-  const moves=[], map={}; for(let s=1;s<=11;s++) map[s]=s;
-  for(const [i,j] of neighborPairs){
-    const A=P(i),B=P(j), M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
-    for(const [b,o] of [[i,[A[0]-M[0],A[1]-M[1]]],[j,[B[0]-M[0],B[1]-M[1]]]]){
-      moves.push({g:ballAt(b), c0:gameColor[b], c1:gameColor[b===i?j:i],
-        path:e=>{ const t=e*Math.PI, c=Math.cos(t), s=Math.sin(t);
-        return [M[0]+o[0]*c-o[1]*s, M[1]+o[0]*s+o[1]*c]; }}); }
-    map[i]=j; map[j]=i;
+  const moves=[], map={};
+  const addPair=(i,j,pi,pj)=>{ moves.push({g:ballAt(i),c0:gameColor[i],c1:gameColor[j],path:pi});
+                               moves.push({g:ballAt(j),c0:gameColor[j],c1:gameColor[i],path:pj});
+                               map[i]=j; map[j]=i; };
+  for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){   // neighbour pairs: 180° orbit about midpoint
+    const A=P(i),B=P(j),M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+    const orbit=o=>e=>{ const t=e*Math.PI,c=Math.cos(t),s=Math.sin(t);
+      return [M[0]+o[0]*c-o[1]*s, M[1]+o[0]*s+o[1]*c]; };
+    addPair(i,j, orbit([A[0]-M[0],A[1]-M[1]]), orbit([B[0]-M[0],B[1]-M[1]]));
   }
-  anim={p:0,dur:1.1,kind:'swap',moves,apply:map};
+  { const A=P(0),B=P(1), lin=(p,q)=>e=>[p[0]+(q[0]-p[0])*e,p[1]+(q[1]-p[1])*e];
+    addPair(0,1, lin(A,B), lin(B,A)); }                // 0-1 straight chute
+  { const arc=arcPath(P(2),P(9),14);
+    addPair(2,9, e=>arc(e), e=>arc(1-e)); }            // 2-9 constant-radius arc
+  anim={p:0,dur:1.2,kind:'swap',moves,apply:map};
 }
 function finishAnim(){ for(const g of Object.values(balls)){ g.userData.slot=anim.apply[g.userData.slot];
     const p=P(g.userData.slot); g.position.set(p[0],p[1],ballZ);
-    const c=gameColor[g.userData.slot]; g.userData.mat.color.copy(tmpA.set(c)).lerp(milkW,0.4); g.userData.mat.emissive.set(c);
+    const c=gameColor[g.userData.slot]; g.userData.mat.color.copy(tmpA.set(c)).lerp(milkW,MILK); g.userData.mat.emissive.set(c);
   } anim=null; }
 
 document.getElementById('spin').onclick=startSpin;
 document.getElementById('swap').onclick=startSwap;
 document.getElementById('cbBottom').onchange=e=>{ if(bottomMesh) bottomMesh.visible=e.target.checked; };
 document.getElementById('cbMid').onchange=e=>{ if(midMesh) midMesh.visible=e.target.checked; };
-document.getElementById('cbCover').onchange=e=>{ if(coverMesh) coverMesh.visible=e.target.checked; };
 document.getElementById('cbBalls').onchange=e=>{ if(ballsGroup) ballsGroup.visible=e.target.checked; };
-document.getElementById('cbGears').onchange=e=>{ if(gearsMesh) gearsMesh.visible=e.target.checked; };
 document.getElementById('auto').onclick=e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
 document.getElementById('reset').onclick=frameAll;
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);});
@@ -170,7 +180,7 @@ let last=performance.now();
     for(const mv of anim.moves){ const xy=mv.path(e); mv.g.position.set(xy[0],xy[1],ballZ);
       if(mv.c0!==mv.c1){ const m=mv.g.userData.mat;
         m.emissive.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1),e);
-        m.color.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1),e).lerp(milkW,0.4); } }
+        m.color.copy(tmpA.set(mv.c0)).lerp(tmpB.set(mv.c1),e).lerp(milkW,MILK); } }
     if(anim.p>=1) finishAnim();
   }
   controls.update(); renderer.render(scene,camera);
