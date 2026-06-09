@@ -81,7 +81,8 @@ const numMat=new THREE.MeshStandardMaterial({color:0x0a0a0a, roughness:0.55});
 
 // --- schematic mechanism layer (sits just below the plate) ---
 const gearMat=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.85, roughness:0.4});
-let gearLayer=null; const gearParts=[];          // {obj,span} — rotated by the push input
+const partMat=new THREE.MeshStandardMaterial({color:0xc4cad6, metalness:0.55, roughness:0.5});
+let gearLayer=null; const mechParts=[];          // each: update(u) — driven by the single push
 function makeGear(r, teeth, th){
   const g=new THREE.Group();
   g.add(new THREE.Mesh(new THREE.CylinderGeometry(r-1.3, r-1.3, th, 40).rotateX(Math.PI/2), gearMat));
@@ -140,18 +141,48 @@ function build(){
     g.scale.setScalar(ballScale);
     g.position.set(p[0],p[1],ballZ); g.userData={slot:s, mat}; ballsGroup.add(g); balls[s]=g;
   }
-  // ---- schematic gearing under the plate (toggle with 'gears') ----
-  // The 0-rack push -> central drive ring -> all swap rotors, in unison.
+  // ---- full schematic mechanism under the plate (toggle with 'gears') ----
+  // ONE input pinion does everything: top rack (0-plunger) drives it, it turns the
+  // central ring (-> four 180° carriers), counter-drives the bottom rack (0-1 drawer),
+  // and a compound gear steps up to the two 2-9 shuttles. All off the single push u.
   gearLayer=new THREE.Group(); gearLayer.position.z=-7; gearLayer.visible=false; root.add(gearLayer);
-  const addGear=(g,span,x,y)=>{ g.position.set(x,y,0); g.userData.base=0; gearParts.push({obj:g,span}); gearLayer.add(g); return g; };
-  addGear(makeRingGear(40,12,40,5), THREE.MathUtils.degToRad(-50), 0, 0);   // central drive RING (hollow, thick rim)
-  for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){ const A=P(i),B=P(j);     // four neighbour rotors (180°/push)
-    addGear(makeGear(13,13,5), Math.PI, (A[0]+B[0])/2, (A[1]+B[1])/2); }
-  { const p=P(0); addGear(makeGear(8,8,5), THREE.MathUtils.degToRad(220), p[0], p[1]-4); }  // input pinion under ball 0
+  const Sx=nbchord;                                          // push stroke (~28)
+  const add=(o,x,y,z,upd)=>{ o.position.set(x,y,z||0); gearLayer.add(o); mechParts.push(upd); return o; };
+  // central drive RING (hollow, thick rim) — pitch ~38
+  const ring=makeRingGear(38,12,52,5);
+  add(ring,0,0,0, u=> ring.rotation.z = (Sx/38)*u );
+  // four neighbour CARRIERS — each turns exactly 180° per push (r_c = S/π)
+  for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){ const A=P(i),B=P(j);
+    const c=makeGear(10,14,5); add(c,(A[0]+B[0])/2,(A[1]+B[1])/2,0, u=> c.rotation.z = -Math.PI*u ); }
+  // INPUT PINION near the apex, meshing the ring (r=8, center dist 38+8=46)
+  const pin=makeGear(8,11,6); add(pin,0,46,0.5, u=> pin.rotation.z = -(Sx/8)*u );
+  // TOP RACK = the 0-plunger: slides radially IN along +y (carries ball 0)
+  const topRack=new THREE.Mesh(new THREE.BoxGeometry(6,30,4), partMat);
+  add(topRack,0,0,4, u=> topRack.position.y = (R+nbchord) - 12 - Sx*u );
+  // BOTTOM RACK = the 0-1 DRAWER: slides radially OUT (carries ball 1 under)
+  const drawer=new THREE.Mesh(new THREE.BoxGeometry(8,34,5), partMat);
+  add(drawer,0,0,-5, u=> drawer.position.y = R + 2 + Sx*u );
+  // ---- 2-9 drivetrain: ring -> compound step-up -> idler (through the hollow
+  //      centre) -> arc-midpoint pinion that meshes BOTH shuttle racks (opposite
+  //      sides -> 2 and 9 counter-travel and pass with z-separation).
+  const comp=new THREE.Group(); const cg1=makeGear(6,10,4), cg2=makeGear(13,18,4);
+  cg2.position.z=5; comp.add(cg1,cg2);
+  add(comp,0,-44,0, u=> comp.rotation.z = -(Sx/6)*u );        // driven off the ring at the south rim
+  const m29=[(P(2)[0]+P(9)[0])/2,(P(2)[1]+P(9)[1])/2];        // 2-9 arc midpoint
+  const idl=makeGear(9,13,5);
+  add(idl, m29[0]*0.5, (m29[1]-44)*0.5, 0, u=> idl.rotation.z = (Sx/9)*u );   // connector across the centre
+  const dp=makeGear(9,13,7);
+  add(dp, m29[0], m29[1], 0, u=> dp.rotation.z = -(Sx/9)*u );  // arc-midpoint drive pinion
+  // 2-9 SHUTTLE cups (each rides a rack meshing dp): over (2) / under (9)
+  const arc29=arcPath(P(2),P(9),14);
+  const sh2=new THREE.Mesh(new THREE.BoxGeometry(9,5,5), partMat);
+  add(sh2,0,0,2, u=>{ const p=arc29(u);   sh2.position.set(p[0],p[1],2); });
+  const sh9=new THREE.Mesh(new THREE.BoxGeometry(9,5,5), partMat);
+  add(sh9,0,0,-6, u=>{ const q=arc29(1-u); sh9.position.set(q[0],q[1],-6); });
+  updateGears(0);
   frameAll();
 }
-function updateGears(e){ for(const gp of gearParts) gp.obj.rotation.z = gp.obj.userData.base + gp.span*e; }
-function commitGears(){ for(const gp of gearParts) gp.obj.userData.base += gp.span; }
+function updateGears(u){ for(const f of mechParts) f(u); }
 function frameAll(){
   const box=new THREE.Box3().setFromObject(root), c2=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
   root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,s.y*0.1,0);
@@ -214,7 +245,7 @@ function startPush(){ if(anim) return;
   const add=(s,path,zf)=>moves.push({g:ballAt(s), c0:gameColor[s], c1:gameColor[s], path, zf});
   for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){     // neighbour pairs swing 180° (both on top)
     const A=P(i),B=P(j),M=[(A[0]+B[0])/2,(A[1]+B[1])/2];
-    const orbit=o=>e=>{ const t=e*Math.PI,c=Math.cos(t),s=Math.sin(t);
+    const orbit=o=>e=>{ const t=-e*Math.PI,c=Math.cos(t),s=Math.sin(t);   // CW, matching the carrier gear
       return [M[0]+o[0]*c-o[1]*s, M[1]+o[0]*s+o[1]*c]; };
     add(i, orbit([A[0]-M[0],A[1]-M[1]])); add(j, orbit([B[0]-M[0],B[1]-M[1]])); map[i]=j; map[j]=i;
   }
@@ -227,7 +258,7 @@ function startPush(){ if(anim) return;
     add(9, s9.path, s9.zf); map[2]=9; map[9]=2; }
   anim={p:0,dur:1.6,kind:'push',moves,apply:map};
 }
-function finishAnim(){ if(anim.kind==='push') commitGears();
+function finishAnim(){ if(anim.kind==='push' && gearLayer) updateGears(0);   // mechanism back to neutral
   for(const g of Object.values(balls)){ g.userData.slot=anim.apply[g.userData.slot];
     const p=P(g.userData.slot); g.position.set(p[0],p[1],ballZ);
     const c=gameColor[g.userData.slot]; g.userData.mat.color.copy(tmpA.set(c)).lerp(milkW,MILK); g.userData.mat.emissive.set(c);
