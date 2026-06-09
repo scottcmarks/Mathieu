@@ -221,7 +221,7 @@ module case_bottom() {
         a = P(pairs[idx][0]); b = P(pairs[idx][1]);
         translate([(a[0]+b[0])/2,(a[1]+b[1])/2,floor_th]) cylinder(h = carrier_z, d = 4.8);
     }
-    translate([0,0,floor_th]) cylinder(h = carrier_z, d = 7.8);              // central post (608 bore)
+    translate([0,0,floor_th]) cylinder(h = carrier_z, d = 3.9);              // central post (half — was 7.8)
 }
 
 /* ---------------- Full static assembly ---------------- */

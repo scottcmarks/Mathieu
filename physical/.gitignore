@@ -1,6 +1,9 @@
 # Derived render artifacts — regenerate from the .scad sources.
 # STL parts (~18 MB total); rebuild with viewer/make_parts.sh
 viewer/*.stl
+# Series picture parts + static renders — regenerate from series/*.scad
+series/*.stl
+series/*.png
 # OpenSCAD turntable frames
 renders/
 # interference-checker virtualenv + caches
