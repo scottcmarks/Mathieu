@@ -78,7 +78,7 @@ module plate_mid()    { h=clear_top-eq;    difference() { annulus(h); translate(
 //      travel from its seat back out to the 0-seat, each with ramps to the surface.
 module under_channels() {
     arc_chute(Pp(2), Pp(9), 14, under_z);                 // 9's under-arc (directly beneath the over-arc)
-    straight_chute(Pp(1), Pp(0), under_z);                // 1's return run
+    arc_chute(Pp(0), Pp(1), 12, under_z);                 // 1's return — bows +x, clearing the plunger column
     for (p=xfer_pts) vchute(p, under_z, 1);               // ramps up to the main plate
 }
 module plate_under() {

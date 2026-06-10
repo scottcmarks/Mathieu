@@ -23,7 +23,8 @@ eq   = ball_d/2                       # 9 — ball-centre height on the ring
 tube = ball_d/2 + 0.5
 nbchord = 2*R*math.sin(math.pi/N)     # ~28.17
 underZ  = -11.0
-GZ      = -7.0                        # gear-layer origin z (world = GZ + local)
+GZ      = -9.0                        # gear-layer origin z (world = GZ + local)
+RET_SAG = 12.0                        # ball-1 return bows this far in +x (< chord/2=14, clears the plunger column)
 Sx      = nbchord
 SEG_PUSH = 24                         # push samples (u = 0..1)
 SEG_SPIN = 132                        # spin samples around the ring (~ every 2.7°)
@@ -47,17 +48,14 @@ def arcpt(a, b, sag, e):
     daw -= 2*math.pi*round(daw/(2*math.pi)); an = a0+daw*e
     return (cx+arcR*math.cos(an), cy+arcR*math.sin(an))
 
-DN, UP = 0.24, 0.76
-def under_seg(A, B, trav, e):
-    if   e < DN: xy = A
-    elif e > UP: xy = B
-    else:        xy = trav((e-DN)/(UP-DN))
-    if   e < DN: z = eq + (underZ-eq)*(e/DN)
-    elif e > UP: z = underZ + (eq-underZ)*((e-UP)/(1-UP))
-    else:        z = underZ
-    return (xy[0], xy[1], z)
-
+def dip(u):                                          # eq -> underZ -> eq (smooth, immediate)
+    return eq - (eq-underZ)*math.sin(math.pi*u)
 def lin(p, q): return lambda e: (p[0]+(q[0]-p[0])*e, p[1]+(q[1]-p[1])*e)
+
+# ball-1 return: a +x-bowed arc P1->P0 so it leaves the central plunger column at once
+def ret1(e):  return arcpt(P(0), P(1), RET_SAG, 1-e)
+# ball-2 over / ball-9 under share the 2-9 arc footprint
+def arc29(e): return arcpt(P(2), P(9), 14, e)
 
 def ball_positions_push(u):
     """world (x,y,z) for every ball 0..11 at push fraction u."""
@@ -68,12 +66,10 @@ def ball_positions_push(u):
             t = -u*math.pi; c,s = math.cos(t),math.sin(t)
             return (M[0]+o[0]*c-o[1]*s, M[1]+o[0]*s+o[1]*c, eq)
         pos[i] = orb((A[0]-M[0],A[1]-M[1])); pos[j] = orb((B[0]-M[0],B[1]-M[1]))
-    A,B = P(0),P(1)
-    pos[0] = (*lin(A,B)(u), eq)                       # 0 slides in on top
-    pos[1] = under_seg(B, A, lin(B,A), u)             # 1 ducks under, out
-    fwd = lambda e: arcpt(P(2),P(9),14,e)
-    pos[2] = (*fwd(u), eq)                            # 2 over-arc
-    pos[9] = under_seg(P(9),P(2), lambda t: fwd(1-t), u)  # 9 under-arc
+    pos[0] = (*lin(P(0),P(1))(u), eq)                # 0 slides in on top
+    pos[1] = (*ret1(u), dip(u))                       # 1 ducks under (bowed +x), resurfaces at P0
+    pos[2] = (*arc29(u), eq)                           # 2 over-arc, on top
+    pos[9] = (*arc29(1-u), dip(u))                    # 9 under-arc, ducks
     return pos
 
 # ---- mechanism part transforms (mirror viewer build()) ------------------------
@@ -84,29 +80,37 @@ m29 = ((P(2)[0]+P(9)[0])/2, (P(2)[1]+P(9)[1])/2)
 def parts(u, engaged=True):
     """Mechanism solids at push fraction u.
 
-    engaged=True  -> as drawn in the viewer (gear layer fixed below the plate).
-    engaged=False -> 'spin/rest' regime: same fixed positions (no retraction yet)
-                     so the checker reveals whether rest parts already clear balls.
+    engaged=True  -> PUSH regime: carrying shuttles ride at ball level.
+    engaged=False -> SPIN/REST regime: every carrying part retracts to gear-layer
+                     depth so the ring is free to rotate.
     """
+    sh_over  = eq      if engaged else GZ      # over-shuttle height (carries ball 2)
+    sh_under = underZ  if engaged else GZ-3    # under-shuttle height (carries 1 & 9)
     L = []
-    # (the central drive RING is a hollow rim at r~38 — it never reaches a ball at
-    #  r=50 or an interior arc ball at r<=20, so it isn't modelled here.)
     for (i,j) in NEIGH:
         A,B = P(i),P(j)
-        L.append(('cyl', ((A[0]+B[0])/2,(A[1]+B[1])/2), 10.0, GZ-2.5, GZ+2.5))  # carrier
-    L.append(('cyl', (0,46),                  8.0, GZ-3.0, GZ+3.5))   # input pinion
-    L.append(('box', (0, 66-Sx*u),  3.0,15.0, GZ+2,  GZ+6))          # top rack (0-plunger)
-    L.append(('box', (0, 52+Sx*u),  4.0,17.0, GZ-7.5,GZ-2.5))        # drawer (1 carrier)
-    L.append(('cyl', (0,-44),                13.0, GZ-2.0, GZ+2.0))   # compound
-    L.append(('cyl', (m29[0]*0.5,(m29[1]-44)*0.5), 9.0, GZ-2.5, GZ+2.5))  # idler
-    L.append(('cyl', (m29[0],m29[1]),         9.0, GZ-3.5, GZ+3.5))   # dp (arc-mid pinion)
-    p2 = arcpt(P(2),P(9),14,u);   L.append(('box', p2,4.5,2.5, GZ-0.5, GZ+4.5))   # shuttle 2 (over)
-    q9 = arcpt(P(2),P(9),14,1-u); L.append(('box', q9,4.5,2.5, GZ-8.5, GZ-3.5))   # shuttle 9 (under)
+        L.append(('cyl', ((A[0]+B[0])/2,(A[1]+B[1])/2), 10.0, GZ-2.5, GZ+2.5))  # carrier gear (hub low)
+    # input pinion OFF the +y axis (-x side), so ball 1's column is clear
+    L.append(('cyl', (-13,46),                9.0, GZ-3.0, GZ+3.0))
+    # 0-plunger rack: rides ABOVE the balls (pushes ball 0 via a down-prong), so it
+    # never shares ball 1's duck column; trails behind ball 0
+    L.append(('box', (0, (R+nbchord)+6-Sx*u), 3.0,7.0, eq+11, eq+15))
+    # carrying shuttles (ride at ball level when engaged; carried contact is expected)
+    L.append(('box', ret1(u),  4.0,4.0, sh_under-2.5, sh_under+2.5))   # shuttle 1 (under, +x bow)
+    L.append(('box', arc29(u), 4.0,4.0, sh_over-2.5,  sh_over+2.5))    # shuttle 2 (over)
+    L.append(('box', arc29(1-u),4.0,4.0, sh_under-2.5, sh_under+2.5))  # shuttle 9 (under)
+    # 2-9 drivetrain — RIM-ROUTED (radius ~40) at gear-layer depth, off the central arc:
+    #   compound at the south rim -> east/west idlers -> seat-end pinions at P2 / P9
+    L.append(('cyl', (0,-40),                13.0, GZ-2.0, GZ+2.0))    # compound (south rim)
+    L.append(('cyl', (32,-34),                9.0, GZ-2.5, GZ+2.5))    # east idler
+    L.append(('cyl', (-32,-34),               9.0, GZ-2.5, GZ+2.5))    # west idler
+    L.append(('cyl', P(2),                    7.0, GZ-3.0, GZ+3.0))    # seat pinion @2
+    L.append(('cyl', P(9),                    7.0, GZ-3.0, GZ+3.0))    # seat pinion @9
     return L
 
 PART_NAMES = ['carrier34','carrier56','carrier78','carrier10-11',
-              'input-pinion','top-rack','drawer','compound','idler','dp-pinion',
-              'shuttle2','shuttle9']
+              'input-pinion','top-rack','shuttle1','shuttle2','shuttle9',
+              'compound','idlerE','idlerW','seat-pinion2','seat-pinion9']
 
 # ---- primitive intersection: penetration depth (>0 means overlap) -------------
 def pen_sphere_cyl(c, part):
@@ -129,7 +133,7 @@ def pen(c, part):
 def carried_part(ball, part_name):
     """parts a ball is *supposed* to ride on (contact expected, not a clash)."""
     return ((ball==0 and part_name=='top-rack') or
-            (ball==1 and part_name=='drawer')   or
+            (ball==1 and part_name=='shuttle1') or
             (ball==2 and part_name=='shuttle2') or
             (ball==9 and part_name=='shuttle9'))
 

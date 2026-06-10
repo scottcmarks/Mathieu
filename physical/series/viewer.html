@@ -141,44 +141,46 @@ function build(){
     g.scale.setScalar(ballScale);
     g.position.set(p[0],p[1],ballZ); g.userData={slot:s, mat}; ballsGroup.add(g); balls[s]=g;
   }
-  // ---- full schematic mechanism under the plate (toggle with 'gears') ----
-  // ONE input pinion does everything: top rack (0-plunger) drives it, it turns the
-  // central ring (-> four 180° carriers), counter-drives the bottom rack (0-1 drawer),
-  // and a compound gear steps up to the two 2-9 shuttles. All off the single push u.
-  gearLayer=new THREE.Group(); gearLayer.position.z=-7; gearLayer.visible=false; root.add(gearLayer);
+  // ---- full schematic mechanism (toggle with 'gears') — the interference-checked
+  //      (check_series.py) v3 layout that PASSES both push and spin:
+  //   * input pinion OFF the +y axis so ball 1's duck column is clear
+  //   * 0-plunger rack rides ABOVE the balls (pushes ball 0 via a down-prong)
+  //   * carrying shuttles ride at ball level during push, RETRACT for spin
+  //   * 2-9 drivetrain rim-routed (off the central arc): compound (south) ->
+  //     E/W idlers -> seat-end pinions at 2 & 9
+  const GZ=-9; gearLayer=new THREE.Group(); gearLayer.position.z=GZ; gearLayer.visible=false; root.add(gearLayer);
+  const Lz=w=>w-GZ;                                          // world z -> gearLayer-local z
   const Sx=nbchord;                                          // push stroke (~28)
+  const eng=u=> Math.min(1, 4*u, 4*(1-u));                   // shuttle engagement (up to carry, retract at the ends)
+  const REST=2;                                              // retracted shuttle height (local, just above the gears)
+  const arc29=arcPath(P(2),P(9),14), ret1m=e=>arcPath(P(0),P(1),12)(1-e);
   const add=(o,x,y,z,upd)=>{ o.position.set(x,y,z||0); gearLayer.add(o); mechParts.push(upd); return o; };
-  // central drive RING (hollow, thick rim) — pitch ~38
+  // central drive RING (hollow, thick rim)
   const ring=makeRingGear(38,12,52,5);
   add(ring,0,0,0, u=> ring.rotation.z = (Sx/38)*u );
   // four neighbour CARRIERS — each turns exactly 180° per push (r_c = S/π)
   for(const [i,j] of [[3,4],[5,6],[7,8],[10,11]]){ const A=P(i),B=P(j);
     const c=makeGear(10,14,5); add(c,(A[0]+B[0])/2,(A[1]+B[1])/2,0, u=> c.rotation.z = -Math.PI*u ); }
-  // INPUT PINION near the apex, meshing the ring (r=8, center dist 38+8=46)
-  const pin=makeGear(8,11,6); add(pin,0,46,0.5, u=> pin.rotation.z = -(Sx/8)*u );
-  // TOP RACK = the 0-plunger: slides radially IN along +y (carries ball 0)
-  const topRack=new THREE.Mesh(new THREE.BoxGeometry(6,30,4), partMat);
-  add(topRack,0,0,4, u=> topRack.position.y = (R+nbchord) - 12 - Sx*u );
-  // BOTTOM RACK = the 0-1 DRAWER: slides radially OUT (carries ball 1 under)
-  const drawer=new THREE.Mesh(new THREE.BoxGeometry(8,34,5), partMat);
-  add(drawer,0,0,-5, u=> drawer.position.y = R + 2 + Sx*u );
-  // ---- 2-9 drivetrain: ring -> compound step-up -> idler (through the hollow
-  //      centre) -> arc-midpoint pinion that meshes BOTH shuttle racks (opposite
-  //      sides -> 2 and 9 counter-travel and pass with z-separation).
+  // INPUT PINION off the +y axis (-x), meshing the ring
+  const pin=makeGear(9,12,6); add(pin,-13,46,0, u=> pin.rotation.z = -(Sx/9)*u );
+  // 0-PLUNGER RACK: rides ABOVE the balls, trailing ball 0
+  const topRack=new THREE.Mesh(new THREE.BoxGeometry(6,14,4), partMat);
+  add(topRack,0,0,Lz(eq+13), u=> topRack.position.y = (R+nbchord)+6 - Sx*u );
+  // CARRYING SHUTTLES — rise to ball level when engaged, retract for spin:
+  const sh1=new THREE.Mesh(new THREE.BoxGeometry(8,8,5), partMat);          // ball 1 (under, +x bow)
+  add(sh1,0,0,0, u=>{ const p=ret1m(u);  sh1.position.set(p[0],p[1], REST+(Lz(underZ)-REST)*eng(u)); });
+  const sh2=new THREE.Mesh(new THREE.BoxGeometry(8,8,5), partMat);          // ball 2 (over)
+  add(sh2,0,0,0, u=>{ const p=arc29(u);  sh2.position.set(p[0],p[1], REST+(Lz(eq)-REST)*eng(u)); });
+  const sh9=new THREE.Mesh(new THREE.BoxGeometry(8,8,5), partMat);          // ball 9 (under)
+  add(sh9,0,0,0, u=>{ const q=arc29(1-u); sh9.position.set(q[0],q[1], REST+(Lz(underZ)-REST)*eng(u)); });
+  // 2-9 DRIVETRAIN — rim-routed off the central arc:
   const comp=new THREE.Group(); const cg1=makeGear(6,10,4), cg2=makeGear(13,18,4);
   cg2.position.z=5; comp.add(cg1,cg2);
-  add(comp,0,-44,0, u=> comp.rotation.z = -(Sx/6)*u );        // driven off the ring at the south rim
-  const m29=[(P(2)[0]+P(9)[0])/2,(P(2)[1]+P(9)[1])/2];        // 2-9 arc midpoint
-  const idl=makeGear(9,13,5);
-  add(idl, m29[0]*0.5, (m29[1]-44)*0.5, 0, u=> idl.rotation.z = (Sx/9)*u );   // connector across the centre
-  const dp=makeGear(9,13,7);
-  add(dp, m29[0], m29[1], 0, u=> dp.rotation.z = -(Sx/9)*u );  // arc-midpoint drive pinion
-  // 2-9 SHUTTLE cups (each rides a rack meshing dp): over (2) / under (9)
-  const arc29=arcPath(P(2),P(9),14);
-  const sh2=new THREE.Mesh(new THREE.BoxGeometry(9,5,5), partMat);
-  add(sh2,0,0,2, u=>{ const p=arc29(u);   sh2.position.set(p[0],p[1],2); });
-  const sh9=new THREE.Mesh(new THREE.BoxGeometry(9,5,5), partMat);
-  add(sh9,0,0,-6, u=>{ const q=arc29(1-u); sh9.position.set(q[0],q[1],-6); });
+  add(comp,0,-40,0, u=> comp.rotation.z = -(Sx/6)*u );                       // compound step-up (south rim)
+  const ie=add(makeGear(9,13,5),  32,-34,0, u=> ie.rotation.z= (Sx/9)*u );   // east idler
+  const iw=add(makeGear(9,13,5), -32,-34,0, u=> iw.rotation.z=-(Sx/9)*u );   // west idler
+  const d2=add(makeGear(7,11,6), P(2)[0],P(2)[1],0, u=> d2.rotation.z=-(Sx/7)*u); // seat-end pinion @2
+  const d9=add(makeGear(7,11,6), P(9)[0],P(9)[1],0, u=> d9.rotation.z= (Sx/7)*u); // seat-end pinion @9
   updateGears(0);
   frameAll();
 }
@@ -232,14 +234,12 @@ function startSwap(){ if(anim) return;
 }
 // PUSH 0: one input (0-ball pushed down the chute) drives the whole perm #22 in
 // unison via the gearing — the 1 and 9 balls duck under and resurface in place.
-const underZ=-11, dn=0.24, up=0.76;                    // under-lane height + ramp-down/up fractions
+// Kinematics match the interference-checker design (check_series.py): ball 1's
+// return bows +x to clear the plunger column; smooth dips for 1 and 9.
+const underZ=-11;
 const lin=(p,q)=>e=>[p[0]+(q[0]-p[0])*e, p[1]+(q[1]-p[1])*e];
-// a ramp-down → under-lane traverse → ramp-up motion from seat A out to seat B
-function underSeg(A,B,trav){ return {
-  path:e=> e<dn ? A : e>up ? B : trav((e-dn)/(up-dn)),
-  zf:  e=> e<dn ? ballZ+(underZ-ballZ)*(e/dn)
-        : e>up ? underZ+(ballZ-underZ)*((e-up)/(1-up))
-        : underZ }; }
+const dip=u=> ballZ - (ballZ-underZ)*Math.sin(Math.PI*u);   // eq -> underZ -> eq
+const ret1=e=> arcPath(P(0),P(1),12)(1-e);                  // +x-bowed return P1->P0
 function startPush(){ if(anim) return;
   const moves=[], map={};
   const add=(s,path,zf)=>moves.push({g:ballAt(s), c0:gameColor[s], c1:gameColor[s], path, zf});
@@ -249,13 +249,11 @@ function startPush(){ if(anim) return;
       return [M[0]+o[0]*c-o[1]*s, M[1]+o[0]*s+o[1]*c]; };
     add(i, orbit([A[0]-M[0],A[1]-M[1]])); add(j, orbit([B[0]-M[0],B[1]-M[1]])); map[i]=j; map[j]=i;
   }
-  { add(0, lin(P(0),P(1)));                            // 0 slides IN on top, nestles in 1's detent
-    const s1=underSeg(P(1),P(0), lin(P(1),P(0)));      // 1 ramps down, runs under, pops up outboard
-    add(1, s1.path, s1.zf); map[0]=1; map[1]=0; }
+  { add(0, lin(P(0),P(1)));                            // 0 slides IN on top, nestles in 1's seat
+    add(1, ret1, dip); map[0]=1; map[1]=0; }           // 1 ducks under (+x bow), resurfaces at P0
   { const fwd=arcPath(P(2),P(9),14);
-    add(2, e=>fwd(e));                                 // 2 rides the over-arc
-    const s9=underSeg(P(9),P(2), t=>fwd(1-t));         // 9 ramps down, rides the under-arc beneath 2, pops up
-    add(9, s9.path, s9.zf); map[2]=9; map[9]=2; }
+    add(2, e=>fwd(e));                                 // 2 rides the over-arc on top
+    add(9, e=>fwd(1-e), dip); map[2]=9; map[9]=2; }    // 9 ducks under, passes beneath 2
   anim={p:0,dur:1.6,kind:'push',moves,apply:map};
 }
 function finishAnim(){ if(anim.kind==='push' && gearLayer) updateGears(0);   // mechanism back to neutral
