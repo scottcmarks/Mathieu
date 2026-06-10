@@ -86,31 +86,26 @@ def parts(u, engaged=True):
     """
     sh_over  = eq      if engaged else GZ      # over-shuttle height (carries ball 2)
     sh_under = underZ  if engaged else GZ-3    # under-shuttle height (carries 1 & 9)
-    L = []
+    L=[]; nm=[]
+    def add(solid, name): L.append(solid); nm.append(name)
     for (i,j) in NEIGH:
-        A,B = P(i),P(j)
-        L.append(('cyl', ((A[0]+B[0])/2,(A[1]+B[1])/2), 10.0, GZ-2.5, GZ+2.5))  # carrier gear (hub low)
-    # input pinion OFF the +y axis (-x side), so ball 1's column is clear
-    L.append(('cyl', (-13,46),                9.0, GZ-3.0, GZ+3.0))
-    # 0-plunger rack: rides ABOVE the balls (pushes ball 0 via a down-prong), so it
-    # never shares ball 1's duck column; trails behind ball 0
-    L.append(('box', (0, (R+nbchord)+6-Sx*u), 3.0,7.0, eq+11, eq+15))
-    # carrying shuttles (ride at ball level when engaged; carried contact is expected)
-    L.append(('box', ret1(u),  4.0,4.0, sh_under-2.5, sh_under+2.5))   # shuttle 1 (under, +x bow)
-    L.append(('box', arc29(u), 4.0,4.0, sh_over-2.5,  sh_over+2.5))    # shuttle 2 (over)
-    L.append(('box', arc29(1-u),4.0,4.0, sh_under-2.5, sh_under+2.5))  # shuttle 9 (under)
-    # 2-9 drivetrain — RIM-ROUTED (radius ~40) at gear-layer depth, off the central arc:
-    #   compound at the south rim -> east/west idlers -> seat-end pinions at P2 / P9
-    L.append(('cyl', (0,-40),                13.0, GZ-2.0, GZ+2.0))    # compound (south rim)
-    L.append(('cyl', (32,-34),                9.0, GZ-2.5, GZ+2.5))    # east idler
-    L.append(('cyl', (-32,-34),               9.0, GZ-2.5, GZ+2.5))    # west idler
-    L.append(('cyl', P(2),                    7.0, GZ-3.0, GZ+3.0))    # seat pinion @2
-    L.append(('cyl', P(9),                    7.0, GZ-3.0, GZ+3.0))    # seat pinion @9
-    return L
-
-PART_NAMES = ['carrier34','carrier56','carrier78','carrier10-11',
-              'input-pinion','top-rack','shuttle1','shuttle2','shuttle9',
-              'compound','idlerE','idlerW','seat-pinion2','seat-pinion9']
+        A,B=P(i),P(j); M=((A[0]+B[0])/2,(A[1]+B[1])/2)
+        add(('cyl', M, 10.0, GZ-2.5, GZ+2.5), f'carrier{i}-{j}')       # carrier gear (hub low)
+    if engaged:                              # the physical YOKE crossbar sweeps at ball level on a push
+        for (i,j) in NEIGH:
+            A,B=P(i),P(j); M=((A[0]+B[0])/2,(A[1]+B[1])/2)
+            add(('cyl', M, 16.0, eq-2.5, eq+2.5), f'yoke{i}-{j}')      # swept-disc envelope of the arm
+    add(('cyl', (-13,46), 9.0, GZ-3.0, GZ+3.0), 'input-pinion')       # off the +y axis (ball 1 column clear)
+    add(('box', (0, (R+nbchord)+6-Sx*u), 3.0,7.0, eq+11, eq+15), 'top-rack')  # rides ABOVE the balls
+    add(('box', ret1(u),  4.0,4.0, sh_under-2.5, sh_under+2.5), 'shuttle1')   # under, +x bow
+    add(('box', arc29(u), 4.0,4.0, sh_over-2.5,  sh_over+2.5),  'shuttle2')   # over
+    add(('box', arc29(1-u),4.0,4.0, sh_under-2.5, sh_under+2.5),'shuttle9')   # under
+    add(('cyl', (0,-40), 13.0, GZ-2.0, GZ+2.0), 'compound')          # 2-9 train, rim-routed
+    add(('cyl', (32,-34), 9.0, GZ-2.5, GZ+2.5), 'idlerE')
+    add(('cyl', (-32,-34),9.0, GZ-2.5, GZ+2.5), 'idlerW')
+    add(('cyl', P(2), 7.0, GZ-3.0, GZ+3.0), 'seat-pinion2')
+    add(('cyl', P(9), 7.0, GZ-3.0, GZ+3.0), 'seat-pinion9')
+    return L, nm
 
 # ---- primitive intersection: penetration depth (>0 means overlap) -------------
 def pen_sphere_cyl(c, part):
@@ -132,6 +127,8 @@ def pen(c, part):
 # ---- the two regime checks ----------------------------------------------------
 def carried_part(ball, part_name):
     """parts a ball is *supposed* to ride on (contact expected, not a clash)."""
+    if part_name.startswith('yoke'):
+        a,b = part_name[4:].split('-'); return ball in (int(a), int(b))
     return ((ball==0 and part_name=='top-rack') or
             (ball==1 and part_name=='shuttle1') or
             (ball==2 and part_name=='shuttle2') or
@@ -141,7 +138,7 @@ def check_push():
     clashes = []
     for k in range(SEG_PUSH+1):
         u = k/SEG_PUSH
-        pos = ball_positions_push(u); pl = parts(u, engaged=True)
+        pos = ball_positions_push(u); pl, nm = parts(u, engaged=True)
         balls = sorted(pos)
         # ball <-> ball
         for a in range(len(balls)):
@@ -153,24 +150,23 @@ def check_push():
         # ball <-> part
         for s in balls:
             for idx, part in enumerate(pl):
-                nm = PART_NAMES[idx]
+                name = nm[idx]
                 p = pen(pos[s], part)
-                if p > TOL and not carried_part(s, nm):
-                    clashes.append((u, f'ball{s}', nm, p))
+                if p > TOL and not carried_part(s, name):
+                    clashes.append((u, f'ball{s}', name, p))
     return clashes
 
 def check_spin():
     """Sweep a ball through every ring position; the rest mechanism must clear it."""
     clashes = []
-    pl = parts(0.0, engaged=False)
+    pl, nm = parts(0.0, engaged=False)
     for k in range(SEG_SPIN):
         a = math.radians(-90 + k*(360.0/SEG_SPIN))
         c = (R*math.cos(a), -R*math.sin(a), eq)
         for idx, part in enumerate(pl):
-            nm = PART_NAMES[idx]
             p = pen(c, part)
             if p > TOL:
-                clashes.append((math.degrees(a) % 360, 'ring-ball', nm, p))
+                clashes.append((math.degrees(a) % 360, 'ring-ball', nm[idx], p))
     return clashes
 
 def report(title, clashes, stage_label):
