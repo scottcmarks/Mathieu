@@ -84,6 +84,7 @@ const gearMat=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.85, ro
 const partMat=new THREE.MeshStandardMaterial({color:0xc4cad6, metalness:0.55, roughness:0.5});
 // bright, distinct material so the grabbers (yokes/cradles/prong) read against gears & balls
 const holdMat=new THREE.MeshStandardMaterial({color:0xffc94d, emissive:0x4a3500, metalness:0.35, roughness:0.35});
+const beltMat=new THREE.MeshStandardMaterial({color:0x222428, metalness:0.1, roughness:0.85});  // toothed belt (the actuator)
 let gearLayer=null; const mechParts=[];          // each: update(u) — driven by the single push
 const mech={carriers:{}, yokes:{}, holders:{}};  // holders[ballNo] = the part the ball physically sits in
 function makeGear(r, teeth, th){
@@ -226,6 +227,16 @@ function build(){
       pts.push(new THREE.Vector3(p[0],p[1],Lz(p[2]-RB3))); }   // only the horizontal run; seat drops are well-guided
     return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),48,1.4,8,false), partMat); }
   gearLayer.add(rail3(path2)); gearLayer.add(rail3(path1)); gearLayer.add(rail3(path9));
+  // TRANSPORT BELT — a loop hugging each rail: the working strand (just above the rail)
+  // is clamped to the carriage; the return strand runs just below; it wraps the seat
+  // pulleys. Driving a pulley circulates the belt -> THIS is what pushes the carriage
+  // along its rail.
+  function beltLoop(pathFn){ const fwd=[], rev=[];
+    for(let k=0;k<=20;k++){ const t=0.14+0.72*(k/20); const p=pathFn(t);
+      fwd.push(new THREE.Vector3(p[0],p[1], Lz(p[2]-RB3+1.5)));       // working strand (carriage clamps here)
+      rev.push(new THREE.Vector3(p[0],p[1], Lz(p[2]-RB3-2.6))); }     // return strand
+    return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(fwd.concat(rev.reverse()),true),120,0.9,6,true), beltMat); }
+  gearLayer.add(beltLoop(path2)); gearLayer.add(beltLoop(path9)); gearLayer.add(beltLoop(path1));
   const d2=add(makeGear(9,13,5), P(2)[0],P(2)[1],Lz(eq-RB3), u=> d2.rotation.z=-(Sx/9)*u);  // belt pulley @2 (rail level)
   const d9=add(makeGear(9,13,5), P(9)[0],P(9)[1],Lz(eq-RB3), u=> d9.rotation.z= (Sx/9)*u);  // belt pulley @9
   // 2-9 BELT STEP-UP — lives on a SUB-LAYER below the gear plane (free space there,
