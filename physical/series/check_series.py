@@ -20,6 +20,7 @@ import math, sys
 R, N, ball_d = 50.0, 11, 18.0
 rb   = ball_d/2                       # 9 — ball radius
 eq   = ball_d/2                       # 9 — ball-centre height on the ring
+RB3  = rb + 3                         # rails / yokes ride this far BELOW a ball (never through it)
 tube = ball_d/2 + 0.5
 nbchord = 2*R*math.sin(math.pi/N)     # ~28.17
 underZ  = -11.0                       # ball-1 under-lane (apex, clears the centre)
@@ -41,6 +42,7 @@ def P(s):
 NEIGH = [(3,4),(5,6),(7,8),(10,11)]
 PAIRS = [(0,1),(2,9)] + NEIGH
 
+under9o = -13.0                       # ball-9 outward lane depth (just under the plate, out of view)
 def arcpt(a, b, sag, e):
     c = math.hypot(b[0]-a[0], b[1]-a[1]); arcR = (c*c/4+sag*sag)/(2*sag)
     ux,uy = (b[0]-a[0])/c,(b[1]-a[1])/c; nx,ny = -uy,ux
@@ -57,8 +59,10 @@ def lin(p, q): return lambda e: (p[0]+(q[0]-p[0])*e, p[1]+(q[1]-p[1])*e)
 
 # ball-1 return: a +x-bowed arc P1->P0 so it leaves the central plunger column at once
 def ret1(e):  return arcpt(P(0), P(1), RET_SAG, 1-e)
-# ball-2 over / ball-9 under share the 2-9 arc footprint
-def arc29(e): return arcpt(P(2), P(9), 14, e)
+# ball-2 takes the inward arc (over, at eq); ball-9 takes an OUTWARD arc (under, in
+# the free outer margin) so it never crosses the central ring gear.
+def arc29(e):   return arcpt(P(2), P(9), 14, e)      # ball 2, inward (toward centre)
+def arc9out(e): return arcpt(P(9), P(2), 40, e)      # ball 9, outward (away from centre)
 
 def ball_positions_push(u):
     """world (x,y,z) for every ball 0..11 at push fraction u."""
@@ -72,8 +76,8 @@ def ball_positions_push(u):
     pos[0] = (*lin(P(0),P(1))(u), eq)                # 0 slides in on top
     pos[1] = (*ret1(u), dip(u))                       # 1 ducks under (bowed +x), resurfaces at P0
     pos[2] = (*arc29(u), eq)                           # 2 over-arc, on top
-    # 9: drop VERTICALLY at its seat (radius 50, outside the ring) to full depth, traverse
-    #    the under-arc deep (below the ring rim), then rise vertically at P2.
+    # 9: drop through its seat WELL (a hole in the plate — vertical, guided by the well,
+    #    not a rail) to the deep lane, traverse deep below the ring, rise through P2's well.
     if   u < 0.16: xy, z = P(9), eq + (under9-eq)*(u/0.16)
     elif u > 0.84: xy, z = P(2), under9 + (eq-under9)*((u-0.84)/0.16)
     else:          xy, z = arc29(1-(u-0.16)/0.68), under9
@@ -102,7 +106,7 @@ def parts(u, engaged=True):
     if engaged:                              # the physical YOKE crossbar sweeps at ball level on a push
         for (i,j) in NEIGH:
             A,B=P(i),P(j); M=((A[0]+B[0])/2,(A[1]+B[1])/2)
-            add(('cyl', M, 16.0, eq-2.5, eq+2.5), f'yoke{i}-{j}')      # swept-disc envelope of the arm
+            add(('cyl', M, 16.0, eq-RB3-2, eq-RB3+2), f'yoke{i}-{j}')  # crossbar swept disc — BELOW the balls
     add(('cyl', (-20.5,42), 9.0, GZ-3.0, GZ+3.0), 'input-pinion')     # meshes ring + slider rack
     add(('box', (-9, 55-Sx*u), 3.0,23.0, GZ-3, GZ+3), 'slider-rack')  # rack at gear level (below balls)
     add(('box', (-3, (R+nbchord)-Sx*u), 6.0,4.0, eq-3, eq+3), 'slider-thumb')  # surface thumb beside ball 0
@@ -153,10 +157,32 @@ def carried_part(ball, part_name):
 
 def check_push():
     clashes = []
+    # rails = each carried ball's path shifted RB3 down — but ONLY along the horizontal
+    # run. Near the seats the ball drops/rises through a plate WELL (a hole, not a rail),
+    # so no rigid rail there to thread the ball.
+    RAILS = {b: [] for b in (1,2,9)}
+    for k in range(41):
+        t = k/40; pp = ball_positions_push(t)
+        for b in RAILS:
+            if not (0.16 <= t <= 0.84): continue   # the seat ends are well/channel-guided, not railed
+            RAILS[b].append((pp[b][0], pp[b][1], pp[b][2]-RB3))
     for k in range(SEG_PUSH+1):
         u = k/SEG_PUSH
         pos = ball_positions_push(u); pl, nm = parts(u, engaged=True)
         balls = sorted(pos)
+        # (a) no rail may thread any ball (rail rides RB3 below its own ball's path)
+        for s in balls:
+            for b, pts in RAILS.items():
+                if min(math.dist(pos[s], rp) for rp in pts) - 1.4 < rb - TOL:
+                    clashes.append((u, f'ball{s}', f'rail{b}', rb - min(math.dist(pos[s], rp) for rp in pts) - 1.4))
+                    break
+        # (b) a moving cradle must not clip a NON-carried ball (cup cups its own ball only)
+        for b in (1,2,9):
+            pc = pos[b]; cup = ('cyl', (pc[0],pc[1]), rb*0.82, pc[2]-rb*0.9, pc[2]-rb*0.2)
+            for s in balls:
+                if s==b: continue
+                p = pen_sphere_cyl(pos[s], cup)
+                if p > TOL: clashes.append((u, f'cradle{b}', f'ball{s}', p))
         # ball <-> ball
         for a in range(len(balls)):
             for b in range(a+1, len(balls)):

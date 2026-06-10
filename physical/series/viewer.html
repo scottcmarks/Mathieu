@@ -153,6 +153,7 @@ function build(){
   //     E/W idlers -> seat-end pinions at 2 & 9
   const GZ=-9; mech.GZ=GZ; gearLayer=new THREE.Group(); gearLayer.position.z=GZ; gearLayer.visible=true; root.add(gearLayer);
   const Lz=w=>w-GZ;                                          // world z -> gearLayer-local z
+  const RB3=rb+3;                                            // a ball-radius + clearance: rails/yokes ride this far BELOW the ball
   const Sx=nbchord;                                          // push stroke (~28)
   const arc29=arcPath(P(2),P(9),14), ret1m=e=>arcPath(P(0),P(1),12)(1-e);
   const dipL=(u,z0)=> Lz(ballZ-(ballZ-z0)*Math.sin(Math.PI*u));  // shuttle height tracks the duck to depth z0
@@ -168,14 +169,17 @@ function build(){
     add(c,M[0],M[1],0, u=> c.rotation.z = -Math.PI*u );
     const yoke=new THREE.Group(); c.add(yoke); mech.yokes[i+'_'+j]=yoke;
     const oA=[A[0]-M[0],A[1]-M[1]], oB=[B[0]-M[0],B[1]-M[1]];
-    const barZ=Lz(eq)-rb*0.55;                              // crossbar rides BELOW the balls (so it's visible)
+    const barZ=Lz(eq-RB3);                                  // crossbar rides a clear ball-radius BELOW the balls
     const bar=new THREE.Mesh(new THREE.BoxGeometry(Math.hypot(oB[0]-oA[0],oB[1]-oA[1]),4,4), holdMat);
     bar.rotation.z=Math.atan2(oB[1]-oA[1],oB[0]-oA[0]); bar.position.z=barZ; yoke.add(bar);
     const post=new THREE.Mesh(new THREE.CylinderGeometry(2.5,2.5,barZ,12).rotateX(Math.PI/2), holdMat);
-    post.position.z=barZ/2; yoke.add(post);
+    post.position.z=barZ/2; yoke.add(post);                 // central post: gear -> crossbar
     for(const [o,b] of [[oA,i],[oB,j]]){
-      const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.78,rb*0.5,rb*0.95,18,1,true).rotateX(Math.PI/2), holdMat); // open cradle under the ball
-      cup.position.set(o[0],o[1],Lz(eq)-rb*0.5); yoke.add(cup);
+      const cupZ=Lz(eq)-rb*0.55;                            // cup cups the ball's lower hemisphere
+      const riser=new THREE.Mesh(new THREE.CylinderGeometry(1.8,1.8,cupZ-barZ,8).rotateX(Math.PI/2), holdMat);
+      riser.position.set(o[0],o[1],(barZ+cupZ)/2); yoke.add(riser);   // post up from the crossbar to the cup
+      const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.78,rb*0.5,rb*0.9,18,1,true).rotateX(Math.PI/2), holdMat);
+      cup.position.set(o[0],o[1],cupZ); yoke.add(cup);
       const hold=new THREE.Object3D(); hold.position.set(o[0],o[1],Lz(eq)); yoke.add(hold); mech.holders[b]=hold;
     }
   }
@@ -194,32 +198,36 @@ function build(){
   const prong=new THREE.Mesh(new THREE.BoxGeometry(11,3.5,3.5), holdMat); prong.position.set(4.5,22,Lz(eq)); slider.add(prong);
   const hold0=new THREE.Object3D(); hold0.position.set(9,23,Lz(eq)); slider.add(hold0); mech.holders[0]=hold0;
   add(slider,-9,0,0, u=> slider.position.y = 55 - Sx*u );   // outboard end (thumb) tracks ball 0 (y=78..50)
-  // CARRYING SHUTTLES — an open cradle (bright) that visibly cups the ball from below:
+  // CARRIAGE — an open cradle that cups the ball from below, with a STEM reaching down
+  // to its rail. The rail rides RB3 below the ball, so nothing passes through the ball
+  // (a spun ball can't keep a hole aligned, so it can only be cradled, never threaded).
   function cradle(){ const g=new THREE.Group();
-    const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.82,rb*0.5,rb*0.95,18,1,true).rotateX(Math.PI/2), holdMat);
-    cup.position.z=-rb*0.5; g.add(cup); const h=new THREE.Object3D(); g.add(h); g.userData.h=h; return g; }
-  const UNDER9=-21;                                                  // ball 9 drops BELOW the ring gear
-  const sh1=cradle(); mech.sh1=sh1; mech.holders[1]=sh1.userData.h;   // ball 1 (under, +x bow)
-  add(sh1,0,0,0, u=>{ const p=ret1m(u);   sh1.position.set(p[0],p[1], dipL(u,-11)); });
-  const sh2=cradle(); mech.sh2=sh2; mech.holders[2]=sh2.userData.h;   // ball 2 (over)
-  add(sh2,0,0,0, u=>{ const p=arc29(u);   sh2.position.set(p[0],p[1], Lz(eq)); });
-  const sh9=cradle(); mech.sh9=sh9; mech.holders[9]=sh9.userData.h;   // ball 9 (under, deep)
-  add(sh9,0,0,0, r=>{ let xy,z;                                       // drop at seat -> deep traverse -> rise
-    if(r<0.16){ xy=P(9); z=ballZ+(UNDER9-ballZ)*(r/0.16); }
-    else if(r>0.84){ xy=P(2); z=UNDER9+(ballZ-UNDER9)*((r-0.84)/0.16); }
-    else { xy=arc29(1-(r-0.16)/0.68); z=UNDER9; }
-    sh9.position.set(xy[0],xy[1], Lz(z)); });
-  // 2-9 TRANSPORT — each ball rides a CARRIAGE (the cradle above) along a GUIDE RAIL
-  // following its arc, driven by a belt between two pulleys at the seats (P2,P9).
-  // ball 2's rail is at the surface (over); ball 9's rail is dropped BELOW the ring
-  // gear so it can't pass through it.  (The belt's step-up drive is still open — see note.)
-  function rail(pathFn, z){ const pts=[]; for(let t=0;t<=24;t++){ const p=pathFn(t/24); pts.push(new THREE.Vector3(p[0],p[1],z)); }
-    return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),40,1.3,8,false), partMat); }
-  gearLayer.add(rail(arc29, Lz(eq)));                               // over rail (ball 2)
-  gearLayer.add(rail(arc29, Lz(UNDER9)));                           // under rail (ball 9), below the ring
-  gearLayer.add(rail(ret1m, Lz(-11)));                              // ball 1's return rail (so its cradle has a track)
-  const d2=add(makeGear(9,13,5), P(2)[0],P(2)[1],0, u=> d2.rotation.z=-(Sx/9)*u);  // belt pulley @2
-  const d9=add(makeGear(9,13,5), P(9)[0],P(9)[1],0, u=> d9.rotation.z= (Sx/9)*u);  // belt pulley @9
+    const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.82,rb*0.5,rb*0.9,18,1,true).rotateX(Math.PI/2), holdMat);
+    cup.position.z=-rb*0.55; g.add(cup);
+    const stem=new THREE.Mesh(new THREE.CylinderGeometry(1.6,1.6, RB3-rb*0.55, 8).rotateX(Math.PI/2), holdMat);
+    stem.position.z=-(rb*0.55+RB3)/2; g.add(stem);                  // cup -> down to the rail
+    const h=new THREE.Object3D(); g.add(h); g.userData.h=h; return g; }
+  const UNDER9=-21;                                                  // ball 9's deep lane (below the ring gear)
+  // 3-D ball paths (x,y,z) — the rail is each of these shifted RB3 straight down:
+  const path2=t=>{ const p=arc29(t); return [p[0],p[1], eq]; };                                 // 2 over (flat)
+  const path1=t=>{ const p=ret1m(t); return [p[0],p[1], ballZ-(ballZ+11)*Math.sin(Math.PI*t)]; }; // 1 dips to -11
+  const path9=t=>{ if(t<0.16) return [P(9)[0],P(9)[1], ballZ+(UNDER9-ballZ)*(t/0.16)];           // 9: drop at seat,
+                   if(t>0.84) return [P(2)[0],P(2)[1], UNDER9+(ballZ-UNDER9)*((t-0.84)/0.16)];   //    deep traverse,
+                   const q=arc29(1-(t-0.16)/0.68); return [q[0],q[1], UNDER9]; };                //    rise at P2
+  const sh1=cradle(); mech.sh1=sh1; mech.holders[1]=sh1.userData.h;
+  add(sh1,0,0,0, r=>{ const p=path1(r); sh1.position.set(p[0],p[1],Lz(p[2])); });
+  const sh2=cradle(); mech.sh2=sh2; mech.holders[2]=sh2.userData.h;
+  add(sh2,0,0,0, r=>{ const p=path2(r); sh2.position.set(p[0],p[1],Lz(p[2])); });
+  const sh9=cradle(); mech.sh9=sh9; mech.holders[9]=sh9.userData.h;
+  add(sh9,0,0,0, r=>{ const p=path9(r); sh9.position.set(p[0],p[1],Lz(p[2])); });
+  // GUIDE RAILS — each ball's path shifted RB3 below it. The belt is guided along the
+  // rail's curve (so the carriage tracks the arc — that's the curved-path coupling).
+  function rail3(pathFn){ const pts=[]; for(let k=0;k<=24;k++){ const t=0.16+0.68*(k/24); const p=pathFn(t);
+      pts.push(new THREE.Vector3(p[0],p[1],Lz(p[2]-RB3))); }   // only the horizontal run; seat drops are well-guided
+    return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),48,1.4,8,false), partMat); }
+  gearLayer.add(rail3(path2)); gearLayer.add(rail3(path1)); gearLayer.add(rail3(path9));
+  const d2=add(makeGear(9,13,5), P(2)[0],P(2)[1],Lz(eq-RB3), u=> d2.rotation.z=-(Sx/9)*u);  // belt pulley @2 (rail level)
+  const d9=add(makeGear(9,13,5), P(9)[0],P(9)[1],Lz(eq-RB3), u=> d9.rotation.z= (Sx/9)*u);  // belt pulley @9
   // 2-9 BELT STEP-UP — lives on a SUB-LAYER below the gear plane (free space there,
   // so no overlap with the carriers/ring): a compound gear whose small pinion (at gear
   // level) is meshed by the slider rack, and whose big sheave (3.25x, lower) pays out
