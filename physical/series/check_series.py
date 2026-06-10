@@ -95,8 +95,9 @@ def parts(u, engaged=True):
         for (i,j) in NEIGH:
             A,B=P(i),P(j); M=((A[0]+B[0])/2,(A[1]+B[1])/2)
             add(('cyl', M, 16.0, eq-2.5, eq+2.5), f'yoke{i}-{j}')      # swept-disc envelope of the arm
-    add(('cyl', (-13,46), 9.0, GZ-3.0, GZ+3.0), 'input-pinion')       # off the +y axis (ball 1 column clear)
-    add(('box', (0, (R+nbchord)+6-Sx*u), 3.0,7.0, eq+11, eq+15), 'top-rack')  # rides ABOVE the balls
+    add(('cyl', (-20.5,42), 9.0, GZ-3.0, GZ+3.0), 'input-pinion')     # meshes ring + slider rack
+    add(('box', (-9, 55-Sx*u), 3.0,23.0, GZ-3, GZ+3), 'slider-rack')  # rack at gear level (below balls)
+    add(('box', (-3, (R+nbchord)-Sx*u), 6.0,4.0, eq-3, eq+3), 'slider-thumb')  # surface thumb beside ball 0
     add(('box', ret1(u),  4.0,4.0, sh_under-2.5, sh_under+2.5), 'shuttle1')   # under, +x bow
     add(('box', arc29(u), 4.0,4.0, sh_over-2.5,  sh_over+2.5),  'shuttle2')   # over
     add(('box', arc29(1-u),4.0,4.0, sh_under-2.5, sh_under+2.5),'shuttle9')   # under
@@ -129,7 +130,7 @@ def carried_part(ball, part_name):
     """parts a ball is *supposed* to ride on (contact expected, not a clash)."""
     if part_name.startswith('yoke'):
         a,b = part_name[4:].split('-'); return ball in (int(a), int(b))
-    return ((ball==0 and part_name=='top-rack') or
+    return ((ball==0 and part_name=='slider-thumb') or
             (ball==1 and part_name=='shuttle1') or
             (ball==2 and part_name=='shuttle2') or
             (ball==9 and part_name=='shuttle9'))

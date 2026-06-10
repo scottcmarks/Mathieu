@@ -82,6 +82,8 @@ const numMat=new THREE.MeshStandardMaterial({color:0x0a0a0a, roughness:0.55});
 // --- schematic mechanism layer (sits just below the plate) ---
 const gearMat=new THREE.MeshStandardMaterial({color:0x9aa3b2, metalness:0.85, roughness:0.4});
 const partMat=new THREE.MeshStandardMaterial({color:0xc4cad6, metalness:0.55, roughness:0.5});
+// bright, distinct material so the grabbers (yokes/cradles/prong) read against gears & balls
+const holdMat=new THREE.MeshStandardMaterial({color:0xffc94d, emissive:0x4a3500, metalness:0.35, roughness:0.35});
 let gearLayer=null; const mechParts=[];          // each: update(u) — driven by the single push
 const mech={carriers:{}, yokes:{}, holders:{}};  // holders[ballNo] = the part the ball physically sits in
 function makeGear(r, teeth, th){
@@ -166,27 +168,36 @@ function build(){
     add(c,M[0],M[1],0, u=> c.rotation.z = -Math.PI*u );
     const yoke=new THREE.Group(); c.add(yoke); mech.yokes[i+'_'+j]=yoke;
     const oA=[A[0]-M[0],A[1]-M[1]], oB=[B[0]-M[0],B[1]-M[1]];
-    const bar=new THREE.Mesh(new THREE.BoxGeometry(Math.hypot(oB[0]-oA[0],oB[1]-oA[1]),3.5,3.5), partMat);
-    bar.rotation.z=Math.atan2(oB[1]-oA[1],oB[0]-oA[0]); bar.position.z=Lz(eq); yoke.add(bar);
-    const post=new THREE.Mesh(new THREE.CylinderGeometry(2,2,Lz(eq),12).rotateX(Math.PI/2), partMat);
-    post.position.z=Lz(eq)/2; yoke.add(post);
+    const barZ=Lz(eq)-rb*0.55;                              // crossbar rides BELOW the balls (so it's visible)
+    const bar=new THREE.Mesh(new THREE.BoxGeometry(Math.hypot(oB[0]-oA[0],oB[1]-oA[1]),4,4), holdMat);
+    bar.rotation.z=Math.atan2(oB[1]-oA[1],oB[0]-oA[0]); bar.position.z=barZ; yoke.add(bar);
+    const post=new THREE.Mesh(new THREE.CylinderGeometry(2.5,2.5,barZ,12).rotateX(Math.PI/2), holdMat);
+    post.position.z=barZ/2; yoke.add(post);
     for(const [o,b] of [[oA,i],[oB,j]]){
-      const cup=new THREE.Mesh(new THREE.TorusGeometry(rb*0.62,1.6,8,18), partMat); cup.position.set(o[0],o[1],Lz(eq)); yoke.add(cup);
+      const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.78,rb*0.5,rb*0.95,18,1,true).rotateX(Math.PI/2), holdMat); // open cradle under the ball
+      cup.position.set(o[0],o[1],Lz(eq)-rb*0.5); yoke.add(cup);
       const hold=new THREE.Object3D(); hold.position.set(o[0],o[1],Lz(eq)); yoke.add(hold); mech.holders[b]=hold;
     }
   }
   // INPUT PINION off the +y axis (-x), meshing the ring
-  const pin=makeGear(9,12,6); mech.pin=pin; add(pin,-13,46,0, u=> pin.rotation.z = -(Sx/9)*u );
-  // INPUT SLIDER — a thumb piece sliding along the -x side of the 0->1 channel; a
-  // rack on it turns the pinion and a PRONG pushes ball 0 in (feels like pushing 0).
-  const slider=new THREE.Mesh(new THREE.BoxGeometry(5,26,5), partMat); mech.slider=slider;
-  add(slider,-9,0,Lz(eq), u=> slider.position.y = (R+nbchord)+1 - Sx*u );
-  const prong=new THREE.Mesh(new THREE.BoxGeometry(11,3,3), partMat); prong.position.set(4.5,-1,0); slider.add(prong);
-  const hold0=new THREE.Object3D(); hold0.position.set(9,-1,0); slider.add(hold0); mech.holders[0]=hold0;
-  // CARRYING SHUTTLES — a cradle that physically holds the ball it carries:
+  // INPUT PINION — fixed, meshes the RING (radius 38) on its inner side and the
+  // slider RACK on its outer side: center dist 38+9=47 to centre, 9 to the rack.
+  const pin=makeGear(9,12,6); mech.pin=pin; add(pin,-20.5,42,0, u=> pin.rotation.z = -(Sx/9)*u );
+  // INPUT SLIDER — the force path: a long RACK at gear-layer depth (so balls spin
+  // over it) meshes the pinion through the whole stroke; a riser/prong rises to the
+  // surface beside ball 0 (the thumb), so pushing it feels like pushing 0.
+  const slider=new THREE.Group(); mech.slider=slider;
+  const rack=new THREE.Mesh(new THREE.BoxGeometry(5,46,5), holdMat); slider.add(rack);   // at gear level (z=0 local)
+  for(let t=0;t<9;t++){ const tooth=new THREE.Mesh(new THREE.BoxGeometry(2,2.4,5), holdMat);
+    tooth.position.set(-3.4, -20+t*5, 0); slider.add(tooth); }                            // rack teeth meshing the pinion
+  const riser=new THREE.Mesh(new THREE.BoxGeometry(5,6,Lz(eq)), holdMat); riser.position.set(0,22,Lz(eq)/2); slider.add(riser);
+  const prong=new THREE.Mesh(new THREE.BoxGeometry(11,3.5,3.5), holdMat); prong.position.set(4.5,22,Lz(eq)); slider.add(prong);
+  const hold0=new THREE.Object3D(); hold0.position.set(9,23,Lz(eq)); slider.add(hold0); mech.holders[0]=hold0;
+  add(slider,-9,0,0, u=> slider.position.y = 55 - Sx*u );   // outboard end (thumb) tracks ball 0 (y=78..50)
+  // CARRYING SHUTTLES — an open cradle (bright) that visibly cups the ball from below:
   function cradle(){ const g=new THREE.Group();
-    const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.7,rb*0.45,4,16).rotateX(Math.PI/2), partMat);
-    cup.position.z=-rb*0.65; g.add(cup); const h=new THREE.Object3D(); g.add(h); g.userData.h=h; return g; }
+    const cup=new THREE.Mesh(new THREE.CylinderGeometry(rb*0.82,rb*0.5,rb*0.95,18,1,true).rotateX(Math.PI/2), holdMat);
+    cup.position.z=-rb*0.5; g.add(cup); const h=new THREE.Object3D(); g.add(h); g.userData.h=h; return g; }
   const sh1=cradle(); mech.sh1=sh1; mech.holders[1]=sh1.userData.h;   // ball 1 (under, +x bow)
   add(sh1,0,0,0, u=>{ const p=ret1m(u);   sh1.position.set(p[0],p[1], dipL(u)); });
   const sh2=cradle(); mech.sh2=sh2; mech.holders[2]=sh2.userData.h;   // ball 2 (over)
@@ -204,24 +215,30 @@ function build(){
   updateRest();
   frameAll();
 }
-const SH_REST=2, YOKE_DOWN=-16;                             // retracted heights (local)
-function updateGears(u){ for(const f of mechParts) f(u);     // engaged: yokes up so the cups cradle the balls
-  for(const k in mech.yokes) mech.yokes[k].position.z=0; }
-// rest/spin state: yokes + shuttles drop below the balls so the ring spins free
-function updateRest(){ updateGears(0);
-  for(const k in mech.yokes) mech.yokes[k].position.z=YOKE_DOWN;
-  if(mech.sh1){ mech.sh1.position.z=SH_REST; mech.sh2.position.z=SH_REST; mech.sh9.position.z=SH_REST; } }
-// THE LINKAGE: every ball sits in its holder (a real part of the mechanism), so it
-// is physically carried — read the holder's world position straight onto the ball.
+const SH_REST=2, YOKE_DOWN=-16, GRAB=0.14, REL=0.86;       // retract heights + grab/release fractions
+function updateGears(u){ for(const f of mechParts) f(u); }   // gear rotations + shuttle/slider positions
+// engagement: e=1 -> grabbers raised, cradling the balls; e=0 -> dropped below (ring free)
+function setEngage(e){ for(const k in mech.yokes) mech.yokes[k].position.z = YOKE_DOWN*(1-e);
+  for(const sh of [mech.sh1,mech.sh2,mech.sh9]) if(sh) sh.position.z = SH_REST + (sh.position.z-SH_REST)*e; }
+function updateRest(){ updateGears(0); setEngage(0); }
+// THE LINKAGE in three phases: GRAB (grabbers rise under the waiting ball) -> CARRY
+// (ball rides its holder while the gears turn) -> RELEASE (ball set in the new seat,
+// grabbers drop). The ball reads its holder's world position only while carried.
 const _wp=new THREE.Vector3();
-function drivePush(e){ updateGears(e); root.updateMatrixWorld(true);
-  for(const k in mech.holders){ const b=ballAt(+k); if(!b) continue;
-    mech.holders[k].getWorldPosition(_wp); root.worldToLocal(_wp); b.position.copy(_wp); }
+function drivePush(u){
+  const r = u<GRAB ? 0 : u>REL ? 1 : (u-GRAB)/(REL-GRAB);   // gear rotation runs only during CARRY
+  const e = Math.min(1, u/GRAB, (1-u)/(1-REL));             // engagement 0->1->0 (visible grab & release)
+  updateGears(r); setEngage(e); root.updateMatrixWorld(true);
+  const carrying = (u>GRAB && u<REL);
+  for(const k in mech.holders){ const slot=+k, b=ballAt(slot); if(!b) continue;
+    if(carrying){ mech.holders[k].getWorldPosition(_wp); root.worldToLocal(_wp); b.position.copy(_wp); }
+    else { const seat = (u<=GRAB) ? P(slot) : P(anim.apply[slot]); b.position.set(seat[0],seat[1],ballZ); }
+  }
 }
 function frameAll(){
   const box=new THREE.Box3().setFromObject(root), c2=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
   root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,s.y*0.1,0);
-  const r=Math.max(s.x,s.z); camera.position.set(r*0.9,r*0.9,r*1.5); controls.update();
+  const r=Math.max(s.x,s.z); camera.position.set(r*0.85,r*0.55,r*1.5); controls.update();  // lower = z-motion (dips) reads
 }
 
 const smooth=t=>t*t*(3-2*t);
@@ -276,7 +293,7 @@ const underZ=-11;
 // mechanism and records the resulting permutation.
 function startPush(){ if(anim) return;
   const map={3:4,4:3,5:6,6:5,7:8,8:7,10:11,11:10, 0:1,1:0, 2:9,9:2};   // perm #22
-  anim={p:0,dur:1.6,kind:'push',moves:[],apply:map};
+  anim={p:0,dur:3.0,kind:'push',moves:[],apply:map};   // slow, so the grab / dip / cross read
 }
 function finishAnim(){ if(anim.kind==='push' && gearLayer) updateRest();   // retract for free spin
   for(const g of Object.values(balls)){ g.userData.slot=anim.apply[g.userData.slot];
