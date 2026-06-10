@@ -213,12 +213,25 @@ function build(){
   // following its arc, driven by a belt between two pulleys at the seats (P2,P9).
   // ball 2's rail is at the surface (over); ball 9's rail is dropped BELOW the ring
   // gear so it can't pass through it.  (The belt's step-up drive is still open — see note.)
-  function rail(z){ const pts=[]; for(let t=0;t<=24;t++){ const p=arc29(t/24); pts.push(new THREE.Vector3(p[0],p[1],z)); }
+  function rail(pathFn, z){ const pts=[]; for(let t=0;t<=24;t++){ const p=pathFn(t/24); pts.push(new THREE.Vector3(p[0],p[1],z)); }
     return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),40,1.3,8,false), partMat); }
-  gearLayer.add(rail(Lz(eq)));                                       // over rail (ball 2)
-  gearLayer.add(rail(Lz(UNDER9)));                                   // under rail (ball 9), below the ring
+  gearLayer.add(rail(arc29, Lz(eq)));                               // over rail (ball 2)
+  gearLayer.add(rail(arc29, Lz(UNDER9)));                           // under rail (ball 9), below the ring
+  gearLayer.add(rail(ret1m, Lz(-11)));                              // ball 1's return rail (so its cradle has a track)
   const d2=add(makeGear(9,13,5), P(2)[0],P(2)[1],0, u=> d2.rotation.z=-(Sx/9)*u);  // belt pulley @2
   const d9=add(makeGear(9,13,5), P(9)[0],P(9)[1],0, u=> d9.rotation.z= (Sx/9)*u);  // belt pulley @9
+  // 2-9 BELT STEP-UP — lives on a SUB-LAYER below the gear plane (free space there,
+  // so no overlap with the carriers/ring): a compound gear whose small pinion (at gear
+  // level) is meshed by the slider rack, and whose big sheave (3.25x, lower) pays out
+  // the ~91mm of belt each carriage needs. Belts run up to the seat pulleys.
+  const SUX=-17.5, SUY=40;                          // in the rack's always-meshed band (y 32..50)
+  const su=new THREE.Group();
+  const saG=makeGear(4,9,4);                        // small pinion at gear level — meshed by the slider rack
+  const sbG=makeGear(13,18,4); sbG.position.z=Lz(-15);    // big sheave (3.25x) on a sub-layer below the gears
+  su.add(saG, sbG); add(su,SUX,SUY,0, u=> su.rotation.z = (Sx/4)*u );
+  function belt(b){ const pts=[new THREE.Vector3(SUX,SUY,Lz(-15)), new THREE.Vector3(b[0],b[1],0)];
+    return new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),12,0.9,6,false), partMat); }
+  gearLayer.add(belt(P(2))); gearLayer.add(belt(P(9)));   // belts: big sheave -> seat pulleys
   updateRest();
   frameAll();
 }

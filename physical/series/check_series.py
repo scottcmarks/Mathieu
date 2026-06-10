@@ -112,6 +112,8 @@ def parts(u, engaged=True):
     # (2-9 belt pulleys at the seats are part of the carrying system the balls ride,
     #  not obstacles, so they're not modelled as clash objects.)
     add(('ring', (0,0), RING_R, 3.0, GZ-2.5, GZ+2.5), 'ring-gear')   # the hollow ring rim (ball 9 must clear it)
+    add(('cyl', (-17.5,40), 4.0, GZ-2.5, GZ+2.5), 'stepup-pinion')   # small pinion (gear level, meshes slider rack)
+    add(('cyl', (-17.5,40), 13.0, GZ-8, GZ-4),    'stepup-sheave')   # big sheave on the sub-layer (below the gears)
     return L, nm
 
 # ---- primitive intersection: penetration depth (>0 means overlap) -------------
