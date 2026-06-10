@@ -22,8 +22,10 @@ rb   = ball_d/2                       # 9 — ball radius
 eq   = ball_d/2                       # 9 — ball-centre height on the ring
 tube = ball_d/2 + 0.5
 nbchord = 2*R*math.sin(math.pi/N)     # ~28.17
-underZ  = -11.0
+underZ  = -11.0                       # ball-1 under-lane (apex, clears the centre)
+under9  = -21.0                       # ball-9 under-lane — BELOW the ring gear (so it can't punch through)
 GZ      = -9.0                        # gear-layer origin z (world = GZ + local)
+RING_R  = 38.0                        # ring-gear pitch radius (external teeth at the rim)
 RET_SAG = 12.0                        # ball-1 return bows this far in +x (< chord/2=14, clears the plunger column)
 Sx      = nbchord
 SEG_PUSH = 24                         # push samples (u = 0..1)
@@ -48,8 +50,9 @@ def arcpt(a, b, sag, e):
     daw -= 2*math.pi*round(daw/(2*math.pi)); an = a0+daw*e
     return (cx+arcR*math.cos(an), cy+arcR*math.sin(an))
 
-def dip(u):                                          # eq -> underZ -> eq (smooth, immediate)
-    return eq - (eq-underZ)*math.sin(math.pi*u)
+def dip(u, z0=underZ):                                # eq -> z0 -> eq, FAST (deep before the rim crossing)
+    f = min(1.0, u/0.16, (1-u)/0.16)
+    return eq + (z0-eq)*f
 def lin(p, q): return lambda e: (p[0]+(q[0]-p[0])*e, p[1]+(q[1]-p[1])*e)
 
 # ball-1 return: a +x-bowed arc P1->P0 so it leaves the central plunger column at once
@@ -69,7 +72,12 @@ def ball_positions_push(u):
     pos[0] = (*lin(P(0),P(1))(u), eq)                # 0 slides in on top
     pos[1] = (*ret1(u), dip(u))                       # 1 ducks under (bowed +x), resurfaces at P0
     pos[2] = (*arc29(u), eq)                           # 2 over-arc, on top
-    pos[9] = (*arc29(1-u), dip(u))                    # 9 under-arc, ducks
+    # 9: drop VERTICALLY at its seat (radius 50, outside the ring) to full depth, traverse
+    #    the under-arc deep (below the ring rim), then rise vertically at P2.
+    if   u < 0.16: xy, z = P(9), eq + (under9-eq)*(u/0.16)
+    elif u > 0.84: xy, z = P(2), under9 + (eq-under9)*((u-0.84)/0.16)
+    else:          xy, z = arc29(1-(u-0.16)/0.68), under9
+    pos[9] = (xy[0], xy[1], z)
     return pos
 
 # ---- mechanism part transforms (mirror viewer build()) ------------------------
@@ -101,11 +109,9 @@ def parts(u, engaged=True):
     add(('box', ret1(u),  4.0,4.0, sh_under-2.5, sh_under+2.5), 'shuttle1')   # under, +x bow
     add(('box', arc29(u), 4.0,4.0, sh_over-2.5,  sh_over+2.5),  'shuttle2')   # over
     add(('box', arc29(1-u),4.0,4.0, sh_under-2.5, sh_under+2.5),'shuttle9')   # under
-    add(('cyl', (0,-40), 13.0, GZ-2.0, GZ+2.0), 'compound')          # 2-9 train, rim-routed
-    add(('cyl', (32,-34), 9.0, GZ-2.5, GZ+2.5), 'idlerE')
-    add(('cyl', (-32,-34),9.0, GZ-2.5, GZ+2.5), 'idlerW')
-    add(('cyl', P(2), 7.0, GZ-3.0, GZ+3.0), 'seat-pinion2')
-    add(('cyl', P(9), 7.0, GZ-3.0, GZ+3.0), 'seat-pinion9')
+    # (2-9 belt pulleys at the seats are part of the carrying system the balls ride,
+    #  not obstacles, so they're not modelled as clash objects.)
+    add(('ring', (0,0), RING_R, 3.0, GZ-2.5, GZ+2.5), 'ring-gear')   # the hollow ring rim (ball 9 must clear it)
     return L, nm
 
 # ---- primitive intersection: penetration depth (>0 means overlap) -------------
@@ -122,8 +128,16 @@ def pen_sphere_box(c, part):
     dz = max(0.0, z0 - c[2], c[2] - z1)
     return rb - math.sqrt(dx*dx + dy*dy + dz*dz)
 
+def pen_sphere_ring(c, part):                # annulus (rectangular cross-section) at radius Rr
+    _, (cx,cy), Rr, t, z0, z1 = part
+    dr = max(0.0, abs(math.hypot(c[0]-cx, c[1]-cy) - Rr) - t)
+    dz = max(0.0, z0 - c[2], c[2] - z1)
+    return rb - math.hypot(dr, dz)
+
 def pen(c, part):
-    return pen_sphere_cyl(c, part) if part[0]=='cyl' else pen_sphere_box(c, part)
+    return (pen_sphere_cyl(c, part) if part[0]=='cyl'
+            else pen_sphere_ring(c, part) if part[0]=='ring'
+            else pen_sphere_box(c, part))
 
 # ---- the two regime checks ----------------------------------------------------
 def carried_part(ball, part_name):

@@ -29,8 +29,9 @@ ann_out = (R + nbchord/2) + nbchord/2 + (ball_d/2+0.5) + margin;          // ape
 swap_pairs = [[3,4],[5,6],[7,8],[10,11]];   // the four neighbour-pair swap channels (0-1 is the straight chute)
 // the four transfer seats where a ball ducks under / pops up (1,9 down; 0,2 up):
 xfer_pts  = [Pp(0), Pp(1), Pp(2), Pp(9)];
-under_z   = -11;                       // ball-centre height of the sub-surface lane
-under_bot = under_z - rb - 1;          // floor of the lower channel layer (~-21)
+under_z   = -11;                       // ball-1 return lane (apex, clears the centre)
+under_z9  = -21;                       // ball-9 cross lane — BELOW the ring gear region
+under_bot = under_z9 - rb - 1;         // floor of the lower channel layer (~-31)
 MODE = "bottom";
 
 module annulus(h) { difference() { cylinder(h=h, r=ann_out); translate([0,0,-0.1]) cylinder(h=h+0.2, r=ann_in); } }
@@ -77,9 +78,10 @@ module plate_mid()    { h=clear_top-eq;    difference() { annulus(h); translate(
 // ---- lower layer: the under-lane that lets ball 9 pass beneath 2 and ball 1
 //      travel from its seat back out to the 0-seat, each with ramps to the surface.
 module under_channels() {
-    arc_chute(Pp(2), Pp(9), 14, under_z);                 // 9's under-arc (directly beneath the over-arc)
+    arc_chute(Pp(2), Pp(9), 14, under_z9);                // 9's cross lane — deep, below the ring gear
     arc_chute(Pp(0), Pp(1), 12, under_z);                 // 1's return — bows +x, clearing the plunger column
-    for (p=xfer_pts) vchute(p, under_z, 1);               // ramps up to the main plate
+    vchute(Pp(0), under_z,  1);  vchute(Pp(1), under_z,  1);   // 0/1 wells to the -11 lane
+    vchute(Pp(2), under_z9, 1);  vchute(Pp(9), under_z9, 1);   // 2/9 wells down to the deep lane
 }
 module plate_under() {
     difference() {
