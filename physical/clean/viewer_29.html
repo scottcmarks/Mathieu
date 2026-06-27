@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 Track-2 — (2,9) magnet-grip swap + spin</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;
+    font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:14px;top:12px;max-width:46%;opacity:.92}
+  #hud b{color:#fff}
+  #bar{position:fixed;right:14px;top:12px;text-align:right}
+  #bar .row{margin-bottom:6px}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;
+    padding:7px 11px;margin-left:6px;cursor:pointer;font:inherit}
+  button.swap{background:#b5532a;border-color:#e0773f}
+  button:disabled{opacity:.4;cursor:default}
+  label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  #hint{position:fixed;left:14px;bottom:12px;opacity:.6}
+  #stat{position:fixed;right:14px;bottom:12px;opacity:.6}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>M12 Track-2 — (2,9) magnet-grip swap + ring spin</b><br>
+  Plain <b>steel balls</b>; a magnet on each carrier (red disc) holds the ball in a shallow saddle — no
+  wrap-around lip. <b>◀ / ▶</b> spin the ring (carriers parked deep, magnets far → no spin grab).
+  <b>⤒ swap 2↔9</b>: carriers rise, the magnets grab the balls at 2 &amp; 9 and carry them across —
+  <b style="color:#5ab0ff">2</b> shallow, <b style="color:#ff8a3c">9</b> deep — then retract.
+  Toggle <b>gripper</b> to compare the fork version.</div>
+<div id="bar">
+  <div class="row">
+    <button id="bL">◀ spin</button><button id="bR">spin ▶</button>
+    <button id="bSwap" class="swap">⤒ swap 2↔9</button><button id="bReset">reset</button>
+  </div>
+  <div class="row">
+    <button id="bStepB" title="step back">|◀</button>
+    <button id="bPlay" title="play / pause">▶</button>
+    <button id="bStepF" title="step forward">▶|</button>
+    <span id="frameHUD" style="margin-left:10px;opacity:.85;font-variant-numeric:tabular-nums">frame —</span>
+  </div>
+  <div class="row">
+    <button id="bGrip">gripper: magnet</button>
+    <label class="cb"><input type="checkbox" id="cbGrips" checked>carriers</label>
+    <label class="cb"><input type="checkbox" id="cbRing" checked>ring</label>
+    <button id="auto">▶ auto-rotate</button><button id="resetView">reset</button>
+  </div>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · ◀/▶ spin · ⤒ runs the swap · |◀ ▶ ▶| or ← space → step/play · gripper toggles magnet/fork</div>
+<div id="stat">loading…</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader }     from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const renderer=new THREE.WebGLRenderer({canvas:c, antialias:true});
+renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.5, 6000); camera.position.set(150,170,210);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5));
+const key=new THREE.DirectionalLight(0xffffff,0.95); key.position.set(120,220,160); scene.add(key);
+const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
+const controls=new OrbitControls(camera, renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
+
+// ---- geometry + kinematics (mirror clean/check_29.py / proto_29.scad) ----
+const N=11, SCALE=20/18, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2, DROP=27, RAMP=0.20;
+const d2r=Math.PI/180;
+const Aa=s=>-90+(s-1)*(360/N);
+const P=s=>[R*Math.cos(Aa(s)*d2r), -R*Math.sin(Aa(s)*d2r)];
+const lerp2=(p,q,t)=>[p[0]+(q[0]-p[0])*t, p[1]+(q[1]-p[1])*t];
+const lerp1=(a,b,t)=>a+(b-a)*t;
+const ss=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+const dfrac=u=> u<RAMP?ss(u/RAMP) : (u>1-RAMP?ss((1-u)/RAMP):1);
+const bez0=(a,b,t)=>[(1-t)*(1-t)*a[0]+t*t*b[0],(1-t)*(1-t)*a[1]+t*t*b[1]];   // bow toward centre (control=origin)
+const b2=t=>{const p=bez0(P(2),P(9),t); return [p[0],p[1],eq];};
+const b9=t=>{const p=bez0(P(9),P(2),t); return [p[0],p[1],eq-DROP*dfrac(t)];};
+const head2=Math.atan2(P(9)[1]-P(2)[1], P(9)[0]-P(2)[0]);
+const head9=Math.atan2(P(2)[1]-P(9)[1], P(2)[0]-P(9)[0]);
+const epte=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+// ---- grippers: two interchangeable types (magnet group / fork mesh) per station ----
+const PARK = eq - 40;                          // carriers park this deep when not swapping
+const stat=document.getElementById('stat'); const loader=new STLLoader();
+const matFork2=new THREE.MeshStandardMaterial({color:0x3a6ea5,roughness:0.5,metalness:0.2});
+const matFork9=new THREE.MeshStandardMaterial({color:0xb5642a,roughness:0.5,metalness:0.2});
+const matBody=new THREE.MeshStandardMaterial({color:0x9aa0aa,roughness:0.35,metalness:0.85});
+const matDisc=new THREE.MeshStandardMaterial({color:0xd83a3a,roughness:0.4,metalness:0.3});
+const grip2=new THREE.Group(), grip9=new THREE.Group(); root.add(grip2); root.add(grip9);
+let gripMode='magnet';                         // 'magnet' | 'fork'
+const matPlug=new THREE.MeshStandardMaterial({color:0x55606e,roughness:0.6,metalness:0.2}); let plug2=null, plug9=null;
+let stls={}, want=['fork','magbody','magdisc','plug'], got=0;
+const url={fork:'./proto_29_fork.stl', magbody:'./proto_29_magbody.stl', magdisc:'./proto_29_magdisc.stl', plug:'./proto_29_plug.stl'};
+want.forEach(k=> loader.load(url[k], g=>{ stls[k]=g; if(++got===want.length) buildGrips(); },
+  undefined, e=>{ console.warn(k,e); if(++got===want.length) buildGrips(); }));
+function buildGrips(){
+  for(const [grip,mf] of [[grip2,matFork2],[grip9,matFork9]]){
+    const fork = stls.fork ? new THREE.Mesh(stls.fork.clone(), mf) : new THREE.Group();
+    const mag  = new THREE.Group();
+    if(stls.magbody) mag.add(new THREE.Mesh(stls.magbody.clone(), matBody));
+    if(stls.magdisc) mag.add(new THREE.Mesh(stls.magdisc.clone(), matDisc));
+    fork.name='fork'; mag.name='mag'; grip.add(fork); grip.add(mag);
+  }
+  if(stls.plug){ plug2=new THREE.Mesh(stls.plug.clone(),matPlug); plug9=new THREE.Mesh(stls.plug.clone(),matPlug); root.add(plug2); root.add(plug9); }
+  applyGrip(); ready();
+}
+const PLUG_T=3;
+function setPlugs(vis){ for(const [m,w] of [[plug2,2],[plug9,9]]){ if(!m)continue; const c=P(w); m.position.set(c[0],c[1],0-PLUG_T); m.visible=vis; } }
+function applyGrip(){ for(const grip of [grip2,grip9]) grip.children.forEach(ch=>{
+  ch.visible = (ch.name===gripMode? true:false) || (gripMode==='magnet'&&ch.name==='mag') ; }); }
+let showGrips=true;
+function setGrip(grip,x,y,z,heading,vis){ grip.position.set(x,y,z); grip.rotation.z=heading;
+  grip.visible = vis && showGrips;
+  grip.children.forEach(ch=> ch.visible = grip.visible && ((gripMode==='fork'&&ch.name==='fork')||(gripMode==='magnet'&&ch.name==='mag')) ); }
+
+// ---- procedural numbered STEEL balls 1..11 ----
+const ballsGroup=new THREE.Group(); root.add(ballsGroup);
+const sph=new THREE.SphereGeometry(rb,40,28); const balls={};
+function makeLabel(t){const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d');
+  x.font='bold 80px Arial';x.textAlign='center';x.textBaseline='middle';x.lineWidth=8;x.strokeStyle='#fff';x.strokeText(t,64,68);x.fillStyle='#0a0a0a';x.fillText(t,64,68);
+  const tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,transparent:true}));sp.scale.set(13,13,1);sp.renderOrder=10;return sp;}
+for(let n=1;n<=N;n++){
+  const col = n===2?0x5ab0ff : n===9?0xff8a3c : 0xc8ccd2;            // steel grey, 2 & 9 tinted
+  const m=new THREE.Mesh(sph,new THREE.MeshStandardMaterial({color:col,roughness:0.3,metalness:0.85}));
+  ballsGroup.add(m); const l=makeLabel(String(n)); ballsGroup.add(l); balls[n]={mesh:m,label:l};
+}
+function place(n,x,y,z){balls[n].mesh.position.set(x,y,z);balls[n].label.position.set(x,y,z);}
+
+const ringMesh=new THREE.Mesh(new THREE.TorusGeometry(R,0.8,8,160),
+  new THREE.MeshStandardMaterial({color:0x6a7686,roughness:0.7,transparent:true,opacity:0.5}));
+root.add(ringMesh);
+
+// ---- state ----
+let slot=Array.from({length:N+1},(_,s)=>s);
+let mode='idle';
+const RING=[1,2,3,4,5,6,7,8,9,10,11];
+let phi=0, spinFrom=0, spinTarget=0, spinDir=1, spinT0=0; const STEP=360/N, STEP_MS=420;
+const FRAMES=120, SWAP_MS=5200, ENG=0.14, REL=0.14; let swapFrame=0, playing=false, t0=0, m2=2, m9=9, committed=false;
+const frameHUD=document.getElementById('frameHUD');
+
+function hideGrips(){ setGrip(grip2,0,0,PARK,head2,false); setGrip(grip9,0,0,PARK,head9,false); setPlugs(true); }   // rest: plugs seal the throats
+function renderIdle(){ for(const s of RING){ const p=P(s); place(slot[s],p[0],p[1],eq); } hideGrips(); }
+function renderSpin(){ for(const s of RING){ const a=(Aa(s)+phi)*d2r; place(slot[s], R*Math.cos(a), -R*Math.sin(a), eq); } hideGrips(); }
+function renderSwap(u){
+  for(const s of RING) if(s!==2&&s!==9){ const p=P(s); place(slot[s],p[0],p[1],eq); }
+  let p2,p9, fz2,fz9;
+  if(u<ENG){ const r=u/ENG; p2=[...P(2),eq]; p9=[...P(9),eq]; fz2=lerp1(PARK,eq,r); fz9=lerp1(PARK,eq,r); }
+  else if(u<=1-REL){ const t=(u-ENG)/(1-ENG-REL); p2=b2(t); p9=b9(t); fz2=p2[2]; fz9=p9[2]; }
+  else { const r=(u-(1-REL))/REL; p2=[...P(9),eq]; p9=[...P(2),eq]; fz2=lerp1(eq,PARK,r); fz9=lerp1(eq,PARK,r);}
+  place(m2,p2[0],p2[1],p2[2]); place(m9,p9[0],p9[1],p9[2]);
+  setGrip(grip2,p2[0],p2[1],fz2,head2,true); setGrip(grip9,p9[0],p9[1],fz9,head9,true);
+  setPlugs(false);                                   // swap: throats open (carrier body seals as it rises)
+  frameHUD.textContent=`frame ${swapFrame} / ${FRAMES}`;
+}
+
+// ---- controls ----
+const bL=document.getElementById('bL'),bR=document.getElementById('bR'),bSwap=document.getElementById('bSwap'),bReset=document.getElementById('bReset');
+const bStepB=document.getElementById('bStepB'),bPlay=document.getElementById('bPlay'),bStepF=document.getElementById('bStepF'),bGrip=document.getElementById('bGrip');
+function setC(){
+  const sw=mode==='swap';
+  bL.disabled=mode!=='idle'; bR.disabled=mode!=='idle'; bSwap.disabled=mode==='spin';
+  bSwap.textContent= sw?'✓ done':'⤒ swap 2↔9';
+  bStepB.disabled=!sw; bStepF.disabled=!sw; bPlay.disabled=mode==='spin';
+  bPlay.textContent=(sw&&playing)?'⏸':'▶';
+  if(!sw) frameHUD.textContent='frame —';
+}
+function spinStep(dir){ if(mode!=='idle')return; mode='spin'; spinFrom=phi=0; spinTarget=dir*STEP; spinDir=dir; spinT0=performance.now(); setC(); }
+function commitSpin(dir){ const cur=RING.map(s=>slot[s]); for(let i=0;i<N;i++) slot[RING[((i+dir)%N+N)%N]]=cur[i]; phi=0; renderIdle(); }
+bL.onclick=()=>spinStep(-1); bR.onclick=()=>spinStep(+1);
+function startSwap(){ mode='swap'; swapFrame=0; playing=true; committed=false; m2=slot[2]; m9=slot[9]; t0=performance.now(); setC(); renderSwap(0); }
+function commitSwap(){ if(committed)return; const a=slot[2]; slot[2]=slot[9]; slot[9]=a; committed=true; }
+function exitSwap(){ commitSwap(); mode='idle'; playing=false; renderIdle(); setC(); }
+bSwap.onclick=()=>{ if(mode==='idle') startSwap(); else if(mode==='swap') exitSwap(); };
+bReset.onclick=()=>{ if(mode==='spin')return; mode='idle'; playing=false; slot=Array.from({length:N+1},(_,s)=>s); renderIdle(); setC(); };
+function rebase(now){ t0=now-(swapFrame/FRAMES)*SWAP_MS; }
+bStepB.onclick=()=>{ if(mode!=='swap')return; playing=false; swapFrame=Math.max(0,swapFrame-1); rebase(performance.now()); renderSwap(swapFrame/FRAMES); setC(); };
+bStepF.onclick=()=>{ if(mode!=='swap')return; playing=false; swapFrame=Math.min(FRAMES,swapFrame+1); if(swapFrame===FRAMES)commitSwap(); rebase(performance.now()); renderSwap(swapFrame/FRAMES); setC(); };
+bPlay.onclick=()=>{ if(mode==='idle'){ startSwap(); return; } if(mode!=='swap')return; if(swapFrame>=FRAMES)swapFrame=0; playing=!playing; rebase(performance.now()); setC(); };
+bGrip.onclick=()=>{ gripMode = gripMode==='magnet'?'fork':'magnet'; bGrip.textContent='gripper: '+gripMode;
+  if(mode==='swap') renderSwap(swapFrame/FRAMES); else hideGrips(); };
+addEventListener('keydown',e=>{ if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowLeft'){ mode==='swap'?bStepB.onclick():bL.onclick(); e.preventDefault(); }
+  else if(e.key==='ArrowRight'){ mode==='swap'?bStepF.onclick():bR.onclick(); e.preventDefault(); }
+  else if(e.key===' '){ bPlay.onclick(); e.preventDefault(); } });
+document.getElementById('cbGrips').onchange=e=>{ showGrips=e.target.checked; if(mode==='swap')renderSwap(swapFrame/FRAMES); else hideGrips(); };
+document.getElementById('cbRing').onchange=e=>{ ringMesh.visible=e.target.checked; };
+document.getElementById('auto').onclick=e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
+
+let loaded=0;
+function ready(){ if(++loaded>=1){ stat.textContent=''; renderIdle(); setC(); frameAll(); } }
+function frameAll(){const b=new THREE.Box3().setFromObject(root); if(b.isEmpty())return;
+  const c2=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3());
+  root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,0,0);
+  const r=Math.max(s.x,s.z); camera.position.set(r*0.7,r*0.7,r*1.2); controls.update();}
+document.getElementById('resetView').onclick=frameAll;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+
+(function loop(now){ requestAnimationFrame(loop);
+  if(mode==='spin'){ const t=Math.min(1,(now-spinT0)/STEP_MS); phi=spinFrom+(spinTarget-spinFrom)*epte(t); renderSpin();
+    if(t>=1){ commitSpin(spinDir); mode='idle'; setC(); } }
+  else if(mode==='swap'){ if(playing){ swapFrame=Math.min(FRAMES,Math.round((now-t0)/SWAP_MS*FRAMES));
+      if(swapFrame>=FRAMES){ swapFrame=FRAMES; playing=false; commitSwap(); setC(); } } renderSwap(swapFrame/FRAMES); }
+  controls.update(); renderer.render(scene,camera);
+})(performance.now());
+</script>
+</body>
+</html>

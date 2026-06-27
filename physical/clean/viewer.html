@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 clean-sheet — animated viewer</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;
+    font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:12px;top:10px;opacity:.9;max-width:54%}
+  #hud b{color:#fff}
+  #hint{position:fixed;left:12px;bottom:10px;opacity:.6}
+  #bar{position:fixed;right:12px;top:10px;text-align:right}
+  #bar .row{margin-bottom:6px}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;
+    padding:6px 11px;margin-left:6px;cursor:pointer;font:inherit}
+  button.on{background:#2c6cff;border-color:#5c8cff;color:#fff}
+  button.push{background:#b5532a;border-color:#e0773f}
+  button:disabled{opacity:.4;cursor:default}
+  label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  #stat{position:fixed;right:12px;bottom:10px;opacity:.6}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>M12 clean-sheet — animated</b><br>
+  11 numbered balls ring an apex ball 0. At rest the rotor forks drop clear of the channel, so
+  <b>spin</b> is a free fingertip cyclic shift (detents at 11 stations). <b>push 0</b> = flick
+  ball 0 inward → forks rise to grip → its crank drags the coupling plate, which <i>translates</i>
+  on a small circle (never rotates) and so turns all five in-plane rotors the identical 180°;
+  the 2↔9 pair runs on the central branch, dipping off-plane on its cam lift → perm&nbsp;#22
+  (0&nbsp;1)(2&nbsp;9)(3&nbsp;4)(5&nbsp;6)(7&nbsp;8)(10&nbsp;11). The input is a fingertip on ball 0 — no internal pusher.</div>
+<div id="bar">
+  <div class="row">
+    <button id="bSpin">⟳ spin</button>
+    <button id="bPush" class="push">⤓ push 0</button>
+    <button id="bReset">reset balls</button>
+  </div>
+  <div class="row">
+    <label class="cb"><input type="checkbox" id="cbStructure" checked>structure</label>
+    <label class="cb"><input type="checkbox" id="cbRotors" checked>rotors</label>
+    <label class="cb"><input type="checkbox" id="cbGears" checked>gears</label>
+    <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
+    <label class="cb"><input type="checkbox" id="cbWindow">window</label>
+  </div>
+  <div class="row">
+    <button id="auto">▶ auto-rotate</button><button id="resetView">reset view</button>
+  </div>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · push 0 drives the real rotors & coupling plate (input = fingertip on ball 0)</div>
+<div id="stat">loading…</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader }      from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls }  from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const renderer=new THREE.WebGLRenderer({canvas:c, antialias:true});
+renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.5, 6000); camera.position.set(160,170,230);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5));
+const key=new THREE.DirectionalLight(0xffffff,0.9); key.position.set(120,220,160); scene.add(key);
+const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);   // model +z -> world up
+const controls=new OrbitControls(camera, renderer.domElement);
+controls.enableDamping=true; controls.autoRotateSpeed=1.0;
+
+// ---------------- geometry (mirrors m12_clean.scad / check_clean.py) ----------------
+const SCALE=1.25;                                   // uniform size factor (= m12_clean.scad)
+const N=11, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2, APEX_STK=24*SCALE, apexR=R+APEX_STK;
+const Z_29=-22*SCALE, Z_HUB=-2*SCALE, Z_PLATE=-12*SCALE, CRANK_E=7*SCALE;
+const RETRACT=-16*SCALE;                            // in-plane rotors drop this far at rest -> forks clear, ring spins free
+const angleOf=i=>-90+(i-1)*(360/N);                 // degrees, station i=1..11
+const d2r=THREE.MathUtils.degToRad;
+function Pp(i){ return i===0 ? [0,apexR] : [R*Math.cos(d2r(angleOf(i))), -R*Math.sin(d2r(angleOf(i)))]; }
+const mid=(i,j)=>[(Pp(i)[0]+Pp(j)[0])/2,(Pp(i)[1]+Pp(j)[1])/2];
+function rot2(p,c,ang){ const co=Math.cos(ang),si=Math.sin(ang),dx=p[0]-c[0],dy=p[1]-c[1];
+  return [c[0]+dx*co-dy*si, c[1]+dx*si+dy*co]; }
+
+// swap kinematics (u:0->1), exactly as the checker
+function inplane(i,j,which,u){ const M=mid(i,j), s=which===0?Pp(i):Pp(j); const p=rot2(s,M,Math.PI*u); return [p[0],p[1],eq]; }
+function sweepFrac(u){ if(u<=0.12)return 0; if(u>=0.88)return 1; return (u-0.12)/0.76; }
+function z29(u){ if(u<=0.12||u>=0.88) return eq;   // held in the channel until the fork grips, then driven down inside the carry
+  const s=(u-0.12)/0.76, f=Math.min(1,s/0.12,(1-s)/0.12); return eq+(Z_29-eq)*f; }
+function cross(which,u){ const M=mid(2,9), s=which===0?Pp(2):Pp(9); const p=rot2(s,M,Math.PI*sweepFrac(u)); return [p[0],p[1],z29(u)]; }
+// (2,9) carriage height: parked deep (Z_29), rises to grip at the channel, carries the balls
+// down & back (= z29 through the dwell), then retracts. Its forks track the balls all carry.
+function carriageZ(t){ if(t<=0.12) return Z_29+(eq-Z_29)*(t/0.12); if(t>=0.88) return Z_29+(eq-Z_29)*((1-t)/0.12); return z29(t); }
+
+const PAIRS=[[0,1],[3,4],[5,6],[7,8],[10,11]];     // in-plane 180° pairs (apex + 4 rim)
+const RING=[1,2,3,4,5,6,7,8,9,10,11];
+const STEP=360/N;                                  // one detent (deg)
+function restPos(s){ const p=Pp(s); return [p[0],p[1],eq]; }
+
+// ---------------- materials ----------------
+const mats={
+  structure: new THREE.MeshStandardMaterial({color:0x8a93a6, roughness:0.6, metalness:0.1,
+                transparent:true, opacity:0.28, side:THREE.DoubleSide, depthWrite:false}),
+  rotors:    new THREE.MeshStandardMaterial({color:0x3f9d5a, roughness:0.5, metalness:0.1}),
+  gears:     new THREE.MeshStandardMaterial({color:0xb9c0cc, roughness:0.4, metalness:0.8}),
+  window:    new THREE.MeshStandardMaterial({color:0xbcd2ff, transparent:true, opacity:0.16,
+                roughness:0.18, metalness:0, side:THREE.DoubleSide, depthWrite:false}),
+};
+const loader=new STLLoader();
+
+// load count: 2 static (structure, window) + 6 rotors + plate = 9
+const ROTOR_DEFS=[
+  {part:'rotor01',  i:0, j:1,  cross:false},
+  {part:'rotor34',  i:3, j:4,  cross:false},
+  {part:'rotor56',  i:5, j:6,  cross:false},
+  {part:'rotor78',  i:7, j:8,  cross:false},
+  {part:'rotor1011',i:10,j:11, cross:false},
+  {part:'rotor29',  i:2, j:9,  cross:true },
+];
+const rotorPivots=[];                 // {pivot, cross}
+const rotorGroup=new THREE.Group(); root.add(rotorGroup);
+let plateGroup=null;
+const staticMesh={};
+const TOTAL=9; let loaded=0;
+const done=()=>{ if(++loaded===TOTAL){ document.getElementById('stat').textContent=''; mechRest(); frameAll(); } };
+
+// static housing
+['structure','window'].forEach(name=> loader.load('./'+name+'.stl', g=>{
+  const m=new THREE.Mesh(g, mats[name]); m.visible=(name!=='window'); staticMesh[name]=m; root.add(m); done();
+}, undefined, e=>{ console.warn('missing',name,e); done(); }));
+
+// articulated rotors: each pivots about its own midpoint (model-z axis)
+ROTOR_DEFS.forEach(def=> loader.load('./'+def.part+'.stl', g=>{
+  const m=new THREE.Mesh(g, mats.rotors);
+  const M=mid(def.i,def.j);
+  const pivot=new THREE.Group(); pivot.position.set(M[0],M[1],0);
+  m.position.set(-M[0],-M[1],0); pivot.add(m); rotorGroup.add(pivot);
+  rotorPivots.push({pivot, cross:def.cross}); done();
+}, undefined, e=>{ console.warn('missing',def.part,e); done(); }));
+
+// coupling plate: pure translation on a CRANK_E circle (parallel-crank linkage)
+loader.load('./plate.stl', g=>{
+  plateGroup=new THREE.Group(); plateGroup.add(new THREE.Mesh(g, mats.gears)); root.add(plateGroup); done();
+}, undefined, e=>{ console.warn('missing plate',e); done(); });
+
+// ---------------- procedural animated balls ----------------
+const ballsGroup=new THREE.Group(); root.add(ballsGroup);
+const sphereGeo=new THREE.SphereGeometry(rb,40,28);
+const balls=[];                                    // balls[num] = {mesh, label}
+function makeLabel(txt){
+  const cv=document.createElement('canvas'); cv.width=cv.height=128;
+  const x=cv.getContext('2d'); x.clearRect(0,0,128,128);
+  x.font='bold 80px -apple-system,Helvetica,Arial,sans-serif';
+  x.textAlign='center'; x.textBaseline='middle';
+  x.lineWidth=8; x.strokeStyle='#fff'; x.strokeText(txt,64,68);
+  x.fillStyle='#0a0a0a'; x.fillText(txt,64,68);
+  const tex=new THREE.CanvasTexture(cv); tex.anisotropy=4;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex, depthTest:false, depthWrite:false, transparent:true}));
+  sp.scale.set(13,13,1); sp.renderOrder=10; return sp;
+}
+for(let k=0;k<=N;k++){
+  const driver=(k===0);
+  const m=new THREE.Mesh(sphereGeo, new THREE.MeshStandardMaterial({
+    color: driver?0xff8a3c:0xe7eaf1, roughness:0.45, metalness:0.05}));
+  const label=makeLabel(String(k));
+  ballsGroup.add(m); ballsGroup.add(label);
+  balls[k]={mesh:m, label};
+}
+function place(num, x, y, z){ balls[num].mesh.position.set(x,y,z); balls[num].label.position.set(x,y,z); }
+
+// logical state: slotOf[s] = ball number currently resting at station s
+let slotOf=Array.from({length:N+1}, (_,s)=>s);
+function renderIdle(){ for(let s=0;s<=N;s++){ const p=restPos(s); place(slotOf[s], p[0],p[1],p[2]); } }
+
+// ---------------- mechanism articulation (coupling-plate linkage) ----------------
+// REST: the in-plane rotors (and the plate that journals their crank posts) drop by RETRACT
+// so the forks clear the ring -> a fingertip spins the balls freely. SWAP: forks rise to
+// engage (u:0->.12), then through the dwell all rotors turn 180° while the rigid plate
+// TRANSLATES on its CRANK_E circle (never rotates) — the parallel-crank coupling that drives
+// every rotor the identical angle — then the forks drop to release (u:.88->1).
+const engageFrac=u => u<0.12 ? u/0.12 : u>0.88 ? (1-u)/0.12 : 1;
+function mechRest(){
+  const ang=swapTurns*Math.PI;                       // rest at the current accumulated angle (no snap)
+  for(const r of rotorPivots){ r.pivot.rotation.z=ang; r.pivot.position.z = r.cross ? 0 : RETRACT; }
+  if(plateGroup) plateGroup.position.set(CRANK_E*(Math.cos(ang)-1), CRANK_E*Math.sin(ang), RETRACT);
+}
+function articulate(u){
+  const e=ease(u), tau=sweepFrac(e), ang=swapTurns*Math.PI + Math.PI*tau, zoff=RETRACT*(1-engageFrac(u));
+  for(const r of rotorPivots){ r.pivot.rotation.z=ang; r.pivot.position.z = r.cross ? (carriageZ(e)-Z_29) : zoff; }
+  if(plateGroup) plateGroup.position.set(CRANK_E*(Math.cos(ang)-1), CRANK_E*Math.sin(ang), zoff);  // pure orbit, radius CRANK_E
+}
+
+// ---------------- animation engine ----------------
+let mode='idle';          // 'idle' | 'spin' | 'swap'
+let swapTurns=0;          // completed half-turns; the plate orbit is continuous across them (no snap-back)
+let phi=0;                // live spin offset (deg)
+let swapU=0, swapT0=0;
+const SWAP_MS=2000, SPIN_DPS=95;
+let lastT=performance.now();
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+function renderSpin(){
+  place(slotOf[0], ...restPos(0));                 // apex ball is fixed during spin
+  for(const s of RING){ const a=d2r(angleOf(s)+phi); place(slotOf[s], R*Math.cos(a), -R*Math.sin(a), eq); }
+}
+function commitSpin(){
+  let k=((Math.round(phi/STEP)%N)+N)%N; phi=0;
+  for(let t=0;t<k;t++){ const cur=RING.map(s=>slotOf[s]); for(let i=0;i<N;i++) slotOf[RING[(i+1)%N]]=cur[i]; }
+  renderIdle();
+}
+function renderSwap(u){
+  const e=ease(u), tau=sweepFrac(e);               // in-plane balls sit still while forks engage, then turn on the dwell
+  for(const [i,j] of PAIRS){
+    let p=inplane(i,j,0,tau); place(slotOf[i], p[0],p[1],p[2]);
+    p=inplane(i,j,1,tau);     place(slotOf[j], p[0],p[1],p[2]);
+  }
+  let p=cross(0,e); place(slotOf[2], p[0],p[1],p[2]);
+  p=cross(1,e);     place(slotOf[9], p[0],p[1],p[2]);
+}
+function commitSwap(){
+  for(const [i,j] of [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]]){ const t=slotOf[i]; slotOf[i]=slotOf[j]; slotOf[j]=t; }
+  swapTurns++;                                        // plate keeps orbiting from where it ended — no pop-back
+  mechRest(); renderIdle();
+}
+
+const bSpin=document.getElementById('bSpin'),
+      bPush=document.getElementById('bPush'), bReset=document.getElementById('bReset');
+function setMode(m){
+  mode=m;
+  bSpin.classList.toggle('on', m==='spin');
+  const busy=(m==='swap');
+  bPush.disabled=busy; bReset.disabled=busy; bSpin.disabled=busy;
+  bSpin.textContent=(m==='spin'?'⟳ spinning…':'⟳ spin');
+}
+bSpin.onclick=()=>{
+  if(mode==='swap') return;
+  if(mode==='spin'){ commitSpin(); mechRest(); setMode('idle'); }
+  else { phi=0; mechRest(); setMode('spin'); }   // rotors retract to clear the spinning ring
+};
+bPush.onclick=()=>{
+  if(mode==='swap') return;
+  if(mode==='spin'){ commitSpin(); }
+  swapU=0; swapT0=performance.now(); setMode('swap');
+};
+bReset.onclick=()=>{
+  if(mode==='swap') return;
+  if(mode==='spin') setMode('idle');
+  phi=0; swapTurns=0; slotOf=Array.from({length:N+1},(_,s)=>s); mechRest(); renderIdle();
+};
+
+// ---------------- view plumbing ----------------
+function frameAll(){
+  const box=new THREE.Box3().setFromObject(root); if(box.isEmpty()) return;
+  const c2=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
+  root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,s.y*0.1,0);
+  const r=Math.max(s.x,s.z); camera.position.set(r*0.8,r*0.6,r*1.4); controls.update();
+}
+document.getElementById('cbStructure').onchange=e=>{ if(staticMesh.structure) staticMesh.structure.visible=e.target.checked; };
+document.getElementById('cbWindow').onchange=e=>{ if(staticMesh.window) staticMesh.window.visible=e.target.checked; };
+document.getElementById('cbRotors').onchange=e=>{ rotorGroup.visible=e.target.checked; };
+document.getElementById('cbGears').onchange=e=>{ if(plateGroup)plateGroup.visible=e.target.checked; };
+document.getElementById('cbBalls').onchange=e=>{ ballsGroup.visible=e.target.checked; };
+document.getElementById('auto').onclick=e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
+document.getElementById('resetView').onclick=frameAll;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);});
+
+renderIdle();
+(function tick(now){
+  requestAnimationFrame(tick);
+  const dt=(now-lastT)/1000; lastT=now;
+  if(mode==='spin'){ phi+=SPIN_DPS*dt; renderSpin(); }
+  else if(mode==='swap'){
+    swapU=Math.min(1,(now-swapT0)/SWAP_MS);
+    renderSwap(swapU); articulate(swapU);
+    if(swapU>=1){ commitSwap(); setMode('idle'); }
+  }
+  controls.update(); renderer.render(scene,camera);
+})(performance.now());
+</script>
+</body>
+</html>

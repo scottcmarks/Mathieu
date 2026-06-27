@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 alternative — pocket-tiling spin band</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;
+    font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:14px;top:12px;max-width:48%;opacity:.92}
+  #hud b{color:#fff}
+  #bar{position:fixed;right:14px;top:12px;text-align:right}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;
+    padding:7px 12px;margin-left:6px;cursor:pointer;font:inherit}
+  button.on{background:#2c6cff;border-color:#5c8cff}
+  label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  #hint{position:fixed;left:14px;bottom:12px;opacity:.6}
+  #stat{position:fixed;right:14px;bottom:12px;opacity:.6}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>Alternative architecture — the pocket-tiling spin band</b><br>
+  A fixed precise channel (over-equator lip + finger chamfer) whose floor has a round well at each
+  of 11 stations, each filled FLUSH by a round green pocket-disc. <b>spin</b>: the balls roll the
+  band over the flush discs — smooth, zero slop. <b>ease</b>: the discs + balls drop ~6&nbsp;mm into
+  the wells (this is the hand-off to the swap pockets). Round discs tile flush at any angle.</div>
+<div id="bar">
+  <button id="bSpin">⟳ spin</button>
+  <button id="bEase">⤓ ease</button>
+  <label class="cb"><input type="checkbox" id="cbBand" checked>band</label>
+  <label class="cb"><input type="checkbox" id="cbDiscs" checked>discs</label>
+  <label class="cb"><input type="checkbox" id="cbDrums" checked>drums</label>
+  <label class="cb"><input type="checkbox" id="cbBores">bores</label>
+  <button id="reset">reset view</button>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · this is the FIXED spin layer (the swap pockets sit below)</div>
+<div id="stat">loading…</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader }     from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const renderer=new THREE.WebGLRenderer({canvas:c, antialias:true});
+renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.5, 6000); camera.position.set(150,150,210);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5));
+const key=new THREE.DirectionalLight(0xffffff,0.95); key.position.set(120,220,160); scene.add(key);
+const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
+const controls=new OrbitControls(camera, renderer.domElement); controls.enableDamping=true;
+
+// geometry (mirrors proto_band.scad / check_band.py)
+const SCALE=1.25, N=11, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2, EASE=5.6;
+const d2r=THREE.MathUtils.degToRad, angleOf=s=>-90+(s-1)*(360/N);
+const Pp=s=>[R*Math.cos(d2r(angleOf(s))), -R*Math.sin(d2r(angleOf(s)))];
+
+const mats={
+  band:  new THREE.MeshStandardMaterial({color:0x8d99b3, roughness:0.55, metalness:0.1,
+            transparent:true, opacity:0.40, side:THREE.DoubleSide, depthWrite:false}),
+  discs: new THREE.MeshStandardMaterial({color:0x3fb37a, roughness:0.5, metalness:0.1}),
+  drums: new THREE.MeshStandardMaterial({color:0xcc8a44, roughness:0.5, metalness:0.2}),
+  bores: new THREE.MeshStandardMaterial({color:0x6b7686, roughness:0.7, metalness:0.05,
+            transparent:true, opacity:0.30, side:THREE.DoubleSide, depthWrite:false}),
+};
+const loader=new STLLoader(); let bandMesh=null, discsGroup=null, drumsMesh=null, boresMesh=null, n=0;
+const done=()=>{ if(++n===4){ document.getElementById('stat').textContent=''; renderIdle(); frameAll(); } };
+loader.load('./proto_band.stl', g=>{ bandMesh=new THREE.Mesh(g, mats.band); root.add(bandMesh); done(); },
+  undefined, e=>{ console.warn('band',e); done(); });
+// discs as one group so they ease together
+loader.load('./proto_discs.stl', g=>{ discsGroup=new THREE.Group(); discsGroup.add(new THREE.Mesh(g, mats.discs)); root.add(discsGroup); done(); },
+  undefined, e=>{ console.warn('discs',e); done(); });
+// the 5 inner swap drums (sit below the band in the chamber)
+loader.load('./proto_drums.stl', g=>{ drumsMesh=new THREE.Mesh(g, mats.drums); root.add(drumsMesh); done(); },
+  undefined, e=>{ console.warn('drums',e); done(); });
+// the bore deck: inward routing tunnels carved as channels (translucent so the channels show)
+loader.load('./proto_bores.stl', g=>{ boresMesh=new THREE.Mesh(g, mats.bores); boresMesh.visible=false; root.add(boresMesh); done(); },
+  undefined, e=>{ console.warn('bores',e); done(); });
+
+// procedural numbered balls at the 11 ring stations
+const ballsGroup=new THREE.Group(); root.add(ballsGroup);
+const sphere=new THREE.SphereGeometry(rb,40,28);
+const balls=[];
+function makeLabel(t){ const cv=document.createElement('canvas'); cv.width=cv.height=128; const x=cv.getContext('2d');
+  x.font='bold 80px -apple-system,Arial'; x.textAlign='center'; x.textBaseline='middle';
+  x.lineWidth=8; x.strokeStyle='#fff'; x.strokeText(t,64,68); x.fillStyle='#0a0a0a'; x.fillText(t,64,68);
+  const tex=new THREE.CanvasTexture(cv); tex.anisotropy=4;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,transparent:true})); sp.scale.set(15,15,1); sp.renderOrder=10; return sp; }
+for(let s=1;s<=N;s++){ const m=new THREE.Mesh(sphere,new THREE.MeshStandardMaterial({color:0xe7eaf1,roughness:0.45}));
+  const l=makeLabel(String(s)); ballsGroup.add(m); ballsGroup.add(l); balls[s]={mesh:m,label:l}; }
+function place(s,x,y,z){ balls[s].mesh.position.set(x,y,z); balls[s].label.position.set(x,y,z); }
+
+// state
+let mode='idle', phi=0, easeT=0, easeDir=0, lastT=performance.now();
+const SPIN_DPS=85, EASE_MS=900;
+function renderIdle(){ for(let s=1;s<=N;s++){ const p=Pp(s); place(s,p[0],p[1],eq); } if(discsGroup) discsGroup.position.z=0; }
+function renderSpin(){ for(let s=1;s<=N;s++){ const a=d2r(angleOf(s)+phi); place(s,R*Math.cos(a),-R*Math.sin(a),eq); } if(discsGroup) discsGroup.position.z=0; }
+function renderEase(z){ for(let s=1;s<=N;s++){ const p=Pp(s); place(s,p[0],p[1],eq+z); } if(discsGroup) discsGroup.position.z=z; }
+
+function frameAll(){ const b=new THREE.Box3().setFromObject(root); if(b.isEmpty())return;
+  const c2=b.getCenter(new THREE.Vector3()), s=b.getSize(new THREE.Vector3());
+  root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,0,0);
+  const r=Math.max(s.x,s.z); camera.position.set(r*0.7,r*0.7,r*1.2); controls.update(); }
+
+const bSpin=document.getElementById('bSpin'), bEase=document.getElementById('bEase');
+bSpin.onclick=()=>{ if(mode==='ease')return; mode=(mode==='spin')?'idle':'spin'; bSpin.classList.toggle('on',mode==='spin'); if(mode==='idle') renderIdle(); };
+bEase.onclick=()=>{ if(mode==='ease')return; if(mode==='spin'){mode='idle';bSpin.classList.remove('on');} mode='ease'; easeDir=1; easeT=0; };
+document.getElementById('cbBand').onchange=e=>{ if(bandMesh) bandMesh.visible=e.target.checked; };
+document.getElementById('cbDiscs').onchange=e=>{ if(discsGroup) discsGroup.visible=e.target.checked; };
+document.getElementById('cbDrums').onchange=e=>{ if(drumsMesh) drumsMesh.visible=e.target.checked; };
+document.getElementById('cbBores').onchange=e=>{ if(boresMesh) boresMesh.visible=e.target.checked; };
+document.getElementById('reset').onclick=frameAll;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);});
+
+(function loop(now){ requestAnimationFrame(loop); const dt=(now-lastT)/1000; lastT=now;
+  if(mode==='spin'){ phi+=SPIN_DPS*dt; renderSpin(); }
+  else if(mode==='ease'){ easeT+=dt*1000/EASE_MS*easeDir;
+    if(easeT>=1){ easeT=1; easeDir=-1; } if(easeT<=0 && easeDir<0){ easeT=0; mode='idle'; renderIdle(); }
+    else renderEase(-EASE*(easeT<.5?2*easeT*easeT:1-Math.pow(-2*easeT+2,2)/2)); }
+  controls.update(); renderer.render(scene,camera);
+})(performance.now());
+</script>
+</body>
+</html>

@@ -80,3 +80,81 @@ fallback; macOS-native AppKit port deliberately not pursued.
   over SSH (gh auth dead on this machine).
 - Deferred (manual, Scott): set default branch to `develop`; add `TOOLBOX_PAT`;
   un-pause Actions; bump home-repo submodule pointer via wapex recipe.
+
+## 2026-06-23 / 24 / 25 — Track 2 reconfigurable-wall: built, then a parser bug revealed real interference
+
+This was a multi-day stretch designing, modelling, and (we thought) verifying
+Track 2 of the physical M12 toy (`physical/clean/`) — the reconfigurable-wall
+architecture replacing the static-channel design that hit irreducible spin-vs-swap
+collisions in earlier rounds. Final session ended with the discovery that the
+solid-overlap verifier had been silently broken; the architecture stands, but the
+detail geometry needs a real revision pass.
+
+### Architecture decisions locked
+- **Gravity-safe master invariant** (Scott): at every instant, every ball is held
+  PAST ITS EQUATOR by some retainer (spin wall / swap-ring / magnet) with
+  overlapping hand-offs. Encoded in `check_confine.py` with a `--selftest`.
+- **Two ball-grip vocabulary:** spin-ring + grooved-channel swap-ring + magnet —
+  all over-equator (mouth < ball Ø).
+- **Neighbour mechanism = in-plane DIAMETER DIVIDER** rotating π about a vertical
+  axis (Scott chose, vs radial-axis tumble — picked for robustness: vertical-axis
+  gears cleanly off the main drivetrain; no per-pair grippers).
+- **(2,9) = depth-multiplex direct cross** with a magnet grip (steel ball
+  bearings + captive magnets, Scott's reframe; safer + simpler than magnetic
+  balls; force model closes 4–17×).
+- **0–1 = 5th divider pair at the apex** (radial converge).
+- **Bow the 2-9 path through the dead centre** so it ducks INSIDE the divider
+  inward-swings (cross-pair fix found by analytic sweep).
+- **Lid** (Scott): opaque top piece whose underside is channelled to match —
+  finger-slot over the spin ring, full cap over the swaps.
+- **Drivetrain** (one input): hollow sun (60T, bore for 2-9 lane) + 4 ring-divider
+  planets + 1 idler at the circle-circle intersection (NOT on the radial line —
+  the fix after a 10T idler couldn't bridge) + apex planet. Sun turns 33° → every
+  divider turns π. Geneva couples sun only during the confined middle. Cam drum
+  on the same shaft drives dish-rise + seg-drop + 2-9 magnet-lift.
+- **Stations 2 & 9 throat seal** = a non-magnetic plug + carrier-as-plug hand-off
+  (the magnet stays parked DEEP and only rises through the opened plug).
+- **Ball Ø20 stock chrome-steel** (52100, magnetic — NOT austenitic stainless),
+  via `SCALE = 20/18`. Boss height 47 mm; footprint Ø ~150 (the swing-out cost
+  of the in-plane divider).
+
+### Files built (`physical/clean/`)
+- `proto_29.scad`, `proto_wall.scad` (spin_seg + grooved swap_wall + divider),
+  `proto_lid.scad`, `proto_drive.scad` (sun/planet/idler/drum/geneva)
+- Checkers: `check_29.py`, `check_29_solid.py`, `check_29_mag.py`, `check_wall.py`,
+  `check_wallwall.py`, `check_full.py`, `check_confine.py`, `check_drive.py`,
+  `check_cam.py`
+- Viewers: `viewer_29.html` (depth-multiplex + spin + grippers that rise from
+  the depths), `viewer_wall.html` (full reconfiguration with `drivetrain`+`lid`
+  toggles)
+
+### The parser bug Scott caught visually (2026-06-25)
+Looking at viewer frame 112 Scott said "looks like the spin wall is intersecting
+the 9-ball." Three of my "all PASS" boolean checks denied it. Investigation found:
+my `vol()` STL parser opened files in BINARY mode and read facet count from
+offset 80 — but **OpenSCAD emits ASCII STL by default** (`solid …` header).
+For ASCII files, the consistency check failed and `vol()` silently returned 0.
+So every solid sweep that reported 0 mm³ overlap was a lie.
+
+Direct boolean on Scott's flagged case: ball-9 vs `spin_seg(2)` at frame 112
+= **692.57 mm³** real overlap (was reported as 0).
+
+Fix landed in all 5 affected checkers: sniff `d[:5]==b'solid'`, parse ASCII
+vertex lines first, then fall back to binary.
+
+### Honest re-verification after the fix
+- **Still PASS (analytic, never affected by the bug):** `check_29`, `check_confine`,
+  `check_drive`, `check_cam`, `check_29_mag`. The analytic BALL-BALL portion of
+  `check_full` also still passes (the 2↔10 graze fix via the centre-bow stands).
+- **Now failing (the real interference the bug was hiding):**
+  - `check_29_solid` RETENTION — fork ball-fits overlap 23.76 mm³.
+  - `check_wall` RING-BALL (31 + 27 frames), SEG-BALL (6), SWING-SEG (3),
+    INNER-DROP (8).
+  - `check_wallwall` spin segs ∩ swap rings during the swap.
+  - `check_full` BALL-WALL 15 of 17 sampled frames; worst 3279 mm³ @ frame 6.
+
+### What this means
+The Track-2 *architecture* is sound; the detail geometry needs a real revision —
+fork cup sizing, seg/ring radial clearance during the up-down overlap, kinematics
+tuning so no moving wall crosses a ball, and 2-9 INNER-DROP timing. Memory note
+records the parser-bug lesson for all future checkers: always sniff STL format.

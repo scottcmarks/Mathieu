@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 Track-2 — reconfigurable wall</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:14px;top:12px;max-width:46%;opacity:.92}#hud b{color:#fff}
+  #bar{position:fixed;right:14px;top:12px;text-align:right}#bar .row{margin-bottom:6px}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;padding:7px 11px;margin-left:6px;cursor:pointer;font:inherit}
+  button.swap{background:#b5532a;border-color:#e0773f}button:disabled{opacity:.4;cursor:default}
+  label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  #hint{position:fixed;left:14px;bottom:12px;opacity:.6}#stat{position:fixed;right:14px;bottom:12px;opacity:.6}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>M12 Track-2 — reconfigurable wall</b><br>
+  The spin ring is <b>11 over-equator wall segments</b> (balls captive any orientation, finger-spinnable).
+  <b>◀ / ▶</b> spin. <b>⤒ swap</b>: segments <b>drop</b>; for the 4 ring pairs a <b>swap-ring + diameter
+  divider</b> rises and turns π (<span style="color:#e0a">divider</span>); for <b style="color:#5ab0ff">2</b>↔<b style="color:#ff8a3c">9</b>
+  the interior segment drops and a magnet carries them (2 shallow, 9 deep). <b>0↔1</b> is a 5th divider pair at the apex (radial).</div>
+<div id="bar">
+  <div class="row"><button id="bL">◀ spin</button><button id="bR">spin ▶</button><button id="bSwap" class="swap">⤒ swap</button><button id="bReset">reset</button></div>
+  <div class="row"><button id="bStepB">|◀</button><button id="bPlay">▶</button><button id="bStepF">▶|</button><span id="frameHUD" style="margin-left:10px;opacity:.85;font-variant-numeric:tabular-nums">frame —</span></div>
+  <div class="row"><label class="cb"><input type="checkbox" id="cbSeg" checked>spin walls</label><label class="cb"><input type="checkbox" id="cbSwap" checked>swap-rings</label><label class="cb"><input type="checkbox" id="cbMag" checked>magnets</label><label class="cb"><input type="checkbox" id="cbLid">lid</label><label class="cb"><input type="checkbox" id="cbGears">drivetrain</label><button id="auto">▶ auto</button><button id="rv">reset view</button></div>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · ⤒ runs the swap · |◀ ▶ ▶| or ← space → step/play</div>
+<div id="stat">loading…</div>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" }}</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const renderer=new THREE.WebGLRenderer({canvas:c,antialias:true}); renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,6000); camera.position.set(150,180,210);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5)); const key=new THREE.DirectionalLight(0xffffff,0.95); key.position.set(120,220,160); scene.add(key);
+const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
+const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
+
+// ---- geometry / kinematics (mirror proto_wall.scad / check_wall.py) ----
+const N=11, SCALE=20/18, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2, DROP=27, div_t=3.0, orbit=rb+div_t/2+0.5;
+const d2r=Math.PI/180;
+const Aa=s=>-90+(s-1)*(360/N), th=s=>-Aa(s);
+const P=s=> s===0?[0,R+24*SCALE]:[R*Math.cos(Aa(s)*d2r), -R*Math.sin(Aa(s)*d2r)];
+const mid=(i,j)=>[(P(i)[0]+P(j)[0])/2,(P(i)[1]+P(j)[1])/2];
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1]], nrm=a=>{const m=Math.hypot(a[0],a[1]);return[a[0]/m,a[1]/m];};
+const rotz=(p,deg)=>{const a=deg*d2r;return[p[0]*Math.cos(a)-p[1]*Math.sin(a),p[0]*Math.sin(a)+p[1]*Math.cos(a)];};
+const lerp=(p,q,t)=>[p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t];
+const cl=x=>Math.max(0,Math.min(1,x)), ss=x=>{x=cl(x);return x*x*(3-2*x);};
+const RINGPAIRS=[[0,1],[3,4],[5,6],[7,8],[10,11]], SWAPST=[1,2,3,4,5,6,7,8,9,10,11];   // 0-1 = apex divider pair
+// in-plane divider swap for a ring pair
+function divPair(i,j,which,u){ const M=mid(i,j),T=nrm(sub(P(j),P(i))),sgn=which===i?-1:1,home=which===i?P(i):P(j),dest=which===i?P(j):P(i),off=[sgn*orbit*T[0],sgn*orbit*T[1]];
+  let q; if(u<=0.25)q=lerp(home,[M[0]+off[0],M[1]+off[1]],u/0.25); else if(u<=0.75){const r=rotz(off,180*(u-0.25)/0.5);q=[M[0]+r[0],M[1]+r[1]];} else q=lerp([M[0]-off[0],M[1]-off[1]],dest,(u-0.75)/0.25); return [q[0],q[1],eq]; }
+// depth-multiplex for 2,9
+const RAMP=0.20, dfrac=u=>u<RAMP?ss(u/RAMP):(u>1-RAMP?ss((1-u)/RAMP):1);
+function far(which,u){ const a=which===2?P(2):P(9),b=which===2?P(9):P(2);   // bow toward centre (control=origin)
+  const x=(1-u)*(1-u)*a[0]+u*u*b[0], y=(1-u)*(1-u)*a[1]+u*u*b[1];
+  return which===2?[x,y,eq]:[x,y,eq-DROP*dfrac(u)]; }
+const segDZ=u=>20*(u>0.18&&u<0.82?1:(u<=0.18?cl((u-0.10)/0.08):cl((0.90-u)/0.08)));
+const ringZ=u=> u<0.20? -22+22*cl(u/0.20) : (u>0.80? -22*cl((u-0.80)/0.20) : 0);
+const divRot=u=>180*cl((u-0.25)/0.50);
+
+// ---- load parts ----
+const loader=new STLLoader(), stat=document.getElementById('stat'); let stls={},need=['seg_in','seg_out','swapwall','divider','mag'],got=0;
+const matSeg=new THREE.MeshStandardMaterial({color:0x8d99b3,roughness:0.6,metalness:0.1,transparent:true,opacity:0.55,side:THREE.DoubleSide});
+const matRing=new THREE.MeshStandardMaterial({color:0xc89a55,roughness:0.55,metalness:0.2,transparent:true,opacity:0.6,side:THREE.DoubleSide});
+const matDiv=new THREE.MeshStandardMaterial({color:0xdd55aa,roughness:0.5,metalness:0.2});
+const matBody=new THREE.MeshStandardMaterial({color:0x9aa0aa,roughness:0.35,metalness:0.85}), matMagDisc=new THREE.MeshStandardMaterial({color:0xd83a3a,roughness:0.4,metalness:0.3});
+const segsIn=[], segsOut=[], rings=[], mags={};
+const DROP_OUTER=[1,3,4,5,6,7,8,10,11], DROP_INNER=[2,9];   // divider pairs drop EXTERIOR; 2-9 drops INTERIOR
+need.forEach(k=>loader.load(`./proto_wall_${k}.stl`,g=>{stls[k]=g; if(++got===need.length) build();}, undefined, e=>{console.warn(k,e); if(++got===need.length) build();}));
+let lidMesh=null;   // opaque lid: underside channels capture from above (finger slot over spin, full cap over swaps)
+loader.load('./proto_lid.stl', g=>{ lidMesh=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0x9a8d70,roughness:0.7,metalness:0.05,transparent:true,opacity:0.38,side:THREE.DoubleSide,depthWrite:false})); lidMesh.visible=false; root.add(lidMesh); }, undefined, e=>console.warn('lid',e));
+const driveGroup=new THREE.Group(); driveGroup.visible=false; root.add(driveGroup);   // gear train + cam drum (below the balls)
+loader.load('./proto_drive_gears.stl', g=>driveGroup.add(new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0xb0b4bc,roughness:0.4,metalness:0.8}))), undefined, e=>console.warn('gears',e));
+loader.load('./proto_drive_drum.stl',  g=>driveGroup.add(new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0x6a7080,roughness:0.5,metalness:0.6}))), undefined, e=>console.warn('drum',e));
+function build(){
+  for(let k=1;k<=N;k++){ const rz=(th(k)-th(1))*d2r;
+    const mi=new THREE.Mesh(stls.seg_in,matSeg);  mi.rotation.z=rz; root.add(mi); segsIn[k]=mi;
+    const mo=new THREE.Mesh(stls.seg_out,matSeg); mo.rotation.z=rz; root.add(mo); segsOut[k]=mo; }   // 11 split spin segments
+  for(const [i,j] of RINGPAIRS){ const M=mid(i,j), T=nrm(sub(P(j),P(i))); const g=new THREE.Group(); g.position.set(M[0],M[1],-22);
+    const w=new THREE.Mesh(stls.swapwall,matRing); g.add(w); const d=new THREE.Mesh(stls.divider,matDiv); g.add(d);
+    g.userData={i,j,div:d,base:Math.atan2(T[1],T[0])}; root.add(g); rings.push(g); }   // base aligns the divider normal to the pair's converge axis
+  for(const s of [2,9]){ const grp=new THREE.Group(); if(stls.mag){grp.add(new THREE.Mesh(stls.mag,matBody));} root.add(grp); mags[s]=grp; }
+  ready();
+}
+// ---- procedural balls 0..11 ----
+const sph=new THREE.SphereGeometry(rb,40,28), balls={}, ballsGroup=new THREE.Group(); root.add(ballsGroup);
+function lbl(t){const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d');x.font='bold 80px Arial';x.textAlign='center';x.textBaseline='middle';x.lineWidth=8;x.strokeStyle='#fff';x.strokeText(t,64,68);x.fillStyle='#0a0a0a';x.fillText(t,64,68);const tx=new THREE.CanvasTexture(cv);tx.anisotropy=4;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,depthTest:false,transparent:true}));sp.scale.set(12,12,1);sp.renderOrder=10;return sp;}
+for(let n=0;n<=N;n++){const col=n===2?0x5ab0ff:n===9?0xff8a3c:n===0?0xff8a3c:0xc8ccd2;const m=new THREE.Mesh(sph,new THREE.MeshStandardMaterial({color:col,roughness:0.3,metalness:0.85}));ballsGroup.add(m);const l=lbl(String(n));ballsGroup.add(l);balls[n]={m,l};}
+function place(n,x,y,z){balls[n].m.position.set(x,y,z);balls[n].l.position.set(x,y,z);}
+
+// ---- state / transport ----
+let slot=Array.from({length:N+1},(_,s)=>s), mode='idle';
+const RING=[1,2,3,4,5,6,7,8,9,10,11]; let phi=0,sf=0,stt=0,sd=1; const STEP=360/N,STEP_MS=420;
+const FR=120,SWAP_MS=6000; let fr=0,playing=false,t0=0; const fHUD=document.getElementById('frameHUD');
+function segHome(){ for(let k=1;k<=N;k++){ if(segsIn[k])segsIn[k].position.z=0; if(segsOut[k])segsOut[k].position.z=0; } }
+function ringsHome(){ for(const g of rings) g.position.z=-22; for(const s of[2,9]) if(mags[s]) mags[s].visible=false; }
+function renderIdle(){ for(const s of RING){const p=P(s);place(slot[s],p[0],p[1],eq);} place(0,...P(0),eq); segHome(); ringsHome(); }
+function renderSpin(){ for(const s of RING){const a=(Aa(s)+phi)*d2r;place(slot[s],R*Math.cos(a),-R*Math.sin(a),eq);} place(0,...P(0),eq); segHome(); ringsHome(); }
+function renderSwap(u){
+  const dz=segDZ(u);
+  for(let k=1;k<=N;k++){ if(segsIn[k]) segsIn[k].position.z = DROP_INNER.includes(k)? -dz:0;     // 2-9 interior drops
+                         if(segsOut[k]) segsOut[k].position.z = DROP_OUTER.includes(k)? -dz:0; }  // divider exterior drops
+  // 5 divider pairs incl. apex 0-1
+  for(const g of rings){ const {i,j,div,base}=g.userData; g.position.z=ringZ(u); div.rotation.z=base+divRot(u)*d2r;
+    const a=divPair(i,j,i,u), b=divPair(i,j,j,u); place(slot[i],a[0],a[1],a[2]); place(slot[j],b[0],b[1],b[2]); }
+  // 2-9 magnet depth-multiplex
+  for(const s of[2,9]){ const p=far(s,u); place(slot[s],p[0],p[1],p[2]);
+    if(mags[s]){ mags[s].position.set(p[0],p[1],p[2]); mags[s].rotation.z=Math.atan2((s===2?P(9):P(2))[1]-(s===2?P(2):P(9))[1],(s===2?P(9):P(2))[0]-(s===2?P(2):P(9))[0]); mags[s].visible=showMag && (u>0.02&&u<0.98);} }
+  fHUD.textContent=`frame ${fr} / ${FR}`;
+}
+let showMag=true;
+// commit: apply perm #22 to slot (the ring pairs + 2,9; apex left)
+function commit(){ for(const [i,j] of [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]]){const t=slot[i];slot[i]=slot[j];slot[j]=t;} }   // full perm #22
+// controls
+const bL=document.getElementById('bL'),bR=document.getElementById('bR'),bS=document.getElementById('bSwap'),bRe=document.getElementById('bReset');
+const bB=document.getElementById('bStepB'),bP=document.getElementById('bPlay'),bF=document.getElementById('bStepF');
+function setC(){const sw=mode==='swap';bL.disabled=mode!=='idle';bR.disabled=mode!=='idle';bS.disabled=mode==='spin';bS.textContent=sw?'✓ done':'⤒ swap';bB.disabled=!sw;bF.disabled=!sw;bP.disabled=mode==='spin';bP.textContent=(sw&&playing)?'⏸':'▶';if(!sw)fHUD.textContent='frame —';}
+function spin(d){if(mode!=='idle')return;mode='spin';phi=0;sf=0;sd=d;stt=performance.now();setC();}
+function cspin(d){const c=RING.map(s=>slot[s]);for(let i=0;i<N;i++)slot[RING[((i+d)%N+N)%N]]=c[i];phi=0;renderIdle();}
+bL.onclick=()=>spin(-1);bR.onclick=()=>spin(1);
+let committed=false;
+function start(){mode='swap';fr=0;playing=true;committed=false;t0=performance.now();setC();renderSwap(0);}
+function fin(){if(!committed){commit();committed=true;}mode='idle';playing=false;renderIdle();setC();}
+bS.onclick=()=>{if(mode==='idle')start();else if(mode==='swap')fin();};
+bRe.onclick=()=>{if(mode==='spin')return;mode='idle';playing=false;slot=Array.from({length:N+1},(_,s)=>s);renderIdle();setC();};
+function rb_(now){t0=now-(fr/FR)*SWAP_MS;}
+bB.onclick=()=>{if(mode!=='swap')return;playing=false;fr=Math.max(0,fr-1);rb_(performance.now());renderSwap(fr/FR);setC();};
+bF.onclick=()=>{if(mode!=='swap')return;playing=false;fr=Math.min(FR,fr+1);if(fr===FR&&!committed){commit();committed=true;}rb_(performance.now());renderSwap(fr/FR);setC();};
+bP.onclick=()=>{if(mode==='idle'){start();return;}if(mode!=='swap')return;if(fr>=FR){fr=0;committed=false;}playing=!playing;rb_(performance.now());setC();};
+addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowLeft'){mode==='swap'?bB.onclick():bL.onclick();e.preventDefault();}else if(e.key==='ArrowRight'){mode==='swap'?bF.onclick():bR.onclick();e.preventDefault();}else if(e.key===' '){bP.onclick();e.preventDefault();}});
+document.getElementById('cbSeg').onchange=e=>{for(let k=1;k<=N;k++){if(segsIn[k])segsIn[k].visible=e.target.checked; if(segsOut[k])segsOut[k].visible=e.target.checked;}};
+document.getElementById('cbSwap').onchange=e=>{for(const g of rings)g.visible=e.target.checked;};
+document.getElementById('cbMag').onchange=e=>{showMag=e.target.checked;};
+document.getElementById('cbLid').onchange=e=>{if(lidMesh)lidMesh.visible=e.target.checked;};
+document.getElementById('cbGears').onchange=e=>{driveGroup.visible=e.target.checked;};
+document.getElementById('auto').onclick=e=>{controls.autoRotate=!controls.autoRotate;e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto';};
+let loaded=0; function ready(){if(++loaded>=1){stat.textContent='';renderIdle();setC();frameAll();}}
+function frameAll(){const b=new THREE.Box3().setFromObject(root);if(b.isEmpty())return;const c2=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3());root.position.sub(new THREE.Vector3(c2.x,0,c2.z));controls.target.set(0,0,0);const r=Math.max(s.x,s.z);camera.position.set(r*0.7,r*0.7,r*1.2);controls.update();}
+document.getElementById('rv').onclick=frameAll;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+(function loop(now){requestAnimationFrame(loop);
+  if(mode==='spin'){const t=Math.min(1,(now-stt)/STEP_MS);phi=(sd*STEP)*(t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2);renderSpin();if(t>=1){cspin(sd);mode='idle';setC();}}
+  else if(mode==='swap'){if(playing){fr=Math.min(FR,Math.round((now-t0)/SWAP_MS*FR));if(fr>=FR){fr=FR;playing=false;if(!committed){commit();committed=true;}setC();}}renderSwap(fr/FR);}
+  controls.update();renderer.render(scene,camera);
+})(performance.now());
+</script>
+</body>
+</html>

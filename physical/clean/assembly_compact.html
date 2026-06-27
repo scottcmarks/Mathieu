@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 alternative — ADOPTED compact deck (perm #22)</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;
+    font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:14px;top:12px;max-width:46%;opacity:.92}
+  #hud b{color:#fff}
+  #bar{position:fixed;right:14px;top:12px;text-align:right}
+  #bar .row{margin-bottom:6px}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;
+    padding:7px 11px;margin-left:6px;cursor:pointer;font:inherit}
+  button.push{background:#b5532a;border-color:#e0773f}
+  button:disabled{opacity:.4;cursor:default}
+  label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  #hint{position:fixed;left:14px;bottom:12px;opacity:.6}
+  #stat{position:fixed;right:14px;bottom:12px;opacity:.6}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>M12 alternative — ADOPTED compact deck (perm #22)</b><br>
+  Fixed spin band + ease-deck (discs, bores, 5 drums) + apex input. <b>◀ / ▶</b> step the ring spin
+  one detent each way. <b>push 0</b> runs the swap: the deck eases down ~6&nbsp;mm, balls route inward
+  through the bores, the drums turn 180°, route back, the deck eases up — apex 0↔1 turns up top.</div>
+<div id="bar">
+  <div class="row">
+    <button id="bL">◀ spin</button><button id="bR">spin ▶</button>
+    <button id="bPush" class="push">⤓ push 0</button><button id="bReset">reset</button>
+  </div>
+  <div class="row" id="transport">
+    <button id="bStepB" title="step back one frame">|◀</button>
+    <button id="bPlay" title="play / pause">▶</button>
+    <button id="bStepF" title="step forward one frame">▶|</button>
+    <span id="frameHUD" style="margin-left:10px;opacity:.85;font-variant-numeric:tabular-nums">frame —</span>
+  </div>
+  <div class="row">
+    <label class="cb"><input type="checkbox" id="cbBand" checked>band</label>
+    <label class="cb"><input type="checkbox" id="cbEase" checked>ease-deck</label>
+    <label class="cb"><input type="checkbox" id="cbDrums" checked>drums</label>
+    <label class="cb"><input type="checkbox" id="cbApex" checked>apex</label>
+    <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
+  </div>
+  <div class="row"><button id="auto">▶ auto-rotate</button><button id="resetView">reset view</button></div>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · push 0 to scrub the swap · |◀ ▶ ▶| or ← space → step/play · ✓ apply locks it in · reset homes everything</div>
+<div id="stat">loading…</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader }     from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const renderer=new THREE.WebGLRenderer({canvas:c, antialias:true});
+renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.5, 6000); camera.position.set(150,160,210);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5));
+const key=new THREE.DirectionalLight(0xffffff,0.95); key.position.set(120,220,160); scene.add(key);
+const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
+const controls=new OrbitControls(camera, renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
+
+// ---- geometry (mirrors check_assembly.py / proto_band.scad) ----
+const N=11, SCALE=1.25, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2, apexR=R+24*SCALE;
+const tube=rb+0.3, RD=rb+0.5, FP=RD+rb+1, CR=R-RD-1, CLEAR=CR-FP;
+const spin_top=eq+Math.sqrt(tube*tube-rb*rb)+1.5, EASE=(spin_top-eq)+1.5;
+const d2r=THREE.MathUtils.degToRad, Aa=s=>-90+(s-1)*(360/N);
+const P=s=> s===0?[0,apexR]:[R*Math.cos(d2r(Aa(s))), -R*Math.sin(d2r(Aa(s)))];
+const mid=(i,j)=>[(P(i)[0]+P(j)[0])/2,(P(i)[1]+P(j)[1])/2];
+const radf=p=>Math.hypot(p[0],p[1]); const uni=p=>{const r=radf(p);return[p[0]/r,p[1]/r];};
+const rot2=(p,c,a)=>{const co=Math.cos(a),si=Math.sin(a),dx=p[0]-c[0],dy=p[1]-c[1];return[c[0]+dx*co-dy*si,c[1]+dx*si+dy*co];};
+const lerp=(p,q,t)=>[p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t];
+const ALLP=[[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];
+const INNER=ALLP.filter(p=>!p.includes(0));
+const far=(i,j)=>radf(mid(i,j))<CR-4;
+const drumC=(i,j)=>far(i,j)?[0,0]:[uni(mid(i,j))[0]*CR,uni(mid(i,j))[1]*CR];
+const drumAxd=(i,j)=>far(i,j)?Math.atan2(mid(i,j)[1],mid(i,j)[0])-Math.PI/2:Math.atan2(drumC(i,j)[1],drumC(i,j)[0])+Math.PI/2;
+function entries(i,j){const C=drumC(i,j),a=drumAxd(i,j),t=[Math.cos(a),Math.sin(a)];
+  return [[C[0]+t[0]*RD,C[1]+t[1]*RD],[C[0]-t[0]*RD,C[1]-t[1]*RD]];}
+function pairof(s){for(const p of ALLP) if(p.includes(s)) return [p, p[0]===s?0:1];}
+
+// ---- kinematics ----
+function routed(i,j,which,u){
+  const home=which===0?P(i):P(j), away=which===0?P(j):P(i), e=entries(i,j);
+  const eh=which===0?e[0]:e[1], ea=which===0?e[1]:e[0], C=drumC(i,j), isf=far(i,j), z=eq-EASE;
+  if(u<=0.10) return [home[0],home[1], eq-EASE*(u/0.10)];
+  if(u<=0.32){const s=(u-0.10)/0.22; if(isf){const w=[uni(home)[0]*(CLEAR-1),uni(home)[1]*(CLEAR-1)];
+    const q=s<0.5?lerp(home,w,s/0.5):lerp(w,eh,(s-0.5)/0.5); return [q[0],q[1],z];} const q=lerp(home,eh,s); return [q[0],q[1],z];}
+  if(u<=0.68){const q=rot2(eh,C,Math.PI*((u-0.32)/0.36)); return [q[0],q[1],z];}
+  if(u<=0.90){const s=(u-0.68)/0.22; if(isf){const w=[uni(away)[0]*(CLEAR-1),uni(away)[1]*(CLEAR-1)];
+    const q=s<0.5?lerp(ea,w,s/0.5):lerp(w,away,(s-0.5)/0.5); return [q[0],q[1],z];} const q=lerp(ea,away,s); return [q[0],q[1],z];}
+  return [away[0],away[1], eq-EASE*((1.0-u)/0.10)];
+}
+const epte=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function apexBall(which,u){const q=rot2(which===0?P(0):P(1), mid(0,1), Math.PI*epte(u)); return [q[0],q[1],eq];}
+function ballpos(s,u){const [p,w]=pairof(s); return p[0]===0?apexBall(w,u):routed(p[0],p[1],w,u);}
+const engageFrac=u=> u<0.10? u/0.10 : u>0.90? (1-u)/0.10 : 1;
+const drumFrac =u=> u<0.32?0 : u>0.68?1 : (u-0.32)/0.36;
+
+// ---- meshes ----
+const mats={
+  band: new THREE.MeshStandardMaterial({color:0x3fb37a,roughness:0.55,metalness:0.1,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthWrite:false}),
+  ease: new THREE.MeshStandardMaterial({color:0x5a6b7e,roughness:0.6,metalness:0.1,transparent:true,opacity:0.55,depthWrite:false}),
+  drum: new THREE.MeshStandardMaterial({color:0xcc8a44,roughness:0.5,metalness:0.2}),
+  apex: new THREE.MeshStandardMaterial({color:0xe0773f,roughness:0.5,metalness:0.2}),
+};
+const loader=new STLLoader();
+const easeGroup=new THREE.Group(); root.add(easeGroup);     // drops ~EASE during the swap
+const drumPivots=[];                                        // {pivot} children of easeGroup
+let bandMesh=null, easeMesh=null, apexPivot=null;
+const TOTAL=8; let n=0;
+const done=()=>{ if(++n===TOTAL){ document.getElementById('stat').textContent=''; renderIdle(); mechRest(); frameAll(); } };
+loader.load('./proto_band_compact.stl', g=>{ bandMesh=new THREE.Mesh(g,mats.band); root.add(bandMesh); done(); }, undefined, e=>{console.warn('band',e);done();});
+loader.load('./proto_deck_compact.stl', g=>{ easeMesh=new THREE.Mesh(g,mats.ease); easeGroup.add(easeMesh); done(); }, undefined, e=>{console.warn('ease',e);done();});
+INNER.forEach((pr,k)=> loader.load(`./proto_drum${k}_compact.stl`, g=>{
+  const m=new THREE.Mesh(g,mats.drum); const C=drumC(pr[0],pr[1]);
+  const piv=new THREE.Group(); piv.position.set(C[0],C[1],0); m.position.set(-C[0],-C[1],0); piv.add(m);
+  easeGroup.add(piv); drumPivots.push(piv); done();
+}, undefined, e=>{console.warn('drum'+k,e);done();}));
+loader.load('./proto_apex_compact.stl', g=>{
+  const m=new THREE.Mesh(g,mats.apex); const M=mid(0,1);
+  apexPivot=new THREE.Group(); apexPivot.position.set(M[0],M[1],0); m.position.set(-M[0],-M[1],0); apexPivot.add(m);
+  root.add(apexPivot); done();
+}, undefined, e=>{console.warn('apex',e);done();});
+
+// ---- procedural numbered balls (0..11) ----
+const ballsGroup=new THREE.Group(); root.add(ballsGroup);
+const sph=new THREE.SphereGeometry(rb,40,28); const balls=[];
+function makeLabel(t){const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d');
+  x.font='bold 80px Arial';x.textAlign='center';x.textBaseline='middle';x.lineWidth=8;x.strokeStyle='#fff';x.strokeText(t,64,68);x.fillStyle='#0a0a0a';x.fillText(t,64,68);
+  const tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,transparent:true}));sp.scale.set(14,14,1);sp.renderOrder=10;return sp;}
+for(let s=0;s<=N;s++){const m=new THREE.Mesh(sph,new THREE.MeshStandardMaterial({color:s===0?0xff8a3c:0xe7eaf1,roughness:0.45}));
+  const l=makeLabel(String(s)); ballsGroup.add(m); ballsGroup.add(l); balls[s]={mesh:m,label:l};}
+function place(num,x,y,z){balls[num].mesh.position.set(x,y,z);balls[num].label.position.set(x,y,z);}
+
+// ---- state ----
+let slot=Array.from({length:N+1},(_,s)=>s), mode='idle', swapU=0, swapT0=0, turns=0;
+let phi=0, spinTarget=0, spinFrom=0, spinT0=0, lastT=performance.now();
+const SWAP_MS=5500, STEP_MS=420, STEP=360/N, RING=[1,2,3,4,5,6,7,8,9,10,11];
+const FRAMES=120; let swapFrame=0, playing=false;   // swap is scrubbable in 121 frames (0..120), matching the checker
+
+function renderIdle(){ for(let s=0;s<=N;s++){ const p=P(s); place(slot[s],p[0],p[1],eq); } }
+function renderSpin(){ place(slot[0],...P(0).concat(eq));
+  for(const s of RING){ const a=d2r(Aa(s)+phi); place(slot[s], R*Math.cos(a), -R*Math.sin(a), eq); } }
+function renderSwap(u){ for(let s=0;s<=N;s++){ const p=ballpos(s,u); place(slot[s],p[0],p[1],p[2]); } }
+function mechRest(){ easeGroup.position.z=0; for(const d of drumPivots) d.rotation.z=turns*Math.PI;
+  if(apexPivot) apexPivot.rotation.z=turns*Math.PI; }
+function mechSwap(u){ easeGroup.position.z=-EASE*engageFrac(u);
+  const a=turns*Math.PI+Math.PI*drumFrac(u); for(const d of drumPivots) d.rotation.z=a;
+  if(apexPivot) apexPivot.rotation.z=turns*Math.PI+Math.PI*epte(u); }
+function commitSwap(){ for(const pr of ALLP){const k=slot[pr[0]];slot[pr[0]]=slot[pr[1]];slot[pr[1]]=k;} turns++; mechRest(); renderIdle(); }
+function commitSpinStep(dir){ const cur=RING.map(s=>slot[s]);
+  for(let i=0;i<N;i++) slot[RING[((i+dir)%N+N)%N]]=cur[i]; phi=0; renderIdle(); }
+
+// ---- buttons ----
+const bL=document.getElementById('bL'),bR=document.getElementById('bR'),bPush=document.getElementById('bPush'),bReset=document.getElementById('bReset');
+const bStepB=document.getElementById('bStepB'),bPlay=document.getElementById('bPlay'),bStepF=document.getElementById('bStepF'),frameHUD=document.getElementById('frameHUD');
+let spinDir=1;
+function fhud(){ frameHUD.textContent = (mode==='swap') ? `frame ${swapFrame} / ${FRAMES}` : 'frame —'; }
+function setControls(){
+  const swapping = mode==='swap';
+  bL.disabled = mode!=='idle'; bR.disabled = mode!=='idle';
+  bReset.disabled = mode==='spin';
+  bPush.textContent = swapping ? '✓ apply 0' : '⤓ push 0';
+  bPush.disabled = mode==='spin';
+  bStepB.disabled = !swapping; bStepF.disabled = !swapping;
+  bPlay.disabled = mode==='spin';
+  bPlay.textContent = (swapping && playing) ? '⏸' : '▶';
+}
+function rebaseSwap(now){ swapT0 = now - (swapFrame/FRAMES)*SWAP_MS; }      // keep play continuous after a step/pause
+function showSwapFrame(){ const u=swapFrame/FRAMES; renderSwap(u); mechSwap(u); fhud(); }
+function startSwap(){ mode='swap'; swapFrame=0; playing=true; swapT0=performance.now();
+  document.getElementById('stat').textContent='push 0 — swap'; setControls(); showSwapFrame(); }
+function exitSwap(apply){ if(apply) commitSwap(); else { mechRest(); renderIdle(); }
+  mode='idle'; playing=false; document.getElementById('stat').textContent=''; setControls(); fhud(); }
+
+function spinStep(dir){ if(mode!=='idle')return; mode='spin'; spinFrom=0; spinTarget=dir*STEP; spinDir=dir; spinT0=performance.now(); setControls(); }
+bL.onclick=()=>spinStep(-1);   // ◀ : left spin
+bR.onclick=()=>spinStep(+1);   // spin ▶ : right spin
+bPush.onclick=()=>{ if(mode==='idle') startSwap(); else if(mode==='swap') exitSwap(true); };   // start, then apply+exit
+bReset.onclick=()=>{ if(mode==='spin')return; turns=0; slot=Array.from({length:N+1},(_,s)=>s); playing=false; mode='idle'; mechRest(); renderIdle(); setControls(); fhud(); };
+// ---- transport: step back / play-pause / step forward (frame-exact) ----
+bStepB.onclick=()=>{ if(mode!=='swap')return; playing=false; swapFrame=Math.max(0,swapFrame-1); rebaseSwap(performance.now()); showSwapFrame(); setControls(); };
+bStepF.onclick=()=>{ if(mode!=='swap')return; playing=false; swapFrame=Math.min(FRAMES,swapFrame+1); rebaseSwap(performance.now()); showSwapFrame(); setControls(); };
+bPlay.onclick=()=>{ if(mode==='idle'){ startSwap(); return; } if(mode!=='swap')return;
+  if(swapFrame>=FRAMES) swapFrame=0; playing=!playing; rebaseSwap(performance.now()); setControls(); };
+// keyboard: ← → step, space play/pause
+addEventListener('keydown',e=>{ if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowLeft'){ bStepB.onclick(); e.preventDefault(); }
+  else if(e.key==='ArrowRight'){ bStepF.onclick(); e.preventDefault(); }
+  else if(e.key===' '){ bPlay.onclick(); e.preventDefault(); } });
+const tog=(id,o)=>document.getElementById(id).onchange=e=>{ o.visible=e.target.checked; };
+tog('cbBand',{set visible(v){if(bandMesh)bandMesh.visible=v;}});
+document.getElementById('cbEase').onchange=e=>{ if(easeMesh)easeMesh.visible=e.target.checked; };
+document.getElementById('cbDrums').onchange=e=>{ for(const d of drumPivots) d.visible=e.target.checked; };
+document.getElementById('cbApex').onchange=e=>{ if(apexPivot)apexPivot.visible=e.target.checked; };
+document.getElementById('cbBalls').onchange=e=>{ ballsGroup.visible=e.target.checked; };
+document.getElementById('auto').onclick=e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
+function frameAll(){const b=new THREE.Box3().setFromObject(root); if(b.isEmpty())return;
+  const c2=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3());
+  root.position.sub(new THREE.Vector3(c2.x,0,c2.z)); controls.target.set(0,0,0);
+  const r=Math.max(s.x,s.z); camera.position.set(r*0.7,r*0.7,r*1.2); controls.update();}
+document.getElementById('resetView').onclick=frameAll;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+
+setControls(); fhud();
+(function loop(now){ requestAnimationFrame(loop);
+  if(mode==='spin'){ const t=Math.min(1,(now-spinT0)/STEP_MS); phi=spinFrom+(spinTarget-spinFrom)*epte(t); renderSpin();
+    if(t>=1){ commitSpinStep(spinDir); mode='idle'; setControls(); } }
+  else if(mode==='swap'){
+    if(playing){ swapFrame=Math.min(FRAMES, Math.round((now-swapT0)/SWAP_MS*FRAMES));
+      if(swapFrame>=FRAMES){ swapFrame=FRAMES; playing=false; setControls(); } }
+    const u=swapFrame/FRAMES; renderSwap(u); mechSwap(u); fhud();   // never auto-commits; press ✓ apply 0 to lock it in
+  }
+  controls.update(); renderer.render(scene,camera);
+})(performance.now());
+</script>
+</body>
+</html>

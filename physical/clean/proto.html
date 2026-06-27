@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 alternative — full layout (perm #22, 5 inner drums + apex input)</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;
+    font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:14px;top:12px;max-width:44%;opacity:.92}
+  #hud b{color:#fff}
+  #bar{position:fixed;right:14px;top:12px;text-align:right}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;
+    padding:7px 12px;margin-left:6px;cursor:pointer;font:inherit}
+  button.on{background:#2c6cff;border-color:#5c8cff}
+  button.push{background:#b5532a;border-color:#e0773f}
+  #leg{position:fixed;left:14px;bottom:12px;opacity:.7;font-size:12px}
+  #state{position:fixed;right:14px;bottom:12px;opacity:.7}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>Full alternative layout — perm&nbsp;#22 (verified fit)</b><br>
+  The fixed spin band (grey) + 5 inner swap drums (green): the apex pair (0,1) is the TOP input
+  (orange 0); the long 2↔9 pair uses the CENTRAL drum; the four rim pairs use drums just inside the
+  ring, fed by inward bores. <b>spin</b> = free ring shift. <b>push&nbsp;0</b> = ease down → route
+  inward → drum 180° → route back → ease up. Drums clear by 1.8&nbsp;mm; nothing leaves the ring.</div>
+<div id="bar">
+  <button id="bSpin">⟳ spin</button>
+  <button id="bPush" class="push">⤓ push 0</button>
+  <button id="bReset">reset</button>
+</div>
+<div id="leg">● in the spin band &nbsp;·&nbsp; ◌ eased into a drum (swapping) &nbsp;·&nbsp; green = swap drums, blue = bores</div>
+<div id="state">ready</div>
+<script>
+const cv=document.getElementById('c'), x=cv.getContext('2d');
+let W,H,CX,CY,SC;
+function resize(){ const d=devicePixelRatio||1; W=cv.width=innerWidth*d; H=cv.height=innerHeight*d;
+  cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; CX=W/2; CY=H*0.54; SC=Math.min(W,H)/250; }
+addEventListener('resize',resize); resize();
+
+// ---- geometry (mirrors check_layout.py) ----
+const N=11, R=50*1.25, rb=9*1.25, apexR=R+24*1.25, RD=rb+0.5, FP=RD+rb+1, CR=R-RD-1, CLEAR=CR-FP;
+const d2r=d=>d*Math.PI/180, A=s=>-90+(s-1)*(360/N);
+function P(s){ return s===0?[0,apexR]:[R*Math.cos(d2r(A(s))),-R*Math.sin(d2r(A(s)))]; }
+const sub=(p,q)=>[p[0]-q[0],p[1]-q[1]], rad=p=>Math.hypot(p[0],p[1]), uni=p=>{const r=rad(p);return [p[0]/r,p[1]/r];};
+function rot2(p,c,a){const co=Math.cos(a),si=Math.sin(a),dx=p[0]-c[0],dy=p[1]-c[1];return [c[0]+dx*co-dy*si,c[1]+dx*si+dy*co];}
+const lerp=(p,q,t)=>[p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t];
+const polar=(r,a)=>[r*Math.cos(a),-r*Math.sin(a)];
+
+// pairs of perm #22; apex (0,1) is the top input (no inner drum)
+const APEXP=[0,1];
+const INNER=[[2,9],[3,4],[5,6],[7,8],[10,11]];
+function mid(i,j){const a=P(i),b=P(j);return [(a[0]+b[0])/2,(a[1]+b[1])/2];}
+function far(i,j){return rad(mid(i,j))<CR-4;}
+function drumC(i,j){ if(far(i,j))return [0,0]; const u=uni(mid(i,j)); return [u[0]*CR,u[1]*CR]; }
+function entries(i,j){            // two pockets, 180 apart; rim along tangent, central along M-perp
+  const C=drumC(i,j);
+  let ax;
+  if(far(i,j)){ const m=Math.atan2(mid(i,j)[1],mid(i,j)[0]); ax=m-Math.PI/2; }
+  else { const u=uni(C); ax=Math.atan2(u[1],u[0])+Math.PI/2; }
+  const t=[Math.cos(ax),Math.sin(ax)];
+  return [[C[0]+t[0]*RD,C[1]+t[1]*RD],[C[0]-t[0]*RD,C[1]-t[1]*RD]];
+}
+const DRUM={}, ENT={};
+for(const [i,j] of INNER){ DRUM[i+'-'+j]=drumC(i,j); ENT[i+'-'+j]=entries(i,j); }
+
+// ---- state ----
+let slot=Array.from({length:N+1},(_,s)=>s), mode='idle', t=0, t0=0, turns=0, phi=0, lastT=performance.now();
+const SWAP_MS=2800, SPIN_DPS=80, ease=v=>v<.5?2*v*v:1-Math.pow(-2*v+2,2)/2;
+const SX=p=>CX+p[0]*SC, SY=p=>CY+p[1]*SC;
+
+// path of a ball through one inner pair's swap (returns [pos, down01])
+function innerPath(i,j,which,tt){
+  const home=which===0?P(i):P(j), away=which===0?P(j):P(i);
+  const en=ENT[i+'-'+j], C=DRUM[i+'-'+j];
+  const ehome=which===0?en[0]:en[1], eaway=which===0?en[1]:en[0];
+  const isfar=far(i,j);
+  const dive=p=>{const u=uni(p); return [u[0]*(CLEAR-1),u[1]*(CLEAR-1)];};
+  // phases: ease .1 | in .25 | drum .3 | out .25 | ease .1
+  if(tt<=0.10) return [home, tt/0.10];
+  if(tt<=0.35){ let s=(tt-0.10)/0.25;
+     if(isfar){ const w=dive(home); return [ s<0.5? lerp(home,w,s/0.5) : lerp(w,ehome,(s-0.5)/0.5), 1]; }
+     return [lerp(home,ehome,s),1]; }
+  if(tt<=0.65){ const s=(tt-0.35)/0.30; return [rot2(ehome,C,Math.PI*s),1]; }
+  if(tt<=0.90){ let s=(tt-0.65)/0.25;
+     if(isfar){ const w=dive(away); return [ s<0.5? lerp(eaway,w,s/0.5) : lerp(w,away,(s-0.5)/0.5), 1]; }
+     return [lerp(eaway,away,s),1]; }
+  return [away, (1-tt)/0.10];
+}
+function apexPath(which,tt){       // 0<->1 slide at the top (the input)
+  const a=P(0), b=P(1); const e=ease(tt);
+  return which===0? lerp(a,b,e) : lerp(b,a,e);
+}
+function commitSwap(){ for(const [i,j] of [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]]){const k=slot[i];slot[i]=slot[j];slot[j]=k;} turns++; }
+function commitSpin(){ let k=((Math.round(phi/(360/N))%N)+N)%N; phi=0; const R0=[1,2,3,4,5,6,7,8,9,10,11];
+  for(let r=0;r<k;r++){const cur=R0.map(s=>slot[s]); for(let q=0;q<N;q++) slot[R0[(q+1)%N]]=cur[q];} }
+
+// ---- drawing ----
+function drawBall(num,p,down){ const px=SX(p),py=SY(p),r=(down?rb*0.66:rb)*SC, d=devicePixelRatio||1;
+  x.beginPath(); x.arc(px,py,r,0,7); x.fillStyle=num===0?'#ff8a3c':'#e7eaf1'; x.globalAlpha=down?0.55:1; x.fill();
+  if(down){x.lineWidth=2*d; x.strokeStyle=num===0?'#ff8a3c':'#e7eaf1'; x.stroke();}
+  x.globalAlpha=down?0.8:1; x.fillStyle='#0a0a0a'; x.font=`bold ${11*d}px Arial`; x.textAlign='center'; x.textBaseline='middle';
+  x.fillText(String(num),px,py); x.globalAlpha=1; }
+function draw(){
+  const d=devicePixelRatio||1; x.clearRect(0,0,W,H);
+  // spin band
+  x.lineWidth=(2*rb+3)*SC; x.strokeStyle='rgba(138,147,166,0.16)'; x.beginPath(); x.arc(CX,CY,R*SC,0,7); x.stroke();
+  x.lineWidth=2*d; x.strokeStyle='rgba(138,147,166,0.45)';
+  x.beginPath(); x.arc(CX,CY,(R+rb)*SC,0,7); x.stroke(); x.beginPath(); x.arc(CX,CY,(R-rb)*SC,0,7); x.stroke();
+  // apex pocket (top input)
+  const ap=P(0); x.beginPath(); x.arc(SX(ap),SY(ap),(rb+2)*SC,0,7); x.fillStyle='rgba(224,119,63,0.15)'; x.fill();
+  x.strokeStyle='rgba(224,119,63,0.6)'; x.lineWidth=2*d; x.stroke();
+  x.fillStyle='rgba(224,119,63,0.8)'; x.font=`${11*d}px Arial`; x.textAlign='center'; x.fillText('apex input', SX(ap), SY(ap)-(rb+8)*SC);
+  // bores
+  x.strokeStyle='rgba(90,140,200,0.30)'; x.lineWidth=(2*rb)*SC; x.lineCap='round';
+  for(const [i,j] of INNER){ const en=ENT[i+'-'+j];
+    for(const [st,e] of [[P(i),en[0]],[P(j),en[1]]]){
+      x.beginPath(); x.moveTo(SX(st),SY(st));
+      if(far(i,j)){ const u=uni(st), w=[u[0]*(CLEAR-1),u[1]*(CLEAR-1)]; x.lineTo(SX(w),SY(w)); }
+      x.lineTo(SX(e),SY(e)); x.stroke(); } }
+  x.lineCap='butt';
+  // drums
+  for(const [i,j] of INNER){ const C=DRUM[i+'-'+j];
+    const ang=(mode==='swap'&&t>0.35&&t<0.65)?Math.PI*((t-0.35)/0.30):(turns%2?Math.PI:0);
+    x.save(); x.translate(SX(C),SY(C)); x.rotate(ang);
+    x.beginPath(); x.arc(0,0,(RD+rb*0.85)*SC,0,7); x.fillStyle='rgba(63,179,122,0.28)'; x.fill();
+    x.strokeStyle='#3fb37a'; x.lineWidth=2*d; x.stroke();
+    x.beginPath(); x.moveTo(-(RD+rb*0.85)*SC,0); x.lineTo((RD+rb*0.85)*SC,0); x.stroke(); x.restore(); }
+  // balls
+  for(let s=0;s<=N;s++){
+    if(mode==='spin'){ if(s===0){drawBall(slot[0],P(0),false);continue;} const a=d2r(A(s)+phi); drawBall(slot[s],[R*Math.cos(a),-R*Math.sin(a)],false); continue; }
+    if(mode!=='swap'){ drawBall(slot[s],P(s),false); continue; }
+    // swap: find this station's pair
+    if(s===0){ const [p]=[apexPath(0,t)]; drawBall(slot[0],p,t>0.05&&t<0.95); continue; }
+    if(s===1){ drawBall(slot[1],apexPath(1,t),t>0.05&&t<0.95); continue; }
+    let done=false;
+    for(const [i,j] of INNER){ if(s===i){const [p,dn]=innerPath(i,j,0,t); drawBall(slot[i],p,dn>0.3); done=true;} else if(s===j){const [p,dn]=innerPath(i,j,1,t); drawBall(slot[j],p,dn>0.3); done=true;} }
+    if(!done) drawBall(slot[s],P(s),false);
+  }
+}
+const bSpin=document.getElementById('bSpin'),bPush=document.getElementById('bPush'),bReset=document.getElementById('bReset'),st=document.getElementById('state');
+bSpin.onclick=()=>{ if(mode==='swap')return; if(mode==='spin'){commitSpin();mode='idle';bSpin.classList.remove('on');st.textContent='ready';} else {phi=0;mode='spin';bSpin.classList.add('on');st.textContent='spinning — free in the fixed band';} };
+bPush.onclick=()=>{ if(mode==='swap')return; if(mode==='spin'){commitSpin();mode='idle';bSpin.classList.remove('on');} t=0;t0=performance.now();mode='swap';st.textContent='push 0: ease → route in → drum 180° → route back → ease'; };
+bReset.onclick=()=>{ if(mode==='swap')return; phi=0;turns=0;slot=Array.from({length:N+1},(_,s)=>s);mode='idle';bSpin.classList.remove('on');st.textContent='ready'; };
+(function loop(now){ requestAnimationFrame(loop); const dt=(now-lastT)/1000; lastT=now;
+  if(mode==='spin') phi+=SPIN_DPS*dt;
+  else if(mode==='swap'){ t=Math.min(1,(now-t0)/SWAP_MS); if(t>=1){commitSwap();mode='idle';st.textContent='ready';} }
+  draw();
+})(performance.now());
+</script>
+</body>
+</html>
