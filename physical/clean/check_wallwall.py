@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 HERE=os.path.dirname(os.path.abspath(__file__)); OPENSCAD="/opt/homebrew/bin/openscad"
 SCALE=20/18; R=50*SCALE; N=11; apexR=R+24*SCALE
-DROP_INNER={2,9}; DROP_OUTER={1,3,4,5,6,7,8,10,11}
+DROP_INNER={2,9,1,3,4,5,6,7,8,10,11}; DROP_OUTER={1,3,4,5,6,7,8,10,11}   # divider pairs drop BOTH halves (the swap-ring overlapped the inner half at r=R); 2-9 drops INNER only
 DIVP=[(0,1),(3,4),(5,6),(7,8),(10,11)]; SEG=72; TOL=1.0
 def A(s): return -90+(s-1)*(360.0/N)
 def P(s):
@@ -20,9 +20,15 @@ def P(s):
 def nrm(v):
     m=math.hypot(*v); return (v[0]/m,v[1]/m)
 def cl(x): return max(0.0,min(1.0,x))
-def swz(u): return -22 + 22*cl(u/0.20) if u<0.20 else (-22*cl((u-0.80)/0.20) if u>0.80 else 0.0)
-def segdz(u): return 20 if 0.18<u<0.82 else (20*cl((u-0.10)/0.08) if u<=0.18 else 20*cl((0.90-u)/0.08))
-def divrot(u): return 180*cl((u-0.25)/0.50)
+# Master schedule mirrors check_cam.py (strict ORDER: dishes fully up @0.13 BEFORE segs start
+# dropping @0.13; segs fully up @0.87 BEFORE dishes start dropping @0.87 -> confinement never breaks).
+def ramp(t,a,b):
+    if t<=a: return 0.0
+    if t>=b: return 1.0
+    x=(t-a)/(b-a); return x*x*(3-2*x)
+def swz(u):   return -22*(1.0 - (ramp(u,0.03,0.13) - ramp(u,0.87,0.97)))     # 0 when up, -22 when parked
+def segdz(u): return 20*(ramp(u,0.13,0.21) - ramp(u,0.79,0.87))
+def divrot(u): return 180*ramp(u,0.25,0.75)
 def th(k): return -A(k)
 
 def scad(b): return f'use <{HERE}/proto_wall.scad>\n$fn=28;\n{b}\n'

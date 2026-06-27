@@ -55,8 +55,8 @@ module fork(heading) {
             polygon(concat([[0,0]],
                 [ for (a=[-mouth_half:5:mouth_half]) (rb+wall+2)*[cos(a),sin(a)] ]));
     }
-    // stem down to a notional rail (carrier drive; not load-checked here)
-    translate([0,0,-(rb+wall)]) cylinder(h=3, r=stem_w/2, $fn=20);
+    // stem hangs DOWN to a notional rail (was buggy: hung UP into the cup -> 23.76 mm^3 ball-fit overlap)
+    translate([0,0,-(rb+wall)-3]) cylinder(h=3, r=stem_w/2, $fn=20);
 }
 
 // ---- MAGNET-GRIP carrier (alternative to the fork) ------------------------------------------
@@ -72,7 +72,7 @@ module mag_cradle() {
     }
 }
 module mag_disc()  { translate([0,0,-rb-0.8-magnet_h/2]) cylinder(h=magnet_h, r=magnet_r, center=true, $fn=36); }
-module mag_body()  { mag_cradle(); translate([0,0,-cup_or+0.5]) cylinder(h=3, r=3.2, $fn=24); }   // cup + short stem
+module mag_body()  { mag_cradle(); translate([0,0,-cup_or-3]) cylinder(h=3, r=3.2, $fn=24); }   // cup + stem hanging DOWN (same bug as fork was)
 module mag_carrier(heading) { rotate([0,0,heading]) { color([0.7,0.74,0.8]) mag_body(); color([0.85,0.30,0.30]) mag_disc(); } }
 module magbody_only(which,u){ translate(which==2?b2(u):b9(u)) rotate([0,0,which==2?head2():head9()]) mag_body(); }
 module magdisc_only(which,u){ translate(which==2?b2(u):b9(u)) rotate([0,0,which==2?head2():head9()]) mag_disc(); }
