@@ -87,23 +87,35 @@ module swap_ring(i, j) {
     translate([M[0], M[1], 0]) swap_ring_local(i, j);
 }
 
-// VERTICAL APEX SWAP RING (Scott's design)
-// The (0,1) ring is rotated PERPENDICULAR to the horizontal plane and dropped so the ring
-// intersects the spin ring at station 1's position, with ball 0 storage BELOW the floor.
-//   - Ring plane: YZ (x=0)
-//   - Ring center: (0, R, eq - half_chord) = (0, 55.56, -3.33)
-//   - Ring radius = half_chord = 13.33
-//   - Ball 1 at TOP of ring: (0, R, eq) = (0, 55.56, 10) — normal station 1 position
-//   - Ball 0 at BOTTOM: (0, R, eq - 2*half_chord) = (0, 55.56, -16.66) — hidden below floor
-//   - Paddle rotates π around X axis: balls swap.
-// The lid only needs to cap the TOP tiny segment of the ring (where ball 1 sits); the rest of the
-// ring is enclosed by vertical wall panels (a boxed shaft around the YZ plane).
+// APEX (0,1) SWAP RING — vertical ring, rotated + Z-parked (Scott's 2026-07-02 iteration).
+// Starting from the vertical ring in the YZ plane centered at (0, R, eq−half_chord), rotate
+// the WHOLE group by +π/2 about ball 1's world-+X tangent axis. That sends:
+//   ball 0: (0, R, eq−2·half_chord) → (0, R+2·half_chord, eq) = (0, apexR, eq)  ← horizontal apex
+//   ball 1: (0, R, eq)              stays put (on the rotation axis)
+//   ring center: (0, R, eq−half_chord) → (0, R+half_chord, eq) = (0, R+13.33, eq)
+// Ball 0 is now IN THE HORIZONTAL PLANE with all the other balls (Scott's design goal). Ring plane
+// stays YZ (X=0), ring axis stays world +X. Balls sit at the ±Y ends of the ring's orbit diameter.
+//   - Ball 1 at ring angular 180° (world −Y from center)
+//   - Ball 0 at ring angular   0° (world +Y from center)
+// The ring geometry rendered by this module is at the SWAP-UP Z position (ring center Z = eq); at
+// REST the viewer parks it Z=−ball_d (drops it ball-diameter below the horizontal plane) so its
+// segments don't obstruct spin. During a swap it rises back up.
 function apex_half_chord() = norm(P(0)-P(1))/2;
-function apex_Z_c() = eq - apex_half_chord();
+function apex_Z_c() = eq - apex_half_chord();     // = -3.33 — the ORIGINAL vertical-ring center Z
+function apex_ring_center_Y() = R + apex_half_chord();  // = 68.89 — after Scott's rotation
 module swap_ring_apex_vertical() {
-    translate([0, R, apex_Z_c()])         // dropped center at station 1's XY, below eq
-        rotate([0, 90, 0])                 // horizontal (XY-plane) ring rotated into YZ plane
-            swap_ring_local(0, 1);
+    // Compose: rotation by +π/2 about world X-axis through ball 1 at (0, R, eq), applied to the
+    // original vertical apex ring at (0, R, apex_Z_c). Then DROP by ball_d (Scott, 2026-07-02).
+    // Result: ring center at (0, R+apex_half_chord, eq−ball_d) = (0, 68.89, −10). Ring plane YZ,
+    // ring axis world +X. Balls (at rest) sit at (0, R, eq) and (0, apexR, eq) — both in the
+    // horizontal plane, 20 mm ABOVE the ring center. During a swap, the balls descend to the ring
+    // level, orbit π around world +X, and ascend to their swapped rest positions.
+    translate([0, R, eq - ball_d])
+        rotate([90, 0, 0])
+            translate([0, -R, -eq])
+                translate([0, R, apex_Z_c()])
+                    rotate([0, 90, 0])
+                        swap_ring_local(0, 1);
 }
 
 // legacy constants — used by other files that import from here

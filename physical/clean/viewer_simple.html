@@ -25,8 +25,9 @@
 <div id="hud"><b>Track-2 simple walls + lid-captures concept</b><br>
 Scott's simplification: drop the elaborate seg geometry. <b>Walls</b> are plain rectangular pieces
 (~ball-Ø wide × half-ball tall) that <b>only confine laterally</b>. The over-equator capture moves
-into the <b>lid</b> (translucent gold above). <b>5 divider pairs animate in sync</b>: (0,1) vertical
-apex + (3,4)/(5,6)/(7,8)/(10,11) in-plane. Pair (2,9) is depth-multiplexed (separate design track,
+into the <b>lid</b> (translucent gold above). <b>5 divider pairs animate in sync</b>: (0,1) apex with
+its ring rotated so ball 0 sits in the horizontal plane and its segments dropped ball-diameter
+below, plus (3,4)/(5,6)/(7,8)/(10,11) in-plane. Pair (2,9) is depth-multiplexed (separate design,
 not animated here). <b>Left/right spin</b> buttons cyclically shift the ring by 1 station.</div>
 <div id="bar">
   <div class="row">
@@ -82,11 +83,15 @@ const IN_PLANE_PAIRS = [[3,4],[5,6],[7,8],[10,11]];   // horizontal, orbit ~15.6
 const APEX_PAIR      = [0,1];                          // vertical YZ ring, half_chord 13.33
 const SWAP_PERM_PAIRS = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];  // canonical M12 swap (2,9 not animated visually)
 const APEX_HALF_CHORD = Math.hypot(0 - 0, R - (R + 24*SCALE)) / 2;  // = 12*SCALE = 13.33
-const APEX_Z_C = eq - APEX_HALF_CHORD;                              // = -3.33
-
-// Ball 0 special home (apex, stored below floor at bottom of vertical ring)
-function BALLPOS0(s) { return s===0 ? [0, R] : P(s); }               // XY position of ball 0 home is (0, R)
-function ball0HomeZ() { return eq - 2*APEX_HALF_CHORD; }             // Z = -16.66
+// After Scott's 2026-07-02 rotation of the (0,1) group by +π/2 about ball 1's world-+X tangent
+// axis (and drop of the ring segments by ball_d), ball 0 sits in the HORIZONTAL PLANE at the
+// outer-apex position (0, apexR, eq), and the ring center sits at (0, R+half_chord, eq−ball_d).
+const APEX_RING_CY = R + APEX_HALF_CHORD;                            // = 68.89 — ring center Y
+const APEX_RING_CZ = eq - ball_d;                                    // = −10   — ring center Z (dropped)
+const APEX_Z_C = APEX_RING_CZ;                                        // legacy alias
+// Ball 0 home is now in the horizontal plane at the outer apex (0, apexR, eq).
+function BALLPOS0(s) { return s===0 ? [0, R + 2*APEX_HALF_CHORD] : P(s); }
+function ball0HomeZ() { return eq; }
 function pair_orbit_inplane(i, j) {
   const a = P(i), b = P(j);
   return Math.hypot(a[0]-b[0], a[1]-b[1]) / 2;
@@ -154,34 +159,45 @@ function inPlaneBallPose(s, i, j, u) {
   return [xy[0], xy[1], eq];
 }
 
-// Apex (0,1) ball trajectory during swap. Balls exchange in the YZ plane about the X axis.
-// Center of ring: (0, R, APEX_Z_C). Radius = APEX_HALF_CHORD.
-//   Ball at station 1 starts at (0, R, eq)      → ang = π/2  (top)
-//   Ball at station 0 starts at (0, R, eq - 2h) → ang = -π/2 (bottom)
-// Both sweep +π: ball 1 top→bottom, ball 0 bottom→top. They pass on opposite sides.
+// Apex (0,1) ball trajectory during swap — new choreography after Scott's rotation + drop.
+// Ring center: (0, APEX_RING_CY=R+h, APEX_RING_CZ=eq−ball_d) = (0, 68.89, −10). Axis: world +X.
+// At rest, both balls live in the horizontal plane (Z=eq=10), 20 mm above the ring axis:
+//   Ball 1 at (0, R, eq),           Ball 0 at (0, R+2h, eq) = (0, apexR, eq).
+// During swap, each ball DESCENDS by ball_d in Z to land on the orbit at ring level, ORBITS
+// π around world +X, then ASCENDS by ball_d to its partner's rest position.
+//   Descend window: u ∈ [0.20, 0.25]
+//   Orbit window:   u ∈ [0.25, 0.75]
+//   Ascend window:  u ∈ [0.75, 0.80]
 function apexBallPose(s, u) {
-  const startAng = (s === 1) ? Math.PI/2 : -Math.PI/2;
-  let ang;
-  if (u <= 0.20) {
-    ang = startAng;
-  } else if (u <= 0.80) {
-    const t = srmp(u, 0.20, 0.80);
-    ang = startAng + Math.PI * t;
-  } else {
-    ang = startAng + Math.PI;
+  // Home + partner rest positions
+  const home    = (s === 0) ? [0, R + 2*APEX_HALF_CHORD, eq] : [0, R, eq];
+  const partner = (s === 0) ? [0, R,                     eq] : [0, R + 2*APEX_HALF_CHORD, eq];
+  // Orbit endpoints (directly below home / partner at ring level)
+  const orbit_start = [home[0],    home[1],    APEX_RING_CZ];
+  const orbit_end   = [partner[0], partner[1], APEX_RING_CZ];
+  // Ring angular startpoint. Ball 1 starts at (0, R, ring_cz) = ring_center + (0, −h, 0) → ang = π.
+  // Ball 0 starts at (0, R+2h, ring_cz) = ring_center + (0, +h, 0) → ang = 0.
+  const startAng = (s === 1) ? Math.PI : 0;
+  if (u <= 0.20) return home;
+  if (u >= 0.80) return partner;
+  if (u < 0.25) {
+    const t = srmp(u, 0.20, 0.25);
+    return [home[0] + (orbit_start[0]-home[0])*t,
+            home[1] + (orbit_start[1]-home[1])*t,
+            home[2] + (orbit_start[2]-home[2])*t];
   }
-  const y = 0;      // ring is in the YZ plane at x=0; parametrize (y,z) around center (R, APEX_Z_C)
-  // Actually the ring plane is YZ with x=0; center at (0, R, APEX_Z_C). Points on ring: (0, R, Z_C) + h*(cos(ang), 0, sin(ang))?
-  // No — the ring lies in the YZ plane so its two orthogonal in-plane axes are Y and Z.
-  // Parametrize with angle measured from +Z toward +Y? We chose: startAng=π/2 for top (Z above center),
-  // startAng=-π/2 for bottom. So position on ring = center + h * (cos_component_along_Y, sin_component_along_Z)? Let's use:
-  //   pt = (0, R + h*cos(ang), Z_C + h*sin(ang))
-  // then ang=π/2 → (0, R, Z_C + h) = (0, R, eq)  ✓ top (ball 1)
-  //      ang=-π/2 → (0, R, Z_C - h) = (0, R, eq - 2h) ✓ bottom (ball 0)
-  // Sweeping ang by +π: top(π/2) → 3π/2 = -π/2 = bottom ✓
-  //                    bottom(-π/2) → π/2 = top ✓
-  // At ang=0: (0, R+h, Z_C) — off to +Y side of ring. At ang=π: (0, R-h, Z_C) — off to -Y side. Balls pass on opposite sides ✓
-  return [0, R + APEX_HALF_CHORD * Math.cos(ang), APEX_Z_C + APEX_HALF_CHORD * Math.sin(ang)];
+  if (u < 0.75) {
+    const t = srmp(u, 0.25, 0.75);
+    const ang = startAng + Math.PI * t;
+    return [0,
+            APEX_RING_CY + APEX_HALF_CHORD * Math.cos(ang),
+            APEX_RING_CZ + APEX_HALF_CHORD * Math.sin(ang)];
+  }
+  // u in [0.75, 0.80]: ascend from orbit_end to partner
+  const t = srmp(u, 0.75, 0.80);
+  return [orbit_end[0] + (partner[0]-orbit_end[0])*t,
+          orbit_end[1] + (partner[1]-orbit_end[1])*t,
+          orbit_end[2] + (partner[2]-orbit_end[2])*t];
 }
 
 // ---- STL loading ----
@@ -250,7 +266,8 @@ function makeLabel(t){
 // Stations 1..N: on the horizontal ring at Z=eq.
 // Station 0: bottom of the vertical apex ring at (0, R, eq - 2*half_chord).
 function stationPos(k) {
-  if (k === 0) return [0, R, eq - 2*APEX_HALF_CHORD];
+  // Station 0 is the OUTER APEX in the horizontal plane (Scott's 2026-07-02 rotation).
+  if (k === 0) return [0, R + 2*APEX_HALF_CHORD, eq];   // (0, apexR=82.22, eq=10)
   const p = P(k);
   return [p[0], p[1], eq];
 }
@@ -301,7 +318,7 @@ function build() {
     inner.rotation.set(0, Math.PI/2, 0);        // rotate([0, 90, 0]) → long axis into YZ plane
     apexDivMesh = new THREE.Group();
     apexDivMesh.add(inner);
-    apexDivMesh.position.set(0, R, APEX_Z_C);
+    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ);
     root.add(apexDivMesh);
   }
   // Lid
@@ -354,7 +371,7 @@ function renderIdle() {
   if (apexSwapMesh) apexSwapMesh.position.set(0,0,0);
   // Apex divider: rest pose (no swap rotation).
   if (apexDivMesh) {
-    apexDivMesh.position.set(0, R, APEX_Z_C);
+    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ);
     apexDivMesh.rotation.set(0, 0, 0);
   }
   // Balls: place each at its currently-occupied station's home position.
@@ -394,7 +411,7 @@ function renderSwap(u) {
   // Apex vertical swap ring: static in place (no lift/rotation)
   // Apex divider: rotate about X (in YZ plane) with dRot
   if (apexDivMesh) {
-    apexDivMesh.position.set(0, R, APEX_Z_C);
+    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ);
     apexDivMesh.rotation.set(dRot, 0, 0);
   }
   // Balls: any ball whose OLD station is in an animated pair moves along its swap trajectory.
