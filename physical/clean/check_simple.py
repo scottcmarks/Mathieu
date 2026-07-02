@@ -30,13 +30,17 @@ wall_t=2.0; wall_h=rb+0.5
 clr=0.4
 inner_R_spin=R-rb-clr-wall_t/2          # 44.66
 outer_R_spin=R+rb+clr+wall_t/2          # 66.46
-gap_deg=2.0
+gap_deg=5.0                              # widened so divider fits through inter-seg gap
 half_angle=360/N/2 - gap_deg/2
-orbit_swap=rb+1.5
-outer_R_swap=orbit_swap+rb+clr+wall_t/2   # 22.4 from M
-div_w=3.0
-div_l_half=orbit_swap+rb+clr               # 21.9
-PARK_DEPTH=20
+# UPDATED: ball stays at half-chord distance from M throughout the orbit (no radial transit)
+orbit_swap = 2*R*math.sin(math.pi/N)/2   # 15.63 — half-chord from M (== station distance)
+outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 1   # 28.03 — 1 mm clearance beyond ball reach
+div_w = 2*(orbit_swap - rb - clr)         # 10.46 — WIDE paddle: chord-facing side faces contact balls with clr clearance
+div_l_half = 5.0                         # perp half-length — corners fit strictly between inner+outer spin-wall material zones
+PARK_DEPTH_SEG = 20              # segs drop 20 below floor into their storage
+PARK_DEPTH_DIV = 40              # divider parks DEEPER (20 below segs' storage) so wide paddle doesn't collide with dropped segs in xy
+PARK_DEPTH_SWAP = 40             # swap walls also park deep enough to clear dropped segs
+PARK_DEPTH = PARK_DEPTH_SEG      # alias for backward-compat (segs)
 
 PAIR_I, PAIR_J = 5, 6
 
@@ -66,15 +70,15 @@ def srmp(u,a,b): return ss(ramp(u,a,b))
 def spinSegZ(k,u):
     if k in (PAIR_I, PAIR_J):
         downT = srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00)
-        return -PARK_DEPTH * downT
+        return -PARK_DEPTH_SEG * downT
     return 0.0
 def swapWallZ(u):
     upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90)
-    return -PARK_DEPTH * (1 - upT)
+    return -PARK_DEPTH_SWAP * (1 - upT)
 def dividerPose(u):
     upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90)
-    z = -PARK_DEPTH * (1 - upT)
-    rot = math.pi * srmp(u, 0.35, 0.65)
+    z = -PARK_DEPTH_DIV * (1 - upT)
+    rot = math.pi * srmp(u, 0.20, 0.80)             # divider rotates through the whole u=[0.20, 0.80] window (same as balls)
     return Mp[0], Mp[1], z, chord_base_ang + rot
 def ballPose(s, u):
     if s not in (PAIR_I, PAIR_J): return (*P(s), eq)
@@ -83,18 +87,17 @@ def ballPose(s, u):
     dir_to_partner = nrm((partner_pos[0]-Mp[0], partner_pos[1]-Mp[1]))
     orbit_start = (Mp[0]+dir_to_home[0]*orbit_swap,    Mp[1]+dir_to_home[1]*orbit_swap)
     orbit_end   = (Mp[0]+dir_to_partner[0]*orbit_swap, Mp[1]+dir_to_partner[1]*orbit_swap)
-    if u <= 0.20:                xy = home_pos
-    elif u <= 0.35:
-        t = srmp(u, 0.20, 0.35); xy = (home_pos[0]+(orbit_start[0]-home_pos[0])*t, home_pos[1]+(orbit_start[1]-home_pos[1])*t)
-    elif u <= 0.65:
-        # BOTH balls go SAME direction (CCW), 180° apart — divider paddles them together
-        t = srmp(u, 0.35, 0.65)
-        startAng = math.atan2(dir_to_home[1], dir_to_home[0])
-        ang = startAng + math.pi * t            # same +π for both balls
-        xy = (Mp[0]+orbit_swap*math.cos(ang), Mp[1]+orbit_swap*math.sin(ang))
+    # NEW: no radial transit — balls stay at station distance from M throughout.
+    # They orbit around M synchronously with the divider rotation (u in [0.20, 0.80]).
+    # For pair (5,6), station 5 is at (P5-M)/|...| direction at distance 15.63 from M;
+    # after π rotation ball 5 is at (-1)*(P5-M) direction from M = station 6's position.
+    if u <= 0.20:      xy = home_pos
     elif u <= 0.80:
-        t = srmp(u, 0.65, 0.80); xy = (orbit_end[0]+(partner_pos[0]-orbit_end[0])*t, orbit_end[1]+(partner_pos[1]-orbit_end[1])*t)
-    else:                        xy = partner_pos
+        t = srmp(u, 0.20, 0.80)                # same-direction π orbit
+        startAng = math.atan2(dir_to_home[1], dir_to_home[0])
+        ang = startAng + math.pi * t
+        xy = (Mp[0]+orbit_swap*math.cos(ang), Mp[1]+orbit_swap*math.sin(ang))
+    else:              xy = partner_pos
     return (xy[0], xy[1], eq)
 
 # ---- ASCII-aware STL parser (the fixed one) ----

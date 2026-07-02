@@ -24,10 +24,9 @@
 <div id="hud"><b>Track-2 simple walls + lid-captures concept</b><br>
 Scott's simplification: drop the elaborate seg geometry. <b>Walls</b> are plain rectangular pieces
 (~ball-Ø wide × half-ball tall) that <b>only confine laterally</b>. The over-equator capture moves
-into the <b>lid</b> (translucent gold above), whose underside has the spin-channel and swap-channel
-torus carves. Spin walls (blue) form the inner+outer banks of the spin channel. Swap walls (orange)
-form the outer bank of the swap ring; the divider (magenta) is the diameter. During a swap, spin
-walls at the affected stations drop and swap walls rise.</div>
+into the <b>lid</b> (translucent gold above). All <b>5 neighbour swap pairs</b> are shown: (0,1) at
+the apex (special: ball 0 lives outside the ring, half-chord 13.33), plus ring pairs (3,4)(5,6)(7,8)
+(10,11) at half-chord 15.65. Only (5,6) animates; the other four sit statically at their up positions.</div>
 <div id="bar">
   <div class="row">
     <button id="bSwap" class="swap">⤒ swap 5↔6</button>
@@ -74,10 +73,19 @@ const P=s=>[R*Math.cos(Aa(s)*d2r), -R*Math.sin(Aa(s)*d2r)];
 const th=s=>-Aa(s);
 const mid=(i,j)=>[(P(i)[0]+P(j)[0])/2, (P(i)[1]+P(j)[1])/2];
 const nrm=v=>{const m=Math.hypot(v[0],v[1]); return [v[0]/m, v[1]/m];};
+const PAIRS = [[0,1],[3,4],[5,6],[7,8],[10,11]];
+const apexR = R + 24*SCALE;
+// Ball 0 special (apex): sits at (0, apexR), not on the ring
+function BALLPOS0(s) { return s===0 ? [0, apexR] : P(s); }
+function pair_orbit(i,j){ const a=BALLPOS0(i), b=BALLPOS0(j); return Math.hypot(a[0]-b[0], a[1]-b[1])/2; }
+// Legacy — kept for old references
 const PAIR_I=5, PAIR_J=6;
 const Mp = mid(PAIR_I, PAIR_J);
 
-const PARK_DEPTH = 20;        // walls/divider sit this far below floor when retracted
+const PARK_DEPTH_SEG = 20;    // segs drop 20 below floor
+const PARK_DEPTH_DIV = 40;    // divider parks deeper (below seg storage) so wide paddle doesn't collide with dropped segs in xy
+const PARK_DEPTH_SWAP = 40;   // swap walls also park deep enough to clear dropped segs
+const PARK_DEPTH = PARK_DEPTH_SEG;  // legacy alias
 
 // ---- ease + ramp ----
 const ss = x => { x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); };
@@ -95,20 +103,20 @@ function srmp(u, a, b) { return ss(ramp(u, a, b)); }
 function spinSegZ(k, u) {
   if (k===PAIR_I || k===PAIR_J) {
     const downT = srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00);
-    return -PARK_DEPTH * downT;
+    return -PARK_DEPTH_SEG * downT;
   }
   return 0;
 }
 function swapWallZ(u) {
   const upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90);
-  return -PARK_DEPTH * (1 - upT);
+  return -PARK_DEPTH_SWAP * (1 - upT);
 }
 function dividerPose(u) {
   const upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90);
-  const z = -PARK_DEPTH * (1 - upT);
+  const z = -PARK_DEPTH_DIV * (1 - upT);
   const T = nrm([P(PAIR_J)[0]-P(PAIR_I)[0], P(PAIR_J)[1]-P(PAIR_I)[1]]);
   const baseAng = Math.atan2(T[1], T[0]);
-  const rot = Math.PI * srmp(u, 0.35, 0.65);
+  const rot = Math.PI * srmp(u, 0.20, 0.80);   // divider rotates through the whole u=[0.20, 0.80] window (matches ball orbit)
   return {pos:[Mp[0], Mp[1], z], rotZ: baseAng + rot};
 }
 function ballPose(s, u) {
@@ -121,30 +129,23 @@ function ballPose(s, u) {
   // direction from station inward toward M
   const dir_in = nrm([Mp[0]-home_pos[0], Mp[1]-home_pos[1]]);
   // orbit position on the swap ring: starts on home's side of M, ends on partner's side
-  const orbit_r = rb + 1.5;
+  const orbit_r = 2*R*Math.sin(Math.PI/N)/2;   // 15.63 — half-chord; ball stays at station distance from M throughout
   // initial orbit position: M + dir_to_home * orbit_r
   const dir_to_home = nrm([home_pos[0]-Mp[0], home_pos[1]-Mp[1]]);
   const orbit_start = [Mp[0] + dir_to_home[0]*orbit_r, Mp[1] + dir_to_home[1]*orbit_r];
   // final orbit position (on partner's side): M + dir_to_partner * orbit_r
   const dir_to_partner = nrm([partner_pos[0]-Mp[0], partner_pos[1]-Mp[1]]);
   const orbit_end = [Mp[0] + dir_to_partner[0]*orbit_r, Mp[1] + dir_to_partner[1]*orbit_r];
+  // NEW: no radial transit — balls stay at station distance from M throughout, orbit synchronously
+  // with the divider through u=[0.20, 0.80]. Divider paddle turning DRIVES the ball motion.
   let xy;
   if (u <= 0.20) {
     xy = home_pos;
-  } else if (u <= 0.35) {
-    const t = srmp(u, 0.20, 0.35);
-    xy = [home_pos[0] + (orbit_start[0]-home_pos[0])*t,
-          home_pos[1] + (orbit_start[1]-home_pos[1])*t];
-  } else if (u <= 0.65) {
-    // BOTH balls go SAME direction (CCW) — the divider paddles them together, 180° apart
-    const t = srmp(u, 0.35, 0.65);
-    const startAng = Math.atan2(dir_to_home[1], dir_to_home[0]);
-    const ang = startAng + Math.PI * t;        // same +π for both balls (FIXED)
-    xy = [Mp[0] + orbit_r*Math.cos(ang), Mp[1] + orbit_r*Math.sin(ang)];
   } else if (u <= 0.80) {
-    const t = srmp(u, 0.65, 0.80);
-    xy = [orbit_end[0] + (partner_pos[0]-orbit_end[0])*t,
-          orbit_end[1] + (partner_pos[1]-orbit_end[1])*t];
+    const t = srmp(u, 0.20, 0.80);
+    const startAng = Math.atan2(dir_to_home[1], dir_to_home[0]);
+    const ang = startAng + Math.PI * t;        // same +π for both balls, matching divider rotation
+    xy = [Mp[0] + orbit_r*Math.cos(ang), Mp[1] + orbit_r*Math.sin(ang)];
   } else {
     xy = partner_pos;
   }
@@ -154,13 +155,15 @@ function ballPose(s, u) {
 // ---- load STLs ----
 const stat = document.getElementById('stat');
 const loader = new STLLoader();
-let spinSegGeo=null, swapRingGeo=null, dividerGeo=null, lidGeo=null;
+let spinSegGeo=null, swapRingGeo=null, dividerGeo=null, lidGeo=null, otherPairsGeo=null, apexVertGeo=null;
 let loaded=0;
-function onload() { if (++loaded === 4) build(); }
+function onload() { if (++loaded === 6) build(); }
 loader.load('./proto_simple_spin_seg.stl', g=>{spinSegGeo=g; onload();}, undefined, e=>{console.warn('spin_seg',e); onload();});
 loader.load('./proto_simple_swap_ring.stl', g=>{swapRingGeo=g; onload();}, undefined, e=>{console.warn('swap_ring',e); onload();});
 loader.load('./proto_simple_divider.stl', g=>{dividerGeo=g; onload();}, undefined, e=>{console.warn('divider',e); onload();});
 loader.load('./proto_lid.stl', g=>{lidGeo=g; onload();}, undefined, e=>{console.warn('lid',e); onload();});
+loader.load('./proto_simple_other_pairs.stl', g=>{otherPairsGeo=g; onload();}, undefined, e=>{console.warn('other_pairs',e); onload();});
+loader.load('./proto_simple_apex_vertical.stl', g=>{apexVertGeo=g; onload();}, undefined, e=>{console.warn('apex_vertical',e); onload();});
 
 const matSpinSeg = ()=> new THREE.MeshStandardMaterial({color:0x5ab0ff, roughness:0.5, metalness:0.2});
 const matSwapWall = ()=> new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2});
@@ -168,7 +171,7 @@ const matDivider = ()=> new THREE.MeshStandardMaterial({color:0xdd55aa, roughnes
 const matLid = ()=> new THREE.MeshStandardMaterial({color:0xc89a55, roughness:0.6, metalness:0.1, transparent:true, opacity:0.35, side:THREE.DoubleSide, depthWrite:false});
 
 const segMeshes = {};  // by k
-let swapMesh=null, divMesh=null, lidMesh=null;
+let swapMesh=null, divMesh=null, lidMesh=null, otherPairsMesh=null, apexVertMesh=null;
 const ballsGroup = new THREE.Group(); root.add(ballsGroup);
 const balls = {};
 
@@ -206,15 +209,27 @@ function build() {
     lidMesh.visible = false;
     root.add(lidMesh);
   }
+  // static: the other 3 RING divider pairs (3,4)(7,8)(10,11); (5,6) animates separately; (0,1) is vertical
+  if (otherPairsGeo) {
+    otherPairsMesh = new THREE.Mesh(otherPairsGeo, new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2}));
+    root.add(otherPairsMesh);
+  }
+  // apex (0,1) — VERTICAL swap ring dropped so ball 1 sits at the top of the ring, ball 0 stored below floor
+  if (apexVertGeo) {
+    apexVertMesh = new THREE.Mesh(apexVertGeo, new THREE.MeshStandardMaterial({color:0xa855f7, roughness:0.5, metalness:0.2}));
+    root.add(apexVertMesh);
+  }
   // balls 1..11
   const sph = new THREE.SphereGeometry(rb, 40, 28);
-  for (let s=1; s<=N; s++) {
-    const col = (s===PAIR_I) ? 0x5ab0ff : (s===PAIR_J) ? 0xff8a3c : 0xc8ccd2;
+  for (let s=0; s<=N; s++) {                     // include ball 0 (apex, now stored below floor)
+    const col = (s===PAIR_I) ? 0x5ab0ff : (s===PAIR_J) ? 0xff8a3c : (s===0) ? 0xa855f7 : 0xc8ccd2;
     const m = new THREE.Mesh(sph, new THREE.MeshStandardMaterial({color:col, roughness:0.3, metalness:0.85}));
     const lbl = makeLabel(String(s));
     ballsGroup.add(m); ballsGroup.add(lbl);
     balls[s] = {m, lbl};
   }
+  // Ball 0's new home is BELOW station 1 at (0, R, eq - 2*half_chord) = (0, 55.56, -16.66).
+  // It'll be positioned in renderIdle/renderSwap.
   renderIdle();
   frame();
   setControls();
@@ -234,6 +249,9 @@ function renderIdle() {
     divMesh.rotation.z = Math.atan2(T[1], T[0]);
   }
   for (let s=1; s<=N; s++) { const p=P(s); placeBall(s, p[0], p[1], eq); }
+  // Ball 0: new home is BELOW floor, directly under station 1, at Z = eq - 2*apex_half_chord = -16.66
+  const apex_half = Math.hypot(0-0, R-apexR)/2;         // 13.33
+  placeBall(0, 0, R, eq - 2*apex_half);                  // (0, 55.56, -16.66)
   frameHUDEl.textContent = 'frame —';
 }
 
@@ -249,6 +267,9 @@ function renderSwap(u) {
     const p = ballPose(s, u);
     placeBall(s, p[0], p[1], p[2]);
   }
+  // Ball 0 stays at its below-floor home during (5,6) swap animation
+  const apex_half = Math.hypot(0-0, R-apexR)/2;
+  placeBall(0, 0, R, eq - 2*apex_half);
   frameHUDEl.textContent = `frame ${swapFrame} / ${FRAMES}`;
 }
 
@@ -280,7 +301,7 @@ addEventListener('keydown', e=>{
   else if (e.key===' ') { bPlay.onclick(); e.preventDefault(); }
 });
 document.getElementById('cbSpinWalls').onchange = e=>{ for (const k in segMeshes) segMeshes[k].visible = e.target.checked; };
-document.getElementById('cbSwapWalls').onchange = e=>{ if (swapMesh) swapMesh.visible = e.target.checked; };
+document.getElementById('cbSwapWalls').onchange = e=>{ if (swapMesh) swapMesh.visible = e.target.checked; if (otherPairsMesh) otherPairsMesh.visible = e.target.checked; };
 document.getElementById('cbDivider').onchange = e=>{ if (divMesh) divMesh.visible = e.target.checked; };
 document.getElementById('cbLid').onchange = e=>{ if (lidMesh) lidMesh.visible = e.target.checked; };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };

@@ -216,3 +216,73 @@ result.
   arc placement + re-check.
 - Ball-push mechanism (what physically drives the ball from station to
   orbit_start) not yet modelled — balls follow scripted positions today.
+
+### Extending to 5 pairs + wide-paddle + apex-vertical pivot
+
+Same day, extended the (5,6) proof to all five neighbour swap pairs.
+
+**Wide-paddle divider.** The divider was thin, so it wasn't touching the ball
+surfaces. Widened it to a paddle whose chord width `dw = 2*(orbit − rb − clr)`,
+so its side face contacts each ball with a 0.4 mm running clearance. Div half-
+length dropped to 5 (corners now stay strictly inside empty channel space).
+Parked deeper too — `PARK_DEPTH_DIV = 40` vs `PARK_DEPTH_SEG = 20`, so the
+paddle parks below the dropped segs and doesn't share z with them.
+
+**Chord-axis arcs added.** The swap ring grew from 2 perp arcs to **4 arcs** —
+2 perpendicular (30° half-span) + 2 along the chord (12° half-span, narrower
+because the chord-side wall reaches close to the outer spin-band). Full
+"stretched-circle" containment for the two orbiting balls.
+
+**Ring extended to 5 pairs.** `swap_ring(i,j)` and `divider_simple(i,j)` are
+now pair-parameterized (any (i,j) with `pair_M`, `pair_orbit`, `pair_outer_R`,
+`pair_div_w`). All 4 other ring pairs (3,4)/(7,8)/(10,11) rendered as a static
+`other_pairs` STL for the viewer.
+
+**Lid slab expanded** for the wider footprint: `slab_r = 113.55` and per-pair
+torus carves cut via `pair_orbit_lid(i,j)` (ring pairs use half-chord 15.65,
+apex uses 13.33).
+
+### The apex (0,1) horizontal swap didn't fit
+
+Pushing (0,1) through the same in-plane machinery revealed an inherent conflict:
+the perp-arc endpoints reach world r ≈ 66.80–68.15, which sits inside spin-
+seg 2's outer wall band (65.96–67.96), so the (0,1) swap ring pokes through
+spin material at multiple frames. Ball 0 also sits at r ≈ 82 (outside the ring)
+so lid overhang has to reach that far to bridge it — awkward.
+
+### Apex → **VERTICAL** ring (Scott's pivot)
+
+Instead of solving the in-plane conflict, rotate the whole (0,1) mechanism
+**out of the horizontal plane**:
+
+- Ring now lives in the **YZ plane** (x=0), centered at `(0, R, eq − half_chord) = (0, 55.56, −3.33)`, radius `half_chord = 13.33`.
+- **Ball 1** sits at the TOP of the ring — its normal station-1 position `(0, 55.56, 10)`.
+- **Ball 0** sits at the BOTTOM of the ring — `(0, 55.56, −16.66)`, **hidden below the floor** at rest.
+- The (0,1) swap is a π rotation of the divider paddle about the **X axis**: balls exchange top↔bottom, so what pops up at station 1 was ball 0.
+
+Implementation:
+
+- `proto_simple.scad`: refactored `swap_ring(i,j)` into `swap_ring_local(i,j)`
+  (geometry at LOCAL origin, no M translation) so it can be composed with
+  arbitrary transforms. Added `swap_ring_apex_vertical()` =
+  `translate([0, R, apex_Z_c()]) rotate([0, 90, 0]) swap_ring_local(0,1)`.
+  New PART: `apex_vertical`.
+- `other_pairs` PART now excludes (0,1) — only 3 rings (3-4, 7-8, 10-11) plus
+  (5,6) which animates separately.
+- `proto_lid.scad`: dropped (0,1) from DIVPAIRS (ball 0 no longer traces a
+  horizontal torus under the lid — it's below the floor) and shrunk slab_r
+  113.55 → 85.5 (only ring pairs need lid overhang now; the apex is a vertical
+  shaft below the plane).
+- `viewer_simple.html`: 6th STL loader for `proto_simple_apex_vertical.stl`,
+  purple `apexVertMesh` added to the root, ball loop extended to include
+  ball 0 rendered at `(0, R, eq − 2·half_chord) = (0, 55.56, −16.66)` in both
+  idle and swap render paths.
+
+### Open items carried forward (v2)
+- Extra constraining wall panels for the vertical ring's mid-section (below
+  the lid, above the drivetrain deck) — the lid covers only the top segment
+  where ball 1 pokes out; the shaft body needs enclosing walls.
+- Kinematics for the apex swap (rotation about X axis, phased schedule) not
+  yet wired into `viewer_simple.html` — the vertical ring is currently static.
+- `check_simple.py` doesn't yet sweep the apex vertical swap.
+- Same open items as (v1): lid channels tightening, ball-push mechanism.

@@ -9,15 +9,21 @@
 //   openscad -o lid.stl -D 'PART="lid"' proto_lid.scad
 SCALE=20/18; R=50*SCALE; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2; apexR=R+24*SCALE;
 tube=rb+0.3; wall_t=1.5*SCALE; clr=0.4;
-orbit=rb+3.0/2+0.5;                 // 12  ball orbit in a divider swap-ring (matches proto_wall)
+// per-pair orbit radius = half-chord (varies: ring pairs 15.65, apex 13.33)
+function pair_orbit_lid(i,j) = norm(P(j)-P(i))/2;
 lid_bot=eq+1.5;                     // 11.5  lid underside (just over the equator -> lips retain)
 lid_top=eq+rb+4;                    // 24    lid top (above the crown)
 finger_w=ball_d-4;                  // 16   finger-slot width (< ball_d=20 -> ball can't lift out)
-slab_r=R+orbit+tube+3;              // 80.9  covers the ring + divider swing-out + 2-9
+// slab_r only needs to cover the RING pairs' swap footprints; apex (0,1) is a vertical shaft below
+// the plane and doesn't need overhang. Cover R+ring_orbit+rb+margin ≈ 55.56+15.65+10+4 = 85.21.
+slab_r = 85.5;                     // was 113.55 (needed for horizontal apex torus, no longer)
 function angleOf(k)=-90+(k-1)*(360/N);
 function P(k)= k==0?[0,apexR]:[R*cos(angleOf(k)),-R*sin(angleOf(k))];
 function mid(i,j)=[(P(i)[0]+P(j)[0])/2,(P(i)[1]+P(j)[1])/2];
-DIVPAIRS=[[0,1],[3,4],[5,6],[7,8],[10,11]];
+// (0,1) intentionally omitted — apex swap is now VERTICAL (proto_simple.scad::swap_ring_apex_vertical),
+// so ball 0 lives BELOW the floor and never traces a horizontal torus under the lid. Ball 1 stays at
+// its spin-channel station; the existing spin-ring torus already carves its clearance.
+DIVPAIRS=[[3,4],[5,6],[7,8],[10,11]];
 
 // a ball-dome clearance: a full ball-sphere; since the lid lives above lid_bot it only carves the DOME
 module dome(p){ translate([p[0],p[1],eq]) sphere(r=rb+clr, $fn=32); }
@@ -34,8 +40,8 @@ module lid(){
         translate([0,0,lid_bot-1]) cylinder(h=lid_top-lid_bot+2, r=R-finger_w/2, $fn=200);
     }
     // ---- SWAP paths: dome channels FULLY capped (no finger slot) -> swap hidden ----
-    for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]);                                                     // divider swing-circle (orbit) dome
-        translate([M[0],M[1],eq]) rotate_extrude($fn=80) translate([orbit,0]) circle(r=rb+clr,$fn=28); }
+    for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);                     // per-pair orbit torus in the lid
+        translate([M[0],M[1],eq]) rotate_extrude($fn=80) translate([orb,0]) circle(r=rb+clr,$fn=28); }
     dome_path(P(2),P(9));                                                                     // 2-9 shallow cross dome
   }
 }
