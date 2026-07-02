@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M12 Track-2 — segments-become-swap-ring concept</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0}
+  #hud{position:fixed;left:14px;top:12px;max-width:48%;opacity:.95}
+  #hud b{color:#fff}
+  #bar{position:fixed;right:14px;top:12px;text-align:right}
+  #bar .row{margin-bottom:6px}
+  button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;padding:7px 11px;margin-left:6px;cursor:pointer;font:inherit}
+  button.swap{background:#b5532a;border-color:#e0773f}
+  button:disabled{opacity:.4;cursor:default}
+  label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  #hint{position:fixed;left:14px;bottom:12px;opacity:.6}
+  #stat{position:fixed;right:14px;bottom:12px;opacity:.6}
+  #frameHUD{margin-left:10px;opacity:.85;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><b>Track-2 segments-become-swap-ring concept</b><br>
+Scott's reframe: drop the separate swap-ring dish. The 4 spin-ring segments around a neighbour pair
+(here pair 5-6: segs 4, 5, 6, 7) reconfigure themselves into a "rough circle" swap-ring around M:
+<b>outer segs</b> 4 and 7 move <b>radially out</b>, <b>inner segs</b> 5 and 6 move <b>inward toward M</b>
+and orbit π (carrying their balls) to exchange positions. The divider rises from below as the
+diameter. Each segment is dual-purpose: outer face is the spin channel, inner face has a swap-channel
+curvature revealed when flipped.</div>
+<div id="bar">
+  <div class="row">
+    <button id="bSwap" class="swap">⤒ swap 5↔6</button>
+    <button id="bReset">reset</button>
+  </div>
+  <div class="row">
+    <button id="bStepB">|◀</button>
+    <button id="bPlay">▶</button>
+    <button id="bStepF">▶|</button>
+    <span id="frameHUD">frame —</span>
+  </div>
+  <div class="row">
+    <label class="cb"><input type="checkbox" id="cbAllSegs" checked>all segs</label>
+    <label class="cb"><input type="checkbox" id="cbDivider" checked>divider</label>
+    <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
+    <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button>
+  </div>
+</div>
+<div id="hint">drag = orbit · scroll = zoom · ⤒ runs the (5,6) reconfig · |◀ ▶ ▶| / ← space → step/play · the 4 involved segs are highlighted blue/orange</div>
+<div id="stat">loading…</div>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" }}</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const renderer=new THREE.WebGLRenderer({canvas:c,antialias:true}); renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,6000); camera.position.set(150,200,250);
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5));
+const key=new THREE.DirectionalLight(0xffffff,0.95); key.position.set(120,220,160); scene.add(key);
+const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
+const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
+
+// ---- geometry constants ----
+const N=11, SCALE=20/18, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2, apexR=R+24*SCALE;
+const div_t=3.0, orbit_swap=rb+div_t/2+0.5;
+const d2r=Math.PI/180;
+const Aa=s=>-90+(s-1)*(360/N);
+const P=s=> s===0?[0,apexR]:[R*Math.cos(Aa(s)*d2r), -R*Math.sin(Aa(s)*d2r)];
+const th=s=>-Aa(s);
+const mid=(i,j)=>[(P(i)[0]+P(j)[0])/2, (P(i)[1]+P(j)[1])/2];
+const nrm=v=>{const m=Math.hypot(v[0],v[1]); return [v[0]/m, v[1]/m];};
+
+// The pair being swapped
+const PAIR_I=5, PAIR_J=6;
+const M_pair = mid(PAIR_I, PAIR_J);
+const Mp = M_pair;
+
+const PAIR_OUTER = [4, 7];           // outer flanking segs that move outward
+const PAIR_INNER = [PAIR_I, PAIR_J]; // inner segs that swap
+
+// ---- ease ----
+const ss = x => { x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); };
+const epte = t => t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+// ---- animation kinematics ----
+// Phase layout (u in [0,1]):
+//   [0.00, 0.10]: divider rises from z=-22 to z=0
+//   [0.10, 0.30]: outer segs (4,7) translate radially outward by OUTER_OUT mm
+//                 inner segs (5,6) translate inward (toward M) by INNER_IN mm
+//   [0.30, 0.70]: inner segs orbit π around M (each ends at the other's translated position)
+//                 (also yaw π so inner face faces outward at swapped position)
+//   [0.70, 0.90]: outer segs translate back inward; inner segs settle into swapped stations
+//   [0.90, 1.00]: divider drops back to z=-22
+const OUTER_OUT = 6.0;        // mm
+const INNER_IN  = 8.0;        // mm toward M from the station
+const DIV_PARK_Z = -22;
+
+function ramp(u, a, b) { return Math.max(0, Math.min(1, (u-a)/(b-a))); }
+function srmp(u, a, b) { return ss(ramp(u, a, b)); }
+
+function outerSegPose(k, u) {
+  // k in {4,7}: translate radially outward (away from origin) by OUTER_OUT during [0.10,0.30],
+  // and back during [0.70,0.90].
+  const pk = P(k);
+  const radDir = nrm(pk);
+  const out  = srmp(u, 0.10, 0.30) - srmp(u, 0.70, 0.90);
+  return {
+    pos: [pk[0] + radDir[0]*OUTER_OUT*out, pk[1] + radDir[1]*OUTER_OUT*out, 0],
+    yaw: 0,
+  };
+}
+
+function innerSegPose(k, u) {
+  // k in {5,6}. This is the trickier one.
+  //   Phase A [0.10,0.30]: translate from P(k) inward toward M by INNER_IN
+  //   Phase B [0.30,0.70]: orbit π around M (going from "moved-in" position to the other seg's
+  //                        "moved-in" position) AND yaw π over the orbit
+  //   Phase C [0.70,0.90]: translate from the moved-in position OUTward to the swapped station
+  //                        (so the seg ends at the OTHER station's position)
+  const pk_home = P(k);
+  const pk_partner = (k===PAIR_I) ? P(PAIR_J) : P(PAIR_I);
+  // direction from station inward toward M
+  const inward = (p)=> nrm([Mp[0]-p[0], Mp[1]-p[1]]);
+  const home_to_M = inward(pk_home);
+  const partner_to_M = inward(pk_partner);
+  // "moved-in" position: station + inward_dir * INNER_IN
+  const movedIn_home    = [pk_home[0]    + home_to_M[0]*INNER_IN,    pk_home[1]    + home_to_M[1]*INNER_IN];
+  const movedIn_partner = [pk_partner[0] + partner_to_M[0]*INNER_IN, pk_partner[1] + partner_to_M[1]*INNER_IN];
+
+  let xy, yaw;
+  if (u <= 0.30) {
+    // Phase A: translate inward
+    const t = srmp(u, 0.10, 0.30);
+    xy = [pk_home[0] + (movedIn_home[0]-pk_home[0])*t,
+          pk_home[1] + (movedIn_home[1]-pk_home[1])*t];
+    yaw = 0;
+  } else if (u <= 0.70) {
+    // Phase B: orbit π around M from movedIn_home to movedIn_partner
+    const t = srmp(u, 0.30, 0.70);
+    // start vector from M, end vector from M (these are antipodal — orbit π brings start to end)
+    const vS = [movedIn_home[0]-Mp[0], movedIn_home[1]-Mp[1]];
+    const angS = Math.atan2(vS[1], vS[0]);
+    const radS = Math.hypot(vS[0], vS[1]);
+    // direction of orbit: pick the one going through the inner side (closer to origin)
+    // For PAIR_I (i=5), we go CCW; for PAIR_J (j=6), CW — so they orbit through the OUTER half
+    // of the swap-ring (each goes "around" the outside of M to the other side).
+    const dir = (k===PAIR_I) ? +1 : -1;
+    const ang = angS + dir * Math.PI * t;
+    xy = [Mp[0] + radS*Math.cos(ang), Mp[1] + radS*Math.sin(ang)];
+    yaw = dir * Math.PI * t;  // yaw π over orbit
+  } else {
+    // Phase C: translate from movedIn_partner OUTward to pk_partner
+    const t = srmp(u, 0.70, 0.90);
+    xy = [movedIn_partner[0] + (pk_partner[0]-movedIn_partner[0])*t,
+          movedIn_partner[1] + (pk_partner[1]-movedIn_partner[1])*t];
+    yaw = (k===PAIR_I) ? Math.PI : -Math.PI;
+  }
+  return {pos: [xy[0], xy[1], 0], yaw};
+}
+
+function dividerPose(u) {
+  // Rises from z=-22 to z=0 during [0,0.10], back during [0.90, 1.0].
+  const upT = srmp(u, 0.0, 0.10);
+  const downT = srmp(u, 0.90, 1.0);
+  const z = DIV_PARK_Z * (1 - upT + downT);
+  return {pos: [Mp[0], Mp[1], z]};
+}
+
+function ballPose(s, u) {
+  // Ball at station s. For (5,6) pair, the ball moves with its seg.
+  if (s===PAIR_I || s===PAIR_J) {
+    const segPose = innerSegPose(s, u);
+    return [segPose.pos[0], segPose.pos[1], eq];
+  }
+  return [...P(s), eq];
+}
+
+// ---- load STLs ----
+const stat = document.getElementById('stat');
+const loader = new STLLoader();
+let segDualGeo=null, dividerGeo=null;
+let loaded=0;
+function onload() { if (++loaded===2) build(); }
+loader.load('./proto_wall_seg_dual.stl', g=>{segDualGeo=g; onload();}, undefined, e=>{console.warn('seg_dual',e); onload();});
+loader.load('./proto_wall_divider.stl', g=>{dividerGeo=g; onload();}, undefined, e=>{console.warn('divider',e); onload();});
+
+// materials
+const matSegOuter   = ()=> new THREE.MeshStandardMaterial({color:0x8d99b3, roughness:0.6, metalness:0.1, transparent:true, opacity:0.55, side:THREE.DoubleSide, depthWrite:false});
+const matSegInvolved= (col)=> new THREE.MeshStandardMaterial({color:col, roughness:0.5, metalness:0.15, transparent:true, opacity:0.75, side:THREE.DoubleSide, depthWrite:false});
+const matDivider    = ()=> new THREE.MeshStandardMaterial({color:0xdd55aa, roughness:0.5, metalness:0.2});
+
+// build
+const segGroups={};   // by station k
+let dividerMesh=null;
+const ballsGroup = new THREE.Group(); root.add(ballsGroup);
+const balls={};
+
+function makeLabel(t){
+  const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d');
+  x.font='bold 80px Arial';x.textAlign='center';x.textBaseline='middle';x.lineWidth=8;x.strokeStyle='#fff';x.strokeText(t,64,68);x.fillStyle='#0a0a0a';x.fillText(t,64,68);
+  const tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,transparent:true}));sp.scale.set(13,13,1);sp.renderOrder=10;return sp;
+}
+
+function build() {
+  stat.textContent='';
+  // create 11 spin segments
+  for (let k=1; k<=N; k++) {
+    const isInvolved = (k===PAIR_I || k===PAIR_J || PAIR_OUTER.includes(k));
+    const isInner = (k===PAIR_I || k===PAIR_J);
+    let col;
+    if (k===PAIR_I) col = 0x5ab0ff;  // blue for seg 5
+    else if (k===PAIR_J) col = 0xff8a3c;  // orange for seg 6
+    else if (PAIR_OUTER.includes(k)) col = 0xa0c0d8;  // light blue for 4 and 7
+    else col = 0x6c7585;  // grey for others
+
+    const g = new THREE.Group();
+    const mat = isInvolved ? matSegInvolved(col) : matSegOuter();
+    if (segDualGeo) { const m=new THREE.Mesh(segDualGeo, mat); g.add(m); }
+    // seg(k) base rotation: rotate around z by th(k) - th(1) (the seg STL is built at station 1)
+    g.userData.baseRotZ = (th(k) - th(1)) * d2r;
+    g.userData.station = k;
+    g.userData.isInner = isInner;
+    g.userData.isOuter = PAIR_OUTER.includes(k);
+    root.add(g);
+    segGroups[k] = g;
+  }
+  // divider for pair (5,6)
+  if (dividerGeo) {
+    dividerMesh = new THREE.Mesh(dividerGeo, matDivider());
+    // base rotation: align with chord direction P(5)-P(6)
+    const T = nrm([P(PAIR_J)[0]-P(PAIR_I)[0], P(PAIR_J)[1]-P(PAIR_I)[1]]);
+    const baseAng = Math.atan2(T[1], T[0]);
+    dividerMesh.userData.baseRotZ = baseAng;
+    root.add(dividerMesh);
+  }
+  // balls 1..11
+  const sph = new THREE.SphereGeometry(rb, 40, 28);
+  for (let s=1; s<=N; s++) {
+    const col = (s===PAIR_I) ? 0x5ab0ff : (s===PAIR_J) ? 0xff8a3c : 0xc8ccd2;
+    const m = new THREE.Mesh(sph, new THREE.MeshStandardMaterial({color:col, roughness:0.3, metalness:0.85}));
+    const lbl = makeLabel(String(s));
+    ballsGroup.add(m); ballsGroup.add(lbl);
+    balls[s] = {m, lbl};
+  }
+  renderIdle();
+  frame();
+  setControls();
+}
+
+function placeBall(s, x, y, z) {
+  balls[s].m.position.set(x, y, z);
+  balls[s].lbl.position.set(x, y, z);
+}
+
+function renderIdle() {
+  for (let k=1; k<=N; k++) {
+    const g = segGroups[k]; if (!g) continue;
+    g.position.set(0,0,0);
+    g.rotation.z = g.userData.baseRotZ;
+  }
+  if (dividerMesh) {
+    dividerMesh.position.set(Mp[0], Mp[1], DIV_PARK_Z);
+    dividerMesh.rotation.z = dividerMesh.userData.baseRotZ;
+  }
+  for (let s=1; s<=N; s++) { const p=P(s); placeBall(s, p[0], p[1], eq); }
+  placeBall(0 in balls ? 0 : 1, 0, 0, 0); // dummy if no apex
+  frameHUDEl.textContent = 'frame —';
+}
+
+function renderSwap(u) {
+  // outer segs translate
+  for (const k of PAIR_OUTER) {
+    const g = segGroups[k]; if (!g) continue;
+    const pose = outerSegPose(k, u);
+    g.position.set(pose.pos[0], pose.pos[1], pose.pos[2]);
+    g.rotation.z = g.userData.baseRotZ;
+  }
+  // inner segs orbit and translate
+  for (const k of PAIR_INNER) {
+    const g = segGroups[k]; if (!g) continue;
+    const pose = innerSegPose(k, u);
+    g.position.set(pose.pos[0], pose.pos[1], pose.pos[2]);
+    g.rotation.z = g.userData.baseRotZ + pose.yaw;
+  }
+  // other segs unchanged
+  for (let k=1; k<=N; k++) {
+    if (PAIR_OUTER.includes(k) || PAIR_INNER.includes(k)) continue;
+    const g = segGroups[k]; if (!g) continue;
+    g.position.set(0,0,0); g.rotation.z = g.userData.baseRotZ;
+  }
+  // divider
+  if (dividerMesh) {
+    const pose = dividerPose(u);
+    dividerMesh.position.set(pose.pos[0], pose.pos[1], pose.pos[2]);
+    dividerMesh.rotation.z = dividerMesh.userData.baseRotZ;
+  }
+  // balls — involved pair moves with segs; others stay
+  for (let s=1; s<=N; s++) {
+    const p = ballPose(s, u);
+    placeBall(s, p[0], p[1], p[2]);
+  }
+  frameHUDEl.textContent = `frame ${swapFrame} / ${FRAMES}`;
+}
+
+// ---- transport / controls ----
+const FRAMES = 120, SWAP_MS = 5500;
+let mode='idle', swapFrame=0, playing=false, t0=0;
+const frameHUDEl = document.getElementById('frameHUD');
+const bSwap = document.getElementById('bSwap'), bReset=document.getElementById('bReset');
+const bStepB = document.getElementById('bStepB'), bPlay=document.getElementById('bPlay'), bStepF=document.getElementById('bStepF');
+
+function setControls() {
+  const sw = (mode==='swap');
+  bStepB.disabled = !sw; bStepF.disabled = !sw;
+  bPlay.textContent = (sw && playing) ? '⏸' : '▶';
+  bSwap.textContent = sw ? '✓ done' : '⤒ swap 5↔6';
+}
+function startSwap() { mode='swap'; swapFrame=0; playing=true; t0=performance.now(); setControls(); renderSwap(0); }
+function endSwap()   { mode='idle'; playing=false; renderIdle(); setControls(); }
+bSwap.onclick = ()=>{ if (mode==='idle') startSwap(); else endSwap(); };
+bReset.onclick = ()=>{ mode='idle'; playing=false; renderIdle(); setControls(); };
+function rebase(now) { t0 = now - (swapFrame/FRAMES)*SWAP_MS; }
+bStepB.onclick = ()=>{ if (mode!=='swap') return; playing=false; swapFrame=Math.max(0, swapFrame-1); rebase(performance.now()); renderSwap(swapFrame/FRAMES); setControls(); };
+bStepF.onclick = ()=>{ if (mode!=='swap') return; playing=false; swapFrame=Math.min(FRAMES, swapFrame+1); rebase(performance.now()); renderSwap(swapFrame/FRAMES); setControls(); };
+bPlay.onclick = ()=>{ if (mode==='idle') { startSwap(); return; } if (swapFrame>=FRAMES) swapFrame=0; playing=!playing; rebase(performance.now()); setControls(); };
+addEventListener('keydown', e=>{
+  if (e.target.tagName==='INPUT') return;
+  if (e.key==='ArrowLeft') { bStepB.onclick(); e.preventDefault(); }
+  else if (e.key==='ArrowRight') { bStepF.onclick(); e.preventDefault(); }
+  else if (e.key===' ') { bPlay.onclick(); e.preventDefault(); }
+});
+
+document.getElementById('cbAllSegs').onchange = e=>{ for (const k in segGroups) segGroups[k].visible = e.target.checked; };
+document.getElementById('cbDivider').onchange = e=>{ if (dividerMesh) dividerMesh.visible = e.target.checked; };
+document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
+document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
+
+function frame() {
+  const b = new THREE.Box3().setFromObject(root); if (b.isEmpty()) return;
+  const c2 = b.getCenter(new THREE.Vector3()), s = b.getSize(new THREE.Vector3());
+  root.position.sub(new THREE.Vector3(c2.x, 0, c2.z));
+  controls.target.set(0,0,0);
+  const r = Math.max(s.x, s.z); camera.position.set(r*0.7, r*0.7, r*1.2); controls.update();
+}
+document.getElementById('rv').onclick = frame;
+addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  if (mode==='swap' && playing) {
+    swapFrame = Math.min(FRAMES, Math.round((now-t0)/SWAP_MS*FRAMES));
+    if (swapFrame >= FRAMES) { swapFrame = FRAMES; playing=false; setControls(); }
+    renderSwap(swapFrame/FRAMES);
+  } else if (mode==='swap') {
+    renderSwap(swapFrame/FRAMES);
+  }
+  controls.update(); renderer.render(scene, camera);
+})(performance.now());
+</script>
+</body>
+</html>

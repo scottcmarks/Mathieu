@@ -158,3 +158,61 @@ The Track-2 *architecture* is sound; the detail geometry needs a real revision �
 fork cup sizing, seg/ring radial clearance during the up-down overlap, kinematics
 tuning so no moving wall crosses a ball, and 2-9 INNER-DROP timing. Memory note
 records the parser-bug lesson for all future checkers: always sniff STL format.
+
+## 2026-07-02 — Track-2: swap-ring variants exhausted, simple-walls concept adopted
+
+### The path (multi-session narrative)
+Started with the divider swap-ring vs spin-band radial-overlap architectural
+pickle. Explored via `viewer_variants.html`: (A) push M outward → PASS but body
+grows to Ø234, (B) asymmetric arc → FAIL, (C) z-staged → PASS but had a
+pass-through hole Scott caught visually. Ran a workflow with 4 sub-variants of C
+(petaled dish / parked-high / no-dish-cradle / rotating-slotted); adversarial
+review killed 3 outright — including one via a silent-zero bug (`check_C3.py`
+had no `use <proto_wall.scad>`, so unknown modules yielded empty intersection →
+0 mm³ false PASS). C1 (petaled) only worked for 4 of 5 pairs; apex arithmetic
+was unrecoverable.
+
+### The reframe (Scott's simplification)
+Drop the elaborate seg geometry entirely. **Walls are plain rectangular
+vertical pieces** (~ball-Ø × half-ball tall × 2 mm thick) that only confine
+LATERALLY. The over-equator capture moves into the **lid** whose underside
+carries the spin-channel and swap-channel torus carves.
+
+### Files created (`physical/clean/`)
+- `proto_simple.scad` — spin_segment_real (11 arc walls), swap_ring (segmented),
+  divider_simple, bases
+- `proto_simple_{spin_seg,swap_ring,divider}.stl` — rendered parts
+- `viewer_simple.html` — animated viewer for the (5,6) swap
+- `check_simple.py` — per-frame solid interference checker (SWAP-vs-SPIN,
+  DIV-vs-SPIN, DIV-vs-SWAP, BALL-vs-WALL, BALL-vs-DIV, BALL-vs-BALL)
+
+### The iteration (all caught by the new checker)
+Initial viewer had 39 bad category-frames. Scott flagged three visual bugs:
+frames 6, 51, 112 — swap wall ∩ spin wall, balls counter-rotating and passing
+through each other, divider not fitting through the spin wall. Fixes:
+1. **Same-direction orbit** — both balls now go CCW paddled by the divider,
+   180° apart (was counter-rotating, passing through).
+2. **Segmented swap ring** — 2 short arcs at perpendicular-to-chord azimuths
+   (which happens to align with the origin-radial through M → inter-seg gap),
+   NOT a full 360° annulus.
+3. **Phased schedule** — segs 5,6 drop FIRST (u=0.00–0.10), THEN divider +
+   swap walls rise (0.10–0.20). Balls transit (0.20–0.35), divider π
+   (0.35–0.65), balls exit (0.65–0.80), reverse.
+4. **Inter-seg gap widened** 2° → 5° + divider thinned 3→2 mm — so divider
+   fits through gap at band radii.
+5. **Divider half-length trimmed** 21.9 → 21.0 — clears swap-ring inner edge.
+
+**Result: 6/6 gates PASS** for pair (5,6). 39 bad frames → 0.
+
+### New parser bug caught
+OpenSCAD's `atan2()` returns **degrees** (not radians like every other language).
+Multiplying by 180/PI placed the swap-ring arcs at random angles. Standing note
+added to memory: OpenSCAD trig is ALWAYS degrees; never `* 180/PI` a trig
+result.
+
+### Open items carried forward
+- Lid channels need re-designed to be a torus at r=12 from M (not old dome_path).
+- Each other divider pair (3,4)(7,8)(10,11)(0,1) needs its own perpendicular-
+  arc placement + re-check.
+- Ball-push mechanism (what physically drives the ball from station to
+  orbit_start) not yet modelled — balls follow scripted positions today.

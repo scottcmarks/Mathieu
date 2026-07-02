@@ -51,6 +51,43 @@ module spin_seg(k) {
 module spin_seg_inner(k) { intersection() { spin_seg(k); translate([0,0,floorz-1]) cylinder(h=spin_top-floorz+2, r=R, $fn=180); } }
 module spin_seg_outer(k) { difference()   { spin_seg(k); translate([0,0,floorz-1]) cylinder(h=spin_top-floorz+2, r=R, $fn=180); } }
 
+// ============================================================================
+//   DUAL-CHANNEL SEGMENT  (Scott's concept: segments become swap-ring walls)
+// ============================================================================
+// Each segment has TWO over-equator channel grooves: the existing OUTER spin channel (at r=R)
+// AND a NEW INNER swap channel (at r=R_inner_dual) — same tube radius, same z=eq, so the channel
+// fits the same Ø20 ball. When the seg is in spin position, balls roll in the outer channel.
+// When the seg is FLIPPED by π (yaw around its own vertical axis), the inner channel face is
+// revealed and becomes the swap-ring's channel.
+// Cost: the seg is now ~46 mm wide radially (vs 24 mm original) -- inner wall pushed inward
+// from r=43.59 to r=R_inner_dual-tube-wall_t = 21.32.
+R_inner_dual = R - 2*tube - wall_t;        // 33.29 — center of inner channel
+band_inner_dual = R_inner_dual - tube - wall_t;   // 21.32 — new inner wall radius
+
+module band_block_dual() {
+    difference() {
+        cylinder(h=spin_top, r=R+tube+wall_t, $fn=240);
+        translate([0,0,-0.1]) cylinder(h=spin_top+0.2, r=band_inner_dual, $fn=240);
+    }
+}
+module channel_void_outer() {
+    translate([0,0,eq]) rotate_extrude($fn=240) translate([R,0]) circle(r=tube, $fn=40);
+}
+module channel_void_inner() {
+    translate([0,0,eq]) rotate_extrude($fn=240) translate([R_inner_dual,0]) circle(r=tube, $fn=40);
+}
+// dual-channel spin-ring segment at station k
+module spin_seg_dual(k) {
+    intersection() {
+        difference() {
+            band_block_dual();
+            channel_void_outer();
+            channel_void_inner();
+        }
+        rotate([0,0, th(k)]) wedge(360/N/2 - seg_gap);
+    }
+}
+
 // ---- neighbour swap-ring (circumference wall + diameter divider), built at ORIGIN ----
 div_t   = 3.0;                      // divider wall thickness
 orbit   = rb + div_t/2 + 0.5;       // 12.0  ball orbit radius (ball clears the divider face)
@@ -83,6 +120,7 @@ PART="all";
 if      (PART=="seg")      spin_seg(1);
 else if (PART=="seg_in")   spin_seg_inner(1);
 else if (PART=="seg_out")  spin_seg_outer(1);
+else if (PART=="seg_dual") spin_seg_dual(1);
 else if (PART=="swapwall") swap_wall();
 else if (PART=="divider")  divider();
 else if (PART=="mag")      mag();
