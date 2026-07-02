@@ -286,3 +286,54 @@ Implementation:
   yet wired into `viewer_simple.html` — the vertical ring is currently static.
 - `check_simple.py` doesn't yet sweep the apex vertical swap.
 - Same open items as (v1): lid channels tightening, ball-push mechanism.
+
+### Stow architecture + lift-into-lid-slots (v3)
+
+Scott's simplification of the stow motion. Rules:
+- **Swap-ring panels stow just panel-height below the spin ring** (not 40 mm).
+  `PARK_DEPTH_SWAP: 40 → 11`, `PARK_DEPTH_DIV: 40 → 13`.
+- **Spin-ring segments that clear a swap RISE UP into the lid** (not down).
+
+#### First attempt — LIFT_SEG_UP=11 (panel-height) FAILED
+
+Made the changes in parallel via workflow: `proto_lid.scad` grew blind pockets
+at each of the 11 stations (inner + outer walls, Z=[11.5, 22.0], 0.4mm radial
+clearance each side), `check_simple.py` and `viewer_simple.html` got the new
+constants and sign-flipped seg motion.
+
+Checker exposed the bug: `ball_vs_wall` FAILED, 13 bad frames, worst 508 mm³
+at frame 45. Root cause: **ball body extends Z=[0, 20]**, so seg lifted to
+Z=[11, 21.5] still overlaps ball Z by 9mm. During the (5,6) swap, ball 5's
+center sweeps radially from station r=55.56 through r=44.66 (the seg's inner
+wall radial position) to orbit-inward min r=37.68, and during that traversal
+the ball's inner-radial flank is inside the wall's Z range → 3D collision.
+Panel-height clearance was sufficient for swap-ring vs spin-ring, but not for
+seg-vs-ball because balls are 20mm tall not 10.
+
+#### Second attempt — LIFT_SEG_UP=21 with through-slots PASS
+
+Chosen after weighing three variants: lift by ball-diameter + clearance so
+seg bottom (Z=21) clears ball top (Z=20) with 1mm margin. Two ways to fit:
+extend the lid taller (24 → 32) so seg stays inside, or cut through-slots
+and let segs protrude 7.5mm above lid_top during the swap only. Scott picked
+**slots + protrusion** for best ball exposure (lid stays 24mm tall, finger
+depth to ball top stays at ~5mm).
+
+Slot geometry: r=[42.76, 45.56] (inner) and r=[65.56, 68.36] (outer), each
+2.8mm wide = wall_t 2.0 + 0.4mm clearance each side. Z=[11.5, 24.5] cuts
+straight through the lid.
+
+Capture preservation check: the over-equator "lips" at r=[45.16, 47.56]
+(inner, 2.4mm wide) and r=[63.56, 65.96] (outer, 2.4mm wide) each lose only
+their outermost 0.4mm sliver to the slots. Remaining 2.0mm lips still capture
+the ball whose dome inner surface at Z=15 is at r=46.90 — well inside.
+
+Lid rendered NoError, **Genus 22** (11 stations × 2 walls, confirming all 22
+slots are through-cuts).
+
+Positive control confirmed: same `check_simple.py` reported 508 mm³ at
+LIFT=11 minutes before the fix and 0 mm³ at LIFT=21 — genuine detection, not
+a silent-zero.
+
+Files: `physical/clean/{proto_lid.scad,check_simple.py,viewer_simple.html}`.
+All 6 gates PASS (swap_vs_spin/div_vs_spin/div_vs_swap/ball_vs_wall/ball_vs_div/ball_vs_ball).

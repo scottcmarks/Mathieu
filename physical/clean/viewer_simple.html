@@ -82,10 +82,10 @@ function pair_orbit(i,j){ const a=BALLPOS0(i), b=BALLPOS0(j); return Math.hypot(
 const PAIR_I=5, PAIR_J=6;
 const Mp = mid(PAIR_I, PAIR_J);
 
-const PARK_DEPTH_SEG = 20;    // segs drop 20 below floor
-const PARK_DEPTH_DIV = 40;    // divider parks deeper (below seg storage) so wide paddle doesn't collide with dropped segs in xy
-const PARK_DEPTH_SWAP = 40;   // swap walls also park deep enough to clear dropped segs
-const PARK_DEPTH = PARK_DEPTH_SEG;  // legacy alias
+const LIFT_SEG_UP = 21;       // segs rise 21 UP: seg bottom at Z=21 clears ball top at Z=20; through-slots in lid, top 7.5mm protrudes
+const PARK_DEPTH_DIV = 13;    // divider parks shallowly below floor
+const PARK_DEPTH_SWAP = 11;   // swap walls park shallowly below floor
+const PARK_DEPTH = PARK_DEPTH_SWAP;  // legacy alias
 
 // ---- ease + ramp ----
 const ss = x => { x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); };
@@ -94,16 +94,16 @@ function srmp(u, a, b) { return ss(ramp(u, a, b)); }
 
 // ---- animation kinematics: (5,6) swap ----
 // Phase layout:
-//   [0.00, 0.10]: swap walls + divider RISE from below; spin walls at stations 5,6 DROP
+//   [0.00, 0.10]: spin walls at stations 5,6 RISE UP into lid
 //   [0.10, 0.30]: balls 5 & 6 move INWARD from their stations to the swap orbit (r=12 from M)
 //   [0.30, 0.70]: divider rotates π — carries balls around M to swapped positions
 //   [0.70, 0.90]: balls move OUTWARD from swap orbit to their new (swapped) stations
-//   [0.90, 1.00]: swap walls + divider DROP; spin walls at 5,6 RISE
-// PHASED schedule (mirror check_simple.py): segs 5,6 drop FIRST, then divider+walls rise
+//   [0.90, 1.00]: swap walls + divider DROP; spin walls at 5,6 DESCEND back to floor
+// PHASED schedule (mirror check_simple.py): segs 5,6 rise UP FIRST, then divider+walls rise from below
 function spinSegZ(k, u) {
   if (k===PAIR_I || k===PAIR_J) {
-    const downT = srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00);
-    return -PARK_DEPTH_SEG * downT;
+    const upT = srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00);
+    return LIFT_SEG_UP * upT;
   }
   return 0;
 }
@@ -242,9 +242,9 @@ function placeBall(s, x, y, z) {
 
 function renderIdle() {
   for (let k=1; k<=N; k++) { if (segMeshes[k]) segMeshes[k].position.z = 0; }
-  if (swapMesh) swapMesh.position.z = -PARK_DEPTH;
+  if (swapMesh) swapMesh.position.z = -PARK_DEPTH_SWAP;
   if (divMesh) {
-    divMesh.position.set(Mp[0], Mp[1], -PARK_DEPTH);
+    divMesh.position.set(Mp[0], Mp[1], -PARK_DEPTH_DIV);
     const T = nrm([P(PAIR_J)[0]-P(PAIR_I)[0], P(PAIR_J)[1]-P(PAIR_I)[1]]);
     divMesh.rotation.z = Math.atan2(T[1], T[0]);
   }

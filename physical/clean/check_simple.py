@@ -37,10 +37,10 @@ orbit_swap = 2*R*math.sin(math.pi/N)/2   # 15.63 — half-chord from M (== stati
 outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 1   # 28.03 — 1 mm clearance beyond ball reach
 div_w = 2*(orbit_swap - rb - clr)         # 10.46 — WIDE paddle: chord-facing side faces contact balls with clr clearance
 div_l_half = 5.0                         # perp half-length — corners fit strictly between inner+outer spin-wall material zones
-PARK_DEPTH_SEG = 20              # segs drop 20 below floor into their storage
-PARK_DEPTH_DIV = 40              # divider parks DEEPER (20 below segs' storage) so wide paddle doesn't collide with dropped segs in xy
-PARK_DEPTH_SWAP = 40             # swap walls also park deep enough to clear dropped segs
-PARK_DEPTH = PARK_DEPTH_SEG      # alias for backward-compat (segs)
+LIFT_SEG_UP = 21                 # segs RISE UP into lid THROUGH-SLOTS; must clear ball top at Z=20
+PARK_DEPTH_DIV = 13              # divider parks just below spin plane (panel-height + clr)
+PARK_DEPTH_SWAP = 11             # swap walls park just below spin plane (panel-height + clr)
+PARK_DEPTH = LIFT_SEG_UP         # alias for backward-compat (segs)
 
 PAIR_I, PAIR_J = 5, 6
 
@@ -69,8 +69,8 @@ def srmp(u,a,b): return ss(ramp(u,a,b))
 #   [0.90, 1.00] spin segs at 5,6 rise
 def spinSegZ(k,u):
     if k in (PAIR_I, PAIR_J):
-        downT = srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00)
-        return -PARK_DEPTH_SEG * downT
+        # Segs now RISE UP (positive Z) at start of clip, return at end.
+        return LIFT_SEG_UP * (srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00))
     return 0.0
 def swapWallZ(u):
     upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90)

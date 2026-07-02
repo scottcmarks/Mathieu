@@ -43,6 +43,19 @@ module lid(){
     for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);                     // per-pair orbit torus in the lid
         translate([M[0],M[1],eq]) rotate_extrude($fn=80) translate([orb,0]) circle(r=rb+clr,$fn=28); }
     dome_path(P(2),P(9));                                                                     // 2-9 shallow cross dome
+    // ---- SPIN-SEG LID SLOTS: through-holes matching spin_segment_real(k) so a risen seg
+    //      passes cleanly through the lid. Segs lift by 21 mm (ball_d + clr) so their bottoms
+    //      clear the ball top at Z=20; wall top at Z=31.5 protrudes 7.5 mm above lid_top=24.
+    //      Slot Z=[11.5, 24.5] cuts the entire lid thickness plus 0.5 mm; radial clearance
+    //      0.4 mm each side removes only the outer 0.4 mm of the over-equator lips
+    //      (lips r=[45.16, 47.56] and r=[63.56, 65.96]) — 2.0 mm of lip remains, still
+    //      captures the ball whose dome inner surface at Z=15 is at r=46.90.
+    for (k = [1:N]) {
+      rotate([0, 0, (-angleOf(k)) - (360/N/2 - 5.0/2)])
+        rotate_extrude(angle = 2*(360/N/2 - 5.0/2), $fn=120)
+          for (rc = [44.66, 66.46])
+            translate([rc - 2.0/2 - 0.4, 11.5]) square([2.0 + 0.8, 13.0]);
+    }
   }
 }
 
