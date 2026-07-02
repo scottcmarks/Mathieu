@@ -12,6 +12,7 @@
   #bar .row{margin-bottom:6px}
   button{background:#1d2230;color:#e7ebf3;border:1px solid #39425a;border-radius:7px;padding:7px 11px;margin-left:6px;cursor:pointer;font:inherit}
   button.swap{background:#b5532a;border-color:#e0773f}
+  button.spin{background:#2a5db5;border-color:#3f7ae0}
   button:disabled{opacity:.4;cursor:default}
   label.cb{margin-left:8px;cursor:pointer;user-select:none}
   #hint{position:fixed;left:14px;bottom:12px;opacity:.6}
@@ -24,12 +25,14 @@
 <div id="hud"><b>Track-2 simple walls + lid-captures concept</b><br>
 Scott's simplification: drop the elaborate seg geometry. <b>Walls</b> are plain rectangular pieces
 (~ball-Ø wide × half-ball tall) that <b>only confine laterally</b>. The over-equator capture moves
-into the <b>lid</b> (translucent gold above). All <b>5 neighbour swap pairs</b> are shown: (0,1) at
-the apex (special: ball 0 lives outside the ring, half-chord 13.33), plus ring pairs (3,4)(5,6)(7,8)
-(10,11) at half-chord 15.65. Only (5,6) animates; the other four sit statically at their up positions.</div>
+into the <b>lid</b> (translucent gold above). <b>5 divider pairs animate in sync</b>: (0,1) vertical
+apex + (3,4)/(5,6)/(7,8)/(10,11) in-plane. Pair (2,9) is depth-multiplexed (separate design track,
+not animated here). <b>Left/right spin</b> buttons cyclically shift the ring by 1 station.</div>
 <div id="bar">
   <div class="row">
-    <button id="bSwap" class="swap">⤒ swap 5↔6</button>
+    <button id="bSpinLeft" class="spin">◀ spin</button>
+    <button id="bSwap" class="swap">⤒ swap (all pairs)</button>
+    <button id="bSpinRight" class="spin">spin ▶</button>
     <button id="bReset">reset</button>
   </div>
   <div class="row">
@@ -47,7 +50,7 @@ the apex (special: ball 0 lives outside the ring, half-chord 13.33), plus ring p
     <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button>
   </div>
 </div>
-<div id="hint">drag = orbit · scroll = zoom · ⤒ runs (5,6) swap · |◀ ▶ ▶| / ← space → step/play</div>
+<div id="hint">drag = orbit · scroll = zoom · ⤒ swap all · ← → spin steps · [ ] scrub swap · space play</div>
 <div id="stat">loading…</div>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" }}</script>
 <script type="module">
@@ -73,107 +76,168 @@ const P=s=>[R*Math.cos(Aa(s)*d2r), -R*Math.sin(Aa(s)*d2r)];
 const th=s=>-Aa(s);
 const mid=(i,j)=>[(P(i)[0]+P(j)[0])/2, (P(i)[1]+P(j)[1])/2];
 const nrm=v=>{const m=Math.hypot(v[0],v[1]); return [v[0]/m, v[1]/m];};
-const PAIRS = [[0,1],[3,4],[5,6],[7,8],[10,11]];
-const apexR = R + 24*SCALE;
-// Ball 0 special (apex): sits at (0, apexR), not on the ring
-function BALLPOS0(s) { return s===0 ? [0, apexR] : P(s); }
-function pair_orbit(i,j){ const a=BALLPOS0(i), b=BALLPOS0(j); return Math.hypot(a[0]-b[0], a[1]-b[1])/2; }
-// Legacy — kept for old references
-const PAIR_I=5, PAIR_J=6;
-const Mp = mid(PAIR_I, PAIR_J);
 
-const LIFT_SEG_UP = 21;       // segs rise 21 UP: seg bottom at Z=21 clears ball top at Z=20; through-slots in lid, top 7.5mm protrudes
+// Divider pair sets
+const IN_PLANE_PAIRS = [[3,4],[5,6],[7,8],[10,11]];   // horizontal, orbit ~15.63 mm
+const APEX_PAIR      = [0,1];                          // vertical YZ ring, half_chord 13.33
+const SWAP_PERM_PAIRS = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];  // canonical M12 swap (2,9 not animated visually)
+const APEX_HALF_CHORD = Math.hypot(0 - 0, R - (R + 24*SCALE)) / 2;  // = 12*SCALE = 13.33
+const APEX_Z_C = eq - APEX_HALF_CHORD;                              // = -3.33
+
+// Ball 0 special home (apex, stored below floor at bottom of vertical ring)
+function BALLPOS0(s) { return s===0 ? [0, R] : P(s); }               // XY position of ball 0 home is (0, R)
+function ball0HomeZ() { return eq - 2*APEX_HALF_CHORD; }             // Z = -16.66
+function pair_orbit_inplane(i, j) {
+  const a = P(i), b = P(j);
+  return Math.hypot(a[0]-b[0], a[1]-b[1]) / 2;
+}
+
+// Lift stations = union of divider pair stations, minus 0 (no seg at station 0).
+// Note: station 2 and 9 do NOT lift (their pair is not animated in this viewer).
+const LIFT_STATIONS = new Set([1, 3, 4, 5, 6, 7, 8, 10, 11]);
+
+const LIFT_SEG_UP = 21;       // segs rise 21 UP: seg bottom at Z=21 clears ball top at Z=20
 const PARK_DEPTH_DIV = 13;    // divider parks shallowly below floor
 const PARK_DEPTH_SWAP = 11;   // swap walls park shallowly below floor
-const PARK_DEPTH = PARK_DEPTH_SWAP;  // legacy alias
 
 // ---- ease + ramp ----
 const ss = x => { x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); };
 function ramp(u, a, b) { return Math.max(0, Math.min(1, (u-a)/(b-a))); }
 function srmp(u, a, b) { return ss(ramp(u, a, b)); }
 
-// ---- animation kinematics: (5,6) swap ----
-// Phase layout:
-//   [0.00, 0.10]: spin walls at stations 5,6 RISE UP into lid
-//   [0.10, 0.30]: balls 5 & 6 move INWARD from their stations to the swap orbit (r=12 from M)
-//   [0.30, 0.70]: divider rotates π — carries balls around M to swapped positions
-//   [0.70, 0.90]: balls move OUTWARD from swap orbit to their new (swapped) stations
-//   [0.90, 1.00]: swap walls + divider DROP; spin walls at 5,6 DESCEND back to floor
-// PHASED schedule (mirror check_simple.py): segs 5,6 rise UP FIRST, then divider+walls rise from below
+// ---- shared phased schedule ----
+//   [0.00, 0.10]: spin segs at lift-stations rise UP into lid pockets
+//   [0.10, 0.20]: swap-rings rise from park; dividers rise
+//   [0.20, 0.80]: balls orbit π; dividers rotate π
+//   [0.80, 0.90]: swap-rings park; dividers park
+//   [0.90, 1.00]: spin segs descend to home
 function spinSegZ(k, u) {
-  if (k===PAIR_I || k===PAIR_J) {
+  if (LIFT_STATIONS.has(k)) {
     const upT = srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00);
     return LIFT_SEG_UP * upT;
   }
   return 0;
 }
-function swapWallZ(u) {
+function swapWallZOffset(u) {
+  // For in-plane swap rings: additive Z offset relative to parked position (they park below floor).
   const upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90);
   return -PARK_DEPTH_SWAP * (1 - upT);
 }
-function dividerPose(u) {
+function dividerZOffset(u) {
   const upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90);
-  const z = -PARK_DEPTH_DIV * (1 - upT);
-  const T = nrm([P(PAIR_J)[0]-P(PAIR_I)[0], P(PAIR_J)[1]-P(PAIR_I)[1]]);
-  const baseAng = Math.atan2(T[1], T[0]);
-  const rot = Math.PI * srmp(u, 0.20, 0.80);   // divider rotates through the whole u=[0.20, 0.80] window (matches ball orbit)
-  return {pos:[Mp[0], Mp[1], z], rotZ: baseAng + rot};
+  return -PARK_DEPTH_DIV * (1 - upT);
 }
-function ballPose(s, u) {
-  // Balls at stations 5 & 6: move from station -> swap orbit -> swapped station
-  if (s!==PAIR_I && s!==PAIR_J) return [...P(s), eq];
-  const home_k = s;
-  const partner_k = (s===PAIR_I) ? PAIR_J : PAIR_I;
-  const home_pos = P(home_k);
-  const partner_pos = P(partner_k);
-  // direction from station inward toward M
-  const dir_in = nrm([Mp[0]-home_pos[0], Mp[1]-home_pos[1]]);
-  // orbit position on the swap ring: starts on home's side of M, ends on partner's side
-  const orbit_r = 2*R*Math.sin(Math.PI/N)/2;   // 15.63 — half-chord; ball stays at station distance from M throughout
-  // initial orbit position: M + dir_to_home * orbit_r
-  const dir_to_home = nrm([home_pos[0]-Mp[0], home_pos[1]-Mp[1]]);
-  const orbit_start = [Mp[0] + dir_to_home[0]*orbit_r, Mp[1] + dir_to_home[1]*orbit_r];
-  // final orbit position (on partner's side): M + dir_to_partner * orbit_r
-  const dir_to_partner = nrm([partner_pos[0]-Mp[0], partner_pos[1]-Mp[1]]);
-  const orbit_end = [Mp[0] + dir_to_partner[0]*orbit_r, Mp[1] + dir_to_partner[1]*orbit_r];
-  // NEW: no radial transit — balls stay at station distance from M throughout, orbit synchronously
-  // with the divider through u=[0.20, 0.80]. Divider paddle turning DRIVES the ball motion.
+function dividerRotAccum(u) {
+  return Math.PI * srmp(u, 0.20, 0.80);
+}
+
+// In-plane ball trajectory during swap for pair (i,j).
+// Both balls orbit M at radius = half-chord, +π rotation (same direction), 180° apart.
+function inPlaneBallPose(s, i, j, u) {
+  const M = mid(i, j);
+  const home_pos = P(s);            // s is one of i,j; home station
+  const orbit_r = pair_orbit_inplane(i, j);
+  const dir_to_home = nrm([home_pos[0] - M[0], home_pos[1] - M[1]]);
   let xy;
   if (u <= 0.20) {
     xy = home_pos;
   } else if (u <= 0.80) {
     const t = srmp(u, 0.20, 0.80);
     const startAng = Math.atan2(dir_to_home[1], dir_to_home[0]);
-    const ang = startAng + Math.PI * t;        // same +π for both balls, matching divider rotation
-    xy = [Mp[0] + orbit_r*Math.cos(ang), Mp[1] + orbit_r*Math.sin(ang)];
+    const ang = startAng + Math.PI * t;
+    xy = [M[0] + orbit_r * Math.cos(ang), M[1] + orbit_r * Math.sin(ang)];
   } else {
-    xy = partner_pos;
+    // final position is partner's station
+    const partner = (s === i) ? j : i;
+    xy = P(partner);
   }
   return [xy[0], xy[1], eq];
 }
 
-// ---- load STLs ----
+// Apex (0,1) ball trajectory during swap. Balls exchange in the YZ plane about the X axis.
+// Center of ring: (0, R, APEX_Z_C). Radius = APEX_HALF_CHORD.
+//   Ball at station 1 starts at (0, R, eq)      → ang = π/2  (top)
+//   Ball at station 0 starts at (0, R, eq - 2h) → ang = -π/2 (bottom)
+// Both sweep +π: ball 1 top→bottom, ball 0 bottom→top. They pass on opposite sides.
+function apexBallPose(s, u) {
+  const startAng = (s === 1) ? Math.PI/2 : -Math.PI/2;
+  let ang;
+  if (u <= 0.20) {
+    ang = startAng;
+  } else if (u <= 0.80) {
+    const t = srmp(u, 0.20, 0.80);
+    ang = startAng + Math.PI * t;
+  } else {
+    ang = startAng + Math.PI;
+  }
+  const y = 0;      // ring is in the YZ plane at x=0; parametrize (y,z) around center (R, APEX_Z_C)
+  // Actually the ring plane is YZ with x=0; center at (0, R, APEX_Z_C). Points on ring: (0, R, Z_C) + h*(cos(ang), 0, sin(ang))?
+  // No — the ring lies in the YZ plane so its two orthogonal in-plane axes are Y and Z.
+  // Parametrize with angle measured from +Z toward +Y? We chose: startAng=π/2 for top (Z above center),
+  // startAng=-π/2 for bottom. So position on ring = center + h * (cos_component_along_Y, sin_component_along_Z)? Let's use:
+  //   pt = (0, R + h*cos(ang), Z_C + h*sin(ang))
+  // then ang=π/2 → (0, R, Z_C + h) = (0, R, eq)  ✓ top (ball 1)
+  //      ang=-π/2 → (0, R, Z_C - h) = (0, R, eq - 2h) ✓ bottom (ball 0)
+  // Sweeping ang by +π: top(π/2) → 3π/2 = -π/2 = bottom ✓
+  //                    bottom(-π/2) → π/2 = top ✓
+  // At ang=0: (0, R+h, Z_C) — off to +Y side of ring. At ang=π: (0, R-h, Z_C) — off to -Y side. Balls pass on opposite sides ✓
+  return [0, R + APEX_HALF_CHORD * Math.cos(ang), APEX_Z_C + APEX_HALF_CHORD * Math.sin(ang)];
+}
+
+// ---- STL loading ----
 const stat = document.getElementById('stat');
 const loader = new STLLoader();
-let spinSegGeo=null, swapRingGeo=null, dividerGeo=null, lidGeo=null, otherPairsGeo=null, apexVertGeo=null;
-let loaded=0;
-function onload() { if (++loaded === 6) build(); }
-loader.load('./proto_simple_spin_seg.stl', g=>{spinSegGeo=g; onload();}, undefined, e=>{console.warn('spin_seg',e); onload();});
-loader.load('./proto_simple_swap_ring.stl', g=>{swapRingGeo=g; onload();}, undefined, e=>{console.warn('swap_ring',e); onload();});
-loader.load('./proto_simple_divider.stl', g=>{dividerGeo=g; onload();}, undefined, e=>{console.warn('divider',e); onload();});
-loader.load('./proto_lid.stl', g=>{lidGeo=g; onload();}, undefined, e=>{console.warn('lid',e); onload();});
-loader.load('./proto_simple_other_pairs.stl', g=>{otherPairsGeo=g; onload();}, undefined, e=>{console.warn('other_pairs',e); onload();});
-loader.load('./proto_simple_apex_vertical.stl', g=>{apexVertGeo=g; onload();}, undefined, e=>{console.warn('apex_vertical',e); onload();});
+
+const geoms = {
+  spinSeg: null,
+  lid: null,
+  swap_34: null, swap_56: null, swap_78: null, swap_1011: null,
+  div_34:  null, div_56:  null, div_78:  null, div_1011:  null,
+  apexVert: null, div_01: null,
+};
+const EXPECT = Object.keys(geoms).length;
+let loaded = 0;
+function onload() { if (++loaded === EXPECT) build(); }
+function ld(name, path) {
+  loader.load(path, g => { geoms[name] = g; onload(); },
+              undefined, e => { console.warn(name, e); onload(); });
+}
+ld('spinSeg',   './proto_simple_spin_seg.stl');
+ld('lid',       './proto_lid.stl');
+ld('swap_34',   './proto_simple_swap_ring_34.stl');
+ld('swap_56',   './proto_simple_swap_ring_56.stl');
+ld('swap_78',   './proto_simple_swap_ring_78.stl');
+ld('swap_1011', './proto_simple_swap_ring_1011.stl');
+ld('div_34',    './proto_simple_divider_34.stl');
+ld('div_56',    './proto_simple_divider_56.stl');
+ld('div_78',    './proto_simple_divider_78.stl');
+ld('div_1011',  './proto_simple_divider_1011.stl');
+ld('apexVert',  './proto_simple_apex_vertical.stl');
+ld('div_01',    './proto_simple_divider_01.stl');
 
 const matSpinSeg = ()=> new THREE.MeshStandardMaterial({color:0x5ab0ff, roughness:0.5, metalness:0.2});
 const matSwapWall = ()=> new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2});
+const matSwapApex = ()=> new THREE.MeshStandardMaterial({color:0xa855f7, roughness:0.5, metalness:0.2});
 const matDivider = ()=> new THREE.MeshStandardMaterial({color:0xdd55aa, roughness:0.5, metalness:0.2});
+const matDividerApex = ()=> new THREE.MeshStandardMaterial({color:0xe07acf, roughness:0.5, metalness:0.2});
 const matLid = ()=> new THREE.MeshStandardMaterial({color:0xc89a55, roughness:0.6, metalness:0.1, transparent:true, opacity:0.35, side:THREE.DoubleSide, depthWrite:false});
 
-const segMeshes = {};  // by k
-let swapMesh=null, divMesh=null, lidMesh=null, otherPairsMesh=null, apexVertMesh=null;
+const segMeshes = {};      // by station k → mesh
+const inPlaneSwapMeshes = {};  // key "i,j" → mesh (already positioned at M by SCAD)
+const inPlaneDivMeshes  = {};  // key "i,j" → mesh (at LOCAL origin; we translate+rotate)
+let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
+let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
+let lidMesh = null;
 const ballsGroup = new THREE.Group(); root.add(ballsGroup);
 const balls = {};
+
+// Which station a given ball currently OCCUPIES. Ball index s is fixed;
+// stationOf[s] is the ring station where ball s presently lives.
+// Initial: identity — ball s at station s.
+const stationOf = new Array(N+1);
+for (let s=0; s<=N; s++) stationOf[s] = s;
+
+function keyOf(i, j) { return `${i},${j}`; }
 
 function makeLabel(t){
   const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d');
@@ -182,54 +246,82 @@ function makeLabel(t){
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,transparent:true}));sp.scale.set(13,13,1);sp.renderOrder=10;return sp;
 }
 
+// Convert a station index to its home world position (XYZ).
+// Stations 1..N: on the horizontal ring at Z=eq.
+// Station 0: bottom of the vertical apex ring at (0, R, eq - 2*half_chord).
+function stationPos(k) {
+  if (k === 0) return [0, R, eq - 2*APEX_HALF_CHORD];
+  const p = P(k);
+  return [p[0], p[1], eq];
+}
+function stationAngle(k) {
+  // Only meaningful for k in 1..N (ring positions).
+  return Aa(k) * d2r;   // radians, matching P(k) = (R cos, -R sin)
+}
+
 function build() {
-  stat.textContent='';
-  // 11 spin segs
+  stat.textContent = '';
+  // 11 spin segs (stations 1..N)
   for (let k=1; k<=N; k++) {
-    if (!spinSegGeo) break;
-    const m = new THREE.Mesh(spinSegGeo, matSpinSeg());
-    m.rotation.z = (th(k)-th(1)) * d2r;
+    if (!geoms.spinSeg) break;
+    const m = new THREE.Mesh(geoms.spinSeg, matSpinSeg());
+    m.rotation.z = (th(k) - th(1)) * d2r;
     m.userData.station = k;
     root.add(m);
     segMeshes[k] = m;
   }
-  // swap ring for pair (5,6)
-  if (swapRingGeo) {
-    swapMesh = new THREE.Mesh(swapRingGeo, matSwapWall());
-    root.add(swapMesh);
+  // In-plane swap rings (per pair). SCAD already translated them to M(i,j),
+  // so leave XY at 0 and only animate Z.
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    const g = geoms[`swap_${i}${j}`];
+    if (!g) continue;
+    const m = new THREE.Mesh(g, matSwapWall());
+    root.add(m);
+    inPlaneSwapMeshes[keyOf(i,j)] = m;
   }
-  // divider for pair (5,6)
-  if (dividerGeo) {
-    divMesh = new THREE.Mesh(dividerGeo, matDivider());
-    root.add(divMesh);
+  // In-plane dividers (per pair). STL is at LOCAL origin; we translate to M(i,j)
+  // and rotate to chord direction.
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    const g = geoms[`div_${i}${j}`];
+    if (!g) continue;
+    const m = new THREE.Mesh(g, matDivider());
+    root.add(m);
+    inPlaneDivMeshes[keyOf(i,j)] = m;
   }
-  // lid (always present, just toggled visible)
-  if (lidGeo) {
-    lidMesh = new THREE.Mesh(lidGeo, matLid());
+  // Apex vertical (0,1) swap ring — already fully transformed by SCAD.
+  if (geoms.apexVert) {
+    apexSwapMesh = new THREE.Mesh(geoms.apexVert, matSwapApex());
+    root.add(apexSwapMesh);
+  }
+  // Apex divider (0,1) paddle. STL is proto_simple_divider_01.stl at local origin.
+  // Transform: translate to ring center, rotate([0,90,0]) to lay in YZ plane.
+  // We manage its position and rotation via a group so animation composes cleanly.
+  if (geoms.div_01) {
+    const inner = new THREE.Mesh(geoms.div_01, matDividerApex());
+    inner.rotation.set(0, Math.PI/2, 0);        // rotate([0, 90, 0]) → long axis into YZ plane
+    apexDivMesh = new THREE.Group();
+    apexDivMesh.add(inner);
+    apexDivMesh.position.set(0, R, APEX_Z_C);
+    root.add(apexDivMesh);
+  }
+  // Lid
+  if (geoms.lid) {
+    lidMesh = new THREE.Mesh(geoms.lid, matLid());
     lidMesh.visible = false;
     root.add(lidMesh);
   }
-  // static: the other 3 RING divider pairs (3,4)(7,8)(10,11); (5,6) animates separately; (0,1) is vertical
-  if (otherPairsGeo) {
-    otherPairsMesh = new THREE.Mesh(otherPairsGeo, new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2}));
-    root.add(otherPairsMesh);
-  }
-  // apex (0,1) — VERTICAL swap ring dropped so ball 1 sits at the top of the ring, ball 0 stored below floor
-  if (apexVertGeo) {
-    apexVertMesh = new THREE.Mesh(apexVertGeo, new THREE.MeshStandardMaterial({color:0xa855f7, roughness:0.5, metalness:0.2}));
-    root.add(apexVertMesh);
-  }
-  // balls 1..11
+  // Balls 0..N
   const sph = new THREE.SphereGeometry(rb, 40, 28);
-  for (let s=0; s<=N; s++) {                     // include ball 0 (apex, now stored below floor)
-    const col = (s===PAIR_I) ? 0x5ab0ff : (s===PAIR_J) ? 0xff8a3c : (s===0) ? 0xa855f7 : 0xc8ccd2;
+  const palette = [0xa855f7, 0xc8ccd2, 0xd2c8cc, 0xffb673, 0xffb673, 0x5ab0ff, 0xff8a3c,
+                   0xffb673, 0xffb673, 0xc8ccd2, 0xffb673, 0xffb673];
+  for (let s=0; s<=N; s++) {
+    const col = palette[s] ?? 0xc8ccd2;
     const m = new THREE.Mesh(sph, new THREE.MeshStandardMaterial({color:col, roughness:0.3, metalness:0.85}));
     const lbl = makeLabel(String(s));
     ballsGroup.add(m); ballsGroup.add(lbl);
     balls[s] = {m, lbl};
   }
-  // Ball 0's new home is BELOW station 1 at (0, R, eq - 2*half_chord) = (0, 55.56, -16.66).
-  // It'll be positioned in renderIdle/renderSwap.
+
   renderIdle();
   frame();
   setControls();
@@ -240,37 +332,147 @@ function placeBall(s, x, y, z) {
   balls[s].lbl.position.set(x, y, z);
 }
 
+// Render the fully-parked, idle state. Dividers/swap-rings sit below floor at their
+// parked Z; balls sit at their current stationOf[s] home position.
 function renderIdle() {
   for (let k=1; k<=N; k++) { if (segMeshes[k]) segMeshes[k].position.z = 0; }
-  if (swapMesh) swapMesh.position.z = -PARK_DEPTH_SWAP;
-  if (divMesh) {
-    divMesh.position.set(Mp[0], Mp[1], -PARK_DEPTH_DIV);
-    const T = nrm([P(PAIR_J)[0]-P(PAIR_I)[0], P(PAIR_J)[1]-P(PAIR_I)[1]]);
-    divMesh.rotation.z = Math.atan2(T[1], T[0]);
+  // In-plane swap rings: park below floor.
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    const m = inPlaneSwapMeshes[keyOf(i,j)];
+    if (m) m.position.z = -PARK_DEPTH_SWAP;
   }
-  for (let s=1; s<=N; s++) { const p=P(s); placeBall(s, p[0], p[1], eq); }
-  // Ball 0: new home is BELOW floor, directly under station 1, at Z = eq - 2*apex_half_chord = -16.66
-  const apex_half = Math.hypot(0-0, R-apexR)/2;         // 13.33
-  placeBall(0, 0, R, eq - 2*apex_half);                  // (0, 55.56, -16.66)
+  // In-plane dividers: at M, chord orientation, parked below floor.
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    const m = inPlaneDivMeshes[keyOf(i,j)];
+    if (!m) continue;
+    const M = mid(i,j);
+    const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
+    m.position.set(M[0], M[1], -PARK_DEPTH_DIV);
+    m.rotation.z = Math.atan2(T[1], T[0]);
+  }
+  // Apex vertical swap ring: fully positioned by SCAD; sits in place.
+  if (apexSwapMesh) apexSwapMesh.position.set(0,0,0);
+  // Apex divider: rest pose (no swap rotation).
+  if (apexDivMesh) {
+    apexDivMesh.position.set(0, R, APEX_Z_C);
+    apexDivMesh.rotation.set(0, 0, 0);
+  }
+  // Balls: place each at its currently-occupied station's home position.
+  for (let s=0; s<=N; s++) {
+    const p = stationPos(stationOf[s]);
+    placeBall(s, p[0], p[1], p[2]);
+  }
   frameHUDEl.textContent = 'frame —';
 }
 
+// Full swap animation: all 5 pairs move in sync. Uses SAVED state (savedStationOf)
+// so ball trajectories always start from the old positions.
+let savedStationOf = null;
+
 function renderSwap(u) {
-  for (let k=1; k<=N; k++) { if (segMeshes[k]) segMeshes[k].position.z = spinSegZ(k, u); }
-  if (swapMesh) swapMesh.position.z = swapWallZ(u);
-  if (divMesh) {
-    const pose = dividerPose(u);
-    divMesh.position.set(pose.pos[0], pose.pos[1], pose.pos[2]);
-    divMesh.rotation.z = pose.rotZ;
+  // Spin segs rise/fall at lift stations
+  for (let k=1; k<=N; k++) {
+    if (segMeshes[k]) segMeshes[k].position.z = spinSegZ(k, u);
   }
-  for (let s=1; s<=N; s++) {
-    const p = ballPose(s, u);
-    placeBall(s, p[0], p[1], p[2]);
+  // In-plane swap rings: rise from park
+  const wallZ = swapWallZOffset(u);
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    const m = inPlaneSwapMeshes[keyOf(i,j)];
+    if (m) m.position.z = wallZ;
   }
-  // Ball 0 stays at its below-floor home during (5,6) swap animation
-  const apex_half = Math.hypot(0-0, R-apexR)/2;
-  placeBall(0, 0, R, eq - 2*apex_half);
+  // In-plane dividers: rise from park + rotate about Z through chord baseAng
+  const divZ = dividerZOffset(u);
+  const dRot = dividerRotAccum(u);
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    const m = inPlaneDivMeshes[keyOf(i,j)];
+    if (!m) continue;
+    const M = mid(i,j);
+    const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
+    m.position.set(M[0], M[1], divZ);
+    m.rotation.z = Math.atan2(T[1], T[0]) + dRot;
+  }
+  // Apex vertical swap ring: static in place (no lift/rotation)
+  // Apex divider: rotate about X (in YZ plane) with dRot
+  if (apexDivMesh) {
+    apexDivMesh.position.set(0, R, APEX_Z_C);
+    apexDivMesh.rotation.set(dRot, 0, 0);
+  }
+  // Balls: any ball whose OLD station is in an animated pair moves along its swap trajectory.
+  // Balls at non-animated stations (2, 9) stay put at their home.
+  for (let s=0; s<=N; s++) {
+    const oldSt = savedStationOf[s];
+    let pos = stationPos(oldSt);   // default: stay at old home
+    // Find which animated pair contains oldSt (if any) and use pair kinematics.
+    for (const [i,j] of IN_PLANE_PAIRS) {
+      if (oldSt === i || oldSt === j) {
+        pos = inPlaneBallPose(oldSt, i, j, u);
+        break;
+      }
+    }
+    if (oldSt === APEX_PAIR[0] || oldSt === APEX_PAIR[1]) {
+      pos = apexBallPose(oldSt, u);
+    }
+    placeBall(s, pos[0], pos[1], pos[2]);
+  }
   frameHUDEl.textContent = `frame ${swapFrame} / ${FRAMES}`;
+}
+
+// Spin animation: rotate the ring by ±1 station. Ball 0 (stationOf[0]=0) doesn't move.
+// Each ball with current station in 1..N slides along the ring arc from old station to new station.
+let spinSavedStationOf = null;
+let spinT0 = 0;
+let spinDir = 0;    // +1 = right, -1 = left
+const SPIN_MS = 450;
+
+function computeSpinPerm(dir) {
+  // dir=+1 (right): station k → k+1, with N → 1 wrap.
+  // dir=-1 (left):  station k → k-1, with 1 → N wrap.
+  const newSt = new Array(N+1);
+  for (let s=0; s<=N; s++) {
+    const k = stationOf[s];
+    if (k === 0) { newSt[s] = 0; continue; }
+    let nk;
+    if (dir === +1) nk = (k % N) + 1;      // 1..N → 2..N,1
+    else            nk = ((k - 2 + N) % N) + 1;   // 1..N → N,1..N-1
+    newSt[s] = nk;
+  }
+  return newSt;
+}
+
+function computeSwapPerm() {
+  // Apply SWAP_PERM_PAIRS: swap the stations of pairs. To do this on stationOf,
+  // we build a station→station map, then apply it.
+  const stMap = new Array(N+1);
+  for (let k=0; k<=N; k++) stMap[k] = k;
+  for (const [a,b] of SWAP_PERM_PAIRS) { stMap[a] = b; stMap[b] = a; }
+  const newSt = new Array(N+1);
+  for (let s=0; s<=N; s++) newSt[s] = stMap[stationOf[s]];
+  return newSt;
+}
+
+// Ball trajectory during a spin animation: interpolate along the ring arc.
+function spinBallPose(s, u) {
+  const oldK = spinSavedStationOf[s];
+  if (oldK === 0) return stationPos(0);      // ball 0 stays at apex-bottom
+  const newK = stationOf[s];                  // committed target
+  // Interpolate angle along short arc
+  let oldAng = stationAngle(oldK);
+  let newAng = stationAngle(newK);
+  let dAng = newAng - oldAng;
+  // Wrap to short direction — but for a spin, the intended arc IS the short 1-station arc.
+  if (dAng > Math.PI) dAng -= 2*Math.PI;
+  if (dAng < -Math.PI) dAng += 2*Math.PI;
+  const ang = oldAng + dAng * u;
+  const x = R * Math.cos(ang);
+  const y = -R * Math.sin(ang);       // matches P(s)
+  return [x, y, eq];
+}
+
+function renderSpin(u) {
+  for (let s=0; s<=N; s++) {
+    const pos = spinBallPose(s, u);
+    placeBall(s, pos[0], pos[1], pos[2]);
+  }
 }
 
 // ---- transport ----
@@ -278,31 +480,90 @@ const FRAMES = 120, SWAP_MS = 5500;
 let mode='idle', swapFrame=0, playing=false, t0=0;
 const frameHUDEl = document.getElementById('frameHUD');
 const bSwap = document.getElementById('bSwap'), bReset=document.getElementById('bReset');
+const bSpinLeft = document.getElementById('bSpinLeft'), bSpinRight = document.getElementById('bSpinRight');
 const bStepB = document.getElementById('bStepB'), bPlay=document.getElementById('bPlay'), bStepF=document.getElementById('bStepF');
 
 function setControls() {
   const sw = (mode==='swap');
-  bStepB.disabled = !sw; bStepF.disabled = !sw;
+  const busy = (mode !== 'idle');
+  bStepB.disabled = !sw;
+  bStepF.disabled = !sw;
   bPlay.textContent = (sw && playing) ? '⏸' : '▶';
-  bSwap.textContent = sw ? '✓ done' : '⤒ swap 5↔6';
+  bSwap.textContent = sw ? '✓ done' : '⤒ swap (all pairs)';
+  bSpinLeft.disabled = busy;
+  bSpinRight.disabled = busy;
+  bSwap.disabled = (mode === 'spin');
 }
-function startSwap() { mode='swap'; swapFrame=0; playing=true; t0=performance.now(); setControls(); renderSwap(0); }
-function endSwap()   { mode='idle'; playing=false; renderIdle(); setControls(); }
-bSwap.onclick = ()=>{ if (mode==='idle') startSwap(); else endSwap(); };
-bReset.onclick = ()=>{ mode='idle'; playing=false; renderIdle(); setControls(); };
+
+function startSwap() {
+  mode = 'swap';
+  swapFrame = 0;
+  playing = true;
+  t0 = performance.now();
+  savedStationOf = stationOf.slice();
+  // Commit the new permutation immediately so renderIdle after swap shows swapped positions.
+  const newSt = computeSwapPerm();
+  for (let s=0; s<=N; s++) stationOf[s] = newSt[s];
+  setControls();
+  renderSwap(0);
+}
+function endSwap() { mode='idle'; playing=false; renderIdle(); setControls(); }
+
+function startSpin(dir) {
+  if (mode !== 'idle') return;
+  mode = 'spin';
+  spinDir = dir;
+  spinSavedStationOf = stationOf.slice();
+  const newSt = computeSpinPerm(dir);
+  for (let s=0; s<=N; s++) stationOf[s] = newSt[s];
+  spinT0 = performance.now();
+  setControls();
+  renderSpin(0);
+}
+function endSpin() {
+  mode = 'idle';
+  renderIdle();
+  setControls();
+}
+
+bSwap.onclick = ()=>{ if (mode==='idle') startSwap(); else if (mode==='swap') endSwap(); };
+bReset.onclick = ()=>{
+  // Reset permutation to identity and stop any animation.
+  for (let s=0; s<=N; s++) stationOf[s] = s;
+  mode='idle'; playing=false;
+  renderIdle(); setControls();
+};
+bSpinLeft.onclick  = ()=> startSpin(-1);
+bSpinRight.onclick = ()=> startSpin(+1);
+
 function rebase(now) { t0 = now - (swapFrame/FRAMES)*SWAP_MS; }
 bStepB.onclick = ()=>{ if (mode!=='swap') return; playing=false; swapFrame=Math.max(0, swapFrame-1); rebase(performance.now()); renderSwap(swapFrame/FRAMES); setControls(); };
 bStepF.onclick = ()=>{ if (mode!=='swap') return; playing=false; swapFrame=Math.min(FRAMES, swapFrame+1); rebase(performance.now()); renderSwap(swapFrame/FRAMES); setControls(); };
-bPlay.onclick = ()=>{ if (mode==='idle') { startSwap(); return; } if (swapFrame>=FRAMES) swapFrame=0; playing=!playing; rebase(performance.now()); setControls(); };
+bPlay.onclick = ()=>{ if (mode==='idle') { startSwap(); return; } if (mode!=='swap') return; if (swapFrame>=FRAMES) swapFrame=0; playing=!playing; rebase(performance.now()); setControls(); };
+
 addEventListener('keydown', e=>{
   if (e.target.tagName==='INPUT') return;
-  if (e.key==='ArrowLeft') { bStepB.onclick(); e.preventDefault(); }
-  else if (e.key==='ArrowRight') { bStepF.onclick(); e.preventDefault(); }
+  // '[' / ']' scrub swap; space play/pause; arrows do spin (idle only)
+  if (e.key==='[') { if (mode==='swap') { bStepB.onclick(); e.preventDefault(); } }
+  else if (e.key===']') { if (mode==='swap') { bStepF.onclick(); e.preventDefault(); } }
   else if (e.key===' ') { bPlay.onclick(); e.preventDefault(); }
+  else if (e.key==='ArrowLeft')  { if (mode==='idle') { startSpin(-1); e.preventDefault(); } }
+  else if (e.key==='ArrowRight') { if (mode==='idle') { startSpin(+1); e.preventDefault(); } }
 });
-document.getElementById('cbSpinWalls').onchange = e=>{ for (const k in segMeshes) segMeshes[k].visible = e.target.checked; };
-document.getElementById('cbSwapWalls').onchange = e=>{ if (swapMesh) swapMesh.visible = e.target.checked; if (otherPairsMesh) otherPairsMesh.visible = e.target.checked; };
-document.getElementById('cbDivider').onchange = e=>{ if (divMesh) divMesh.visible = e.target.checked; };
+
+document.getElementById('cbSpinWalls').onchange = e=>{
+  for (const k in segMeshes) segMeshes[k].visible = e.target.checked;
+};
+document.getElementById('cbSwapWalls').onchange = e=>{
+  const v = e.target.checked;
+  for (const key in inPlaneSwapMeshes) inPlaneSwapMeshes[key].visible = v;
+  if (apexSwapMesh) apexSwapMesh.visible = v;
+};
+document.getElementById('cbDivider').onchange = e=>{
+  const v = e.target.checked;
+  for (const key in inPlaneDivMeshes) inPlaneDivMeshes[key].visible = v;
+  if (apexDivMesh) apexDivMesh.visible = v;
+};
 document.getElementById('cbLid').onchange = e=>{ if (lidMesh) lidMesh.visible = e.target.checked; };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
 document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
@@ -325,6 +586,10 @@ addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.up
       if (swapFrame >= FRAMES) { swapFrame = FRAMES; playing=false; setControls(); }
     }
     renderSwap(swapFrame/FRAMES);
+  } else if (mode==='spin') {
+    const t = Math.min(1, (now - spinT0) / SPIN_MS);
+    renderSpin(ss(t));
+    if (t >= 1) { endSpin(); }
   }
   controls.update(); renderer.render(scene, camera);
 })(performance.now());
