@@ -63,24 +63,27 @@ module spin_segment_real(k) {
 // Pair-parameterized so ring pairs (half-chord 15.65) and apex (0,1) (half-chord 13.33) both work.
 perp_arc_half_deg = 30;                            // perpendicular arcs span 60°
 chord_arc_half_deg = 12;                           // chord arcs span 24°
-// swap_ring_local: the 4-arc geometry AT LOCAL ORIGIN (no M translation) so it can be composed
-// with arbitrary transforms — used to build the vertical apex ring by rotating this into the YZ plane.
-module swap_ring_local(i, j) {
+// swap_ring_local_h(i,j, wh, centered): 4-arc geometry AT LOCAL ORIGIN, parameterized by wall
+// axial height `wh` and whether it's centered on local Z=0 (centered=true) or bottom-anchored
+// (centered=false). swap_ring_local is a thin wrapper preserving legacy behavior.
+module swap_ring_local_h(i, j, wh, centered) {
     outer_R = pair_outer_R(i, j);
     Tv      = P(j) - P(i);
     perp_deg  = atan2(-Tv[0], Tv[1]);
     chord_deg = atan2(Tv[1], Tv[0]);
+    z_off = centered ? -wh/2 : 0;
     for (side = [0, 180]) {
         rotate([0, 0, perp_deg + side - perp_arc_half_deg])
             rotate_extrude(angle = 2*perp_arc_half_deg, $fn=120)
-                translate([outer_R - wall_t/2, 0]) square([wall_t, wall_h]);
+                translate([outer_R - wall_t/2, z_off]) square([wall_t, wh]);
     }
     for (side = [0, 180]) {
         rotate([0, 0, chord_deg + side - chord_arc_half_deg])
             rotate_extrude(angle = 2*chord_arc_half_deg, $fn=120)
-                translate([outer_R - wall_t/2, 0]) square([wall_t, wall_h]);
+                translate([outer_R - wall_t/2, z_off]) square([wall_t, wh]);
     }
 }
+module swap_ring_local(i, j) { swap_ring_local_h(i, j, wall_h, false); }
 
 module swap_ring(i, j) {
     M = pair_M(i, j);
@@ -103,19 +106,21 @@ module swap_ring(i, j) {
 function apex_half_chord() = norm(P(0)-P(1))/2;
 function apex_Z_c() = eq - apex_half_chord();     // = -3.33 — the ORIGINAL vertical-ring center Z
 function apex_ring_center_Y() = R + apex_half_chord();  // = 68.89 — after Scott's rotation
+apex_wall_h = ball_d + 2*clr;                     // 20.8 — tall enough to capture ball X-extent past its center
 module swap_ring_apex_vertical() {
-    // Compose: rotation by +π/2 about world X-axis through ball 1 at (0, R, eq), applied to the
-    // original vertical apex ring at (0, R, apex_Z_c). Then DROP by ball_d (Scott, 2026-07-02).
-    // Result: ring center at (0, R+apex_half_chord, eq−ball_d) = (0, 68.89, −10). Ring plane YZ,
-    // ring axis world +X. Balls (at rest) sit at (0, R, eq) and (0, apexR, eq) — both in the
-    // horizontal plane, 20 mm ABOVE the ring center. During a swap, the balls descend to the ring
-    // level, orbit π around world +X, and ascend to their swapped rest positions.
-    translate([0, R, eq - ball_d])
+    // Apex (0,1) ring — rotated by +π/2 about ball 1's world-+X tangent axis; walls are TALL
+    // (apex_wall_h = ball_d + 2·clr = 20.8) and CENTERED on ball X-center (world X=0) so they
+    // reach past both flanks of the ball. Rendered here at the SWAP-UP Z (ring center Z = eq); the
+    // viewer parks it Z − ball_d at rest and animates the rise during swap.
+    // Result during swap: ring center at (0, R+apex_half_chord, eq) = (0, 68.89, 10). Balls stay
+    // at Z=eq throughout; during the π orbit around world +X, one ball dips to Z=eq−apex_half_chord
+    // = −3.33 and the other rises to Z=eq+apex_half_chord = +23.33.
+    translate([0, R, eq])
         rotate([90, 0, 0])
             translate([0, -R, -eq])
                 translate([0, R, apex_Z_c()])
                     rotate([0, 90, 0])
-                        swap_ring_local(0, 1);
+                        swap_ring_local_h(0, 1, apex_wall_h, true);
 }
 
 // legacy constants — used by other files that import from here
@@ -126,9 +131,20 @@ outer_R_swap = pair_outer_R(5, 6);
 // Chord width brings side faces just outside balls' M-facing surfaces (clearance clr=0.4 mm).
 // Perpendicular half-length 5 mm — corners stay strictly inside the band's empty channel space.
 div_l_half = 5;
-module divider_simple(i, j) {
+module divider_simple_h(i, j, dh, centered) {
     dw = pair_div_w(i, j);
-    translate([-dw/2, -div_l_half, 0]) cube([dw, 2*div_l_half, wall_h+2]);
+    z_off = centered ? -dh/2 : 0;
+    translate([-dw/2, -div_l_half, z_off]) cube([dw, 2*div_l_half, dh]);
+}
+module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
+// Apex divider: taller (past ball equator on BOTH sides) and X-centered — the paddle actually
+// reaches past the ball's flanks so its side faces snuggle the balls it's paddling.
+apex_div_h = apex_wall_h + 2;                     // 22.8 — matches apex ring height + small margin
+module divider_apex() {
+    // Same local-origin geometry as divider_simple(0,1) but taller + centered so, once translated
+    // to the apex ring center and rotated about world +X, the paddle's tall face fully overlaps
+    // the ball's axial extent.
+    divider_simple_h(0, 1, apex_div_h, true);
 }
 // legacy alias — the previously constant div_w for check_simple.py compatibility
 div_w = pair_div_w(5, 6);
@@ -174,7 +190,7 @@ else if (PART == "swap_ring_34") swap_ring(3, 4);
 else if (PART == "swap_ring_56") swap_ring(5, 6);
 else if (PART == "swap_ring_78") swap_ring(7, 8);
 else if (PART == "swap_ring_1011") swap_ring(10, 11);
-else if (PART == "divider_01") divider_simple(0, 1);
+else if (PART == "divider_01") divider_apex();
 else if (PART == "divider_34") divider_simple(3, 4);
 else if (PART == "divider_56") divider_simple(5, 6);
 else if (PART == "divider_78") divider_simple(7, 8);

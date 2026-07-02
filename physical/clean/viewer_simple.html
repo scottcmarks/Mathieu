@@ -84,12 +84,14 @@ const APEX_PAIR      = [0,1];                          // vertical YZ ring, half
 const SWAP_PERM_PAIRS = [[0,1],[2,9],[3,4],[5,6],[7,8],[10,11]];  // canonical M12 swap (2,9 not animated visually)
 const APEX_HALF_CHORD = Math.hypot(0 - 0, R - (R + 24*SCALE)) / 2;  // = 12*SCALE = 13.33
 // After Scott's 2026-07-02 rotation of the (0,1) group by +π/2 about ball 1's world-+X tangent
-// axis (and drop of the ring segments by ball_d), ball 0 sits in the HORIZONTAL PLANE at the
-// outer-apex position (0, apexR, eq), and the ring center sits at (0, R+half_chord, eq−ball_d).
+// axis, ball 0 sits in the HORIZONTAL PLANE at the outer-apex position (0, apexR, eq).
+// Ring geometry is rendered at its SWAP-UP position (center at (0, R+half_chord, eq)); the viewer
+// parks it Z − ball_d at rest and animates the rise during the swap.
 const APEX_RING_CY = R + APEX_HALF_CHORD;                            // = 68.89 — ring center Y
-const APEX_RING_CZ = eq - ball_d;                                    // = −10   — ring center Z (dropped)
-const APEX_Z_C = APEX_RING_CZ;                                        // legacy alias
-// Ball 0 home is now in the horizontal plane at the outer apex (0, apexR, eq).
+const APEX_RING_CZ_UP = eq;                                          // = 10 — swap-up ring center Z (matches ball plane)
+const APEX_PARK_DEPTH = ball_d;                                       // = 20 — ring drops one ball-diameter at rest
+const APEX_Z_C = APEX_RING_CZ_UP;                                     // legacy alias
+// Ball 0 home is in the horizontal plane at the outer apex (0, apexR, eq).
 function BALLPOS0(s) { return s===0 ? [0, R + 2*APEX_HALF_CHORD] : P(s); }
 function ball0HomeZ() { return eq; }
 function pair_orbit_inplane(i, j) {
@@ -159,45 +161,31 @@ function inPlaneBallPose(s, i, j, u) {
   return [xy[0], xy[1], eq];
 }
 
-// Apex (0,1) ball trajectory during swap — new choreography after Scott's rotation + drop.
-// Ring center: (0, APEX_RING_CY=R+h, APEX_RING_CZ=eq−ball_d) = (0, 68.89, −10). Axis: world +X.
-// At rest, both balls live in the horizontal plane (Z=eq=10), 20 mm above the ring axis:
-//   Ball 1 at (0, R, eq),           Ball 0 at (0, R+2h, eq) = (0, apexR, eq).
-// During swap, each ball DESCENDS by ball_d in Z to land on the orbit at ring level, ORBITS
-// π around world +X, then ASCENDS by ball_d to its partner's rest position.
-//   Descend window: u ∈ [0.20, 0.25]
-//   Orbit window:   u ∈ [0.25, 0.75]
-//   Ascend window:  u ∈ [0.75, 0.80]
+// Apex (0,1) ball trajectory during swap. Scott's follow-up choreography (2026-07-02):
+// balls STAY at Z=eq throughout — no descend/ascend. The RING itself rises from its parked
+// (dropped) Z to its swap-up Z, and the balls orbit around world +X at the risen ring center.
+//   Ring at rest: center (0, APEX_RING_CY, APEX_RING_CZ_UP − APEX_PARK_DEPTH) = (0, 68.89, −10).
+//   Ring at swap: center (0, APEX_RING_CY, APEX_RING_CZ_UP)                   = (0, 68.89, 10).
+// During the π orbit, one ball rises to Z=eq+APEX_HALF_CHORD=+23.33 and the other dips to
+// Z=eq−APEX_HALF_CHORD=−3.33. Ball 1 starts at ang=π (ring_center + (0, −h, 0)); ball 0 at
+// ang=0 (ring_center + (0, +h, 0)). Both sweep +π.
 function apexBallPose(s, u) {
-  // Home + partner rest positions
   const home    = (s === 0) ? [0, R + 2*APEX_HALF_CHORD, eq] : [0, R, eq];
   const partner = (s === 0) ? [0, R,                     eq] : [0, R + 2*APEX_HALF_CHORD, eq];
-  // Orbit endpoints (directly below home / partner at ring level)
-  const orbit_start = [home[0],    home[1],    APEX_RING_CZ];
-  const orbit_end   = [partner[0], partner[1], APEX_RING_CZ];
-  // Ring angular startpoint. Ball 1 starts at (0, R, ring_cz) = ring_center + (0, −h, 0) → ang = π.
-  // Ball 0 starts at (0, R+2h, ring_cz) = ring_center + (0, +h, 0) → ang = 0.
-  const startAng = (s === 1) ? Math.PI : 0;
   if (u <= 0.20) return home;
   if (u >= 0.80) return partner;
-  if (u < 0.25) {
-    const t = srmp(u, 0.20, 0.25);
-    return [home[0] + (orbit_start[0]-home[0])*t,
-            home[1] + (orbit_start[1]-home[1])*t,
-            home[2] + (orbit_start[2]-home[2])*t];
-  }
-  if (u < 0.75) {
-    const t = srmp(u, 0.25, 0.75);
-    const ang = startAng + Math.PI * t;
-    return [0,
-            APEX_RING_CY + APEX_HALF_CHORD * Math.cos(ang),
-            APEX_RING_CZ + APEX_HALF_CHORD * Math.sin(ang)];
-  }
-  // u in [0.75, 0.80]: ascend from orbit_end to partner
-  const t = srmp(u, 0.75, 0.80);
-  return [orbit_end[0] + (partner[0]-orbit_end[0])*t,
-          orbit_end[1] + (partner[1]-orbit_end[1])*t,
-          orbit_end[2] + (partner[2]-orbit_end[2])*t];
+  const startAng = (s === 1) ? Math.PI : 0;
+  const t = srmp(u, 0.20, 0.80);
+  const ang = startAng + Math.PI * t;
+  return [0,
+          APEX_RING_CY + APEX_HALF_CHORD * Math.cos(ang),
+          APEX_RING_CZ_UP + APEX_HALF_CHORD * Math.sin(ang)];
+}
+// Apex ring Z at time u: parked (−APEX_PARK_DEPTH) at rest, rises during u∈[0.10, 0.20] to 0
+// (SCAD renders the ring at swap-up Z), stays up through the orbit, descends during u∈[0.80, 0.90].
+function apexRingZ(u) {
+  const upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90);
+  return -APEX_PARK_DEPTH * (1 - upT);
 }
 
 // ---- STL loading ----
@@ -318,7 +306,7 @@ function build() {
     inner.rotation.set(0, Math.PI/2, 0);        // rotate([0, 90, 0]) → long axis into YZ plane
     apexDivMesh = new THREE.Group();
     apexDivMesh.add(inner);
-    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ);
+    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP - APEX_PARK_DEPTH);
     root.add(apexDivMesh);
   }
   // Lid
@@ -367,11 +355,11 @@ function renderIdle() {
     m.position.set(M[0], M[1], -PARK_DEPTH_DIV);
     m.rotation.z = Math.atan2(T[1], T[0]);
   }
-  // Apex vertical swap ring: fully positioned by SCAD; sits in place.
-  if (apexSwapMesh) apexSwapMesh.position.set(0,0,0);
-  // Apex divider: rest pose (no swap rotation).
+  // Apex vertical swap ring: SCAD renders it at swap-up Z; park it ball_d below at rest.
+  if (apexSwapMesh) apexSwapMesh.position.set(0, 0, -APEX_PARK_DEPTH);
+  // Apex divider: rest pose (parked below with the ring; no swap rotation).
   if (apexDivMesh) {
-    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ);
+    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP - APEX_PARK_DEPTH);
     apexDivMesh.rotation.set(0, 0, 0);
   }
   // Balls: place each at its currently-occupied station's home position.
@@ -408,10 +396,12 @@ function renderSwap(u) {
     m.position.set(M[0], M[1], divZ);
     m.rotation.z = Math.atan2(T[1], T[0]) + dRot;
   }
-  // Apex vertical swap ring: static in place (no lift/rotation)
-  // Apex divider: rotate about X (in YZ plane) with dRot
+  // Apex vertical swap ring: rises from park to swap-up during u=[0.10, 0.20]
+  const ringZ = apexRingZ(u);
+  if (apexSwapMesh) apexSwapMesh.position.set(0, 0, ringZ);
+  // Apex divider: rises with the ring; rotates about world X with dRot during swap
   if (apexDivMesh) {
-    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ);
+    apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP + ringZ);
     apexDivMesh.rotation.set(dRot, 0, 0);
   }
   // Balls: any ball whose OLD station is in an animated pair moves along its swap trajectory.
