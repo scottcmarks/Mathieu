@@ -67,10 +67,11 @@ const renderer=new THREE.WebGLRenderer({canvas:c,antialias:true}); renderer.setS
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
 const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,6000); camera.position.set(150,200,250);
-// Very dim diffuse fill — station spotlights below dominate the coloured lighting.
-scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.03));
-const key=new THREE.DirectionalLight(0xffffff,0.08); key.position.set(120,220,160); scene.add(key);
-// Suppress the shiny room-environment reflection that was washing everything out.
+// General illumination: enough to read the geometry, dim enough that the station spotlights
+// dominate the ball colours.
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.25));
+const key=new THREE.DirectionalLight(0xffffff,0.45); key.position.set(120,220,160); scene.add(key);
+// Suppress the shiny room-environment reflection that was washing the balls into featureless grey.
 scene.environment=null;
 const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
 const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
@@ -360,8 +361,25 @@ function build() {
   // Station spotlights — a pair per station (one above, one below, perpendicular to the horizontal
   // plane), focused on the station and coloured per the STATION palette. Whichever ball currently
   // occupies the station gets bathed in that station's colour. Ball 0's station is the apex.
-  const STATION_PALETTE = [0xa855f7, 0xc8ccd2, 0xd2c8cc, 0xffb673, 0xffb673, 0x5ab0ff, 0xff8a3c,
-                           0xffb673, 0xffb673, 0xc8ccd2, 0xffb673, 0xffb673];
+  // Colours match the Mathieu Flutter app (flutter/lib/main.dart:47) — each M12 swap PAIR
+  // shares a colour, so a pair-mate ball at either station reads the same:
+  //   (0,1)   → white          (2,9)   → azure blue
+  //   (3,4)   → hard orange    (5,6)   → yellow
+  //   (7,8)   → dark green     (10,11) → red
+  const STATION_PALETTE = [
+    0xffffff,  // 0 — pair (0,1) white
+    0xffffff,  // 1 — pair (0,1) white
+    0x77aaff,  // 2 — pair (2,9) azure blue
+    0xff9933,  // 3 — pair (3,4) hard orange
+    0xff9933,  // 4 — pair (3,4) hard orange
+    0xffff00,  // 5 — pair (5,6) yellow
+    0xffff00,  // 6 — pair (5,6) yellow
+    0x00cc00,  // 7 — pair (7,8) dark green
+    0x00cc00,  // 8 — pair (7,8) dark green
+    0x77aaff,  // 9 — pair (2,9) azure blue
+    0xff0000,  // 10 — pair (10,11) red
+    0xff0000,  // 11 — pair (10,11) red
+  ];
   const SPOT_H = 35;                // mm above / below the horizontal plane
   const SPOT_ANGLE = Math.PI/10;    // 18° cone — narrow, focused so adjacent stations don't bleed
   const SPOT_INTENSITY = 800;       // candela — dominant coloured spotlight against the very dim fill
