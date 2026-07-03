@@ -51,11 +51,29 @@ module lid(){
     //      (lips r=[45.16, 47.56] and r=[63.56, 65.96]) — 2.0 mm of lip remains, still
     //      captures the ball whose dome inner surface at Z=15 is at r=46.90.
     for (k = [1:N]) {
+      // Station 1 no longer has an OUTER spin-seg wall (deleted 2026-07-03 — the enlarged
+      // apex divider paddle covers that region), so it only needs the INNER slot. Every other
+      // station keeps both.
+      rcs = (k == 1) ? [44.66] : [44.66, 66.46];
       rotate([0, 0, (-angleOf(k)) - (360/N/2 - 5.0/2)])
         rotate_extrude(angle = 2*(360/N/2 - 5.0/2), $fn=120)
-          for (rc = [44.66, 66.46])
+          for (rc = rcs)
             translate([rc - 2.0/2 - 0.4, 11.5]) square([2.0 + 0.8, 13.0]);
     }
+    // ---- APEX (0,1) PADDLE SLIT — through-hole in the lid at the (0,1) ring axis so the
+    //      thin blade can protrude AND rotate through the lid without intersection.
+    //      Ring axis (during swap-up) passes through (0, R+apex_h, eq) = (0, 68.89, 10) with
+    //      direction world +X. The paddle's corner-to-axis distance is
+    //        sqrt((apex_div_ext/2)^2 + (apex_div_thin/2)^2) ≈ sqrt(23.73^2 + 3^2) ≈ 23.92 mm
+    //      so a cylinder of radius 23.92 + clr = 24.32 around the ring axis contains the
+    //      entire swept envelope. Extend the axial (X) length past the paddle's own X span
+    //      (apex_div_h = 22.8) by clr on each side.
+    apex_h             = 24*SCALE/2;     // 13.33 — apex_half_chord (Y offset from spin ring to ring axis)
+    apex_paddle_h_half = 22.8/2 + 0.4;   // 11.8 — half the paddle X + clr
+    apex_paddle_R      = 23.92 + 0.4;    // 24.32 — half the paddle sweep radius + clr
+    translate([0, R + apex_h, eq])       // world (0, 68.89, 10) — ring axis at swap-up Z
+      rotate([0, 90, 0])                 // cylinder default is +Z; rotate so it lies along +X
+        cylinder(h = 2*apex_paddle_h_half, r = apex_paddle_R, center = true, $fn = 60);
   }
 }
 

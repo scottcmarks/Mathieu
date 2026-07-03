@@ -74,7 +74,7 @@ chord_arc_half_deg = 12;                           // chord arcs span 24°
 // swap_ring_local_h(i,j, wh, centered): 4-arc geometry AT LOCAL ORIGIN, parameterized by wall
 // axial height `wh` and whether it's centered on local Z=0 (centered=true) or bottom-anchored
 // (centered=false). swap_ring_local is a thin wrapper preserving legacy behavior.
-module swap_ring_local_h(i, j, wh, centered) {
+module swap_ring_local_h(i, j, wh, centered, chord_sides = [0, 180]) {
     outer_R = pair_outer_R(i, j);
     Tv      = P(j) - P(i);
     perp_deg  = atan2(-Tv[0], Tv[1]);
@@ -85,7 +85,7 @@ module swap_ring_local_h(i, j, wh, centered) {
             rotate_extrude(angle = 2*perp_arc_half_deg, $fn=120)
                 translate([outer_R - wall_t/2, z_off]) square([wall_t, wh]);
     }
-    for (side = [0, 180]) {
+    for (side = chord_sides) {
         rotate([0, 0, chord_deg + side - chord_arc_half_deg])
             rotate_extrude(angle = 2*chord_arc_half_deg, $fn=120)
                 translate([outer_R - wall_t/2, z_off]) square([wall_t, wh]);
@@ -123,12 +123,15 @@ module swap_ring_apex_vertical() {
     // Result during swap: ring center at (0, R+apex_half_chord, eq) = (0, 68.89, 10). Balls stay
     // at Z=eq throughout; during the π orbit around world +X, one ball dips to Z=eq−apex_half_chord
     // = −3.33 and the other rises to Z=eq+apex_half_chord = +23.33.
+    // chord_sides=[0] drops the SMALL UPPER chord arc — the lid captures over-equator on that
+    // side, so no wall is needed there (Scott 2026-07-03). The lower chord arc (side=0, world −Z)
+    // remains; the two perpendicular arcs at ball 0 / ball 1 positions also remain.
     translate([0, R, eq])
         rotate([90, 0, 0])
             translate([0, -R, -eq])
                 translate([0, R, apex_Z_c()])
                     rotate([0, 90, 0])
-                        swap_ring_local_h(0, 1, apex_wall_h, true);
+                        swap_ring_local_h(0, 1, apex_wall_h, true, [0]);
 }
 
 // legacy constants — used by other files that import from here

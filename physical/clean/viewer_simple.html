@@ -67,10 +67,12 @@ const renderer=new THREE.WebGLRenderer({canvas:c,antialias:true}); renderer.setS
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
 const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,6000); camera.position.set(150,200,250);
-// General illumination: enough to read the geometry, dim enough that the station spotlights
-// dominate the ball colours.
-scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.25));
-const key=new THREE.DirectionalLight(0xffffff,0.45); key.position.set(120,220,160); scene.add(key);
+// Diffuse illumination split equally between upper and lower (half the brightness in each).
+// Total 0.70; each side contributes 0.35 so lit-from-above and lit-from-below balance.
+const diffAbove = new THREE.DirectionalLight(0xffffff, 0.35);
+diffAbove.position.set(0, 250, 0); scene.add(diffAbove);
+const diffBelow = new THREE.DirectionalLight(0xffffff, 0.35);
+diffBelow.position.set(0, -250, 0); scene.add(diffBelow);
 // Suppress the shiny room-environment reflection that was washing the balls into featureless grey.
 scene.environment=null;
 const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
