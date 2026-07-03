@@ -59,24 +59,26 @@ chord_base_ang = math.atan2(T_chord[1], T_chord[0])
 def ss(x): x=max(0.0,min(1.0,x)); return x*x*(3-2*x)
 def ramp(u,a,b): return max(0.0,min(1.0,(u-a)/(b-a)))
 def srmp(u,a,b): return ss(ramp(u,a,b))
-# Phased schedule (FIXED — spin segs drop FIRST so divider has clear vertical path; reverse symm)
-#   [0.00, 0.10] spin segs at 5,6 drop fully
-#   [0.10, 0.20] swap walls + divider rise (segs already at park)
+# Phased schedule (UNIFIED — spin segs, swap walls, and divider all rise/drop over the same
+# u=[0.00, 0.20] / [0.80, 1.00] windows; divider rotates through u=[0.20, 0.80] (same as balls))
+#   [0.00, 0.20] spin segs at 5,6 rise + swap walls + divider rise (all together)
 #   [0.20, 0.35] balls transit inward to orbit
 #   [0.35, 0.65] divider rotates π (both balls same direction)
 #   [0.65, 0.80] balls transit outward to swapped stations
-#   [0.80, 0.90] swap walls + divider drop
-#   [0.90, 1.00] spin segs at 5,6 rise
+#   [0.80, 1.00] spin segs at 5,6 drop + swap walls + divider drop (all together)
+# NOTE on CHANGE 1: the LIFT gate `k in (PAIR_I, PAIR_J)` already excludes station 1 for the
+# (5,6) pair this checker animates. If this checker is ever generalized to the (0,1) swap, the
+# seg-1 handling stays put (no lift) — station 1 must be excluded from the seg-lift set.
 def spinSegZ(k,u):
     if k in (PAIR_I, PAIR_J):
         # Segs now RISE UP (positive Z) at start of clip, return at end.
-        return LIFT_SEG_UP * (srmp(u, 0.00, 0.10) - srmp(u, 0.90, 1.00))
+        return LIFT_SEG_UP * (srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00))
     return 0.0
 def swapWallZ(u):
-    upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90)
+    upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     return -PARK_DEPTH_SWAP * (1 - upT)
 def dividerPose(u):
-    upT = srmp(u, 0.10, 0.20) - srmp(u, 0.80, 0.90)
+    upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     z = -PARK_DEPTH_DIV * (1 - upT)
     rot = math.pi * srmp(u, 0.20, 0.80)             # divider rotates through the whole u=[0.20, 0.80] window (same as balls)
     return Mp[0], Mp[1], z, chord_base_ang + rot

@@ -56,6 +56,14 @@ module spin_segment_real(k) {
         for (rc = [inner_R_spin, outer_R_spin])
             translate([rc - wall_t/2, 0]) square([wall_t, wall_h]);
 }
+module spin_segment_inner(k) {
+    rotate([0, 0, th(k) - half_angle]) rotate_extrude(angle = 2*half_angle, $fn=120)
+        translate([inner_R_spin - wall_t/2, 0]) square([wall_t, wall_h]);
+}
+module spin_segment_outer(k) {
+    rotate([0, 0, th(k) - half_angle]) rotate_extrude(angle = 2*half_angle, $fn=120)
+        translate([outer_R_spin - wall_t/2, 0]) square([wall_t, wall_h]);
+}
 
 // ---- swap ring (SEGMENTED: 4 arc pieces — 2 perpendicular + 2 along chord) ----
 // Balls stay at half-chord distance from M throughout the orbit (no radial transit); divider paddle
@@ -167,6 +175,8 @@ module base_swap(i, j) {
 
 PART = "all";
 if      (PART == "spin_seg")  spin_segment_real(1);
+else if (PART == "spin_seg_1_inner") spin_segment_inner(1);
+else if (PART == "spin_seg_1_outer") spin_segment_outer(1);
 else if (PART == "swap_ring") swap_ring(5, 6);
 else if (PART == "divider")   divider_simple(5, 6);
 else if (PART == "base_spin") base_spin();
