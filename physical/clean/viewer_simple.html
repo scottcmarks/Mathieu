@@ -331,12 +331,12 @@ function build() {
     apexSwapMesh = new THREE.Mesh(geoms.apexVert, matSwapApex());
     root.add(apexSwapMesh);
   }
-  // Apex divider (0,1) paddle. STL is proto_simple_divider_01.stl at local origin.
-  // Transform: translate to ring center, rotate([0,90,0]) to lay in YZ plane.
-  // We manage its position and rotation via a group so animation composes cleanly.
+  // Apex divider (0,1) paddle — thin blade extending from ring axis in +Z direction. SCAD
+  // renders it in its final root-local orientation (X=axial along ring axis, Y=chord thin,
+  // Z=radial outward from axis), so we just translate to ring center. Group wraps the mesh
+  // so the swap rotation composes cleanly.
   if (geoms.div_01) {
     const inner = new THREE.Mesh(geoms.div_01, matDividerApex());
-    inner.rotation.set(0, Math.PI/2, 0);        // rotate([0, 90, 0]) → long axis into YZ plane
     apexDivMesh = new THREE.Group();
     apexDivMesh.add(inner);
     apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP - APEX_PARK_DEPTH);

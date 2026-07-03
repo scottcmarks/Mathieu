@@ -145,14 +145,20 @@ module divider_simple_h(i, j, dh, centered) {
     translate([-dw/2, -div_l_half, z_off]) cube([dw, 2*div_l_half, dh]);
 }
 module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
-// Apex divider: taller (past ball equator on BOTH sides) and X-centered — the paddle actually
-// reaches past the ball's flanks so its side faces snuggle the balls it's paddling.
-apex_div_h = apex_wall_h + 2;                     // 22.8 — matches apex ring height + small margin
+// Apex divider — THIN BLADE (Scott's 2026-07-03 tuning). The paddle should be:
+//   - LONGEST along the ring axis's PERPENDICULAR (world Z after apex transforms) — extending
+//     from the ring axis outward "up between the balls".
+//   - THIN along the chord (world Y) — the ball-to-ball line.
+//   - TALL along the ring axis (world X) — matches the ring's axial extent so its face fully
+//     spans the ball's flanks.
+// Rendered here in ROOT-LOCAL orientation directly (viewer just translates to ring center),
+// so no viewer-side inner.rotation is needed.
+apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)
+apex_div_thin = wall_t;                            // 2.0  — chord thickness (thin between balls)
+apex_div_ext  = ball_d;                            // 20   — extends from axis outward by one ball-diameter
 module divider_apex() {
-    // Same local-origin geometry as divider_simple(0,1) but taller + centered so, once translated
-    // to the apex ring center and rotated about world +X, the paddle's tall face fully overlaps
-    // the ball's axial extent.
-    divider_simple_h(0, 1, apex_div_h, true);
+    translate([-apex_div_h/2, -apex_div_thin/2, 0])
+        cube([apex_div_h, apex_div_thin, apex_div_ext]);
 }
 // legacy alias — the previously constant div_w for check_simple.py compatibility
 div_w = pair_div_w(5, 6);
