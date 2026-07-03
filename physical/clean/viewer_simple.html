@@ -67,8 +67,9 @@ const renderer=new THREE.WebGLRenderer({canvas:c,antialias:true}); renderer.setS
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
 const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,6000); camera.position.set(150,200,250);
-scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.5));
-const key=new THREE.DirectionalLight(0xffffff,0.95); key.position.set(120,220,160); scene.add(key);
+// Muted diffuse fill — station spotlights below do the coloured lighting.
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.15));
+const key=new THREE.DirectionalLight(0xffffff,0.3); key.position.set(120,220,160); scene.add(key);
 const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
 const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
 
@@ -292,12 +293,9 @@ function build() {
     seg1InnerMesh.userData.role = 'inner';
     root.add(seg1InnerMesh);
   }
-  if (geoms.spinSeg1Outer) {
-    seg1OuterMesh = new THREE.Mesh(geoms.spinSeg1Outer, matSpinSeg());
-    seg1OuterMesh.userData.station = 1;
-    seg1OuterMesh.userData.role = 'outer';
-    root.add(seg1OuterMesh);
-  }
+  // Station 1's OUTER spin wall is INTENTIONALLY NOT RENDERED (Scott 2026-07-03) —
+  // the enlarged apex divider paddle now spans that region at rest. The STL is still
+  // available at proto_simple_spin_seg_1_outer.stl if the wall ever needs to come back.
   // Remaining spin segs (stations 2..N). Station 1 is skipped to avoid double-rendering
   // over the split inner/outer meshes above.
   for (let k=2; k<=N; k++) {
@@ -348,16 +346,33 @@ function build() {
     lidMesh.visible = false;
     root.add(lidMesh);
   }
-  // Balls 0..N
+  // Balls 0..N — neutral white material. Colour comes from the per-station spotlights below.
   const sph = new THREE.SphereGeometry(rb, 40, 28);
-  const palette = [0xa855f7, 0xc8ccd2, 0xd2c8cc, 0xffb673, 0xffb673, 0x5ab0ff, 0xff8a3c,
-                   0xffb673, 0xffb673, 0xc8ccd2, 0xffb673, 0xffb673];
   for (let s=0; s<=N; s++) {
-    const col = palette[s] ?? 0xc8ccd2;
-    const m = new THREE.Mesh(sph, new THREE.MeshStandardMaterial({color:col, roughness:0.3, metalness:0.85}));
+    const m = new THREE.Mesh(sph, new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.35, metalness:0.05}));
     const lbl = makeLabel(String(s));
     ballsGroup.add(m); ballsGroup.add(lbl);
     balls[s] = {m, lbl};
+  }
+
+  // Station spotlights — a pair per station (one above, one below, perpendicular to the horizontal
+  // plane), focused on the station and coloured per the STATION palette. Whichever ball currently
+  // occupies the station gets bathed in that station's colour. Ball 0's station is the apex.
+  const STATION_PALETTE = [0xa855f7, 0xc8ccd2, 0xd2c8cc, 0xffb673, 0xffb673, 0x5ab0ff, 0xff8a3c,
+                           0xffb673, 0xffb673, 0xc8ccd2, 0xffb673, 0xffb673];
+  const SPOT_H = 40;                // mm above / below the horizontal plane
+  const SPOT_ANGLE = Math.PI/9;     // 20° cone — narrow, focused
+  const SPOT_INTENSITY = 25;        // punchy enough to colour the ball against the diffuse fill
+  const SPOT_DISTANCE = 80;         // just past the ball
+  for (let s=0; s<=N; s++) {
+    const p  = stationPos(s);
+    const col = STATION_PALETTE[s] ?? 0xc8ccd2;
+    for (const dz of [+SPOT_H, -SPOT_H]) {
+      const sl = new THREE.SpotLight(col, SPOT_INTENSITY, SPOT_DISTANCE, SPOT_ANGLE, 0.3, 1.5);
+      sl.position.set(p[0], p[1], p[2] + dz);
+      sl.target.position.set(p[0], p[1], p[2]);
+      root.add(sl); root.add(sl.target);
+    }
   }
 
   renderIdle();

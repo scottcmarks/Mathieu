@@ -154,10 +154,12 @@ module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
 // Rendered here in ROOT-LOCAL orientation directly (viewer just translates to ring center),
 // so no viewer-side inner.rotation is needed.
 apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)
-apex_div_thin = wall_t;                            // 2.0  — chord thickness (thin between balls)
-apex_div_ext  = ball_d;                            // 20   — extends from axis outward by one ball-diameter
+apex_div_thin = 3*wall_t;                          // 6.0  — chord thickness (3× the original 2 mm — Scott 2026-07-03)
+apex_div_ext  = 2*ball_d;                          // 40   — length (2× the original 20 mm; spans MOST of ring Ø 51.46)
 module divider_apex() {
-    translate([-apex_div_h/2, -apex_div_thin/2, 0])
+    // Symmetric about the ring axis so the blade spans the ring's diameter, extending equally
+    // in +Z and −Z (root-local) from Z=0 at rest = ring axis.
+    translate([-apex_div_h/2, -apex_div_thin/2, -apex_div_ext/2])
         cube([apex_div_h, apex_div_thin, apex_div_ext]);
 }
 // legacy alias — the previously constant div_w for check_simple.py compatibility
