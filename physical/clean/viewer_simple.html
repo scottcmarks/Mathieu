@@ -15,6 +15,8 @@
   button.spin{background:#2a5db5;border-color:#3f7ae0}
   button:disabled{opacity:.4;cursor:default}
   label.cb{margin-left:8px;cursor:pointer;user-select:none}
+  label.sl{margin-left:10px;user-select:none;font-size:12px;opacity:.85}
+  label.sl input{vertical-align:middle;margin-left:4px;width:110px}
   #hint{position:fixed;left:14px;bottom:12px;opacity:.6}
   #stat{position:fixed;right:14px;bottom:12px;opacity:.6}
   #frameHUD{margin-left:10px;opacity:.85;font-variant-numeric:tabular-nums}
@@ -52,6 +54,10 @@ inner/outer walls, the apex ring + paddle, and balls 0 and 1.</div>
     <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
     <label class="cb"><input type="checkbox" id="cbIsolate1">isolate 1</label>
     <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button>
+  </div>
+  <div class="row">
+    <label class="sl">diffuse <input type="range" id="diffSlider" min="0" max="2" step="0.02" value="0.7"></label>
+    <label class="sl">lid opacity <input type="range" id="lidSlider" min="0" max="1" step="0.02" value="0.35"></label>
   </div>
 </div>
 <div id="hint">drag = orbit · scroll = zoom · ⤒ swap all · ← → spin steps · [ ] scrub swap · space play</div>
@@ -682,6 +688,31 @@ document.getElementById('cbIsolate1').onchange = e => {
     document.getElementById('cbDivider').dispatchEvent(new Event('change'));
     document.getElementById('cbBalls').dispatchEvent(new Event('change'));
   }
+};
+
+// Diffuse slider — total diffuse split equally between the upper and lower DirectionalLights.
+document.getElementById('diffSlider').oninput = e => {
+  const total = parseFloat(e.target.value);
+  diffAbove.intensity = total / 2;
+  diffBelow.intensity = total / 2;
+};
+
+// Lid opacity slider — 0 = invisible, 1 = fully opaque BLACK. Colour lerps gold → black as
+// opacity climbs, so the intermediate stops give a natural translucent-to-solid feel.
+const _lidGold  = new THREE.Color(0xc89a55);
+const _lidBlack = new THREE.Color(0x000000);
+document.getElementById('lidSlider').oninput = e => {
+  if (!lidMesh) return;
+  const op = parseFloat(e.target.value);
+  const mat = lidMesh.material;
+  mat.color.copy(_lidGold).lerp(_lidBlack, op);
+  mat.opacity = op;
+  mat.transparent = op < 0.99;
+  mat.depthWrite = op >= 0.99;
+  mat.needsUpdate = true;
+  // Show the lid whenever the slider is above zero — takes precedence over the checkbox.
+  lidMesh.visible = op > 0.001;
+  document.getElementById('cbLid').checked = lidMesh.visible;
 };
 
 function frame() {
