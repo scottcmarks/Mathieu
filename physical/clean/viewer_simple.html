@@ -67,9 +67,11 @@ const renderer=new THREE.WebGLRenderer({canvas:c,antialias:true}); renderer.setS
 const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0d0f15);
 const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,6000); camera.position.set(150,200,250);
-// Muted diffuse fill — station spotlights below do the coloured lighting.
-scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.15));
-const key=new THREE.DirectionalLight(0xffffff,0.3); key.position.set(120,220,160); scene.add(key);
+// Very dim diffuse fill — station spotlights below dominate the coloured lighting.
+scene.add(new THREE.HemisphereLight(0xffffff,0x202028,0.03));
+const key=new THREE.DirectionalLight(0xffffff,0.08); key.position.set(120,220,160); scene.add(key);
+// Suppress the shiny room-environment reflection that was washing everything out.
+scene.environment=null;
 const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
 const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
 
@@ -360,15 +362,15 @@ function build() {
   // occupies the station gets bathed in that station's colour. Ball 0's station is the apex.
   const STATION_PALETTE = [0xa855f7, 0xc8ccd2, 0xd2c8cc, 0xffb673, 0xffb673, 0x5ab0ff, 0xff8a3c,
                            0xffb673, 0xffb673, 0xc8ccd2, 0xffb673, 0xffb673];
-  const SPOT_H = 40;                // mm above / below the horizontal plane
-  const SPOT_ANGLE = Math.PI/9;     // 20° cone — narrow, focused
-  const SPOT_INTENSITY = 25;        // punchy enough to colour the ball against the diffuse fill
-  const SPOT_DISTANCE = 80;         // just past the ball
+  const SPOT_H = 35;                // mm above / below the horizontal plane
+  const SPOT_ANGLE = Math.PI/10;    // 18° cone — narrow, focused so adjacent stations don't bleed
+  const SPOT_INTENSITY = 800;       // candela — dominant coloured spotlight against the very dim fill
+  const SPOT_DISTANCE = 60;         // reaches the ball, falls off before the next station
   for (let s=0; s<=N; s++) {
     const p  = stationPos(s);
     const col = STATION_PALETTE[s] ?? 0xc8ccd2;
     for (const dz of [+SPOT_H, -SPOT_H]) {
-      const sl = new THREE.SpotLight(col, SPOT_INTENSITY, SPOT_DISTANCE, SPOT_ANGLE, 0.3, 1.5);
+      const sl = new THREE.SpotLight(col, SPOT_INTENSITY, SPOT_DISTANCE, SPOT_ANGLE, 0.2, 2);
       sl.position.set(p[0], p[1], p[2] + dz);
       sl.target.position.set(p[0], p[1], p[2]);
       root.add(sl); root.add(sl.target);

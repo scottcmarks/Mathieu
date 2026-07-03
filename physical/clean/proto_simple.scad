@@ -155,7 +155,7 @@ module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
 // so no viewer-side inner.rotation is needed.
 apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)
 apex_div_thin = 3*wall_t;                          // 6.0  — chord thickness (3× the original 2 mm — Scott 2026-07-03)
-apex_div_ext  = 2*ball_d;                          // 40   — length (2× the original 20 mm; spans MOST of ring Ø 51.46)
+apex_div_ext  = 2*(pair_outer_R(0,1) - wall_t);    // ≈47.46 — nearly the full ring diameter (Ø 51.46) sans wall thickness
 module divider_apex() {
     // Symmetric about the ring axis so the blade spans the ring's diameter, extending equally
     // in +Z and −Z (root-local) from Z=0 at rest = ring axis.
