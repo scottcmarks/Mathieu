@@ -25,7 +25,7 @@ TOL    = 1.0           # mm^3
 FRAMES = 24            # sample density for solid checks (every 5 frames of the 120-frame clip)
 
 # ---- mirror proto_simple.scad constants ----
-SCALE=20/18; R=50*SCALE; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2
+SCALE=20/18; R=50*SCALE+2; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2   # R +2 mm (Scott 2026-07-03)
 wall_t=2.0; wall_h=rb+0.5
 clr=0.4
 inner_R_spin=R-rb-clr-wall_t/2          # 44.66

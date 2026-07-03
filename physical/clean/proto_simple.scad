@@ -15,12 +15,12 @@
 //   PART in: spin_seg | swap_ring | divider | base_spin | base_swap | all
 
 SCALE = 20/18;
-R     = 50*SCALE;          // 55.56
+R     = 50*SCALE + 2;      // 57.56 — spin-ring radius (2 mm larger per side; Scott 2026-07-03: +4 mm on Ø)
 N     = 11;
-ball_d= 18*SCALE;          // 20
+ball_d= 18*SCALE;          // 20 (ball is stock hardware — must NOT scale with R)
 rb    = ball_d/2;          // 10
 eq    = ball_d/2;          // 10
-apexR = R + 24*SCALE;      // 82.22 — apex ball 0 sits here (outside the ring)
+apexR = R + 24*SCALE;      // 84.22 — apex ball 0 sits here (outside the ring)
 wall_t = 2.0;              // wall thickness (radial)
 wall_h = rb + 0.5;         // wall height (z); slightly above ball center to provide good lateral grip
 clr    = 0.4;
@@ -35,7 +35,7 @@ function th(k) = -angleOf(k);
 function P(k) = k==0 ? [0, apexR] : [R*cos(angleOf(k)), -R*sin(angleOf(k))];   // ball 0 lives OUTSIDE the ring at the apex
 function pair_M(i,j) = (P(i)+P(j))/2;
 function pair_orbit(i,j) = norm(P(j)-P(i))/2;   // half-chord = orbit radius from M (ring pairs 15.65; apex 13.33)
-function pair_outer_R(i,j) = pair_orbit(i,j) + rb + clr + wall_t/2 + 1;
+function pair_outer_R(i,j) = pair_orbit(i,j) + rb + clr + wall_t/2 + 0.5;   // was +1 fudge — Scott 2026-07-03: shrink all rings 1 mm on Ø
 function pair_div_w(i,j) = 2*(pair_orbit(i,j) - rb - clr);   // paddle width — face touches ball inner surface with clr clearance
 
 // ---- spin ring segment (one of 11): inner+outer arc walls between two adjacent stations ----
@@ -157,8 +157,8 @@ module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
 // Rendered here in ROOT-LOCAL orientation directly (viewer just translates to ring center),
 // so no viewer-side inner.rotation is needed.
 apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)
-apex_div_thin = 3*wall_t;                          // 6.0  — chord thickness (3× the original 2 mm — Scott 2026-07-03)
-apex_div_ext  = 2*(pair_outer_R(0,1) - wall_t);    // ≈47.46 — nearly the full ring diameter (Ø 51.46) sans wall thickness
+apex_div_thin = 3*wall_t;                          // 6.0  — chord thickness
+apex_div_ext  = 46.26;                             // 1.2 mm shorter than the original 47.46 (Scott 2026-07-03) — 0.6 mm off each end
 module divider_apex() {
     // Symmetric about the ring axis so the blade spans the ring's diameter, extending equally
     // in +Z and −Z (root-local) from Z=0 at rest = ring axis.

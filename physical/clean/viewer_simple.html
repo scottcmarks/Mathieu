@@ -85,7 +85,7 @@ const root=new THREE.Group(); root.rotation.x=-Math.PI/2; scene.add(root);
 const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true; controls.autoRotateSpeed=1.0;
 
 // ---- geometry constants (mirror proto_simple.scad) ----
-const N=11, SCALE=20/18, R=50*SCALE, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2;
+const N=11, SCALE=20/18, R=50*SCALE + 2, ball_d=18*SCALE, rb=ball_d/2, eq=ball_d/2;   // R +2 mm (Scott 2026-07-03): 4 mm on Ø
 const d2r=Math.PI/180;
 const Aa=s=>-90+(s-1)*(360/N);
 const P=s=>[R*Math.cos(Aa(s)*d2r), -R*Math.sin(Aa(s)*d2r)];
@@ -122,7 +122,11 @@ function pair_orbit_inplane(i, j) {
 // STAYS PUT — ball 1's trajectory goes AROUND station 1's outer wall (via the vertical
 // apex ring), not through it. LIFT_STATIONS contains 1 to drive the inner-wall lift;
 // the outer wall is a separate mesh (seg1OuterMesh) held at z=0 unconditionally.
-const LIFT_STATIONS = new Set([1, 3, 4, 5, 6, 7, 8, 10, 11]);
+// Station 1 removed 2026-07-03: the lid no longer has a spin-wall elevation slot at station 1
+// (it has the apex paddle divider slit instead), and ball 1's (0,1) swap trajectory never dips
+// its inner surface below its rest position (Y=47.56), so seg 1's inner wall never obstructs
+// the swap. Seg 1 stays put.
+const LIFT_STATIONS = new Set([3, 4, 5, 6, 7, 8, 10, 11]);
 
 const LIFT_SEG_UP = 21;       // segs rise 21 UP: seg bottom at Z=21 clears ball top at Z=20
 const PARK_DEPTH_DIV = 13;    // divider parks shallowly below floor

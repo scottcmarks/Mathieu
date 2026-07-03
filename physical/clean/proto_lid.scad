@@ -7,8 +7,12 @@
 // The lid is fixed; a ball is under SOME lid channel at every spin/swap position, so the lid is the
 // continuous TOP of the any-orientation capture (walls give the sides/bottom; deep 2-9 ball is in its lane).
 //   openscad -o lid.stl -D 'PART="lid"' proto_lid.scad
-SCALE=20/18; R=50*SCALE; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2; apexR=R+24*SCALE;
-tube=rb+0.3; wall_t=1.5*SCALE; clr=0.4;
+SCALE=20/18; R=50*SCALE+2; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2; apexR=R+24*SCALE;   // R +2 → object 4 mm larger (Scott 2026-07-03)
+tube=rb+0.3; wall_t=2.0; clr=0.4;                                                              // wall_t 2 mm to match proto_simple.scad
+// Match proto_simple.scad exactly so lid seg-slots align with the spin walls (formula, not hardcode).
+inner_R_spin = R - rb - clr - wall_t/2;         // was hardcoded 44.66 — now = R − 11.4
+outer_R_spin = R + rb + clr + wall_t/2;         // was hardcoded 66.46 — now = R + 11.4
+apex_h       = 24*SCALE/2;                       // 13.33 — apex_half_chord
 // per-pair orbit radius = half-chord (varies: ring pairs 15.65, apex 13.33)
 function pair_orbit_lid(i,j) = norm(P(j)-P(i))/2;
 lid_bot=eq+1.5;                     // 11.5  lid underside (just over the equator -> lips retain)
@@ -42,37 +46,33 @@ module lid(){
     // ---- SWAP paths: dome channels FULLY capped (no finger slot) -> swap hidden ----
     for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);                     // per-pair orbit torus in the lid
         translate([M[0],M[1],eq]) rotate_extrude($fn=80) translate([orb,0]) circle(r=rb+clr,$fn=28); }
-    dome_path(P(2),P(9));                                                                     // 2-9 shallow cross dome
-    // ---- SPIN-SEG LID SLOTS: through-holes matching spin_segment_real(k) so a risen seg
-    //      passes cleanly through the lid. Segs lift by 21 mm (ball_d + clr) so their bottoms
-    //      clear the ball top at Z=20; wall top at Z=31.5 protrudes 7.5 mm above lid_top=24.
-    //      Slot Z=[11.5, 24.5] cuts the entire lid thickness plus 0.5 mm; radial clearance
-    //      0.4 mm each side removes only the outer 0.4 mm of the over-equator lips
-    //      (lips r=[45.16, 47.56] and r=[63.56, 65.96]) — 2.0 mm of lip remains, still
-    //      captures the ball whose dome inner surface at Z=15 is at r=46.90.
-    for (k = [1:N]) {
-      // Station 1 no longer has an OUTER spin-seg wall (deleted 2026-07-03 — the enlarged
-      // apex divider paddle covers that region), so it only needs the INNER slot. Every other
-      // station keeps both.
-      rcs = (k == 1) ? [44.66] : [44.66, 66.46];
+    // 2-9 dome_path DROPPED (2026-07-03) — that channel was never committed to and isn't
+    // needed by the current architecture.
+    // ---- SPIN-SEG LID SLOTS: through-slots for stations 2..N (BOTH inner + outer walls)
+    //      so a risen seg can pass through the lid without collision. Station 1 gets NO
+    //      spin-wall slot (Scott 2026-07-03) — its inner wall stays put during the (0,1)
+    //      swap (ball 1's Y-range never dips below its rest inner surface at 47.56), and
+    //      its outer wall is gone entirely (replaced by the apex paddle at rest). Instead
+    //      of a spin-wall slot at station 1, the lid gets the APEX PADDLE SLIT below.
+    for (k = [2:N]) {
       rotate([0, 0, (-angleOf(k)) - (360/N/2 - 5.0/2)])
         rotate_extrude(angle = 2*(360/N/2 - 5.0/2), $fn=120)
-          for (rc = rcs)
-            translate([rc - 2.0/2 - 0.4, 11.5]) square([2.0 + 0.8, 13.0]);
+          for (rc = [inner_R_spin, outer_R_spin])
+            translate([rc - wall_t/2 - clr, lid_bot]) square([wall_t + 2*clr, lid_top - lid_bot + 0.5]);
     }
-    // ---- APEX (0,1) PADDLE SLIT — through-hole in the lid at the (0,1) ring axis so the
-    //      thin blade can protrude AND rotate through the lid without intersection.
-    //      Ring axis (during swap-up) passes through (0, R+apex_h, eq) = (0, 68.89, 10) with
-    //      direction world +X. The paddle's corner-to-axis distance is
-    //        sqrt((apex_div_ext/2)^2 + (apex_div_thin/2)^2) ≈ sqrt(23.73^2 + 3^2) ≈ 23.92 mm
-    //      so a cylinder of radius 23.92 + clr = 24.32 around the ring axis contains the
-    //      entire swept envelope. Extend the axial (X) length past the paddle's own X span
-    //      (apex_div_h = 22.8) by clr on each side.
-    apex_h             = 24*SCALE/2;     // 13.33 — apex_half_chord (Y offset from spin ring to ring axis)
-    apex_paddle_h_half = 22.8/2 + 0.4;   // 11.8 — half the paddle X + clr
-    apex_paddle_R      = 23.92 + 0.4;    // 24.32 — half the paddle sweep radius + clr
-    translate([0, R + apex_h, eq])       // world (0, 68.89, 10) — ring axis at swap-up Z
-      rotate([0, 90, 0])                 // cylinder default is +Z; rotate so it lies along +X
+    // ---- APEX (0,1) PADDLE SLIT (station 1's swap-wall-divider slot per Scott's spec) ----
+    // Through-hole in the lid at the (0,1) ring axis so the paddle can protrude AND rotate
+    // through the lid without intersection. Ring axis passes through (0, R+apex_h, eq) with
+    // direction world +X. Paddle corner-to-axis distance is
+    //   √((apex_div_ext/2)² + (apex_div_thin/2)²) = √(23.13² + 3²) ≈ 23.32 mm
+    // (post-shrink paddle: apex_div_ext = 46.26). A cylinder of radius 23.32 + clr = 23.72
+    // contains the entire swept envelope. Axial length exceeds the paddle X span (apex_div_h
+    // = 22.8) by clr each side.
+    apex_paddle_corner = sqrt(pow(46.26/2, 2) + pow(6/2, 2));  // ≈ 23.32
+    apex_paddle_h_half = 22.8/2 + clr;                          // 11.8
+    apex_paddle_R      = apex_paddle_corner + clr;              // 23.72
+    translate([0, R + apex_h, eq])
+      rotate([0, 90, 0])
         cylinder(h = 2*apex_paddle_h_half, r = apex_paddle_R, center = true, $fn = 60);
   }
 }
