@@ -34,9 +34,10 @@ gap_deg=5.0                              # widened so divider fits through inter
 half_angle=360/N/2 - gap_deg/2
 # UPDATED: ball stays at half-chord distance from M throughout the orbit (no radial transit)
 orbit_swap = 2*R*math.sin(math.pi/N)/2   # 15.63 — half-chord from M (== station distance)
-outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 1   # 28.03 — 1 mm clearance beyond ball reach
-div_w = 2*(orbit_swap - rb - clr)         # 10.46 — WIDE paddle: chord-facing side faces contact balls with clr clearance
-div_l_half = 5.0                         # perp half-length — corners fit strictly between inner+outer spin-wall material zones
+outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 0.5   # mirror proto_simple.scad pair_outer_R (+0.5 fudge since ring shrink)
+# Blade divider (all pairs like the 0-1 paddle): thin 6 along chord, long ≈50.8 perpendicular
+div_thin = 3*wall_t                       # 6.0
+div_ext  = 2*(outer_R_swap - wall_t) - 1.2  # blade length for pair (5,6)
 # COMMON STROKE (Scott 2026-07-03): segs, swap walls, and dividers all travel the same 21 mm
 # in the same u-window so they can be rigidly attached to one common movement piece.
 COMMON_STROKE = 21
@@ -138,7 +139,10 @@ def seg_scad(k, u):  return f'translate([0,0,{spinSegZ(k,u):.3f}]) rotate([0,0,{
 def swap_scad(u):    return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring({PAIR_I},{PAIR_J});'
 def div_scad(u):
     x,y,z,a = dividerPose(u); ang=math.degrees(a)
-    return f'translate([{x:.3f},{y:.3f},{z:.3f}]) rotate([0,0,{ang:.3f}]) divider_simple();'
+    # NB: must pass (i,j) — a bare divider_simple() yields an EMPTY solid (undef params) and
+    # silently zeroes every divider gate. Caught 2026-07-03; same silent-zero family as the
+    # ASCII-STL and missing-use bugs.
+    return f'translate([{x:.3f},{y:.3f},{z:.3f}]) rotate([0,0,{ang:.3f}]) divider_simple({PAIR_I},{PAIR_J});'
 def ball_scad(s, u):
     x,y,z = ballPose(s,u); return f'translate([{x:.3f},{y:.3f},{z:.3f}]) sphere(r={rb},$fn=28);'
 

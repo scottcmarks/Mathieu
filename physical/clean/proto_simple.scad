@@ -138,30 +138,31 @@ module swap_ring_apex_vertical() {
 orbit_swap = pair_orbit(5, 6);
 outer_R_swap = pair_outer_R(5, 6);
 
-// ---- divider (WIDE PADDLE — pair-parameterized) ----
-// Chord width brings side faces just outside balls' M-facing surfaces (clearance clr=0.4 mm).
-// Perpendicular half-length 5 mm — corners stay strictly inside the band's empty channel space.
-div_l_half = 5;
+// ---- dividers — ALL are THIN BLADES like the (0,1) paddle (Scott 2026-07-03) ----
+// Common blade recipe, per pair (i,j):
+//   - THIN along the chord (ball-to-ball line):      div_thin = 3·wall_t = 6
+//   - LONG perpendicular to the chord, symmetric
+//     about the rotation axis, spanning most of
+//     the swap ring's inner diameter:                div_ext(i,j) = 2·(pair_outer_R − wall_t) − 1.2
+//   - sized along the rotation axis to the pair's wall height.
+// In-plane pairs rotate about the VERTICAL (Z) axis at M; the apex pair rotates about the
+// ring axis (world X). Same blade, different axis orientation.
+div_thin = 3*wall_t;                               // 6.0 — chord thickness (all pairs)
+function pair_div_ext(i,j) = 2*(pair_outer_R(i,j) - wall_t) - 1.2;   // blade length (ring pairs ≈50.8; apex ≈45.3)
+// In-plane blade: local X = chord (thin), local Y = perpendicular (long), local Z = vertical.
+// Viewer/dispatch translate to M and rotate about Z by chord angle + swap rotation.
 module divider_simple_h(i, j, dh, centered) {
-    dw = pair_div_w(i, j);
+    ext = pair_div_ext(i, j);
     z_off = centered ? -dh/2 : 0;
-    translate([-dw/2, -div_l_half, z_off]) cube([dw, 2*div_l_half, dh]);
+    translate([-div_thin/2, -ext/2, z_off]) cube([div_thin, ext, dh]);
 }
 module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
-// Apex divider — THIN BLADE (Scott's 2026-07-03 tuning). The paddle should be:
-//   - LONGEST along the ring axis's PERPENDICULAR (world Z after apex transforms) — extending
-//     from the ring axis outward "up between the balls".
-//   - THIN along the chord (world Y) — the ball-to-ball line.
-//   - TALL along the ring axis (world X) — matches the ring's axial extent so its face fully
-//     spans the ball's flanks.
-// Rendered here in ROOT-LOCAL orientation directly (viewer just translates to ring center),
-// so no viewer-side inner.rotation is needed.
+// Apex blade: local X = ring-axial (tall face spans ball flanks), local Y = chord (thin),
+// local Z = perpendicular (long). Rendered in ROOT-LOCAL orientation (viewer just translates).
 apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)
-apex_div_thin = 3*wall_t;                          // 6.0  — chord thickness
-apex_div_ext  = 46.26;                             // 1.2 mm shorter than the original 47.46 (Scott 2026-07-03) — 0.6 mm off each end
+apex_div_thin = div_thin;                          // 6.0 — chord thickness (same recipe as all pairs)
+apex_div_ext  = pair_div_ext(0, 1);                // ≈45.3 — same formula as all pairs (follows ring size)
 module divider_apex() {
-    // Symmetric about the ring axis so the blade spans the ring's diameter, extending equally
-    // in +Z and −Z (root-local) from Z=0 at rest = ring axis.
     translate([-apex_div_h/2, -apex_div_thin/2, -apex_div_ext/2])
         cube([apex_div_h, apex_div_thin, apex_div_ext]);
 }
