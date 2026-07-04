@@ -238,7 +238,9 @@ const EXPECT = Object.keys(geoms).length;
 let loaded = 0;
 function onload() { if (++loaded === EXPECT) build(); }
 function ld(name, path) {
-  loader.load(path, g => { geoms[name] = g; onload(); },
+  // Cache-buster: STL geometry iterates constantly in this project; a stale browser cache once
+  // showed old wide-paddle dividers as "unchanged" after a blade redesign (2026-07-03).
+  loader.load(path + '?ts=' + Date.now(), g => { geoms[name] = g; onload(); },
               undefined, e => { console.warn(name, e); onload(); });
 }
 ld('spinSeg',   './proto_simple_spin_seg.stl');
