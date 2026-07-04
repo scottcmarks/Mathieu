@@ -53,9 +53,19 @@ module lid(){
     for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);
         pocket_r = orb + rb + clr + wall_t/2 + 0.5 + wall_t/2 + clr;   // outer_R + wall_t/2 + clr ≈ 29.51
         translate([M[0],M[1],lid_bot-0.1]) cylinder(h=10.5, r=pocket_r, $fn=90); }
-    // Central (2,9) swap-ring pocket — same reasoning, at the origin. central_R centerline
-    // 23.62 + wall_t/2 + clr ≈ 25.02.
-    translate([0,0,lid_bot-0.1]) cylinder(h=10.5, r=25.02, $fn=90);
+    // Central (2,9) swap-ring pocket — now FULL pair-ring size (centerline 28.11):
+    // 28.11 + wall_t/2 + clr ≈ 29.51, same as the pair pockets.
+    translate([0,0,lid_bot-0.1]) cylinder(h=10.5, r=29.51, $fn=90);
+    // Tunnel stadium pockets: the (2,9) test-tube walls (to Z=20.4) and the transiting balls
+    // pass under the lid along the lines origin→P(2) and origin→P(9). Hull of two cylinders
+    // (r 12.6 = tube outer 12.1 + clr) from radial 24 (inside the central pocket) out past
+    // the tube end cap (R + 12.6 = 70.16 ≥ cap outer 69.66 + clr).
+    for (s=[2,9]) {
+        hull() {
+            translate([P(s)[0]*24/R, P(s)[1]*24/R, lid_bot-0.1]) cylinder(h=10.5, r=12.6, $fn=60);
+            translate([P(s)[0],      P(s)[1],      lid_bot-0.1]) cylinder(h=10.5, r=12.6, $fn=60);
+        }
+    }
     // 2-9 dome_path DROPPED (2026-07-03) — that channel was never committed to and isn't
     // needed by the current architecture.
     // ---- SPIN-SEG LID SLOTS: through-slots for stations 2..N (BOTH inner + outer walls)

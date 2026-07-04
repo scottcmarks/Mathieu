@@ -136,11 +136,19 @@ module swap_ring_local(i, j) { swap_ring_local_h(i, j, wall_h, false); }
 // the ball plane: working Z = [eq−10.4, eq+10.4] = [−0.4, 20.4]. Parked (−21 on the elevator
 // frame) the top sits at −0.6, just under the floor. NOTE: at working height these walls
 // reach into the lid slab — proto_lid.scad carves a blind annular pocket per pair.
+// MERGE RULE (Scott 2026-07-03): the full-size CENTRAL ring's wall bites ~1 mm into each pair
+// ring's interior and vice versa; every ring subtracts the others' circular interiors so all
+// interiors stay clear (walls blend like soap bubbles where they meet).
 module swap_ring(i, j) {
     M = pair_M(i, j);
-    translate([M[0], M[1], eq - apex_wall_h/2])
-        rotate_extrude($fn=180)
-            translate([pair_outer_R(i, j) - wall_t/2, 0]) square([wall_t, apex_wall_h]);
+    difference() {
+        translate([M[0], M[1], eq - apex_wall_h/2])
+            rotate_extrude($fn=180)
+                translate([pair_outer_R(i, j) - wall_t/2, 0]) square([wall_t, apex_wall_h]);
+        // keep the central ring's interior clear
+        translate([0, 0, eq - apex_wall_h/2 - 0.2])
+            cylinder(h = apex_wall_h + 0.4, r = central_R - wall_t/2, $fn=180);
+    }
 }
 
 // APEX (0,1) SWAP RING — vertical ring, rotated + Z-parked (Scott's 2026-07-02 iteration).
@@ -225,35 +233,67 @@ module divider_apex() {
 // legacy alias — the previously constant div_w for check_simple.py compatibility
 div_w = pair_div_w(5, 6);
 
-// ---- CENTRAL (2,9) SWAP RING (Scott 2026-07-03) ----
-// Center on the perpendicular bisector P of M(3,4)–M(7,8). Both midpoints sit at radius
-// Mr = R·cos(180/N), so P passes through the ORIGIN (azimuth −57.27°/122.73°). A ring the
-// same size as the pair rings cannot fit anywhere in the middle (the central hole is ~4.5 mm
-// too small in radius; the equal-gap spot on P would cross the 10-11 ring by 11.8 mm), so the
-// center goes AT the origin and the radius shrinks until the edge gap to 3-4 / 7-8 / 10-11
-// (and 5-6) all equal the pair rings' own 1.5 mm mutual gap. Same wall width + blade recipe.
-Mr_mid   = R*cos(180/N);                                    // 55.23 — pair-midpoint radius
-adj_sep  = 2*Mr_mid*sin(360/N);                             // 59.72 — adjacent pair M-to-M
-ring_gap = adj_sep - 2*(pair_outer_R(3,4) + wall_t/2);      // 1.50 — pair rings' mutual edge gap
-central_R = Mr_mid - (pair_outer_R(3,4) + wall_t/2) - ring_gap - wall_t/2;   // 23.62 centerline
-central_div_ext = 2*(central_R - wall_t) - 1.2;             // 42.04 — same blade formula
-// Ball-sized entry gaps on the lines center→P(2) and center→P(9) (straight corridors,
-// ball_d + 2·clr = 20.8 wide) — balls 2 and 9 enter/exit the central ring through these.
-module swap_ring_central() {
-    difference() {
-        translate([0, 0, eq - apex_wall_h/2])
-            rotate_extrude($fn=180)
-                translate([central_R - wall_t/2, 0]) square([wall_t, apex_wall_h]);
-        for (s = [2, 9]) {
-            az = atan2(P(s)[1], P(s)[0]);
-            rotate([0, 0, az])
-                translate([central_R - wall_t/2 - 1, -(rb + clr), eq - apex_wall_h/2 - 0.1])
-                    cube([wall_t + 2, ball_d + 2*clr, apex_wall_h + 0.2]);
+// ---- CENTRAL (2,9) SWAP RING (Scott 2026-07-03, v2: FULL SIZE + MERGED + TEST TUBES) ----
+// Center at the ORIGIN (on the perpendicular bisector P of M(3,4)–M(7,8), which passes
+// through the origin since both midpoints sit at radius R·cos(180/N)). SAME SIZE as the
+// pair rings — its wall MERGES with all four pair rings (mutual ~1 mm bites); every solid
+// subtracts the others' circular interiors so all interiors stay clear.
+// TEST TUBES: the two ball corridors extend as tube walls from the ring out to the 2-ball
+// and 9-ball stations, ending in a semicircular shell that encloses the resting ball with
+// 0.1 mm spacing. All walls are the standard 20.8 band (vertical extrusions — they rise and
+// fall past the resting balls safely because their footprint clears the ball by 0.1).
+central_R       = pair_outer_R(3, 4);              // 28.11 — FULL pair-ring size
+central_div_ext = pair_div_ext(3, 4);              // 51.02 — same blade as the pairs
+tube_ir  = rb + 0.1;                               // 10.1 — tube interior half-width (0.1 spacing)
+tube_or  = tube_ir + wall_t;                       // 12.1
+module central_tube(s) {
+    az = atan2(P(s)[1], P(s)[0]);
+    rotate([0, 0, az]) translate([0, 0, eq - apex_wall_h/2]) {
+        // two parallel corridor walls from inside the ring band out to the ball center
+        for (sy = [-1, 1])
+            translate([central_R - wall_t, sy == 1 ? tube_ir : -tube_or, 0])
+                cube([R - central_R + wall_t, wall_t, apex_wall_h]);
+        // test-tube end: semicircular shell around the ball, closed side outward
+        translate([R, 0, 0]) difference() {
+            cylinder(h = apex_wall_h, r = tube_or, $fn=90);
+            translate([0, 0, -0.1]) cylinder(h = apex_wall_h + 0.2, r = tube_ir, $fn=90);
+            translate([-tube_or - 1, -tube_or - 1, -0.1])
+                cube([tube_or + 1, 2*tube_or + 2, apex_wall_h + 0.2]);   // keep outward half only
         }
     }
 }
-// Central divider — same thin blade; at REST its long axis lies ALONG line P (the viewer
-// applies base rotation azimuth(P) − 90°).
+module swap_ring_central() {
+    difference() {
+        union() {
+            translate([0, 0, eq - apex_wall_h/2])
+                rotate_extrude($fn=180)
+                    translate([central_R - wall_t/2, 0]) square([wall_t, apex_wall_h]);
+            central_tube(2);
+            central_tube(9);
+        }
+        // ball corridors through the ring wall (width matches the tube interior, 20.2).
+        // The cut starts 4 inside the wall band: the annulus CURVES inward at the corridor's
+        // angular edges (inner surface at x≈25.2 when |y|=10.1), and a box starting at the
+        // nominal inner surface left a thin curved wedge that clipped the transiting ball.
+        for (s = [2, 9]) {
+            az = atan2(P(s)[1], P(s)[0]);
+            rotate([0, 0, az])
+                translate([central_R - wall_t/2 - 4, -tube_ir, eq - apex_wall_h/2 - 0.1])
+                    cube([wall_t + 8, 2*tube_ir, apex_wall_h + 0.2]);
+        }
+        // merge rule: keep the four pair rings' circular interiors clear
+        for (pr = IN_PLANE_PAIRS_SCAD) {
+            Mpr = pair_M(pr[0], pr[1]);
+            translate([Mpr[0], Mpr[1], eq - apex_wall_h/2 - 0.2])
+                cylinder(h = apex_wall_h + 0.4, r = pair_outer_R(pr[0], pr[1]) - wall_t/2, $fn=120);
+        }
+        // keep own interior clear (trims the tube-wall stubs inside the ring)
+        translate([0, 0, eq - apex_wall_h/2 - 0.2])
+            cylinder(h = apex_wall_h + 0.4, r = central_R - wall_t/2, $fn=180);
+    }
+}
+// Central divider — same thin blade as the pairs; at REST its long axis lies ALONG line P
+// (the viewer applies base rotation azimuth(P) − 90°).
 module divider_central() {
     translate([0, 0, eq - apex_div_h/2 - 0.5])
         translate([-div_thin/2, -central_div_ext/2, 0])

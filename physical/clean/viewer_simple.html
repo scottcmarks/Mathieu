@@ -27,12 +27,12 @@
 <div id="hud"><b>Track-2 simple walls + lid-captures concept</b><br>
 Scott's simplification: drop the elaborate seg geometry. <b>Walls</b> are plain rectangular pieces
 (~ball-Ø wide × half-ball tall) that <b>only confine laterally</b>. The over-equator capture moves
-into the <b>lid</b> (translucent gold above). <b>5 divider pairs animate in sync</b>: (0,1) apex with
-its ring rotated so ball 0 sits in the horizontal plane and its segments dropped ball-diameter
-below, plus (3,4)/(5,6)/(7,8)/(10,11) in-plane. Pair (2,9) is depth-multiplexed (separate design,
-not animated here). <b>Left/right spin</b> buttons cyclically shift the ring by 1 station.
-Toggle <b>isolate 1</b> to preview just the (0,1) mechanism — hides everything except station 1's
-inner/outer walls, the apex ring + paddle, and balls 0 and 1.</div>
+into the <b>lid</b> (translucent gold above). <b>All 6 swap pairs animate</b>: (0,1) apex vertical
+ring, (3,4)/(5,6)/(7,8)/(10,11) in-plane, and (2,9) through <b>test-tube tunnels</b> into the
+full-size <b>central ring</b> at the origin (merged with the pair rings, interiors kept clear).
+Balls 2 &amp; 9 travel in before the dividers turn and back out (swapped) after they stop.
+<b>Left/right spin</b> buttons cyclically shift the ring by 1 station. Toggle <b>isolate 1</b>
+to preview just the (0,1) mechanism.</div>
 <div id="bar">
   <div class="row">
     <button id="bSpinLeft" class="spin">◀ spin</button>
@@ -139,9 +139,10 @@ function srmp(u, a, b) { return ss(ramp(u, a, b)); }
 // during u=[0.80, 1.00]. Segs lift into lid THROUGH-SLOTS (passing through empty space),
 // so there's no reason for their motion to complete before the swap walls start rising.
 //   [0.00, 0.20]: all mechanisms rise from park to up
-//   [0.20, 0.80]: balls orbit π; dividers rotate π (all mechanisms held up)
+//   [0.20, 0.35]: balls 2 & 9 travel IN through their test-tube tunnels to the central ring
+//   [0.35, 0.65]: ALL dividers rotate π; pair + apex + central balls orbit
+//   [0.65, 0.80]: balls 2 & 9 (now swapped) travel back OUT to their new stations
 //   [0.80, 1.00]: all mechanisms drop back to park
-// Net: u=0 all parked, u=0.20 all up, u=0.80 all still up, u=1.00 all parked again.
 // Whole-ring lift: both continuous spin rings rise LIFT_SEG_UP together during a swap
 // (they're bolted to the elevator frame). Resting balls stay captured by the lid channel.
 function spinRingZ(u) {
@@ -158,7 +159,9 @@ function dividerZOffset(u) {
   return -PARK_DEPTH_DIV * (1 - upT);
 }
 function dividerRotAccum(u) {
-  return Math.PI * srmp(u, 0.20, 0.80);
+  // Dividers turn only AFTER balls 2 & 9 are inside the central ring (u=0.35) and stop
+  // BEFORE they travel back out (u=0.65).
+  return Math.PI * srmp(u, 0.35, 0.65);
 }
 
 // In-plane ball trajectory during swap for pair (i,j).
@@ -169,10 +172,10 @@ function inPlaneBallPose(s, i, j, u) {
   const orbit_r = pair_orbit_inplane(i, j);
   const dir_to_home = nrm([home_pos[0] - M[0], home_pos[1] - M[1]]);
   let xy;
-  if (u <= 0.20) {
+  if (u <= 0.35) {
     xy = home_pos;
-  } else if (u <= 0.80) {
-    const t = srmp(u, 0.20, 0.80);
+  } else if (u <= 0.65) {
+    const t = srmp(u, 0.35, 0.65);
     const startAng = Math.atan2(dir_to_home[1], dir_to_home[0]);
     const ang = startAng + Math.PI * t;
     xy = [M[0] + orbit_r * Math.cos(ang), M[1] + orbit_r * Math.sin(ang)];
@@ -195,14 +198,47 @@ function inPlaneBallPose(s, i, j, u) {
 function apexBallPose(s, u) {
   const home    = (s === 0) ? [0, R + 2*APEX_HALF_CHORD, eq] : [0, R, eq];
   const partner = (s === 0) ? [0, R,                     eq] : [0, R + 2*APEX_HALF_CHORD, eq];
-  if (u <= 0.20) return home;
-  if (u >= 0.80) return partner;
+  if (u <= 0.35) return home;
+  if (u >= 0.65) return partner;
   const startAng = (s === 1) ? Math.PI : 0;
-  const t = srmp(u, 0.20, 0.80);
+  const t = srmp(u, 0.35, 0.65);
   const ang = startAng + Math.PI * t;
   return [0,
           APEX_RING_CY + APEX_HALF_CHORD * Math.cos(ang),
           APEX_RING_CZ_UP + APEX_HALF_CHORD * Math.sin(ang)];
+}
+
+// Central (2,9) ball trajectory (Scott 2026-07-03): IN through the test-tube tunnel to the
+// central ring (u 0.20–0.35), CCW orbit inside the ring while the dividers turn (0.35–0.65,
+// ball 2 sweeps +130.9°, ball 9 sweeps +229.1° — both CCW so they never meet; a rigid π
+// can't swap two balls only 130.9° apart, the blade "shepherds" them loosely), then OUT
+// through the other tunnel to the swapped station (0.65–0.80).
+const AZ2 = Math.atan2(P(2)[1], P(2)[0]);
+const AZ9 = Math.atan2(P(9)[1], P(9)[0]);
+const D29_2 = ((AZ9 - AZ2) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);   // +130.91° CCW
+const D29_9 = 2*Math.PI - D29_2;                                        // +229.09° CCW
+const R_ORB29 = (pair_orbit_inplane(3,4) + rb + 0.4 + 1 + 0.5) - 1 - rb - 0.4;  // 16.71 — inside central ring, 0.4 off the wall
+function central29BallPose(s, u) {
+  const azIn  = (s === 2) ? AZ2 : AZ9;
+  const azOut = (s === 2) ? AZ9 : AZ2;
+  const dAng  = (s === 2) ? D29_2 : D29_9;
+  if (u <= 0.20) return [R*Math.cos(azIn), R*Math.sin(azIn), eq];
+  if (u < 0.35) {
+    const t = srmp(u, 0.20, 0.35);
+    const r = R + (R_ORB29 - R) * t;
+    return [r*Math.cos(azIn), r*Math.sin(azIn), eq];
+  }
+  if (u < 0.65) {
+    const t = srmp(u, 0.35, 0.65);
+    const a = azIn + dAng * t;
+    return [R_ORB29*Math.cos(a), R_ORB29*Math.sin(a), eq];
+  }
+  if (u < 0.80) {
+    const t = srmp(u, 0.65, 0.80);
+    const r = R_ORB29 + (R - R_ORB29) * t;
+    return [r*Math.cos(azOut), r*Math.sin(azOut), eq];
+  }
+  return [R*Math.cos(azOut), R*Math.sin(azOut), eq];
 }
 // Apex ring Z at time u: parked (−APEX_PARK_DEPTH) at rest, rises during u∈[0.00, 0.20] to 0
 // (SCAD renders the ring at swap-up Z), stays up through the orbit, descends during u∈[0.80, 1.00].
@@ -517,6 +553,9 @@ function renderSwap(u) {
     }
     if (oldSt === APEX_PAIR[0] || oldSt === APEX_PAIR[1]) {
       pos = apexBallPose(oldSt, u);
+    }
+    if (oldSt === 2 || oldSt === 9) {
+      pos = central29BallPose(oldSt, u);
     }
     placeBall(s, pos[0], pos[1], pos[2]);
   }

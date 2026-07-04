@@ -82,22 +82,43 @@ def swapWallZ(u):
 def dividerPose(u):
     upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     z = -PARK_DEPTH_DIV * (1 - upT)
-    rot = math.pi * srmp(u, 0.20, 0.80)             # divider rotates through the whole u=[0.20, 0.80] window (same as balls)
+    rot = math.pi * srmp(u, 0.35, 0.65)             # dividers turn only while balls 2,9 are INSIDE the central ring
     return Mp[0], Mp[1], z, chord_base_ang + rot
+
+# Central (2,9) constants — mirror viewer_simple.html
+AZ2 = math.atan2(P(2)[1], P(2)[0])
+AZ9 = math.atan2(P(9)[1], P(9)[0])
+D29_2 = ((AZ9 - AZ2) % (2*math.pi) + 2*math.pi) % (2*math.pi)   # +130.91° CCW (ball 2)
+D29_9 = 2*math.pi - D29_2                                        # +229.09° CCW (ball 9)
+CENTRAL_R = outer_R_swap                                          # 28.11 — full pair-ring size
+R_ORB29 = CENTRAL_R - wall_t/2 - rb - clr                         # 16.71 — orbit radius inside central ring
+CENTRAL_P_AZ = math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + math.pi  # line P azimuth
+CENTRAL_DIV_BASE = CENTRAL_P_AZ - math.pi/2
+
 def ballPose(s, u):
+    if s in (2, 9):
+        # tunnel IN (0.20–0.35) → CCW orbit inside central ring (0.35–0.65) → tunnel OUT (0.65–0.80)
+        azIn  = AZ2 if s == 2 else AZ9
+        azOut = AZ9 if s == 2 else AZ2
+        dAng  = D29_2 if s == 2 else D29_9
+        if u <= 0.20: return (R*math.cos(azIn), R*math.sin(azIn), eq)
+        if u < 0.35:
+            t = srmp(u, 0.20, 0.35); r = R + (R_ORB29 - R)*t
+            return (r*math.cos(azIn), r*math.sin(azIn), eq)
+        if u < 0.65:
+            t = srmp(u, 0.35, 0.65); a = azIn + dAng*t
+            return (R_ORB29*math.cos(a), R_ORB29*math.sin(a), eq)
+        if u < 0.80:
+            t = srmp(u, 0.65, 0.80); r = R_ORB29 + (R - R_ORB29)*t
+            return (r*math.cos(azOut), r*math.sin(azOut), eq)
+        return (R*math.cos(azOut), R*math.sin(azOut), eq)
     if s not in (PAIR_I, PAIR_J): return (*P(s), eq)
     home_pos = P(s); partner_pos = P(PAIR_J if s==PAIR_I else PAIR_I)
     dir_to_home    = nrm((home_pos[0]-Mp[0],    home_pos[1]-Mp[1]))
-    dir_to_partner = nrm((partner_pos[0]-Mp[0], partner_pos[1]-Mp[1]))
-    orbit_start = (Mp[0]+dir_to_home[0]*orbit_swap,    Mp[1]+dir_to_home[1]*orbit_swap)
-    orbit_end   = (Mp[0]+dir_to_partner[0]*orbit_swap, Mp[1]+dir_to_partner[1]*orbit_swap)
-    # NEW: no radial transit — balls stay at station distance from M throughout.
-    # They orbit around M synchronously with the divider rotation (u in [0.20, 0.80]).
-    # For pair (5,6), station 5 is at (P5-M)/|...| direction at distance 15.63 from M;
-    # after π rotation ball 5 is at (-1)*(P5-M) direction from M = station 6's position.
-    if u <= 0.20:      xy = home_pos
-    elif u <= 0.80:
-        t = srmp(u, 0.20, 0.80)                # same-direction π orbit
+    # Balls stay at station distance from M; orbit synchronously with the dividers (u 0.35–0.65).
+    if u <= 0.35:      xy = home_pos
+    elif u <= 0.65:
+        t = srmp(u, 0.35, 0.65)                # same-direction π orbit
         startAng = math.atan2(dir_to_home[1], dir_to_home[0])
         ang = startAng + math.pi * t
         xy = (Mp[0]+orbit_swap*math.cos(ang), Mp[1]+orbit_swap*math.sin(ang))
@@ -145,11 +166,17 @@ def div_scad(u):
     return f'translate([{x:.3f},{y:.3f},{z:.3f}]) rotate([0,0,{ang:.3f}]) divider_simple({PAIR_I},{PAIR_J});'
 def ball_scad(s, u):
     x,y,z = ballPose(s,u); return f'translate([{x:.3f},{y:.3f},{z:.3f}]) sphere(r={rb},$fn=28);'
+def central_scad(u):
+    return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring_central();'
+def cdiv_scad(u):
+    _,_,z,_ = dividerPose(u)
+    rot = math.degrees(CENTRAL_DIV_BASE) + 180*srmp(u, 0.35, 0.65)
+    return f'translate([0,0,{z:.3f}]) rotate([0,0,{rot:.3f}]) divider_central();'
 
 def frame_check(k):
     u = k/FRAMES
     segs_all = rings_scad(u)
-    walls_div = f'{swap_scad(u)} {div_scad(u)}'
+    walls_div = f'{swap_scad(u)} {div_scad(u)} {central_scad(u)} {cdiv_scad(u)}'
     all_walls = f'{segs_all} {walls_div}'
     balls = ' '.join(ball_scad(s,u) for s in range(1,N+1))
     out = {}
