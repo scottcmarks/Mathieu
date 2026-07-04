@@ -76,7 +76,7 @@ module spin_segment_outer(k) {
 //     the apex (0,1) blade rises there. The apex blade never reaches the inner ring (its
 //     footprint stays at origin-radius >= 65.9), so the inner ring has NO gap at station 1.
 IN_PLANE_PAIRS_SCAD = [[3,4], [5,6], [7,8], [10,11]];
-paddle_slot_w = div_thin + 2*clr;                  // 6.8
+paddle_slot_w = 3*wall_t + 2*clr;                  // 6.8 = div_thin + 2·clr (spelled out: div_thin is defined further down and OpenSCAD does NOT forward-reference — an undef here silently skipped the slot cuts)
 module paddle_slots(rc) {
     for (pr = IN_PLANE_PAIRS_SCAD) {
         M = pair_M(pr[0], pr[1]);
@@ -131,9 +131,16 @@ module swap_ring_local_h(i, j, wh, centered, chord_sides = [0, 180]) {
 }
 module swap_ring_local(i, j) { swap_ring_local_h(i, j, wall_h, false); }
 
+// IN-PLANE SWAP RINGS — FULL RINGS (Scott 2026-07-03): complete annulus, no arc breaks,
+// same wall width as the apex (0,1) ring (apex_wall_h = ball_d + 2·clr = 20.8), centered on
+// the ball plane: working Z = [eq−10.4, eq+10.4] = [−0.4, 20.4]. Parked (−21 on the elevator
+// frame) the top sits at −0.6, just under the floor. NOTE: at working height these walls
+// reach into the lid slab — proto_lid.scad carves a blind annular pocket per pair.
 module swap_ring(i, j) {
     M = pair_M(i, j);
-    translate([M[0], M[1], 0]) swap_ring_local(i, j);
+    translate([M[0], M[1], eq - apex_wall_h/2])
+        rotate_extrude($fn=180)
+            translate([pair_outer_R(i, j) - wall_t/2, 0]) square([wall_t, apex_wall_h]);
 }
 
 // APEX (0,1) SWAP RING — vertical ring, rotated + Z-parked (Scott's 2026-07-02 iteration).
@@ -194,7 +201,12 @@ module divider_simple_h(i, j, dh, centered) {
     z_off = centered ? -dh/2 : 0;
     translate([-div_thin/2, -ext/2, z_off]) cube([div_thin, ext, dh]);
 }
-module divider_simple(i, j) { divider_simple_h(i, j, wall_h + 2, false); }
+// In-plane dividers — same width as the apex paddle (apex_div_h = 22.8), near-centered on the
+// ball plane but baked 0.5 low (working Z = [−1.9, 20.9]) so the parked top (−0.1) stays under
+// the floor with the 21 mm elevator stroke. Still covers the ball's full height (top 20.9 > 20.4).
+module divider_simple(i, j) {
+    translate([0, 0, eq - apex_div_h/2 - 0.5]) divider_simple_h(i, j, apex_div_h, false);
+}
 // Apex blade: local X = ring-axial (tall face spans ball flanks), local Y = chord (thin),
 // local Z = perpendicular (long). Rendered in ROOT-LOCAL orientation (viewer just translates).
 apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)

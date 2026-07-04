@@ -46,6 +46,13 @@ module lid(){
     // ---- SWAP paths: dome channels FULLY capped (no finger slot) -> swap hidden ----
     for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);                     // per-pair orbit torus in the lid
         translate([M[0],M[1],eq]) rotate_extrude($fn=80) translate([orb,0]) circle(r=rb+clr,$fn=28); }
+    // ---- SWAP-RING POCKETS: the full tall swap rings (width 20.8 centered on ball plane →
+    //      working top Z=20.4) and tall paddles (top 20.9) reach into the lid slab. Blind
+    //      cylindrical pocket per pair: radius = ring outer surface + clr, top at 21.9 (leaves
+    //      a 2.1 mm roof — lid stays one piece, swap still hidden from above).
+    for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);
+        pocket_r = orb + rb + clr + wall_t/2 + 0.5 + wall_t/2 + clr;   // outer_R + wall_t/2 + clr ≈ 29.51
+        translate([M[0],M[1],lid_bot-0.1]) cylinder(h=10.5, r=pocket_r, $fn=90); }
     // 2-9 dome_path DROPPED (2026-07-03) — that channel was never committed to and isn't
     // needed by the current architecture.
     // ---- SPIN-SEG LID SLOTS: through-slots for stations 2..N (BOTH inner + outer walls)
