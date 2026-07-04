@@ -37,9 +37,12 @@ orbit_swap = 2*R*math.sin(math.pi/N)/2   # 15.63 — half-chord from M (== stati
 outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 1   # 28.03 — 1 mm clearance beyond ball reach
 div_w = 2*(orbit_swap - rb - clr)         # 10.46 — WIDE paddle: chord-facing side faces contact balls with clr clearance
 div_l_half = 5.0                         # perp half-length — corners fit strictly between inner+outer spin-wall material zones
-LIFT_SEG_UP = 21                 # segs RISE UP into lid THROUGH-SLOTS; must clear ball top at Z=20
-PARK_DEPTH_DIV = 13              # divider parks just below spin plane (panel-height + clr)
-PARK_DEPTH_SWAP = 11             # swap walls park just below spin plane (panel-height + clr)
+# COMMON STROKE (Scott 2026-07-03): segs, swap walls, and dividers all travel the same 21 mm
+# in the same u-window so they can be rigidly attached to one common movement piece.
+COMMON_STROKE = 21
+LIFT_SEG_UP = COMMON_STROKE      # segs RISE UP into lid THROUGH-SLOTS; must clear ball top at Z=20
+PARK_DEPTH_DIV = COMMON_STROKE   # divider parks 21 below (was 13) — rides the common frame
+PARK_DEPTH_SWAP = COMMON_STROKE  # swap walls park 21 below (was 11) — ride the common frame
 PARK_DEPTH = LIFT_SEG_UP         # alias for backward-compat (segs)
 
 PAIR_I, PAIR_J = 5, 6

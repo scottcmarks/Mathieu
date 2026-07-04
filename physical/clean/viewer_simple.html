@@ -104,7 +104,7 @@ const APEX_HALF_CHORD = Math.hypot(0 - 0, R - (R + 24*SCALE)) / 2;  // = 12*SCAL
 // parks it Z − ball_d at rest and animates the rise during the swap.
 const APEX_RING_CY = R + APEX_HALF_CHORD;                            // = 68.89 — ring center Y
 const APEX_RING_CZ_UP = eq;                                          // = 10 — swap-up ring center Z (matches ball plane)
-const APEX_PARK_DEPTH = ball_d;                                       // = 20 — ring drops one ball-diameter at rest
+const APEX_PARK_DEPTH = 21;                                           // = COMMON_STROKE — apex ring rides the same elevator frame (was ball_d=20)
 const APEX_Z_C = APEX_RING_CZ_UP;                                     // legacy alias
 // Ball 0 home is in the horizontal plane at the outer apex (0, apexR, eq).
 function BALLPOS0(s) { return s===0 ? [0, R + 2*APEX_HALF_CHORD] : P(s); }
@@ -128,9 +128,14 @@ function pair_orbit_inplane(i, j) {
 // the swap. Seg 1 stays put.
 const LIFT_STATIONS = new Set([3, 4, 5, 6, 7, 8, 10, 11]);
 
-const LIFT_SEG_UP = 21;       // segs rise 21 UP: seg bottom at Z=21 clears ball top at Z=20
-const PARK_DEPTH_DIV = 13;    // divider parks shallowly below floor
-const PARK_DEPTH_SWAP = 11;   // swap walls park shallowly below floor
+// COMMON STROKE (Scott 2026-07-03): segs, swap walls, dividers, and the apex ring all travel
+// the SAME 21 mm during the same u-window, so they can be rigidly attached to one common
+// movement piece (an "elevator" frame; dividers ride it on rotary bearings for their π turn).
+// 21 is the minimum: seg bottoms must clear the ball tops (Z=20) with clearance.
+const COMMON_STROKE = 21;
+const LIFT_SEG_UP = COMMON_STROKE;       // segs: 0 → +21 (through the lid slots)
+const PARK_DEPTH_DIV = COMMON_STROKE;    // dividers: −21 → 0 (was 13 — deepened to join the frame)
+const PARK_DEPTH_SWAP = COMMON_STROKE;   // swap walls: −21 → 0 (was 11 — deepened to join the frame)
 
 // ---- ease + ramp ----
 const ss = x => { x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); };
