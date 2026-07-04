@@ -115,18 +115,9 @@ function pair_orbit_inplane(i, j) {
 }
 
 // Lift stations = union of divider pair stations, minus 0 (no seg at station 0).
-// Note: station 2 and 9 do NOT lift (their pair is not animated in this viewer).
-// Note: station 1 is SPLIT into an INNER wall + an OUTER wall (two separate meshes).
-// The INNER wall LIFTS with the other lift-station segs (so it doesn't visually block
-// ball 0 sliding inward from the outer apex during the (0,1) swap). The OUTER wall
-// STAYS PUT — ball 1's trajectory goes AROUND station 1's outer wall (via the vertical
-// apex ring), not through it. LIFT_STATIONS contains 1 to drive the inner-wall lift;
-// the outer wall is a separate mesh (seg1OuterMesh) held at z=0 unconditionally.
-// Station 1 removed 2026-07-03: the lid no longer has a spin-wall elevation slot at station 1
-// (it has the apex paddle divider slit instead), and ball 1's (0,1) swap trajectory never dips
-// its inner surface below its rest position (Y=47.56), so seg 1's inner wall never obstructs
-// the swap. Seg 1 stays put.
-const LIFT_STATIONS = new Set([3, 4, 5, 6, 7, 8, 10, 11]);
+// CONTINUOUS RINGS (2026-07-03): the per-station segments are gone. The inner and outer spin
+// rings are one-piece continuous walls (except the 4 paddle slots + the station-1 outer wedge
+// gap) riding the common elevator frame — so during a swap the WHOLE rings lift together.
 
 // COMMON STROKE (Scott 2026-07-03): segs, swap walls, dividers, and the apex ring all travel
 // the SAME 21 mm during the same u-window, so they can be rigidly attached to one common
@@ -151,12 +142,11 @@ function srmp(u, a, b) { return ss(ramp(u, a, b)); }
 //   [0.20, 0.80]: balls orbit π; dividers rotate π (all mechanisms held up)
 //   [0.80, 1.00]: all mechanisms drop back to park
 // Net: u=0 all parked, u=0.20 all up, u=0.80 all still up, u=1.00 all parked again.
-function spinSegZ(k, u) {
-  if (LIFT_STATIONS.has(k)) {
-    const upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00);
-    return LIFT_SEG_UP * upT;
-  }
-  return 0;
+// Whole-ring lift: both continuous spin rings rise LIFT_SEG_UP together during a swap
+// (they're bolted to the elevator frame). Resting balls stay captured by the lid channel.
+function spinRingZ(u) {
+  const upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00);
+  return LIFT_SEG_UP * upT;
 }
 function swapWallZOffset(u) {
   // For in-plane swap rings: additive Z offset relative to parked position (they park below floor).
@@ -226,9 +216,8 @@ const stat = document.getElementById('stat');
 const loader = new STLLoader();
 
 const geoms = {
-  spinSeg: null,
-  spinSeg1Inner: null,
-  spinSeg1Outer: null,
+  spinRingInner: null,
+  spinRingOuter: null,
   lid: null,
   swap_34: null, swap_56: null, swap_78: null, swap_1011: null,
   div_34:  null, div_56:  null, div_78:  null, div_1011:  null,
@@ -243,9 +232,8 @@ function ld(name, path) {
   loader.load(path + '?ts=' + Date.now(), g => { geoms[name] = g; onload(); },
               undefined, e => { console.warn(name, e); onload(); });
 }
-ld('spinSeg',   './proto_simple_spin_seg.stl');
-ld('spinSeg1Inner', './proto_simple_spin_seg_1_inner.stl');
-ld('spinSeg1Outer', './proto_simple_spin_seg_1_outer.stl');
+ld('spinRingInner', './proto_simple_spin_ring_inner.stl');
+ld('spinRingOuter', './proto_simple_spin_ring_outer.stl');
 ld('lid',       './proto_lid.stl');
 ld('swap_34',   './proto_simple_swap_ring_34.stl');
 ld('swap_56',   './proto_simple_swap_ring_56.stl');
@@ -265,12 +253,11 @@ const matDivider = ()=> new THREE.MeshStandardMaterial({color:0xdd55aa, roughnes
 const matDividerApex = ()=> new THREE.MeshStandardMaterial({color:0xe07acf, roughness:0.5, metalness:0.2});
 const matLid = ()=> new THREE.MeshStandardMaterial({color:0xc89a55, roughness:0.6, metalness:0.1, transparent:true, opacity:0.35, side:THREE.DoubleSide, depthWrite:false});
 
-const segMeshes = {};      // by station k → mesh
+let spinRingInnerMesh = null, spinRingOuterMesh = null;   // continuous rings (ride the elevator)
 const inPlaneSwapMeshes = {};  // key "i,j" → mesh (already positioned at M by SCAD)
 const inPlaneDivMeshes  = {};  // key "i,j" → mesh (at LOCAL origin; we translate+rotate)
 let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
-let seg1InnerMesh = null, seg1OuterMesh = null;   // station 1 split: inner lifts, outer stays put
 let lidMesh = null;
 const ballsGroup = new THREE.Group(); root.add(ballsGroup);
 const balls = {};
@@ -306,27 +293,18 @@ function stationAngle(k) {
 
 function build() {
   stat.textContent = '';
-  // Station 1 is SPLIT into inner + outer meshes so the (0,1) swap can lift only the
-  // INNER wall (letting ball 0 slide inward from the outer apex) while the OUTER wall
-  // stays put. Both STLs are already at station 1's azimuth, so no rotation is applied.
-  if (geoms.spinSeg1Inner) {
-    seg1InnerMesh = new THREE.Mesh(geoms.spinSeg1Inner, matSpinSeg());
-    seg1InnerMesh.userData.station = 1;
-    seg1InnerMesh.userData.role = 'inner';
-    root.add(seg1InnerMesh);
+  // CONTINUOUS SPIN RINGS (Scott 2026-07-03): two one-piece rings replace the 11 per-station
+  // segments. Continuous EXCEPT the 4 paddle slots through both rings (at the in-plane pair
+  // midpoints, 6.8 mm wide, so a blade could slide straight up through the resting rings) and
+  // the big station-1 wedge gap in the OUTER ring (where the apex blade rises). Both rings
+  // ride the common elevator frame — they lift 21 together during a swap.
+  if (geoms.spinRingInner) {
+    spinRingInnerMesh = new THREE.Mesh(geoms.spinRingInner, matSpinSeg());
+    root.add(spinRingInnerMesh);
   }
-  // Station 1's OUTER spin wall is INTENTIONALLY NOT RENDERED (Scott 2026-07-03) —
-  // the enlarged apex divider paddle now spans that region at rest. The STL is still
-  // available at proto_simple_spin_seg_1_outer.stl if the wall ever needs to come back.
-  // Remaining spin segs (stations 2..N). Station 1 is skipped to avoid double-rendering
-  // over the split inner/outer meshes above.
-  for (let k=2; k<=N; k++) {
-    if (!geoms.spinSeg) break;
-    const m = new THREE.Mesh(geoms.spinSeg, matSpinSeg());
-    m.rotation.z = (th(k) - th(1)) * d2r;
-    m.userData.station = k;
-    root.add(m);
-    segMeshes[k] = m;
+  if (geoms.spinRingOuter) {
+    spinRingOuterMesh = new THREE.Mesh(geoms.spinRingOuter, matSpinSeg());
+    root.add(spinRingOuterMesh);
   }
   // In-plane swap rings (per pair). SCAD already translated them to M(i,j),
   // so leave XY at 0 and only animate Z.
@@ -427,10 +405,8 @@ function placeBall(s, x, y, z) {
 // Render the fully-parked, idle state. Dividers/swap-rings sit below floor at their
 // parked Z; balls sit at their current stationOf[s] home position.
 function renderIdle() {
-  for (let k=1; k<=N; k++) { if (segMeshes[k]) segMeshes[k].position.z = 0; }
-  // Station 1 split meshes: both at rest z=0.
-  if (seg1InnerMesh) seg1InnerMesh.position.z = 0;
-  if (seg1OuterMesh) seg1OuterMesh.position.z = 0;
+  if (spinRingInnerMesh) spinRingInnerMesh.position.z = 0;
+  if (spinRingOuterMesh) spinRingOuterMesh.position.z = 0;
   // In-plane swap rings: park below floor.
   for (const [i,j] of IN_PLANE_PAIRS) {
     const m = inPlaneSwapMeshes[keyOf(i,j)];
@@ -465,13 +441,10 @@ function renderIdle() {
 let savedStationOf = null;
 
 function renderSwap(u) {
-  // Spin segs rise/fall at lift stations
-  for (let k=1; k<=N; k++) {
-    if (segMeshes[k]) segMeshes[k].position.z = spinSegZ(k, u);
-  }
-  // Station 1 split: INNER wall lifts like the other lift-station segs; OUTER wall stays put.
-  if (seg1InnerMesh) seg1InnerMesh.position.z = spinSegZ(1, u);
-  if (seg1OuterMesh) seg1OuterMesh.position.z = 0;
+  // Continuous spin rings: both lift together on the elevator frame.
+  const ringZ = spinRingZ(u);
+  if (spinRingInnerMesh) spinRingInnerMesh.position.z = ringZ;
+  if (spinRingOuterMesh) spinRingOuterMesh.position.z = ringZ;
   // In-plane swap rings: rise from park
   const wallZ = swapWallZOffset(u);
   for (const [i,j] of IN_PLANE_PAIRS) {
@@ -653,9 +626,8 @@ addEventListener('keydown', e=>{
 
 document.getElementById('cbSpinWalls').onchange = e=>{
   const v = e.target.checked;
-  for (const k in segMeshes) segMeshes[k].visible = v;
-  if (seg1InnerMesh) seg1InnerMesh.visible = v;
-  if (seg1OuterMesh) seg1OuterMesh.visible = v;
+  if (spinRingInnerMesh) spinRingInnerMesh.visible = v;
+  if (spinRingOuterMesh) spinRingOuterMesh.visible = v;
 };
 document.getElementById('cbSwapWalls').onchange = e=>{
   const v = e.target.checked;
@@ -673,15 +645,14 @@ document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.aut
 
 document.getElementById('cbIsolate1').onchange = e => {
   const iso = e.target.checked;
-  // When iso is ON: hide everything except station 1's spin walls + the apex (0,1) ring
-  // and paddle + ball 0 and ball 1.
+  // When iso is ON: hide everything except the apex (0,1) ring + paddle + balls 0 and 1.
+  // (With continuous rings there are no station-1-specific spin walls — the rings hide too.)
   // When iso is OFF: restore visibility from the other checkboxes.
-  for (const k in segMeshes) if (segMeshes[k]) segMeshes[k].visible = !iso;
+  if (spinRingInnerMesh) spinRingInnerMesh.visible = !iso;
+  if (spinRingOuterMesh) spinRingOuterMesh.visible = !iso;
   for (const key in inPlaneSwapMeshes) if (inPlaneSwapMeshes[key]) inPlaneSwapMeshes[key].visible = !iso;
   for (const key in inPlaneDivMeshes) if (inPlaneDivMeshes[key]) inPlaneDivMeshes[key].visible = !iso;
-  // Station 1's inner + outer, apex swap ring, apex divider, ball 0 and ball 1 — always visible when iso is on
-  if (seg1InnerMesh) seg1InnerMesh.visible = true;
-  if (seg1OuterMesh) seg1OuterMesh.visible = true;
+  // Apex swap ring, apex divider, ball 0 and ball 1 — always visible when iso is on
   if (apexSwapMesh)  apexSwapMesh.visible = true;
   if (apexDivMesh)   apexDivMesh.visible = true;
   // Hide balls not in {0, 1}

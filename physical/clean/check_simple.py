@@ -70,14 +70,12 @@ def srmp(u,a,b): return ss(ramp(u,a,b))
 #   [0.35, 0.65] divider rotates π (both balls same direction)
 #   [0.65, 0.80] balls transit outward to swapped stations
 #   [0.80, 1.00] spin segs at 5,6 drop + swap walls + divider drop (all together)
-# NOTE on CHANGE 1: the LIFT gate `k in (PAIR_I, PAIR_J)` already excludes station 1 for the
-# (5,6) pair this checker animates. If this checker is ever generalized to the (0,1) swap, the
-# seg-1 handling stays put (no lift) — station 1 must be excluded from the seg-lift set.
-def spinSegZ(k,u):
-    if k in (PAIR_I, PAIR_J):
-        # Segs now RISE UP (positive Z) at start of clip, return at end.
-        return LIFT_SEG_UP * (srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00))
-    return 0.0
+# CONTINUOUS RINGS (2026-07-03): per-station segments replaced by two one-piece rings
+# (spin_ring_inner / spin_ring_outer in proto_simple.scad — continuous except the 4 paddle
+# slots + station-1 outer wedge gap). Both rings ride the elevator frame: the WHOLE rings
+# lift LIFT_SEG_UP together during the swap.
+def spinRingZ(u):
+    return LIFT_SEG_UP * (srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00))
 def swapWallZ(u):
     upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     return -PARK_DEPTH_SWAP * (1 - upT)
@@ -135,7 +133,9 @@ def rv(body, tag):
     return vol(of) if os.path.exists(of) else 0.0
 
 # ---- SCAD-string helpers for placed parts at frame u ----
-def seg_scad(k, u):  return f'translate([0,0,{spinSegZ(k,u):.3f}]) rotate([0,0,{th(k)-th(1):.3f}]) spin_segment_real(1);'
+def rings_scad(u):
+    z = spinRingZ(u)
+    return f'translate([0,0,{z:.3f}]) {{ spin_ring_inner(); spin_ring_outer(); }}'
 def swap_scad(u):    return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring({PAIR_I},{PAIR_J});'
 def div_scad(u):
     x,y,z,a = dividerPose(u); ang=math.degrees(a)
@@ -148,7 +148,7 @@ def ball_scad(s, u):
 
 def frame_check(k):
     u = k/FRAMES
-    segs_all = ' '.join(seg_scad(j,u) for j in range(1,N+1))
+    segs_all = rings_scad(u)
     walls_div = f'{swap_scad(u)} {div_scad(u)}'
     all_walls = f'{segs_all} {walls_div}'
     balls = ' '.join(ball_scad(s,u) for s in range(1,N+1))

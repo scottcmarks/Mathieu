@@ -65,6 +65,44 @@ module spin_segment_outer(k) {
         translate([outer_R_spin - wall_t/2, 0]) square([wall_t, wall_h]);
 }
 
+// ---- CONTINUOUS SPIN RINGS (Scott 2026-07-03) ----
+// The 11 per-station segments are replaced by TWO one-piece rings (inner + outer), continuous
+// EXCEPT:
+//   * a PADDLE SLOT through both rings at each in-plane pair's midpoint azimuth — the blade at
+//     rest is radial (the chord's perpendicular bisector passes through the origin) and spans
+//     origin-radii ~29.7..80.7, crossing both rings; slot = blade thin (6) + clr each side = 6.8
+//     so the paddle could slide straight up through the resting rings (future actuation);
+//   * the BIG GAP in the OUTER ring at station 1 (the deleted outer segment's full wedge) —
+//     the apex (0,1) blade rises there. The apex blade never reaches the inner ring (its
+//     footprint stays at origin-radius >= 65.9), so the inner ring has NO gap at station 1.
+IN_PLANE_PAIRS_SCAD = [[3,4], [5,6], [7,8], [10,11]];
+paddle_slot_w = div_thin + 2*clr;                  // 6.8
+module paddle_slots(rc) {
+    for (pr = IN_PLANE_PAIRS_SCAD) {
+        M = pair_M(pr[0], pr[1]);
+        az = atan2(M[1], M[0]);                    // degrees (OpenSCAD trig)
+        rotate([0, 0, az])
+            translate([rc - wall_t/2 - 1, -paddle_slot_w/2, -0.1])
+                cube([wall_t + 2, paddle_slot_w, wall_h + 0.2]);
+    }
+}
+module spin_ring_inner() {
+    difference() {
+        rotate_extrude($fn=240) translate([inner_R_spin - wall_t/2, 0]) square([wall_t, wall_h]);
+        paddle_slots(inner_R_spin);
+    }
+}
+module spin_ring_outer() {
+    difference() {
+        rotate_extrude($fn=240) translate([outer_R_spin - wall_t/2, 0]) square([wall_t, wall_h]);
+        paddle_slots(outer_R_spin);
+        // station-1 wedge gap (retained from the deleted outer segment)
+        rotate([0, 0, th(1) - half_angle])
+            rotate_extrude(angle = 2*half_angle, $fn=120)
+                translate([outer_R_spin - wall_t/2 - 1, -0.1]) square([wall_t + 2, wall_h + 0.2]);
+    }
+}
+
 // ---- swap ring (SEGMENTED: 4 arc pieces — 2 perpendicular + 2 along chord) ----
 // Balls stay at half-chord distance from M throughout the orbit (no radial transit); divider paddle
 // alone drives the swap. Four arcs per pair: 2 PERPENDICULAR to chord + 2 along CHORD direction.
@@ -189,6 +227,8 @@ PART = "all";
 if      (PART == "spin_seg")  spin_segment_real(1);
 else if (PART == "spin_seg_1_inner") spin_segment_inner(1);
 else if (PART == "spin_seg_1_outer") spin_segment_outer(1);
+else if (PART == "spin_ring_inner") spin_ring_inner();
+else if (PART == "spin_ring_outer") spin_ring_outer();
 else if (PART == "swap_ring") swap_ring(5, 6);
 else if (PART == "divider")   divider_simple(5, 6);
 else if (PART == "base_spin") base_spin();
