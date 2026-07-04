@@ -442,9 +442,9 @@ let savedStationOf = null;
 
 function renderSwap(u) {
   // Continuous spin rings: both lift together on the elevator frame.
-  const ringZ = spinRingZ(u);
-  if (spinRingInnerMesh) spinRingInnerMesh.position.z = ringZ;
-  if (spinRingOuterMesh) spinRingOuterMesh.position.z = ringZ;
+  const spinZ = spinRingZ(u);
+  if (spinRingInnerMesh) spinRingInnerMesh.position.z = spinZ;
+  if (spinRingOuterMesh) spinRingOuterMesh.position.z = spinZ;
   // In-plane swap rings: rise from park
   const wallZ = swapWallZOffset(u);
   for (const [i,j] of IN_PLANE_PAIRS) {
