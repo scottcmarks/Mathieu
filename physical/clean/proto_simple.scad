@@ -225,6 +225,41 @@ module divider_apex() {
 // legacy alias — the previously constant div_w for check_simple.py compatibility
 div_w = pair_div_w(5, 6);
 
+// ---- CENTRAL (2,9) SWAP RING (Scott 2026-07-03) ----
+// Center on the perpendicular bisector P of M(3,4)–M(7,8). Both midpoints sit at radius
+// Mr = R·cos(180/N), so P passes through the ORIGIN (azimuth −57.27°/122.73°). A ring the
+// same size as the pair rings cannot fit anywhere in the middle (the central hole is ~4.5 mm
+// too small in radius; the equal-gap spot on P would cross the 10-11 ring by 11.8 mm), so the
+// center goes AT the origin and the radius shrinks until the edge gap to 3-4 / 7-8 / 10-11
+// (and 5-6) all equal the pair rings' own 1.5 mm mutual gap. Same wall width + blade recipe.
+Mr_mid   = R*cos(180/N);                                    // 55.23 — pair-midpoint radius
+adj_sep  = 2*Mr_mid*sin(360/N);                             // 59.72 — adjacent pair M-to-M
+ring_gap = adj_sep - 2*(pair_outer_R(3,4) + wall_t/2);      // 1.50 — pair rings' mutual edge gap
+central_R = Mr_mid - (pair_outer_R(3,4) + wall_t/2) - ring_gap - wall_t/2;   // 23.62 centerline
+central_div_ext = 2*(central_R - wall_t) - 1.2;             // 42.04 — same blade formula
+// Ball-sized entry gaps on the lines center→P(2) and center→P(9) (straight corridors,
+// ball_d + 2·clr = 20.8 wide) — balls 2 and 9 enter/exit the central ring through these.
+module swap_ring_central() {
+    difference() {
+        translate([0, 0, eq - apex_wall_h/2])
+            rotate_extrude($fn=180)
+                translate([central_R - wall_t/2, 0]) square([wall_t, apex_wall_h]);
+        for (s = [2, 9]) {
+            az = atan2(P(s)[1], P(s)[0]);
+            rotate([0, 0, az])
+                translate([central_R - wall_t/2 - 1, -(rb + clr), eq - apex_wall_h/2 - 0.1])
+                    cube([wall_t + 2, ball_d + 2*clr, apex_wall_h + 0.2]);
+        }
+    }
+}
+// Central divider — same thin blade; at REST its long axis lies ALONG line P (the viewer
+// applies base rotation azimuth(P) − 90°).
+module divider_central() {
+    translate([0, 0, eq - apex_div_h/2 - 0.5])
+        translate([-div_thin/2, -central_div_ext/2, 0])
+            cube([div_thin, central_div_ext, apex_div_h]);
+}
+
 // ---- bases (just visualization — flat plates under the walls) ----
 base_t = 1.5;
 module base_spin() {
@@ -247,6 +282,8 @@ else if (PART == "spin_seg_1_inner") spin_segment_inner(1);
 else if (PART == "spin_seg_1_outer") spin_segment_outer(1);
 else if (PART == "spin_ring_inner") spin_ring_inner();
 else if (PART == "spin_ring_outer") spin_ring_outer();
+else if (PART == "central_ring") swap_ring_central();
+else if (PART == "central_divider") divider_central();
 else if (PART == "swap_ring") swap_ring(5, 6);
 else if (PART == "divider")   divider_simple(5, 6);
 else if (PART == "base_spin") base_spin();

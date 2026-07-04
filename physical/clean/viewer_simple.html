@@ -222,6 +222,7 @@ const geoms = {
   swap_34: null, swap_56: null, swap_78: null, swap_1011: null,
   div_34:  null, div_56:  null, div_78:  null, div_1011:  null,
   apexVert: null, div_01: null,
+  centralRing: null, centralDiv: null,
 };
 const EXPECT = Object.keys(geoms).length;
 let loaded = 0;
@@ -245,6 +246,8 @@ ld('div_78',    './proto_simple_divider_78.stl');
 ld('div_1011',  './proto_simple_divider_1011.stl');
 ld('apexVert',  './proto_simple_apex_vertical.stl');
 ld('div_01',    './proto_simple_divider_01.stl');
+ld('centralRing', './proto_simple_central_ring.stl');
+ld('centralDiv',  './proto_simple_central_divider.stl');
 
 const matSpinSeg = ()=> new THREE.MeshStandardMaterial({color:0x5ab0ff, roughness:0.5, metalness:0.2});
 const matSwapWall = ()=> new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2});
@@ -258,6 +261,11 @@ const inPlaneSwapMeshes = {};  // key "i,j" → mesh (already positioned at M by
 const inPlaneDivMeshes  = {};  // key "i,j" → mesh (at LOCAL origin; we translate+rotate)
 let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
+let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
+// Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin. The central
+// divider's long axis rests ALONG P: base rotation = azimuth(P) − 90°.
+const CENTRAL_P_AZ = Math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + Math.PI; // 122.73°
+const CENTRAL_DIV_BASE = CENTRAL_P_AZ - Math.PI/2;
 let lidMesh = null;
 const ballsGroup = new THREE.Group(); root.add(ballsGroup);
 const balls = {};
@@ -340,6 +348,19 @@ function build() {
     apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP - APEX_PARK_DEPTH);
     root.add(apexDivMesh);
   }
+  // Central (2,9) swap ring + divider — at the origin, on the elevator frame like the
+  // in-plane pairs. Ball-sized gaps face P(2) and P(9); divider rests along line P.
+  if (geoms.centralRing) {
+    centralRingMesh = new THREE.Mesh(geoms.centralRing, matSwapWall());
+    centralRingMesh.position.z = -PARK_DEPTH_SWAP;
+    root.add(centralRingMesh);
+  }
+  if (geoms.centralDiv) {
+    centralDivMesh = new THREE.Mesh(geoms.centralDiv, matDivider());
+    centralDivMesh.position.set(0, 0, -PARK_DEPTH_DIV);
+    centralDivMesh.rotation.z = CENTRAL_DIV_BASE;
+    root.add(centralDivMesh);
+  }
   // Lid
   if (geoms.lid) {
     lidMesh = new THREE.Mesh(geoms.lid, matLid());
@@ -421,6 +442,12 @@ function renderIdle() {
     m.position.set(M[0], M[1], -PARK_DEPTH_DIV);
     m.rotation.z = Math.atan2(T[1], T[0]);
   }
+  // Central (2,9) ring + divider: parked below with the frame.
+  if (centralRingMesh) centralRingMesh.position.z = -PARK_DEPTH_SWAP;
+  if (centralDivMesh) {
+    centralDivMesh.position.set(0, 0, -PARK_DEPTH_DIV);
+    centralDivMesh.rotation.z = CENTRAL_DIV_BASE;
+  }
   // Apex vertical swap ring: SCAD renders it at swap-up Z; park it ball_d below at rest.
   if (apexSwapMesh) apexSwapMesh.position.set(0, 0, -APEX_PARK_DEPTH);
   // Apex divider: rest pose (parked below with the ring; no swap rotation).
@@ -461,6 +488,12 @@ function renderSwap(u) {
     const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
     m.position.set(M[0], M[1], divZ);
     m.rotation.z = Math.atan2(T[1], T[0]) + dRot;
+  }
+  // Central (2,9) ring + divider: ride the frame; divider rotates π like the others.
+  if (centralRingMesh) centralRingMesh.position.z = wallZ;
+  if (centralDivMesh) {
+    centralDivMesh.position.set(0, 0, divZ);
+    centralDivMesh.rotation.z = CENTRAL_DIV_BASE + dRot;
   }
   // Apex vertical swap ring: rises from park to swap-up during u=[0.00, 0.20]
   const ringZ = apexRingZ(u);
@@ -633,11 +666,13 @@ document.getElementById('cbSwapWalls').onchange = e=>{
   const v = e.target.checked;
   for (const key in inPlaneSwapMeshes) inPlaneSwapMeshes[key].visible = v;
   if (apexSwapMesh) apexSwapMesh.visible = v;
+  if (centralRingMesh) centralRingMesh.visible = v;
 };
 document.getElementById('cbDivider').onchange = e=>{
   const v = e.target.checked;
   for (const key in inPlaneDivMeshes) inPlaneDivMeshes[key].visible = v;
   if (apexDivMesh) apexDivMesh.visible = v;
+  if (centralDivMesh) centralDivMesh.visible = v;
 };
 document.getElementById('cbLid').onchange = e=>{ if (lidMesh) lidMesh.visible = e.target.checked; };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
@@ -652,6 +687,8 @@ document.getElementById('cbIsolate1').onchange = e => {
   if (spinRingOuterMesh) spinRingOuterMesh.visible = !iso;
   for (const key in inPlaneSwapMeshes) if (inPlaneSwapMeshes[key]) inPlaneSwapMeshes[key].visible = !iso;
   for (const key in inPlaneDivMeshes) if (inPlaneDivMeshes[key]) inPlaneDivMeshes[key].visible = !iso;
+  if (centralRingMesh) centralRingMesh.visible = !iso;
+  if (centralDivMesh) centralDivMesh.visible = !iso;
   // Apex swap ring, apex divider, ball 0 and ball 1 — always visible when iso is on
   if (apexSwapMesh)  apexSwapMesh.visible = true;
   if (apexDivMesh)   apexDivMesh.visible = true;

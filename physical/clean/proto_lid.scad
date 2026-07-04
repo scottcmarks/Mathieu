@@ -53,6 +53,9 @@ module lid(){
     for(pr=DIVPAIRS){ M=mid(pr[0],pr[1]); orb=pair_orbit_lid(pr[0],pr[1]);
         pocket_r = orb + rb + clr + wall_t/2 + 0.5 + wall_t/2 + clr;   // outer_R + wall_t/2 + clr ≈ 29.51
         translate([M[0],M[1],lid_bot-0.1]) cylinder(h=10.5, r=pocket_r, $fn=90); }
+    // Central (2,9) swap-ring pocket — same reasoning, at the origin. central_R centerline
+    // 23.62 + wall_t/2 + clr ≈ 25.02.
+    translate([0,0,lid_bot-0.1]) cylinder(h=10.5, r=25.02, $fn=90);
     // 2-9 dome_path DROPPED (2026-07-03) — that channel was never committed to and isn't
     // needed by the current architecture.
     // ---- SPIN-SEG LID SLOTS: through-slots for stations 2..N (BOTH inner + outer walls)
