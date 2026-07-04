@@ -168,15 +168,21 @@ module swap_ring_apex_vertical() {
     // Result during swap: ring center at (0, R+apex_half_chord, eq) = (0, 68.89, 10). Balls stay
     // at Z=eq throughout; during the π orbit around world +X, one ball dips to Z=eq−apex_half_chord
     // = −3.33 and the other rises to Z=eq+apex_half_chord = +23.33.
-    // chord_sides=[0] drops the SMALL UPPER chord arc — the lid captures over-equator on that
-    // side, so no wall is needed there (Scott 2026-07-03). The lower chord arc (side=0, world −Z)
-    // remains; the two perpendicular arcs at ball 0 / ball 1 positions also remain.
+    // CLOSED AT THE BOTTOM (Scott 2026-07-03): one continuous 240° arc — from 30° above
+    // horizontal on the ball-0 side, around the bottom, to 30° above horizontal on the
+    // ball-1 side — replacing the old 3-arc set (2 perp + 1 small bottom chord). The 120°
+    // OPENING is centered straight UP, where the ring depends on the LID for ball capture.
+    // Local angle map: chord0 direction (local −Y) → world DOWN after the two rotations,
+    // so the arc is centered at local −90° with ±120° span.
     translate([0, R, eq])
         rotate([90, 0, 0])
             translate([0, -R, -eq])
                 translate([0, R, apex_Z_c()])
                     rotate([0, 90, 0])
-                        swap_ring_local_h(0, 1, apex_wall_h, true, [0]);
+                        rotate([0, 0, -90 - 120])
+                            rotate_extrude(angle = 240, $fn=180)
+                                translate([pair_outer_R(0, 1) - wall_t/2, -apex_wall_h/2])
+                                    square([wall_t, apex_wall_h]);
 }
 
 // legacy constants — used by other files that import from here
