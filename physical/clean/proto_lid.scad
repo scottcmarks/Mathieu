@@ -88,12 +88,24 @@ module lid(){
     // (post-shrink paddle: apex_div_ext = 46.26). A cylinder of radius 23.32 + clr = 23.72
     // contains the entire swept envelope. Axial length exceeds the paddle X span (apex_div_h
     // = 22.8) by clr each side.
+    // NARROWED (Scott 2026-07-03): the paddles are now div_width = 16 wide, so the slit's
+    // axial width drops to 16.8 < ball Ø 20 — balls 0/1 CANNOT fall out through it.
     apex_paddle_corner = sqrt(pow(46.26/2, 2) + pow(6/2, 2));  // ≈ 23.32
-    apex_paddle_h_half = 22.8/2 + clr;                          // 11.8
+    apex_paddle_h_half = 16/2 + clr;                            // 8.4 — paddle width 16 + clr
     apex_paddle_R      = apex_paddle_corner + clr;              // 23.72
     translate([0, R + apex_h, eq])
       rotate([0, 90, 0])
         cylinder(h = 2*apex_paddle_h_half, r = apex_paddle_R, center = true, $fn = 60);
+    // BALL TRANSIT TORUS: with the slit too narrow for a ball, the over-the-top (0,1) transit
+    // needs its own clearance — a torus (tube r = rb + clr) around the apex orbit circle
+    // (radius apex_h = 13.33 about the world-X axis through (0, R+apex_h, eq)). Only its top
+    // portion intersects the lid slab. At the two REST stations (orbit points at ±Y,
+    // horizontal) the carve tops out at Z = 20.4, leaving a 3.6 mm roof — resting balls
+    // stay captured; the open-to-sky stretch exists only mid-transit (swap in progress).
+    translate([0, R + apex_h, eq])
+      rotate([0, 90, 0])
+        rotate_extrude($fn = 100)
+          translate([apex_h, 0]) circle(r = rb + clr, $fn = 36);
   }
 }
 

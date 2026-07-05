@@ -215,15 +215,18 @@ module divider_simple_h(i, j, dh, centered) {
     z_off = centered ? -dh/2 : 0;
     translate([-div_thin/2, -ext/2, z_off]) cube([div_thin, ext, dh]);
 }
-// In-plane dividers — same width as the apex paddle (apex_div_h = 22.8), near-centered on the
-// ball plane but baked 0.5 low (working Z = [−1.9, 20.9]) so the parked top (−0.1) stays under
-// the floor with the 21 mm elevator stroke. Still covers the ball's full height (top 20.9 > 20.4).
+// PADDLE WIDTH (Scott 2026-07-03): all paddles are as wide (along their rotation axis) as the
+// lid's open finger slot over the spin ring — div_width = ball_d − 4 = 16 < ball Ø. This lets
+// the lid's apex paddle slit narrow to 16.8 so balls 0/1 cannot fall out through it.
+div_width = ball_d - 4;                            // 16 — matches lid finger_w
+// In-plane dividers — width 16 along Z, centered on the ball plane (working Z = [2, 18]).
+// Parked top = 18 − 21 = −3, safely under the floor.
 module divider_simple(i, j) {
-    translate([0, 0, eq - apex_div_h/2 - 0.5]) divider_simple_h(i, j, apex_div_h, false);
+    translate([0, 0, eq - div_width/2]) divider_simple_h(i, j, div_width, false);
 }
 // Apex blade: local X = ring-axial (tall face spans ball flanks), local Y = chord (thin),
 // local Z = perpendicular (long). Rendered in ROOT-LOCAL orientation (viewer just translates).
-apex_div_h    = apex_wall_h + 2;                  // 22.8 — axial (matches ring wall height + margin)
+apex_div_h    = ball_d - 4;                        // 16 = div_width — paddle width matches the lid finger slot (Scott 2026-07-03)
 apex_div_thin = div_thin;                          // 6.0 — chord thickness (same recipe as all pairs)
 apex_div_ext  = pair_div_ext(0, 1);                // ≈45.3 — same formula as all pairs (follows ring size)
 module divider_apex() {
