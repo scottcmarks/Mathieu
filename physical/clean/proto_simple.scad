@@ -333,6 +333,18 @@ module bottom_pan() {
     }
 }
 
+// ---- SIDE WALL (Scott 2026-07-04): enclosing cylinder between the pan and the lid ----
+// Spans pan top (−22) to lid bottom (11.5), flush with both at r = pan_r = 100. Nothing
+// inside reaches past r = 98 (apex ring Y-max 97.1 is the closest).
+side_wall_t = 2;
+module side_wall() {
+    translate([0, 0, pan_top])
+        difference() {
+            cylinder(h = 11.5 - pan_top, r = pan_r, $fn=220);
+            translate([0, 0, -0.1]) cylinder(h = 11.5 - pan_top + 0.2, r = pan_r - side_wall_t, $fn=220);
+        }
+}
+
 // ---- bases (just visualization — flat plates under the walls) ----
 base_t = 1.5;
 module base_spin() {
@@ -358,6 +370,7 @@ else if (PART == "spin_ring_outer") spin_ring_outer();
 else if (PART == "central_ring") swap_ring_central();
 else if (PART == "central_divider") divider_central();
 else if (PART == "bottom_pan") bottom_pan();
+else if (PART == "side_wall") side_wall();
 else if (PART == "swap_ring") swap_ring(5, 6);
 else if (PART == "divider")   divider_simple(5, 6);
 else if (PART == "base_spin") base_spin();

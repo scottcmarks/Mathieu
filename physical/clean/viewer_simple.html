@@ -260,7 +260,7 @@ const geoms = {
   div_34:  null, div_56:  null, div_78:  null, div_1011:  null,
   apexVert: null, div_01: null,
   centralRing: null, centralDiv: null,
-  pan: null,
+  pan: null, sideWall: null,
 };
 const EXPECT = Object.keys(geoms).length;
 let loaded = 0;
@@ -287,6 +287,7 @@ ld('div_01',    './proto_simple_divider_01.stl');
 ld('centralRing', './proto_simple_central_ring.stl');
 ld('centralDiv',  './proto_simple_central_divider.stl');
 ld('pan',         './proto_simple_bottom_pan.stl');
+ld('sideWall',    './proto_simple_side_wall.stl');
 
 const matSpinSeg = ()=> new THREE.MeshStandardMaterial({color:0x5ab0ff, roughness:0.5, metalness:0.2});
 const matSwapWall = ()=> new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2});
@@ -311,7 +312,7 @@ function colorizeLid(geo) {
     }
     const r0 = Math.hypot(cx, cy);
     let c;
-    if (cz > 23.7 || r0 > 85.0) c = cBlack;                       // outside top + outer rim
+    if (cz > 23.7 || r0 > 99.0) c = cBlack;                       // outside top + outer rim (lid r=100 now)
     else if (Math.abs(nz) > 0.85 && cz < 11.7) c = cWhite;        // flat underside
     else {
       let tan_ = false;
@@ -343,7 +344,7 @@ const inPlaneDivMeshes  = {};  // key "i,j" → mesh (at LOCAL origin; we transl
 let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
 let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
-let panMesh = null;                                   // bottom pan (static)
+let panMesh = null, sideWallMesh = null;              // bottom pan + enclosing side cylinder (static)
 // Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin. The central
 // divider's long axis rests ALONG P: base rotation = azimuth(P) − 90°.
 const CENTRAL_P_AZ = Math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + Math.PI; // 122.73°
@@ -454,6 +455,11 @@ function build() {
   if (geoms.pan) {
     panMesh = new THREE.Mesh(geoms.pan, new THREE.MeshStandardMaterial({color:0x2a2a30, roughness:0.8, metalness:0.1}));
     root.add(panMesh);
+  }
+  // Side wall — enclosing cylinder pan→lid. Translucent so the mechanism stays visible.
+  if (geoms.sideWall) {
+    sideWallMesh = new THREE.Mesh(geoms.sideWall, new THREE.MeshStandardMaterial({color:0x3a3a44, roughness:0.7, metalness:0.1, transparent:true, opacity:0.22, side:THREE.DoubleSide, depthWrite:false}));
+    root.add(sideWallMesh);
   }
   // Balls 0..N — neutral white material. Colour comes from the per-station spotlights below.
   const sph = new THREE.SphereGeometry(rb, 40, 28);
@@ -766,7 +772,10 @@ document.getElementById('cbDivider').onchange = e=>{
   if (centralDivMesh) centralDivMesh.visible = v;
 };
 document.getElementById('cbLid').onchange = e=>{ if (lidMesh) lidMesh.visible = e.target.checked; };
-document.getElementById('cbPan').onchange = e=>{ if (panMesh) panMesh.visible = e.target.checked; };
+document.getElementById('cbPan').onchange = e=>{
+  if (panMesh) panMesh.visible = e.target.checked;
+  if (sideWallMesh) sideWallMesh.visible = e.target.checked;
+};
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
 document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
 
@@ -782,6 +791,7 @@ document.getElementById('cbIsolate1').onchange = e => {
   if (centralRingMesh) centralRingMesh.visible = !iso;
   if (centralDivMesh) centralDivMesh.visible = !iso;
   if (panMesh) panMesh.visible = !iso && document.getElementById('cbPan').checked;
+  if (sideWallMesh) sideWallMesh.visible = !iso && document.getElementById('cbPan').checked;
   // Apex swap ring, apex divider, ball 0 and ball 1 — always visible when iso is on
   if (apexSwapMesh)  apexSwapMesh.visible = true;
   if (apexDivMesh)   apexDivMesh.visible = true;

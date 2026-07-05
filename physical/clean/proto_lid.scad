@@ -18,9 +18,9 @@ function pair_orbit_lid(i,j) = norm(P(j)-P(i))/2;
 lid_bot=eq+1.5;                     // 11.5  lid underside (just over the equator -> lips retain)
 lid_top=eq+rb+4;                    // 24    lid top (above the crown)
 finger_w=ball_d-4;                  // 16   finger-slot width (< ball_d=20 -> ball can't lift out)
-// slab_r only needs to cover the RING pairs' swap footprints; apex (0,1) is a vertical shaft below
-// the plane and doesn't need overhang. Cover R+ring_orbit+rb+margin ≈ 55.56+15.65+10+4 = 85.21.
-slab_r = 85.5;                     // was 113.55 (needed for horizontal apex torus, no longer)
+// Lid now extends to the PAN radius (Scott 2026-07-04) — the enclosing side cylinder runs
+// between the pan (top −22) and the lid underside (11.5), all flush at r = 100.
+slab_r = 100;
 function angleOf(k)=-90+(k-1)*(360/N);
 function P(k)= k==0?[0,apexR]:[R*cos(angleOf(k)),-R*sin(angleOf(k))];
 function mid(i,j)=[(P(i)[0]+P(j)[0])/2,(P(i)[1]+P(j)[1])/2];
@@ -68,17 +68,34 @@ module lid(){
     }
     // 2-9 dome_path DROPPED (2026-07-03) — that channel was never committed to and isn't
     // needed by the current architecture.
-    // ---- SPIN-SEG LID SLOTS: through-slots for stations 2..N (BOTH inner + outer walls)
-    //      so a risen seg can pass through the lid without collision. Station 1 gets NO
-    //      spin-wall slot (Scott 2026-07-03) — its inner wall stays put during the (0,1)
-    //      swap (ball 1's Y-range never dips below its rest inner surface at 47.56), and
-    //      its outer wall is gone entirely (replaced by the apex paddle at rest). Instead
-    //      of a spin-wall slot at station 1, the lid gets the APEX PADDLE SLIT below.
-    for (k = [2:N]) {
-      rotate([0, 0, (-angleOf(k)) - (360/N/2 - 5.0/2)])
-        rotate_extrude(angle = 2*(360/N/2 - 5.0/2), $fn=120)
-          for (rc = [inner_R_spin, outer_R_spin])
-            translate([rc - wall_t/2 - clr, lid_bot]) square([wall_t + 2*clr, lid_top - lid_bot + 0.5]);
+    // ---- SPIN-RING LID SLITS (Scott 2026-07-04): match the CONTINUOUS rings as built ----
+    // The rings are one-piece annuli except the 4 paddle slots (through both) and the
+    // station-1 wedge gap (outer only). The lid slits mirror that footprint: annular
+    // through-slits at both wall radii, with material BRIDGES kept exactly where the rings
+    // have gaps — the bridges keep the lid ONE PIECE (no more disconnection risk).
+    // Bridge widths sit 0.4 inside the ring gaps so the rising rings clear them.
+    for (rc = [inner_R_spin, outer_R_spin]) {
+      difference() {
+        // full annular slit, wall_t + 2·clr wide, through the lid
+        translate([0,0,lid_bot-0.1]) difference() {
+          cylinder(h = lid_top - lid_bot + 0.6, r = rc + wall_t/2 + clr, $fn=200);
+          translate([0,0,-0.1]) cylinder(h = lid_top - lid_bot + 0.8, r = rc - wall_t/2 - clr, $fn=200);
+        }
+        // bridges at the 4 paddle-slot azimuths (6.0 wide < ring gap 6.8)
+        for (pr = DIVPAIRS) {
+          M = mid(pr[0], pr[1]);
+          rotate([0, 0, atan2(M[1], M[0])])
+            translate([rc - wall_t/2 - clr - 1, -3.0, lid_bot - 0.3])
+              cube([wall_t + 2*clr + 2, 6.0, lid_top - lid_bot + 1]);
+        }
+        // station-1 wedge bridge (OUTER ring only): 26.9° < the ring's 27.72° gap
+        if (rc > R) {
+          rotate([0, 0, 90 - 13.45])
+            rotate_extrude(angle = 26.9, $fn=40)
+              translate([rc - wall_t/2 - clr - 1, lid_bot - 0.3])
+                square([wall_t + 2*clr + 2, lid_top - lid_bot + 1]);
+        }
+      }
     }
     // ---- APEX (0,1) PADDLE SLIT (station 1's swap-wall-divider slot per Scott's spec) ----
     // Through-hole in the lid at the (0,1) ring axis so the paddle can protrude AND rotate
