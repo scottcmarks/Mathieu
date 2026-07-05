@@ -215,14 +215,14 @@ module divider_simple_h(i, j, dh, centered) {
     z_off = centered ? -dh/2 : 0;
     translate([-div_thin/2, -ext/2, z_off]) cube([div_thin, ext, dh]);
 }
-// PADDLE WIDTH (Scott 2026-07-03): all paddles are as wide (along their rotation axis) as the
-// lid's open finger slot over the spin ring — div_width = ball_d − 4 = 16 < ball Ø. This lets
-// the lid's apex paddle slit narrow to 16.8 so balls 0/1 cannot fall out through it.
-div_width = ball_d - 4;                            // 16 — matches lid finger_w
-// In-plane dividers — width 16 along Z, centered on the ball plane (working Z = [2, 18]).
-// Parked top = 18 − 21 = −3, safely under the floor.
+// PADDLE HEIGHTS (Scott 2026-07-04): the NON-APEX paddles are FULL BALL HEIGHT again
+// (ball_d + 2·clr = 20.8, centered on the ball plane — working Z = [−0.4, 20.4]); parked on
+// the 21 stroke their tops sit at −0.6, where, RESTING ROTATED π/2 (long axis ALONG the
+// chord), they act as a FLOOR under the pair's stretch of the spin channel. Only the APEX
+// paddle keeps the finger-slot width 16 (it must fit through the narrow lid slit).
+div_width = ball_d - 4;                            // 16 — apex paddle width (= lid finger_w)
 module divider_simple(i, j) {
-    translate([0, 0, eq - div_width/2]) divider_simple_h(i, j, div_width, false);
+    translate([0, 0, eq - apex_wall_h/2]) divider_simple_h(i, j, apex_wall_h, false);
 }
 // Apex blade: local X = ring-axial (tall face spans ball flanks), local Y = chord (thin),
 // local Z = perpendicular (long). Rendered in ROOT-LOCAL orientation (viewer just translates).
@@ -298,9 +298,10 @@ module swap_ring_central() {
 // Central divider — same thin blade as the pairs; at REST its long axis lies ALONG line P
 // (the viewer applies base rotation azimuth(P) − 90°).
 module divider_central() {
-    translate([0, 0, eq - apex_div_h/2 - 0.5])
+    // full ball height like the pair paddles (Scott 2026-07-04)
+    translate([0, 0, eq - apex_wall_h/2])
         translate([-div_thin/2, -central_div_ext/2, 0])
-            cube([div_thin, central_div_ext, apex_div_h]);
+            cube([div_thin, central_div_ext, apex_wall_h]);
 }
 
 // ---- BOTTOM PAN (Scott 2026-07-04) ----

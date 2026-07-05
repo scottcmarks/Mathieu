@@ -79,11 +79,22 @@ def spinRingZ(u):
 def swapWallZ(u):
     upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     return -PARK_DEPTH_SWAP * (1 - upT)
+def divRotAccum(u):
+    # Non-apex dividers (Scott 2026-07-04): rest π/2 from working (long axis ALONG the chord,
+    # a floor under the spin channel), rotate π/2 below the floor while 2,9 travel in, π up
+    # top, π/2 back below while they travel out. Total 2π per swap.
+    return (math.pi/2 * srmp(u, 0.20, 0.35)
+          + math.pi   * srmp(u, 0.35, 0.65)
+          + math.pi/2 * srmp(u, 0.65, 0.80))
+def dividerZ(u):
+    # Paddles rise only in the last slice of the first π/2 (already ≥60° around — their
+    # plan-footprint clears the resting balls) and drop right after the π turn.
+    upT = srmp(u, 0.30, 0.35) - srmp(u, 0.65, 0.70)
+    return -PARK_DEPTH_DIV * (1 - upT)
 def dividerPose(u):
-    upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
-    z = -PARK_DEPTH_DIV * (1 - upT)
-    rot = math.pi * srmp(u, 0.35, 0.65)             # dividers turn only while balls 2,9 are INSIDE the central ring
-    return Mp[0], Mp[1], z, chord_base_ang + rot
+    z = dividerZ(u)
+    rot = divRotAccum(u)
+    return Mp[0], Mp[1], z, (chord_base_ang - math.pi/2) + rot   # rest base: along the chord
 
 # Central (2,9) constants — mirror viewer_simple.html
 AZ2 = math.atan2(P(2)[1], P(2)[0])
@@ -169,8 +180,8 @@ def ball_scad(s, u):
 def central_scad(u):
     return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring_central();'
 def cdiv_scad(u):
-    _,_,z,_ = dividerPose(u)
-    rot = math.degrees(CENTRAL_DIV_BASE) + 180*srmp(u, 0.35, 0.65)
+    z = dividerZ(u)
+    rot = math.degrees(CENTRAL_DIV_BASE - math.pi/2 + divRotAccum(u))   # rest ⊥ line P
     return f'translate([0,0,{z:.3f}]) rotate([0,0,{rot:.3f}]) divider_central();'
 
 def frame_check(k):

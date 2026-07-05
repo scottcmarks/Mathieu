@@ -155,13 +155,25 @@ function swapWallZOffset(u) {
   const upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00);
   return -PARK_DEPTH_SWAP * (1 - upT);
 }
+// NON-APEX divider schedule (Scott 2026-07-04): the paddles rest π/2 from their working
+// orientation (long axis ALONG the chord — acting as a FLOOR under the spin channel, tops
+// at −0.6), rotate π/2 below the floor while balls 2 & 9 travel inward, RISE only in the
+// last slice of that window (by then they're ≥60° around, so their plan-footprint clears
+// the resting balls), do the π swap turn up top, drop, and rotate the last π/2 back below.
+// Total 2π per swap — they end back at the floor pose. This decouples the dividers' Z from
+// the rigid elevator frame: they ride it on rotary bearings AND a short z-cam.
 function dividerZOffset(u) {
-  const upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00);
+  const upT = srmp(u, 0.30, 0.35) - srmp(u, 0.65, 0.70);
   return -PARK_DEPTH_DIV * (1 - upT);
 }
 function dividerRotAccum(u) {
-  // Dividers turn only AFTER balls 2 & 9 are inside the central ring (u=0.35) and stop
-  // BEFORE they travel back out (u=0.65).
+  // π/2 (below floor, while 2 & 9 travel in) + π (the swap turn) + π/2 (while they travel back)
+  return Math.PI/2 * srmp(u, 0.20, 0.35)
+       + Math.PI   * srmp(u, 0.35, 0.65)
+       + Math.PI/2 * srmp(u, 0.65, 0.80);
+}
+// The APEX divider keeps the plain π turn (its slit-constrained blade has no floor role).
+function apexRotAccum(u) {
   return Math.PI * srmp(u, 0.35, 0.65);
 }
 
@@ -345,10 +357,18 @@ let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
 let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
 let panMesh = null, sideWallMesh = null;              // bottom pan + enclosing side cylinder (static)
-// Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin. The central
-// divider's long axis rests ALONG P: base rotation = azimuth(P) − 90°.
+// Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin.
+// REST poses (Scott 2026-07-04): all non-apex dividers rest π/2 from their working
+// orientation. In-plane pairs: long axis ALONG the chord (floor under the spin channel)
+// → rest rotation = chordAng − π/2, arriving at chordAng (between the balls) after the
+// first π/2. Central: long axis ⊥ line P at rest, arriving ON P at u=0.35.
 const CENTRAL_P_AZ = Math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + Math.PI; // 122.73°
-const CENTRAL_DIV_BASE = CENTRAL_P_AZ - Math.PI/2;
+const CENTRAL_DIV_WORK = CENTRAL_P_AZ - Math.PI/2;    // long axis ON P (working start)
+const CENTRAL_DIV_REST = CENTRAL_DIV_WORK - Math.PI/2; // rest: ⊥ P
+function pairDivRest(i, j) {
+  const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
+  return Math.atan2(T[1], T[0]) - Math.PI/2;           // rest: long axis ALONG the chord
+}
 let lidMesh = null;
 const ballsGroup = new THREE.Group(); root.add(ballsGroup);
 const balls = {};
@@ -441,7 +461,7 @@ function build() {
   if (geoms.centralDiv) {
     centralDivMesh = new THREE.Mesh(geoms.centralDiv, matDivider());
     centralDivMesh.position.set(0, 0, -PARK_DEPTH_DIV);
-    centralDivMesh.rotation.z = CENTRAL_DIV_BASE;
+    centralDivMesh.rotation.z = CENTRAL_DIV_REST;
     root.add(centralDivMesh);
   }
   // Lid — vertex-colored: black outside, white inside, blue spin carves, tan swap carves.
@@ -532,15 +552,14 @@ function renderIdle() {
     const m = inPlaneDivMeshes[keyOf(i,j)];
     if (!m) continue;
     const M = mid(i,j);
-    const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
     m.position.set(M[0], M[1], -PARK_DEPTH_DIV);
-    m.rotation.z = Math.atan2(T[1], T[0]);
+    m.rotation.z = pairDivRest(i, j);   // rest: long axis ALONG the chord (floor pose)
   }
   // Central (2,9) ring + divider: parked below with the frame.
   if (centralRingMesh) centralRingMesh.position.z = -PARK_DEPTH_SWAP;
   if (centralDivMesh) {
     centralDivMesh.position.set(0, 0, -PARK_DEPTH_DIV);
-    centralDivMesh.rotation.z = CENTRAL_DIV_BASE;
+    centralDivMesh.rotation.z = CENTRAL_DIV_REST;
   }
   // Apex vertical swap ring: SCAD renders it at swap-up Z; park it ball_d below at rest.
   if (apexSwapMesh) apexSwapMesh.position.set(0, 0, -APEX_PARK_DEPTH);
@@ -579,23 +598,22 @@ function renderSwap(u) {
     const m = inPlaneDivMeshes[keyOf(i,j)];
     if (!m) continue;
     const M = mid(i,j);
-    const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
     m.position.set(M[0], M[1], divZ);
-    m.rotation.z = Math.atan2(T[1], T[0]) + dRot;
+    m.rotation.z = pairDivRest(i, j) + dRot;   // rest−π/2 base + 2π composite accumulator
   }
-  // Central (2,9) ring + divider: ride the frame; divider rotates π like the others.
+  // Central (2,9) ring + divider: ring rides the frame; divider follows the 2π schedule.
   if (centralRingMesh) centralRingMesh.position.z = wallZ;
   if (centralDivMesh) {
     centralDivMesh.position.set(0, 0, divZ);
-    centralDivMesh.rotation.z = CENTRAL_DIV_BASE + dRot;
+    centralDivMesh.rotation.z = CENTRAL_DIV_REST + dRot;
   }
   // Apex vertical swap ring: rises from park to swap-up during u=[0.00, 0.20]
   const ringZ = apexRingZ(u);
   if (apexSwapMesh) apexSwapMesh.position.set(0, 0, ringZ);
-  // Apex divider: rises with the ring; rotates about world X with dRot during swap
+  // Apex divider: rises with the ring; plain π turn about world X (no floor role)
   if (apexDivMesh) {
     apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP + ringZ);
-    apexDivMesh.rotation.set(dRot, 0, 0);
+    apexDivMesh.rotation.set(apexRotAccum(u), 0, 0);
   }
   // Balls: any ball whose OLD station is in an animated pair moves along its swap trajectory.
   // Balls at non-animated stations (2, 9) stay put at their home.
