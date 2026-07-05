@@ -51,6 +51,7 @@ to preview just the (0,1) mechanism.</div>
     <label class="cb"><input type="checkbox" id="cbSwapWalls" checked>swap walls</label>
     <label class="cb"><input type="checkbox" id="cbDivider" checked>divider</label>
     <label class="cb"><input type="checkbox" id="cbLid">lid</label>
+    <label class="cb"><input type="checkbox" id="cbPan" checked>pan</label>
     <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
     <label class="cb"><input type="checkbox" id="cbIsolate1">isolate 1</label>
     <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button>
@@ -259,6 +260,7 @@ const geoms = {
   div_34:  null, div_56:  null, div_78:  null, div_1011:  null,
   apexVert: null, div_01: null,
   centralRing: null, centralDiv: null,
+  pan: null,
 };
 const EXPECT = Object.keys(geoms).length;
 let loaded = 0;
@@ -284,13 +286,56 @@ ld('apexVert',  './proto_simple_apex_vertical.stl');
 ld('div_01',    './proto_simple_divider_01.stl');
 ld('centralRing', './proto_simple_central_ring.stl');
 ld('centralDiv',  './proto_simple_central_divider.stl');
+ld('pan',         './proto_simple_bottom_pan.stl');
 
 const matSpinSeg = ()=> new THREE.MeshStandardMaterial({color:0x5ab0ff, roughness:0.5, metalness:0.2});
 const matSwapWall = ()=> new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2});
 const matSwapApex = ()=> new THREE.MeshStandardMaterial({color:0xa855f7, roughness:0.5, metalness:0.2});
 const matDivider = ()=> new THREE.MeshStandardMaterial({color:0xdd55aa, roughness:0.5, metalness:0.2});
 const matDividerApex = ()=> new THREE.MeshStandardMaterial({color:0xe07acf, roughness:0.5, metalness:0.2});
-const matLid = ()=> new THREE.MeshStandardMaterial({color:0xc89a55, roughness:0.6, metalness:0.1, transparent:true, opacity:0.35, side:THREE.DoubleSide, depthWrite:false});
+// Lid material uses VERTEX COLORS (Scott 2026-07-04): black outside top + rim, white inside,
+// spin-channel carves pastel blue, swap-channel carves pastel tan. Colors are classified
+// per-face in colorizeLid(); mat.color stays white so vertex colors read true.
+const matLid = ()=> new THREE.MeshStandardMaterial({color:0xffffff, vertexColors:true, roughness:0.6, metalness:0.05, transparent:true, opacity:0.35, side:THREE.DoubleSide, depthWrite:false});
+// Per-face color classification for the lid STL (non-indexed geometry: 3 verts per face).
+function colorizeLid(geo) {
+  const pos = geo.attributes.position, nor = geo.attributes.normal;
+  const colors = new Float32Array(pos.count * 3);
+  const cBlack=[0.07,0.07,0.08], cWhite=[0.93,0.93,0.90], cBlue=[0.66,0.78,0.91], cTan=[0.91,0.85,0.72];
+  const POCKETS = IN_PLANE_PAIRS.map(([i,j]) => mid(i,j)).concat([[0,0]]);   // pair pockets + central
+  for (let f = 0; f < pos.count; f += 3) {
+    let cx=0, cy=0, cz=0, nz=0;
+    for (let k = 0; k < 3; k++) {
+      cx += pos.getX(f+k)/3; cy += pos.getY(f+k)/3; cz += pos.getZ(f+k)/3;
+      nz += nor.getZ(f+k)/3;
+    }
+    const r0 = Math.hypot(cx, cy);
+    let c;
+    if (cz > 23.7 || r0 > 85.0) c = cBlack;                       // outside top + outer rim
+    else if (Math.abs(nz) > 0.85 && cz < 11.7) c = cWhite;        // flat underside
+    else {
+      let tan_ = false;
+      for (const M of POCKETS) {                                  // swap pockets (pairs + central)
+        if (Math.hypot(cx - M[0], cy - M[1]) < 30.2) { tan_ = true; break; }
+      }
+      if (!tan_) for (const s of [2, 9]) {                        // (2,9) tunnel stadium pockets
+        const az = Math.atan2(P(s)[1], P(s)[0]);
+        const ux = Math.cos(az), uy = Math.sin(az);
+        const t = cx*ux + cy*uy;
+        if (t > 20 && t < 72 && Math.hypot(cx - t*ux, cy - t*uy) < 13.2) { tan_ = true; break; }
+      }
+      if (!tan_) {                                                // apex slit + transit torus
+        const d = Math.hypot(cy - APEX_RING_CY, cz - eq);
+        if (d < 24.6 && Math.abs(cx) < 26) tan_ = true;
+      }
+      if (tan_) c = cTan;
+      else if (r0 > 44 && r0 < 70) c = cBlue;                     // spin channel band (dome + slot walls)
+      else c = cWhite;
+    }
+    for (let k = 0; k < 3; k++) colors.set(c, (f+k)*3);
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+}
 
 let spinRingInnerMesh = null, spinRingOuterMesh = null;   // continuous rings (ride the elevator)
 const inPlaneSwapMeshes = {};  // key "i,j" → mesh (already positioned at M by SCAD)
@@ -298,6 +343,7 @@ const inPlaneDivMeshes  = {};  // key "i,j" → mesh (at LOCAL origin; we transl
 let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
 let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
+let panMesh = null;                                   // bottom pan (static)
 // Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin. The central
 // divider's long axis rests ALONG P: base rotation = azimuth(P) − 90°.
 const CENTRAL_P_AZ = Math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + Math.PI; // 122.73°
@@ -397,11 +443,17 @@ function build() {
     centralDivMesh.rotation.z = CENTRAL_DIV_BASE;
     root.add(centralDivMesh);
   }
-  // Lid
+  // Lid — vertex-colored: black outside, white inside, blue spin carves, tan swap carves.
   if (geoms.lid) {
+    colorizeLid(geoms.lid);
     lidMesh = new THREE.Mesh(geoms.lid, matLid());
     lidMesh.visible = false;
     root.add(lidMesh);
+  }
+  // Bottom pan — static floor plate with the apex spare-tire bulge.
+  if (geoms.pan) {
+    panMesh = new THREE.Mesh(geoms.pan, new THREE.MeshStandardMaterial({color:0x2a2a30, roughness:0.8, metalness:0.1}));
+    root.add(panMesh);
   }
   // Balls 0..N — neutral white material. Colour comes from the per-station spotlights below.
   const sph = new THREE.SphereGeometry(rb, 40, 28);
@@ -714,6 +766,7 @@ document.getElementById('cbDivider').onchange = e=>{
   if (centralDivMesh) centralDivMesh.visible = v;
 };
 document.getElementById('cbLid').onchange = e=>{ if (lidMesh) lidMesh.visible = e.target.checked; };
+document.getElementById('cbPan').onchange = e=>{ if (panMesh) panMesh.visible = e.target.checked; };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
 document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
 
@@ -728,6 +781,7 @@ document.getElementById('cbIsolate1').onchange = e => {
   for (const key in inPlaneDivMeshes) if (inPlaneDivMeshes[key]) inPlaneDivMeshes[key].visible = !iso;
   if (centralRingMesh) centralRingMesh.visible = !iso;
   if (centralDivMesh) centralDivMesh.visible = !iso;
+  if (panMesh) panMesh.visible = !iso && document.getElementById('cbPan').checked;
   // Apex swap ring, apex divider, ball 0 and ball 1 — always visible when iso is on
   if (apexSwapMesh)  apexSwapMesh.visible = true;
   if (apexDivMesh)   apexDivMesh.visible = true;
@@ -755,15 +809,13 @@ document.getElementById('diffSlider').oninput = e => {
   diffBelow.intensity = total / 2;
 };
 
-// Lid opacity slider — 0 = invisible, 1 = fully opaque BLACK. Colour lerps gold → black as
-// opacity climbs, so the intermediate stops give a natural translucent-to-solid feel.
-const _lidGold  = new THREE.Color(0xc89a55);
-const _lidBlack = new THREE.Color(0x000000);
+// Lid opacity slider — 0 = invisible, 1 = fully opaque. The lid's colours come from its
+// VERTEX COLORS (black outside, white inside, blue/tan carves), so the slider only drives
+// opacity — no colour lerp (mat.color stays white so the vertex palette reads true).
 document.getElementById('lidSlider').oninput = e => {
   if (!lidMesh) return;
   const op = parseFloat(e.target.value);
   const mat = lidMesh.material;
-  mat.color.copy(_lidGold).lerp(_lidBlack, op);
   mat.opacity = op;
   mat.transparent = op < 0.99;
   mat.depthWrite = op >= 0.99;

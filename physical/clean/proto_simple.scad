@@ -303,6 +303,36 @@ module divider_central() {
             cube([div_thin, central_div_ext, apex_div_h]);
 }
 
+// ---- BOTTOM PAN (Scott 2026-07-04) ----
+// Flat across the whole footprint EXCEPT at the apex (0,1) swap ring, where a
+// "covering half a spare tire" bulge swoops below the pan plane to house the PARKED
+// ring (parked center (0, R+half_chord, eq−21) = (0, 70.89, −11); reach 26.23; X ±10.4;
+// parked bottom −37.2). Pan top at −22: 0.6 below the deepest parked walls (−21.4).
+pan_top   = -22;
+pan_t     = 2;
+pan_r     = 100;                                   // covers the bulge's +Y extent (~99.6)
+bulge_cav_r   = pair_outer_R(0,1) + wall_t/2 + 0.5;   // 26.73 — parked ring + 0.5 clearance
+bulge_cav_len = apex_wall_h + 1;                       // 21.8 — ring axial + 0.5 per side
+bulge_wall    = 2;
+module bottom_pan() {
+    difference() {
+        union() {
+            translate([0, 0, pan_top - pan_t]) cylinder(h = pan_t, r = pan_r, $fn=220);
+            // spare-tire bulge shell — only the part below the pan plane
+            intersection() {
+                translate([-(bulge_cav_len/2 + bulge_wall), R + apex_half_chord(), eq - 21])
+                    rotate([0, 90, 0])
+                        cylinder(h = bulge_cav_len + 2*bulge_wall, r = bulge_cav_r + bulge_wall, $fn=120);
+                translate([-200, -200, pan_top - 200]) cube([400, 400, 200]);
+            }
+        }
+        // cavity: parked-ring clearance (also opens the hole in the flat slab above the bulge)
+        translate([-bulge_cav_len/2, R + apex_half_chord(), eq - 21])
+            rotate([0, 90, 0])
+                cylinder(h = bulge_cav_len, r = bulge_cav_r, $fn=120);
+    }
+}
+
 // ---- bases (just visualization — flat plates under the walls) ----
 base_t = 1.5;
 module base_spin() {
@@ -327,6 +357,7 @@ else if (PART == "spin_ring_inner") spin_ring_inner();
 else if (PART == "spin_ring_outer") spin_ring_outer();
 else if (PART == "central_ring") swap_ring_central();
 else if (PART == "central_divider") divider_central();
+else if (PART == "bottom_pan") bottom_pan();
 else if (PART == "swap_ring") swap_ring(5, 6);
 else if (PART == "divider")   divider_simple(5, 6);
 else if (PART == "base_spin") base_spin();
