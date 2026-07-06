@@ -6,7 +6,8 @@
 <style>
   html,body{margin:0;height:100%;background:#0d0f15;color:#cdd3e0;font:13px/1.45 -apple-system,Helvetica,Arial,sans-serif;overflow:hidden}
   #c{position:fixed;inset:0}
-  #hud{position:fixed;left:14px;top:12px;max-width:48%;opacity:.95}
+  #hud{position:fixed;left:14px;top:12px;max-width:48%;opacity:.95;display:none}
+  #hud.show{display:block}
   #hud b{color:#fff}
   #bar{position:fixed;right:14px;top:12px;text-align:right}
   #bar .row{margin-bottom:6px}
@@ -54,7 +55,7 @@ to preview just the (0,1) mechanism.</div>
     <label class="cb"><input type="checkbox" id="cbPan" checked>pan</label>
     <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
     <label class="cb"><input type="checkbox" id="cbIsolate1">isolate 1</label>
-    <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button>
+    <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button><button id="bInfo">ⓘ info</button>
   </div>
   <div class="row">
     <label class="sl">diffuse <input type="range" id="diffSlider" min="0" max="2" step="0.02" value="0.7"></label>
@@ -63,7 +64,12 @@ to preview just the (0,1) mechanism.</div>
 </div>
 <div id="hint">drag = orbit · scroll = zoom · ⤒ swap all · ← → spin steps · [ ] scrub swap · space play</div>
 <div id="stat">loading…</div>
-<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" }}</script>
+<script type="importmap">{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+  "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.7.8/build/index.module.js",
+  "three-bvh-csg": "https://cdn.jsdelivr.net/npm/three-bvh-csg@0.0.16/build/index.module.js"
+}}</script>
 <script type="module">
 import * as THREE from 'three';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
@@ -357,6 +363,7 @@ let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
 let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
 let panMesh = null, sideWallMesh = null;              // bottom pan + enclosing side cylinder (static)
+let apexDivInner = null;                              // the apex blade MESH inside the apexDivMesh group
 // Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin.
 // REST poses (Scott 2026-07-04): all non-apex dividers rest π/2 from their working
 // orientation. In-plane pairs: long axis ALONG the chord (floor under the spin channel)
@@ -446,6 +453,7 @@ function build() {
   // so the swap rotation composes cleanly.
   if (geoms.div_01) {
     const inner = new THREE.Mesh(geoms.div_01, matDividerApex());
+    apexDivInner = inner;
     apexDivMesh = new THREE.Group();
     apexDivMesh.add(inner);
     apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP - APEX_PARK_DEPTH);
@@ -527,9 +535,110 @@ function build() {
     }
   }
 
+  registerSolids();
   renderIdle();
   frame();
   setControls();
+}
+
+// ---- LIVE INTERSECTION HIGHLIGHTER (Scott 2026-07-06) ----
+// Every solid-pair overlap is rendered in EMERGENCY ORANGE. Pipeline per animation-frame
+// change: world-AABB prefilter over all pairs → BVH triangle-intersection test on the
+// survivors → real CSG intersection mesh ONLY for actual hits (usually none). The designed
+// central↔pair ring merges are excluded. Degrades gracefully: if the CDN modules fail to
+// load, the viewer runs without highlighting.
+const SOLIDS = [];
+const IX_EXCLUDE = new Set();   // 'a|b' canonical pairs that intentionally merge
+function reg(name, mesh) { if (mesh) SOLIDS.push({name, mesh}); }
+function registerSolids() {
+  reg('ringInner', spinRingInnerMesh); reg('ringOuter', spinRingOuterMesh);
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    reg(`swap${i}${j}`, inPlaneSwapMeshes[keyOf(i,j)]);
+    reg(`div${i}${j}`,  inPlaneDivMeshes[keyOf(i,j)]);
+  }
+  reg('centralRing', centralRingMesh); reg('centralDiv', centralDivMesh);
+  reg('apexRing', apexSwapMesh); reg('apexDiv', apexDivInner);
+  reg('pan', panMesh); reg('sideWall', sideWallMesh); reg('lid', lidMesh);
+  for (let s=0; s<=N; s++) if (balls[s]) reg(`ball${s}`, balls[s].m);
+  // the central ring MERGES with the four pair rings by design — not a defect
+  for (const [i,j] of IN_PLANE_PAIRS) {
+    IX_EXCLUDE.add(pairKey('centralRing', `swap${i}${j}`));
+  }
+}
+function pairKey(a, b) { return a < b ? a+'|'+b : b+'|'+a; }
+
+const ixGroup = new THREE.Group(); scene.add(ixGroup);   // world-frame results
+const ixMat = new THREE.MeshBasicMaterial({color:0xff5f00, transparent:true, opacity:0.95, depthTest:false});
+let csg = null;   // {MeshBVH, Evaluator, Brush, INTERSECTION, evaluator, brushes:Map}
+let ixBroken = false;
+(async () => {
+  try {
+    const bvhMod = await import('three-mesh-bvh');
+    const csgMod = await import('three-bvh-csg');
+    csg = {
+      MeshBVH: bvhMod.MeshBVH,
+      Brush: csgMod.Brush,
+      INTERSECTION: csgMod.INTERSECTION,
+      evaluator: new csgMod.Evaluator(),
+      brushes: new Map(),
+    };
+    csg.evaluator.attributes = ['position', 'normal'];
+  } catch (e) {
+    console.warn('intersection highlighter unavailable (CDN import failed):', e);
+    ixBroken = true;
+  }
+})();
+const _tmpBoxA = new THREE.Box3(), _tmpBoxB = new THREE.Box3();
+const _tmpMatA = new THREE.Matrix4(), _tmpMatB = new THREE.Matrix4();
+function ensurePrepared(solid) {
+  const g = solid.mesh.geometry;
+  if (!g.boundingBox) g.computeBoundingBox();
+  if (!g.boundsTree) g.boundsTree = new csg.MeshBVH(g);
+}
+function brushFor(solid) {
+  let b = csg.brushes.get(solid.name);
+  if (!b) { b = new csg.Brush(solid.mesh.geometry); csg.brushes.set(solid.name, b); }
+  b.matrix.copy(solid.mesh.matrixWorld);
+  b.matrix.decompose(b.position, b.quaternion, b.scale);
+  b.updateMatrixWorld(true);
+  return b;
+}
+function checkIntersections() {
+  if (!csg || ixBroken) return;
+  try {
+    for (const m of ixGroup.children) m.geometry.dispose();
+    ixGroup.clear();
+    scene.updateMatrixWorld(true);
+    for (const s of SOLIDS) ensurePrepared(s);
+    for (let a = 0; a < SOLIDS.length; a++) {
+      const A = SOLIDS[a];
+      _tmpBoxA.copy(A.mesh.geometry.boundingBox).applyMatrix4(A.mesh.matrixWorld);
+      for (let b = a+1; b < SOLIDS.length; b++) {
+        const B = SOLIDS[b];
+        if (IX_EXCLUDE.has(pairKey(A.name, B.name))) continue;
+        _tmpBoxB.copy(B.mesh.geometry.boundingBox).applyMatrix4(B.mesh.matrixWorld);
+        if (!_tmpBoxA.intersectsBox(_tmpBoxB)) continue;
+        // BVH exact triangle test in A's local frame
+        _tmpMatA.copy(A.mesh.matrixWorld).invert();
+        _tmpMatB.multiplyMatrices(_tmpMatA, B.mesh.matrixWorld);
+        if (!A.mesh.geometry.boundsTree.intersectsGeometry(B.mesh.geometry, _tmpMatB)) continue;
+        // real overlap: build the CSG intersection and paint it orange
+        const result = csg.evaluator.evaluate(brushFor(A), brushFor(B), csg.INTERSECTION);
+        if (result && result.geometry && result.geometry.attributes.position &&
+            result.geometry.attributes.position.count > 0) {
+          result.material = ixMat;
+          result.renderOrder = 20;
+          // keep the evaluator-assigned transform from being clobbered by matrixAutoUpdate
+          result.matrix.decompose(result.position, result.quaternion, result.scale);
+          ixGroup.add(result);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('intersection highlighter error — disabled:', e);
+    ixBroken = true;
+    ixGroup.clear();
+  }
 }
 
 function placeBall(s, x, y, z) {
@@ -796,6 +905,12 @@ document.getElementById('cbPan').onchange = e=>{
 };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
 document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
+// Info text toggle — hidden by default (Scott 2026-07-06: unhelpful on a phone).
+document.getElementById('bInfo').onclick = e=>{
+  const hud = document.getElementById('hud');
+  hud.classList.toggle('show');
+  e.target.textContent = hud.classList.contains('show') ? '✕ info' : 'ⓘ info';
+};
 
 document.getElementById('cbIsolate1').onchange = e => {
   const iso = e.target.checked;
@@ -863,6 +978,7 @@ function frame() {
 document.getElementById('rv').onclick = frame;
 addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
+let _lastIxKey = '';
 (function loop(now) {
   requestAnimationFrame(loop);
   if (mode==='swap') {
@@ -876,6 +992,12 @@ addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.up
     renderSpin(ss(t));
     if (t >= 1) { endSpin(); }
   }
+  // Intersection highlighting: recompute only when the pose actually changes
+  // (per swap frame, ~150 ms buckets during spin, on state change at idle).
+  const ixKey = mode === 'swap' ? 'sw:' + swapFrame
+              : mode === 'spin' ? 'sp:' + Math.floor(now / 150)
+              : 'id:' + stationOf.join(',');
+  if (ixKey !== _lastIxKey) { _lastIxKey = ixKey; checkIntersections(); }
   controls.update(); renderer.render(scene, camera);
 })(performance.now());
 </script>
