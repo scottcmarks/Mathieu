@@ -564,6 +564,11 @@ function registerSolids() {
   for (const [i,j] of IN_PLANE_PAIRS) {
     IX_EXCLUDE.add(pairKey('centralRing', `swap${i}${j}`));
   }
+  // designed FLUSH contacts (zero-volume, coplanar): pan⊥sideWall at Z=−22, lid⊥sideWall at
+  // 11.5. The BVH reports surface contact, which forced a heavy (and pointless) CSG evaluate
+  // on big meshes at EVERY frame change — that stall was what made "play" jump ~7 frames.
+  IX_EXCLUDE.add(pairKey('pan', 'sideWall'));
+  IX_EXCLUDE.add(pairKey('lid', 'sideWall'));
 }
 function pairKey(a, b) { return a < b ? a+'|'+b : b+'|'+a; }
 
@@ -978,7 +983,7 @@ function frame() {
 document.getElementById('rv').onclick = frame;
 addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
-let _lastIxKey = '';
+let _lastIxKey = '', _lastIxTime = 0;
 (function loop(now) {
   requestAnimationFrame(loop);
   if (mode==='swap') {
@@ -994,10 +999,16 @@ let _lastIxKey = '';
   }
   // Intersection highlighting: recompute only when the pose actually changes
   // (per swap frame, ~150 ms buckets during spin, on state change at idle).
+  // While PLAYING, additionally throttle to ~5 Hz so a slow check can never
+  // stall the clock-driven frame counter (the ~7-frame-jump bug).
   const ixKey = mode === 'swap' ? 'sw:' + swapFrame
               : mode === 'spin' ? 'sp:' + Math.floor(now / 150)
               : 'id:' + stationOf.join(',');
-  if (ixKey !== _lastIxKey) { _lastIxKey = ixKey; checkIntersections(); }
+  const ixDue = !(mode === 'swap' && playing) || (now - _lastIxTime > 200);
+  if (ixKey !== _lastIxKey && ixDue) {
+    _lastIxKey = ixKey; _lastIxTime = now;
+    checkIntersections();
+  }
   controls.update(); renderer.render(scene, camera);
 })(performance.now());
 </script>
