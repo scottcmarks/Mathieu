@@ -176,19 +176,21 @@ module swap_ring_apex_vertical() {
     // Result during swap: ring center at (0, R+apex_half_chord, eq) = (0, 68.89, 10). Balls stay
     // at Z=eq throughout; during the π orbit around world +X, one ball dips to Z=eq−apex_half_chord
     // = −3.33 and the other rises to Z=eq+apex_half_chord = +23.33.
-    // CLOSED AT THE BOTTOM (Scott 2026-07-03): one continuous 240° arc — from 30° above
-    // horizontal on the ball-0 side, around the bottom, to 30° above horizontal on the
-    // ball-1 side — replacing the old 3-arc set (2 perp + 1 small bottom chord). The 120°
-    // OPENING is centered straight UP, where the ring depends on the LID for ball capture.
-    // Local angle map: chord0 direction (local −Y) → world DOWN after the two rotations,
-    // so the arc is centered at local −90° with ±120° span.
+    // CLOSED AT THE BOTTOM, 180° (2026-07-06, was 240°): one continuous arc from HORIZONTAL
+    // on the ball-0 side, around the bottom, to HORIZONTAL on the ball-1 side. The full-frame
+    // sweep proved the old 30°-above-horizontal tips (a) swept through the RESTING balls 0/1
+    // during the ring's 21 mm rise (40.7 mm³ bites), and (b) sat inside the LID slab at
+    // swap-up (664 mm³ at Y≈93.6, outside the slit carve). Ending the arc at horizontal
+    // fixes both: the tips never rise above the ring center's Z, and the resting balls stay
+    // strictly above the ring's horizontal plane throughout the stroke. The upper half is
+    // open — the LID (slit + transit torus) does all over-horizontal capture.
     translate([0, R, eq])
         rotate([90, 0, 0])
             translate([0, -R, -eq])
                 translate([0, R, apex_Z_c()])
                     rotate([0, 90, 0])
-                        rotate([0, 0, -90 - 120])
-                            rotate_extrude(angle = 240, $fn=180)
+                        rotate([0, 0, -90 - 90])
+                            rotate_extrude(angle = 180, $fn=180)
                                 translate([pair_outer_R(0, 1) - wall_t/2, -apex_wall_h/2])
                                     square([wall_t, apex_wall_h]);
 }

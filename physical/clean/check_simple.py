@@ -1,114 +1,116 @@
 #!/usr/bin/env python3
 """TRACK-2 SIMPLE-WALLS interference checker — per-frame solid boolean sweep.
 
-Scott called out (visually, from viewer_simple.html) three real bugs the viewer didn't catch:
-  frame 6:   swap walls intersect spin walls (full 360° swap ring overlaps inner spin-wall arc)
-  frame 51:  balls counter-rotate through each other; ball 6 intersects the divider
-  frame 112: spin wall ∩ swap wall, swap wall ∩ ball, divider ∩ spin wall (no slots)
+UPGRADED 2026-07-06 (Scott: "upgrade"):
+  * EVERY frame checked (FRAMES=120 — the full clip, no sub-sampling).
+  * ALL FOUR pair mechanisms in the unions (was only (5,6)); all pair balls animate.
+  * The APEX (0,1) mechanism swept: vertical ring (rises 21), blade (π about world X),
+    balls 0 & 1 on their vertical orbit — vs everything else.
+  * BALL 0 included in ball-vs-ball and ball-vs-wall.
+  * NEW gate WALLS-vs-LID: every mover vs the lid solid (imported from the rendered
+    proto_lid.stl so the heavy lid CSG isn't re-evaluated per frame). Verifies the
+    ring slits/bridges, pockets, apex slit + transit torus.
+  * POSITIVE CONTROLS at startup — aborts loudly if any key solid renders empty
+    (the silent-zero family: ASCII STL, missing use<>, undef params, bad cwd).
 
-This script samples FRAMES across the (5,6) swap clip and at each frame booleans:
-  SWAP-vs-SPIN     swap walls (at z = swapWallZ) ∩ spin segs (at z = spinSegZ(k,u))
-  DIV-vs-SPIN      divider (at dividerPose) ∩ spin segs at their current z
-  BALL-vs-WALL     each ball sphere ∩ union of all walls + divider
-  BALL-vs-BALL     all C(12,2) pairs of ball spheres (analytic — fast)
-  BALL-vs-DIV      each ball ∩ divider
+Gates per frame:
+  swap_vs_spin   all swap walls (4 pairs + central + apex ring) ∩ spin rings
+  div_vs_spin    all dividers (4 pairs + central + apex blade) ∩ spin rings
+  div_vs_swap    all dividers ∩ all swap walls
+  ball_vs_wall   balls 0..11 ∩ (rings + swap walls + dividers)
+  ball_vs_div    balls 0..11 ∩ dividers
+  walls_vs_lid   (rings + swap walls + dividers) ∩ lid
+  ball_vs_ball   all C(12,2) pairs (analytic)
 
-Mirrors viewer_simple.html kinematics EXACTLY (including the FIXED same-direction orbit).
-Uses the ASCII-aware vol() parser from check_29_solid.py.
+Mirrors viewer_simple.html kinematics EXACTLY.
 """
-import math, struct, subprocess, sys, os, itertools, re
+import math, struct, subprocess, sys, os, itertools
 from concurrent.futures import ThreadPoolExecutor
 
 HERE   = os.path.dirname(os.path.abspath(__file__))
 OPENSCAD = "/opt/homebrew/bin/openscad"
+LID_STL  = os.path.join(HERE, 'proto_lid.stl')
 TOL    = 1.0           # mm^3
-FRAMES = 24            # sample density for solid checks (every 5 frames of the 120-frame clip)
+FRAMES = 120           # EVERY frame of the 120-frame clip
 
 # ---- mirror proto_simple.scad constants ----
-SCALE=20/18; R=50*SCALE+2; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2   # R +2 mm (Scott 2026-07-03)
+SCALE=20/18; R=50*SCALE+2; N=11; ball_d=18*SCALE; rb=ball_d/2; eq=ball_d/2
 wall_t=2.0; wall_h=rb+0.5
 clr=0.4
-inner_R_spin=R-rb-clr-wall_t/2          # 44.66
-outer_R_spin=R+rb+clr+wall_t/2          # 66.46
-gap_deg=5.0                              # widened so divider fits through inter-seg gap
-half_angle=360/N/2 - gap_deg/2
-# UPDATED: ball stays at half-chord distance from M throughout the orbit (no radial transit)
-orbit_swap = 2*R*math.sin(math.pi/N)/2   # 15.63 — half-chord from M (== station distance)
-outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 0.5   # mirror proto_simple.scad pair_outer_R (+0.5 fudge since ring shrink)
-# Blade divider (all pairs like the 0-1 paddle): thin 6 along chord, long ≈50.8 perpendicular
-div_thin = 3*wall_t                       # 6.0
-div_ext  = 2*(outer_R_swap - wall_t) - 1.2  # blade length for pair (5,6)
-# COMMON STROKE (Scott 2026-07-03): segs, swap walls, and dividers all travel the same 21 mm
-# in the same u-window so they can be rigidly attached to one common movement piece.
+inner_R_spin=R-rb-clr-wall_t/2          # 46.16
+outer_R_spin=R+rb+clr+wall_t/2          # 68.96
+orbit_swap = R*math.sin(math.pi/N)      # 16.21 — pair half-chord
+outer_R_swap = orbit_swap + rb + clr + wall_t/2 + 0.5   # 28.11 — pair/central ring centerline
+div_thin = 3*wall_t                     # 6.0
 COMMON_STROKE = 21
-LIFT_SEG_UP = COMMON_STROKE      # segs RISE UP into lid THROUGH-SLOTS; must clear ball top at Z=20
-PARK_DEPTH_DIV = COMMON_STROKE   # divider parks 21 below (was 13) — rides the common frame
-PARK_DEPTH_SWAP = COMMON_STROKE  # swap walls park 21 below (was 11) — ride the common frame
-PARK_DEPTH = LIFT_SEG_UP         # alias for backward-compat (segs)
+LIFT_SEG_UP = COMMON_STROKE
+PARK_DEPTH_DIV = COMMON_STROKE
+PARK_DEPTH_SWAP = COMMON_STROKE
 
-PAIR_I, PAIR_J = 5, 6
+PAIRS = [(3,4), (5,6), (7,8), (10,11)]
+PAIR_OF = {}
+for (i,j) in PAIRS:
+    PAIR_OF[i] = (i,j); PAIR_OF[j] = (i,j)
 
 def A(s): return -90+(s-1)*(360.0/N)
 def P(s):
     a=math.radians(A(s)); return (R*math.cos(a), -R*math.sin(a))
-def th(s): return -A(s)
 def mid(i,j): return ((P(i)[0]+P(j)[0])/2, (P(i)[1]+P(j)[1])/2)
 def nrm(v):
     m=math.hypot(*v); return (v[0]/m, v[1]/m)
-Mp = mid(PAIR_I, PAIR_J)
-T_chord = nrm((P(PAIR_J)[0]-P(PAIR_I)[0], P(PAIR_J)[1]-P(PAIR_I)[1]))
-chord_base_ang = math.atan2(T_chord[1], T_chord[0])
+def chord_ang(i,j):
+    T = nrm((P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]))
+    return math.atan2(T[1], T[0])
 
 # ---- kinematics (mirror viewer_simple.html) ----
 def ss(x): x=max(0.0,min(1.0,x)); return x*x*(3-2*x)
 def ramp(u,a,b): return max(0.0,min(1.0,(u-a)/(b-a)))
 def srmp(u,a,b): return ss(ramp(u,a,b))
-# Phased schedule (UNIFIED — spin segs, swap walls, and divider all rise/drop over the same
-# u=[0.00, 0.20] / [0.80, 1.00] windows; divider rotates through u=[0.20, 0.80] (same as balls))
-#   [0.00, 0.20] spin segs at 5,6 rise + swap walls + divider rise (all together)
-#   [0.20, 0.35] balls transit inward to orbit
-#   [0.35, 0.65] divider rotates π (both balls same direction)
-#   [0.65, 0.80] balls transit outward to swapped stations
-#   [0.80, 1.00] spin segs at 5,6 drop + swap walls + divider drop (all together)
-# CONTINUOUS RINGS (2026-07-03): per-station segments replaced by two one-piece rings
-# (spin_ring_inner / spin_ring_outer in proto_simple.scad — continuous except the 4 paddle
-# slots + station-1 outer wedge gap). Both rings ride the elevator frame: the WHOLE rings
-# lift LIFT_SEG_UP together during the swap.
 def spinRingZ(u):
     return LIFT_SEG_UP * (srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00))
 def swapWallZ(u):
     upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     return -PARK_DEPTH_SWAP * (1 - upT)
 def divRotAccum(u):
-    # Non-apex dividers (Scott 2026-07-04): rest π/2 from working (long axis ALONG the chord,
-    # a floor under the spin channel), rotate π/2 below the floor while 2,9 travel in, π up
-    # top, π/2 back below while they travel out. Total 2π per swap.
+    # Non-apex dividers: rest π/2 from working (floor pose), π/2 below while 2,9 travel in,
+    # π up top, π/2 back below while they travel out. Total 2π per swap.
     return (math.pi/2 * srmp(u, 0.20, 0.35)
           + math.pi   * srmp(u, 0.35, 0.65)
           + math.pi/2 * srmp(u, 0.65, 0.80))
 def dividerZ(u):
-    # Paddles rise only in the last slice of the first π/2 (already ≥60° around — their
-    # plan-footprint clears the resting balls) and drop right after the π turn.
     upT = srmp(u, 0.30, 0.35) - srmp(u, 0.65, 0.70)
     return -PARK_DEPTH_DIV * (1 - upT)
-def dividerPose(u):
-    z = dividerZ(u)
-    rot = divRotAccum(u)
-    return Mp[0], Mp[1], z, (chord_base_ang - math.pi/2) + rot   # rest base: along the chord
 
-# Central (2,9) constants — mirror viewer_simple.html
+# Central (2,9)
 AZ2 = math.atan2(P(2)[1], P(2)[0])
 AZ9 = math.atan2(P(9)[1], P(9)[0])
-D29_2 = ((AZ9 - AZ2) % (2*math.pi) + 2*math.pi) % (2*math.pi)   # +130.91° CCW (ball 2)
-D29_9 = 2*math.pi - D29_2                                        # +229.09° CCW (ball 9)
-CENTRAL_R = outer_R_swap                                          # 28.11 — full pair-ring size
-R_ORB29 = CENTRAL_R - wall_t/2 - rb - clr                         # 16.71 — orbit radius inside central ring
-CENTRAL_P_AZ = math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + math.pi  # line P azimuth
-CENTRAL_DIV_BASE = CENTRAL_P_AZ - math.pi/2
+D29_2 = ((AZ9 - AZ2) % (2*math.pi) + 2*math.pi) % (2*math.pi)
+D29_9 = 2*math.pi - D29_2
+CENTRAL_R = outer_R_swap
+R_ORB29 = CENTRAL_R - wall_t/2 - rb - clr
+CENTRAL_P_AZ = math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + math.pi
+CENTRAL_DIV_BASE = CENTRAL_P_AZ - math.pi/2   # working start (long axis on P)
+
+# Apex (0,1)
+APEX_H  = 12*SCALE                 # 13.33 — half-chord
+APEX_CY = R + APEX_H               # 70.89 — ring center Y
+APEX_PARK = 21
+def apexRingZ(u):
+    upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
+    return -APEX_PARK * (1 - upT)
+def apexRot(u):
+    return math.pi * srmp(u, 0.35, 0.65)
 
 def ballPose(s, u):
+    if s in (0, 1):
+        home    = (0, R + 2*APEX_H, eq) if s == 0 else (0, R, eq)
+        partner = (0, R, eq)            if s == 0 else (0, R + 2*APEX_H, eq)
+        if u <= 0.35: return home
+        if u >= 0.65: return partner
+        a0 = math.pi if s == 1 else 0.0
+        a = a0 + math.pi * srmp(u, 0.35, 0.65)
+        return (0, APEX_CY + APEX_H*math.cos(a), eq + APEX_H*math.sin(a))
     if s in (2, 9):
-        # tunnel IN (0.20–0.35) → CCW orbit inside central ring (0.35–0.65) → tunnel OUT (0.65–0.80)
         azIn  = AZ2 if s == 2 else AZ9
         azOut = AZ9 if s == 2 else AZ2
         dAng  = D29_2 if s == 2 else D29_9
@@ -123,20 +125,17 @@ def ballPose(s, u):
             t = srmp(u, 0.65, 0.80); r = R_ORB29 + (R - R_ORB29)*t
             return (r*math.cos(azOut), r*math.sin(azOut), eq)
         return (R*math.cos(azOut), R*math.sin(azOut), eq)
-    if s not in (PAIR_I, PAIR_J): return (*P(s), eq)
-    home_pos = P(s); partner_pos = P(PAIR_J if s==PAIR_I else PAIR_I)
-    dir_to_home    = nrm((home_pos[0]-Mp[0],    home_pos[1]-Mp[1]))
-    # Balls stay at station distance from M; orbit synchronously with the dividers (u 0.35–0.65).
-    if u <= 0.35:      xy = home_pos
-    elif u <= 0.65:
-        t = srmp(u, 0.35, 0.65)                # same-direction π orbit
-        startAng = math.atan2(dir_to_home[1], dir_to_home[0])
-        ang = startAng + math.pi * t
-        xy = (Mp[0]+orbit_swap*math.cos(ang), Mp[1]+orbit_swap*math.sin(ang))
-    else:              xy = partner_pos
-    return (xy[0], xy[1], eq)
+    # in-plane pair ball (all four pairs animate)
+    i, j = PAIR_OF[s]
+    M = mid(i, j)
+    home_pos = P(s); partner_pos = P(j if s == i else i)
+    if u <= 0.35: return (*home_pos, eq)
+    if u >= 0.65: return (*partner_pos, eq)
+    d = nrm((home_pos[0]-M[0], home_pos[1]-M[1]))
+    a = math.atan2(d[1], d[0]) + math.pi * srmp(u, 0.35, 0.65)
+    return (M[0]+orbit_swap*math.cos(a), M[1]+orbit_swap*math.sin(a), eq)
 
-# ---- ASCII-aware STL parser (the fixed one) ----
+# ---- ASCII-aware STL parser ----
 def vol(p):
     with open(p,'rb') as f: d=f.read()
     if d[:5]==b'solid' and b'facet' in d[:512]:
@@ -161,61 +160,99 @@ def rv(body, tag):
     sf=f'/tmp/SI_{tag}.scad'; of=f'/tmp/SI_{tag}.stl'
     if os.path.exists(of): os.remove(of)
     open(sf,'w').write(f'use <{HERE}/proto_simple.scad>\n$fn=28;\n{body}\n')
-    r=subprocess.run([OPENSCAD,'-o',of,sf],capture_output=True,text=True)
+    subprocess.run([OPENSCAD,'-o',of,sf],capture_output=True,text=True)
     return vol(of) if os.path.exists(of) else 0.0
 
 # ---- SCAD-string helpers for placed parts at frame u ----
 def rings_scad(u):
-    z = spinRingZ(u)
-    return f'translate([0,0,{z:.3f}]) {{ spin_ring_inner(); spin_ring_outer(); }}'
-def swap_scad(u):    return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring({PAIR_I},{PAIR_J});'
-def div_scad(u):
-    x,y,z,a = dividerPose(u); ang=math.degrees(a)
-    # NB: must pass (i,j) — a bare divider_simple() yields an EMPTY solid (undef params) and
-    # silently zeroes every divider gate. Caught 2026-07-03; same silent-zero family as the
-    # ASCII-STL and missing-use bugs.
-    return f'translate([{x:.3f},{y:.3f},{z:.3f}]) rotate([0,0,{ang:.3f}]) divider_simple({PAIR_I},{PAIR_J});'
-def ball_scad(s, u):
-    x,y,z = ballPose(s,u); return f'translate([{x:.3f},{y:.3f},{z:.3f}]) sphere(r={rb},$fn=28);'
+    return f'translate([0,0,{spinRingZ(u):.3f}]) {{ spin_ring_inner(); spin_ring_outer(); }}'
+def pair_swap_scad(i, j, u):
+    return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring({i},{j});'
+def pair_div_scad(i, j, u):
+    M = mid(i, j)
+    rot = math.degrees(chord_ang(i, j) - math.pi/2 + divRotAccum(u))
+    return f'translate([{M[0]:.3f},{M[1]:.3f},{dividerZ(u):.3f}]) rotate([0,0,{rot:.3f}]) divider_simple({i},{j});'
 def central_scad(u):
     return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring_central();'
 def cdiv_scad(u):
-    z = dividerZ(u)
-    rot = math.degrees(CENTRAL_DIV_BASE - math.pi/2 + divRotAccum(u))   # rest ⊥ line P
-    return f'translate([0,0,{z:.3f}]) rotate([0,0,{rot:.3f}]) divider_central();'
+    rot = math.degrees(CENTRAL_DIV_BASE - math.pi/2 + divRotAccum(u))
+    return f'translate([0,0,{dividerZ(u):.3f}]) rotate([0,0,{rot:.3f}]) divider_central();'
+def apex_ring_scad(u):
+    return f'translate([0,0,{apexRingZ(u):.3f}]) swap_ring_apex_vertical();'
+def apex_div_scad(u):
+    cz = eq + apexRingZ(u)
+    return f'translate([0,{APEX_CY:.3f},{cz:.3f}]) rotate([{math.degrees(apexRot(u)):.3f},0,0]) divider_apex();'
+def lid_scad():
+    return f'import("{LID_STL}");'
+def ball_scad(s, u):
+    x,y,z = ballPose(s,u); return f'translate([{x:.3f},{y:.3f},{z:.3f}]) sphere(r={rb},$fn=28);'
+
+def all_swaps_scad(u):
+    return ' '.join(pair_swap_scad(i,j,u) for (i,j) in PAIRS) + f' {central_scad(u)} {apex_ring_scad(u)}'
+def all_divs_scad(u):
+    return ' '.join(pair_div_scad(i,j,u) for (i,j) in PAIRS) + f' {cdiv_scad(u)} {apex_div_scad(u)}'
+
+GATES = ['swap_vs_spin','div_vs_spin','div_vs_swap','ball_vs_wall','ball_vs_div','walls_vs_lid']
 
 def frame_check(k):
     u = k/FRAMES
-    segs_all = rings_scad(u)
-    walls_div = f'{swap_scad(u)} {div_scad(u)} {central_scad(u)} {cdiv_scad(u)}'
-    all_walls = f'{segs_all} {walls_div}'
-    balls = ' '.join(ball_scad(s,u) for s in range(1,N+1))
+    rings = rings_scad(u)
+    swaps = all_swaps_scad(u)
+    divs  = all_divs_scad(u)
+    balls = ' '.join(ball_scad(s,u) for s in range(0, N+1))
     out = {}
-    out['swap_vs_spin'] = rv(f'intersection(){{ {swap_scad(u)} union(){{ {segs_all} }} }}', f'ss{k}')
-    out['div_vs_spin']  = rv(f'intersection(){{ {div_scad(u)}  union(){{ {segs_all} }} }}', f'ds{k}')
-    out['div_vs_swap']  = rv(f'intersection(){{ {div_scad(u)}  {swap_scad(u)} }}',          f'd_sw{k}')
-    out['ball_vs_wall'] = rv(f'intersection(){{ union(){{ {balls} }} union(){{ {all_walls} }} }}', f'bw{k}')
-    out['ball_vs_div']  = rv(f'intersection(){{ union(){{ {balls} }} {div_scad(u)} }}',     f'bd{k}')
-    # ball-ball analytic
+    out['swap_vs_spin'] = rv(f'intersection(){{ union(){{ {swaps} }} union(){{ {rings} }} }}', f'ss{k}')
+    out['div_vs_spin']  = rv(f'intersection(){{ union(){{ {divs} }} union(){{ {rings} }} }}',  f'ds{k}')
+    out['div_vs_swap']  = rv(f'intersection(){{ union(){{ {divs} }} union(){{ {swaps} }} }}',  f'd_sw{k}')
+    out['ball_vs_wall'] = rv(f'intersection(){{ union(){{ {balls} }} union(){{ {rings} {swaps} {divs} }} }}', f'bw{k}')
+    out['ball_vs_div']  = rv(f'intersection(){{ union(){{ {balls} }} union(){{ {divs} }} }}',  f'bd{k}')
+    out['walls_vs_lid'] = rv(f'intersection(){{ union(){{ {rings} {swaps} {divs} }} {lid_scad()} }}', f'wl{k}')
     bb = 0; worst_bb=(0,None)
-    pos = [ballPose(s,u) for s in range(1,N+1)]
+    pos = [ballPose(s,u) for s in range(0, N+1)]
     for a, b in itertools.combinations(range(len(pos)),2):
         pen = ball_d - math.dist(pos[a], pos[b])
         if pen>0.4:
             bb+=1
-            if pen>worst_bb[0]: worst_bb=(pen,(a+1,b+1))
+            if pen>worst_bb[0]: worst_bb=(pen,(a,b))
     out['ball_vs_ball'] = (bb, worst_bb)
     return k, u, out
 
+def positive_controls():
+    """Abort loudly if any key solid renders empty — the silent-zero family."""
+    checks = [
+        ('lid (imported STL)',   lid_scad(),               10000),
+        ('spin rings',           rings_scad(0.0),           5000),
+        ('pair swap ring (5,6)', pair_swap_scad(5,6,0.0),   3000),
+        ('pair divider (5,6)',   pair_div_scad(5,6,0.0),    1000),
+        ('central ring+tubes',   central_scad(0.0),         3000),
+        ('apex ring',            apex_ring_scad(0.0),       1000),
+        ('apex blade',           apex_div_scad(0.0),         500),
+    ]
+    ok = True
+    for name, scad, floor_ in checks:
+        v = rv(scad, 'ctl_' + name.split()[0].strip('(),'))
+        status = 'ok' if v > floor_ else 'EMPTY/TOO-SMALL'
+        if v <= floor_: ok = False
+        print(f"  control {name:24} {v:10.1f} mm^3  {status}")
+    # detection control: two deliberately-overlapping cubes must intersect
+    v = rv('intersection(){ cube(10); translate([5,5,5]) cube(10); }', 'ctl_overlap')
+    print(f"  control {'overlap detection':24} {v:10.1f} mm^3  {'ok' if abs(v-125)<5 else 'BROKEN'}")
+    if abs(v-125) >= 5: ok = False
+    if not ok:
+        print("\nABORT: a positive control failed — the boolean pipeline cannot be trusted.")
+        sys.exit(2)
+
 def main():
-    print(f"SIMPLE-WALLS INTERFERENCE SWEEP  ({FRAMES+1} frames sampled across the (5,6) swap clip)")
-    print(f"  (mirror of viewer_simple.html with FIXED same-direction ball orbit)\n")
-    hits = {k:0 for k in ['swap_vs_spin','div_vs_spin','div_vs_swap','ball_vs_wall','ball_vs_div','ball_vs_ball']}
+    print(f"SIMPLE-WALLS INTERFERENCE SWEEP — {FRAMES+1} frames (EVERY frame), all 6 mechanisms + lid\n")
+    print("  positive controls:")
+    positive_controls()
+    print()
+    hits = {k:0 for k in GATES + ['ball_vs_ball']}
     worst = {k:(0,None) for k in hits}
     with ThreadPoolExecutor(max_workers=8) as ex:
         for k, u, out in ex.map(frame_check, range(FRAMES+1)):
             line_bits = []
-            for key in ['swap_vs_spin','div_vs_spin','div_vs_swap','ball_vs_wall','ball_vs_div']:
+            for key in GATES:
                 v = out[key]
                 if v>TOL:
                     hits[key]+=1
@@ -226,20 +263,20 @@ def main():
                 hits['ball_vs_ball']+=1
                 if wbb[0]>worst['ball_vs_ball'][0]: worst['ball_vs_ball']=wbb
                 line_bits.append(f"ball-ball pen={wbb[0]:.2f}mm pair={wbb[1]}")
-            if line_bits: print(f"  frame {k*120//FRAMES:3d} (u={u:.2f}): " + "  ".join(line_bits))
+            if line_bits: print(f"  frame {k:3d} (u={u:.3f}): " + "  ".join(line_bits))
     print()
-    print("  SUMMARY (over the {} sampled frames; lower is better):".format(FRAMES+1))
-    for key in ['swap_vs_spin','div_vs_spin','div_vs_swap','ball_vs_wall','ball_vs_div']:
+    print(f"  SUMMARY (over {FRAMES+1} frames — every frame of the clip):")
+    for key in GATES:
         h, w = hits[key], worst[key]
         mark = "PASS" if h==0 else "FAIL"
-        print(f"    {key:15} {mark}  {h:3d} bad frames; worst {w[0]:.1f} mm^3 @ frame {w[1]*120//FRAMES if w[1] is not None else '—'}")
+        print(f"    {key:15} {mark}  {h:3d} bad frames; worst {w[0]:.1f} mm^3 @ frame {w[1] if w[1] is not None else '—'}")
     h, w = hits['ball_vs_ball'], worst['ball_vs_ball']
     mark = "PASS" if h==0 else "FAIL"
     print(f"    {'ball_vs_ball':15} {mark}  {h:3d} bad frames; worst pen {w[0]:.2f}mm pair={w[1]}")
     rc = sum(hits.values())
     print()
     if rc==0:
-        print("RESULT: PASS — no interference detected (within TOL=1 mm^3, every-{}-frame sampling).".format(120//FRAMES))
+        print(f"RESULT: PASS — no interference detected (TOL={TOL} mm^3, every frame).")
         sys.exit(0)
     else:
         print(f"RESULT: FAIL — {rc} category-frames have interference. Geometry needs revision.")
