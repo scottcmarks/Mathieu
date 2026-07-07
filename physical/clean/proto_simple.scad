@@ -195,15 +195,25 @@ module swap_ring_apex_vertical() {
     // fixes both: the tips never rise above the ring center's Z, and the resting balls stay
     // strictly above the ring's horizontal plane throughout the stroke. The upper half is
     // open — the LID (slit + transit torus) does all over-horizontal capture.
+    // BOTH-EDGE LIPS (Scott 2026-07-07): like the in-plane rings' bottom lips, but on BOTH
+    // axial edges of the apex ring walls (profile Y = eventual world-X). They protrude
+    // radially inward to 23.23, blocking the balls' AXIAL escape from the ring plane (a
+    // ball's equator reaches 23.33). The 16-wide paddle (X ±8) clears the lips (X ≥ 8.4)
+    // by 0.4; orbiting balls only reach radius 18.75 at the lips' X-range.
     translate([0, R, eq])
         rotate([90, 0, 0])
             translate([0, -R, -eq])
                 translate([0, R, apex_Z_c()])
                     rotate([0, 90, 0])
                         rotate([0, 0, -90 - 90])
-                            rotate_extrude(angle = 180, $fn=180)
+                            rotate_extrude(angle = 180, $fn=180) {
                                 translate([pair_outer_R(0, 1) - wall_t/2, -apex_wall_h/2])
                                     square([wall_t, apex_wall_h]);
+                                translate([pair_outer_R(0, 1) - wall_t/2 - lip_o, -apex_wall_h/2])
+                                    square([lip_o + 0.1, lip_h]);
+                                translate([pair_outer_R(0, 1) - wall_t/2 - lip_o, apex_wall_h/2 - lip_h])
+                                    square([lip_o + 0.1, lip_h]);
+                            }
 }
 
 // legacy constants — used by other files that import from here
