@@ -162,24 +162,18 @@ function swapWallZOffset(u) {
   const upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00);
   return -PARK_DEPTH_SWAP * (1 - upT);
 }
-// NON-APEX divider schedule (Scott 2026-07-04): the paddles rest π/2 from their working
-// orientation (long axis ALONG the chord — acting as a FLOOR under the spin channel, tops
-// at −0.6), rotate π/2 below the floor while balls 2 & 9 travel inward, RISE only in the
-// last slice of that window (by then they're ≥60° around, so their plan-footprint clears
-// the resting balls), do the π swap turn up top, drop, and rotate the last π/2 back below.
-// Total 2π per swap — they end back at the floor pose. This decouples the dividers' Z from
-// the rigid elevator frame: they ride it on rotary bearings AND a short z-cam.
+// Divider schedule (Scott 2026-07-07: the initial/final π/2 turns are GONE). All dividers
+// rest in their WORKING orientation (in-plane: blade ⊥ chord, between the balls; central:
+// along line P) and do only the π swap turn in [0.35, 0.65]. A ⊥-chord blade rises cleanly
+// between the resting balls, so the paddles ride the rigid elevator frame again — same
+// [0.00, 0.20]/[0.80, 1.00] z-windows as everything else, no separate z-cam.
 function dividerZOffset(u) {
-  const upT = srmp(u, 0.30, 0.35) - srmp(u, 0.65, 0.70);
+  const upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00);
   return -PARK_DEPTH_DIV * (1 - upT);
 }
 function dividerRotAccum(u) {
-  // π/2 (below floor, while 2 & 9 travel in) + π (the swap turn) + π/2 (while they travel back)
-  return Math.PI/2 * srmp(u, 0.20, 0.35)
-       + Math.PI   * srmp(u, 0.35, 0.65)
-       + Math.PI/2 * srmp(u, 0.65, 0.80);
+  return Math.PI * srmp(u, 0.35, 0.65);
 }
-// The APEX divider keeps the plain π turn (its slit-constrained blade has no floor role).
 function apexRotAccum(u) {
   return Math.PI * srmp(u, 0.35, 0.65);
 }
@@ -367,16 +361,14 @@ let panMesh = null, sideWallMesh = null;              // bottom pan + enclosing 
 let apexDivInner = null;                              // the apex blade MESH inside the apexDivMesh group
 const spotLights = [];                                // the 24 station spotlights (for the toggle)
 // Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin.
-// REST poses (Scott 2026-07-04): all non-apex dividers rest π/2 from their working
-// orientation. In-plane pairs: long axis ALONG the chord (floor under the spin channel)
-// → rest rotation = chordAng − π/2, arriving at chordAng (between the balls) after the
-// first π/2. Central: long axis ⊥ line P at rest, arriving ON P at u=0.35.
+// REST poses (2026-07-07: π/2 bookends removed): dividers rest in their WORKING orientation.
+// In-plane pairs: blade ⊥ chord, standing between the balls. Central: long axis on line P.
 const CENTRAL_P_AZ = Math.atan2(mid(3,4)[1] + mid(7,8)[1], mid(3,4)[0] + mid(7,8)[0]) + Math.PI; // 122.73°
-const CENTRAL_DIV_WORK = CENTRAL_P_AZ - Math.PI/2;    // long axis ON P (working start)
-const CENTRAL_DIV_REST = CENTRAL_DIV_WORK - Math.PI/2; // rest: ⊥ P
+const CENTRAL_DIV_WORK = CENTRAL_P_AZ - Math.PI/2;    // long axis ON P
+const CENTRAL_DIV_REST = CENTRAL_DIV_WORK;            // rest = working
 function pairDivRest(i, j) {
   const T = nrm([P(j)[0]-P(i)[0], P(j)[1]-P(i)[1]]);
-  return Math.atan2(T[1], T[0]) - Math.PI/2;           // rest: long axis ALONG the chord
+  return Math.atan2(T[1], T[0]);                       // rest = working: blade ⊥ chord
 }
 let lidMesh = null;
 const ballsGroup = new THREE.Group(); root.add(ballsGroup);

@@ -72,13 +72,12 @@ def swapWallZ(u):
     upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     return -PARK_DEPTH_SWAP * (1 - upT)
 def divRotAccum(u):
-    # Non-apex dividers: rest π/2 from working (floor pose), π/2 below while 2,9 travel in,
-    # π up top, π/2 back below while they travel out. Total 2π per swap.
-    return (math.pi/2 * srmp(u, 0.20, 0.35)
-          + math.pi   * srmp(u, 0.35, 0.65)
-          + math.pi/2 * srmp(u, 0.65, 0.80))
+    # 2026-07-07: initial/final π/2 turns removed — dividers rest in their WORKING
+    # orientation and do only the π swap turn.
+    return math.pi * srmp(u, 0.35, 0.65)
 def dividerZ(u):
-    upT = srmp(u, 0.30, 0.35) - srmp(u, 0.65, 0.70)
+    # Back on the rigid elevator frame (a ⊥-chord blade rises cleanly between resting balls).
+    upT = srmp(u, 0.00, 0.20) - srmp(u, 0.80, 1.00)
     return -PARK_DEPTH_DIV * (1 - upT)
 
 # Central (2,9)
@@ -170,12 +169,12 @@ def pair_swap_scad(i, j, u):
     return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring({i},{j});'
 def pair_div_scad(i, j, u):
     M = mid(i, j)
-    rot = math.degrees(chord_ang(i, j) - math.pi/2 + divRotAccum(u))
+    rot = math.degrees(chord_ang(i, j) + divRotAccum(u))   # rest = working: blade ⊥ chord
     return f'translate([{M[0]:.3f},{M[1]:.3f},{dividerZ(u):.3f}]) rotate([0,0,{rot:.3f}]) divider_simple({i},{j});'
 def central_scad(u):
     return f'translate([0,0,{swapWallZ(u):.3f}]) swap_ring_central();'
 def cdiv_scad(u):
-    rot = math.degrees(CENTRAL_DIV_BASE - math.pi/2 + divRotAccum(u))
+    rot = math.degrees(CENTRAL_DIV_BASE + divRotAccum(u))   # rest = working: long axis on line P
     return f'translate([0,0,{dividerZ(u):.3f}]) rotate([0,0,{rot:.3f}]) divider_central();'
 def apex_ring_scad(u):
     return f'translate([0,0,{apexRingZ(u):.3f}]) swap_ring_apex_vertical();'
