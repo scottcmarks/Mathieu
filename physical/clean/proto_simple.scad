@@ -139,12 +139,23 @@ module swap_ring_local(i, j) { swap_ring_local_h(i, j, wall_h, false); }
 // MERGE RULE (Scott 2026-07-03): the full-size CENTRAL ring's wall bites ~1 mm into each pair
 // ring's interior and vice versa; every ring subtracts the others' circular interiors so all
 // interiors stay clear (walls blend like soap bubbles where they meet).
+// BOTTOM LIP (Scott 2026-07-07): every fused non-apex swap ring (and the 2/9 tube walls)
+// carries a small inward-facing lip at its LOWER edge — lip_o = 1.0 proud, lip_h = 2.0 tall,
+// flush with the wall bottom. In the tunnels this narrows the bottom opening to
+// 20.2 − 2·1.0 = 18.2 < ball Ø 20, so the balls cannot fall out the bottom. Ball clearance
+// holds everywhere because a ball is NARROW at lip height (cross-section r = 5.3 at Z = 1.6);
+// the paddle corner sweep (25.69) clears the lip edge (26.11) by 0.42 — no blade narrowing
+// needed.
+lip_o = 1.0;
+lip_h = 2.0;
 module swap_ring(i, j) {
     M = pair_M(i, j);
     difference() {
         translate([M[0], M[1], eq - apex_wall_h/2])
-            rotate_extrude($fn=180)
+            rotate_extrude($fn=180) {
                 translate([pair_outer_R(i, j) - wall_t/2, 0]) square([wall_t, apex_wall_h]);
+                translate([pair_outer_R(i, j) - wall_t/2 - lip_o, 0]) square([lip_o + 0.1, lip_h]);
+            }
         // keep the central ring's interior clear
         translate([0, 0, eq - apex_wall_h/2 - 0.2])
             cylinder(h = apex_wall_h + 0.4, r = central_R - wall_t/2, $fn=180);
@@ -258,6 +269,10 @@ module central_tube(s) {
         for (sy = [-1, 1])
             translate([central_R - wall_t, sy == 1 ? tube_ir : -tube_or, 0])
                 cube([R - central_R + wall_t, wall_t, apex_wall_h]);
+        // BOTTOM LIPS on the corridor walls (inward, ball-capturing — see lip_o/lip_h above)
+        for (sy = [-1, 1])
+            translate([central_R - wall_t, sy == 1 ? tube_ir - lip_o : -tube_ir - 0.1, 0])
+                cube([R - central_R + wall_t, lip_o + 0.1, lip_h]);
         // test-tube end: semicircular shell around the ball, closed side outward
         translate([R, 0, 0]) difference() {
             cylinder(h = apex_wall_h, r = tube_or, $fn=90);
@@ -265,14 +280,24 @@ module central_tube(s) {
             translate([-tube_or - 1, -tube_or - 1, -0.1])
                 cube([tube_or + 1, 2*tube_or + 2, apex_wall_h + 0.2]);   // keep outward half only
         }
+        // BOTTOM LIP on the test-tube end (half-ring, inward)
+        translate([R, 0, 0]) difference() {
+            cylinder(h = lip_h, r = tube_ir + 0.1, $fn=90);
+            translate([0, 0, -0.1]) cylinder(h = lip_h + 0.2, r = tube_ir - lip_o, $fn=90);
+            translate([-tube_or - 1, -tube_or - 1, -0.2])
+                cube([tube_or + 1, 2*tube_or + 2, lip_h + 0.4]);         // keep outward half only
+        }
     }
 }
 module swap_ring_central() {
     difference() {
         union() {
             translate([0, 0, eq - apex_wall_h/2])
-                rotate_extrude($fn=180)
+                rotate_extrude($fn=180) {
                     translate([central_R - wall_t/2, 0]) square([wall_t, apex_wall_h]);
+                    // bottom lip, inward (see lip_o/lip_h)
+                    translate([central_R - wall_t/2 - lip_o, 0]) square([lip_o + 0.1, lip_h]);
+                }
             central_tube(2);
             central_tube(9);
         }
@@ -292,9 +317,13 @@ module swap_ring_central() {
             translate([Mpr[0], Mpr[1], eq - apex_wall_h/2 - 0.2])
                 cylinder(h = apex_wall_h + 0.4, r = pair_outer_R(pr[0], pr[1]) - wall_t/2, $fn=120);
         }
-        // keep own interior clear (trims the tube-wall stubs inside the ring)
+        // keep own interior clear (trims the tube-wall stubs inside the ring) — but SPARE the
+        // bottom lip: full-radius trim only ABOVE the lip zone; within the lip zone trim to
+        // the lip's inner edge instead.
+        translate([0, 0, eq - apex_wall_h/2 + lip_h])
+            cylinder(h = apex_wall_h - lip_h + 0.2, r = central_R - wall_t/2, $fn=180);
         translate([0, 0, eq - apex_wall_h/2 - 0.2])
-            cylinder(h = apex_wall_h + 0.4, r = central_R - wall_t/2, $fn=180);
+            cylinder(h = lip_h + 0.2, r = central_R - wall_t/2 - lip_o, $fn=180);
     }
 }
 // Central divider — same thin blade as the pairs; at REST its long axis lies ALONG line P
