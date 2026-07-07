@@ -278,6 +278,57 @@ Implementation:
   ball 0 rendered at `(0, R, eq − 2·half_chord) = (0, 55.56, −16.66)` in both
   idle and swap render paths.
 
+## 2026-07-03..07 — Track-2: full 6-swap concept complete ("no gears yet")
+
+Rapid-iteration run that took the simple-walls concept from one working
+pair to the complete 6-swap machine, checked every frame. Highlights:
+
+### Geometry (physical/clean/proto_simple.scad, proto_lid.scad)
+- R +2 → 57.56; toy Ø200: pan + lid r=100, enclosing side cylinder
+  r98–100, pan at −24..−22 with a "half spare tire" bulge housing the
+  parked apex ring.
+- Spin walls → two CONTINUOUS rings (4 paddle slots + station-1 outer
+  wedge gap) riding a common 21 mm elevator frame through matching lid
+  slits (bridges at the ring gaps keep the lid one piece).
+- Swap rings → full tall annuli (20.8, ball-plane centered), all five
+  the same size; CENTRAL (2,9) ring at the origin MERGED with the four
+  pair rings (mutual interior-clearing); test-tube channels out to
+  stations 2 and 9 (0.1 ball spacing).
+- Apex (0,1) ring → 180° bottom arc, both-edge lips; in-plane rings +
+  tubes → 1.0 × 2.0 bottom lips (2/9 tunnels become ball-captive).
+- Paddles → thin blades (6 × ~51 × 20.8); apex blade 16 wide to fit the
+  ball-proof 16.8 lid slit; π/2 bookend turns added (floor-paddle
+  scheme) then removed — plain π turn, dividers on the rigid frame.
+- Lid → vertex-colour zones, pockets for the tall rings/paddles,
+  tunnel stadium pockets, apex slit + ball-transit torus.
+
+### Choreography
+rise [0,.20] → 2/9 tunnel in [.20,.35] → all dividers π + all orbits
+[.35,.65] (2/9 CCW +130.9°/+229.1° at r16.71) → 2/9 out [.65,.80] →
+drop [.80,1]. Full M12 swap perm applied to viewer state.
+
+### Verification (check_simple.py)
+Upgraded to EVERY frame (121), EVERY mechanism + the lid, 7 gates,
+startup positive controls (abort on any empty solid). First full sweep
+immediately caught two real apex-arc bugs (tips hitting resting balls
+during the rise; tips inside the lid at swap-up) → fixed by the 180°
+arc. Final state: ALL 7 GATES PASS every frame; separate housing sweep
+(balls/mechanism vs lid/pan/side wall) CLEAN. Silent-zero bug family
+grew by four members (no-arg module call, top-level forward reference,
+wrong-cwd render, rv()-on-failure) — all now guarded.
+
+### Viewer (viewer_simple.html)
+All-six-swap sync animation, spin ◀/▶ with permutation state,
+pair-colour station spotlights (+ toggle), diffuse + lid-opacity
+sliders, pan/side/isolate-1/info toggles (info hidden by default for
+phones), STL cache-buster, and a LIVE orange intersection highlighter
+(three-mesh-bvh/three-bvh-csg: AABB → BVH → CSG, designed contacts
+excluded, throttled during play after a stall made play skip frames).
+
+### Not done (the tag says it)
+No gears/drivetrain, no elevator-frame solid, no ball-push input, apex
+kinematics still scripted, ball-0 rest outward confinement open.
+
 ### Open items carried forward (v2)
 - Extra constraining wall panels for the vertical ring's mid-section (below
   the lid, above the drivetrain deck) — the lid covers only the top segment
