@@ -54,6 +54,7 @@ to preview just the (0,1) mechanism.</div>
     <label class="cb"><input type="checkbox" id="cbLid">lid</label>
     <label class="cb"><input type="checkbox" id="cbPan" checked>pan</label>
     <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
+    <label class="cb"><input type="checkbox" id="cbSpots" checked>spotlights</label>
     <label class="cb"><input type="checkbox" id="cbIsolate1">isolate 1</label>
     <button id="auto">▶ auto-rotate</button><button id="rv">reset view</button><button id="bInfo">ⓘ info</button>
   </div>
@@ -364,6 +365,7 @@ let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
 let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
 let panMesh = null, sideWallMesh = null;              // bottom pan + enclosing side cylinder (static)
 let apexDivInner = null;                              // the apex blade MESH inside the apexDivMesh group
+const spotLights = [];                                // the 24 station spotlights (for the toggle)
 // Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin.
 // REST poses (Scott 2026-07-04): all non-apex dividers rest π/2 from their working
 // orientation. In-plane pairs: long axis ALONG the chord (floor under the spin channel)
@@ -532,6 +534,7 @@ function build() {
       sl.position.set(p[0], p[1], p[2] + dz);
       sl.target.position.set(p[0], p[1], p[2]);
       root.add(sl); root.add(sl.target);
+      spotLights.push(sl);
     }
   }
 
@@ -909,6 +912,14 @@ document.getElementById('cbPan').onchange = e=>{
   if (sideWallMesh) sideWallMesh.visible = e.target.checked;
 };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
+// Spotlights off → bump the diffuse so the scene doesn't go near-black.
+document.getElementById('cbSpots').onchange = e=>{
+  const on = e.target.checked;
+  for (const sl of spotLights) sl.visible = on;
+  const t = parseFloat(document.getElementById('diffSlider').value);
+  diffAbove.intensity = (on ? t : Math.max(t, 1.0)) / 2;
+  diffBelow.intensity = (on ? t : Math.max(t, 1.0)) / 2;
+};
 document.getElementById('auto').onclick = e=>{ controls.autoRotate=!controls.autoRotate; e.target.textContent=(controls.autoRotate?'⏸':'▶')+' auto-rotate'; };
 // Info text toggle — hidden by default (Scott 2026-07-06: unhelpful on a phone).
 document.getElementById('bInfo').onclick = e=>{
