@@ -53,6 +53,7 @@ to preview just the (0,1) mechanism.</div>
     <label class="cb"><input type="checkbox" id="cbDivider" checked>divider</label>
     <label class="cb"><input type="checkbox" id="cbLid">lid</label>
     <label class="cb"><input type="checkbox" id="cbPan" checked>pan</label>
+    <label class="cb"><input type="checkbox" id="cbGears">gears</label>
     <label class="cb"><input type="checkbox" id="cbBalls" checked>balls</label>
     <label class="cb"><input type="checkbox" id="cbSpots" checked>spotlights</label>
     <label class="cb"><input type="checkbox" id="cbIsolate1">isolate 1</label>
@@ -274,6 +275,7 @@ const geoms = {
   apexVert: null, div_01: null,
   centralRing: null, centralDiv: null,
   pan: null, sideWall: null,
+  gearSun: null, gearIdler: null, gearPinion: null,
 };
 const EXPECT = Object.keys(geoms).length;
 let loaded = 0;
@@ -301,6 +303,9 @@ ld('centralRing', './proto_simple_central_ring.stl');
 ld('centralDiv',  './proto_simple_central_divider.stl');
 ld('pan',         './proto_simple_bottom_pan.stl');
 ld('sideWall',    './proto_simple_side_wall.stl');
+ld('gearSun',     './proto_geartrain_sun.stl');
+ld('gearIdler',   './proto_geartrain_idler.stl');
+ld('gearPinion',  './proto_geartrain_pinion.stl');
 
 const matSpinSeg = ()=> new THREE.MeshStandardMaterial({color:0x5ab0ff, roughness:0.5, metalness:0.2});
 const matSwapWall = ()=> new THREE.MeshStandardMaterial({color:0xff8a3c, roughness:0.5, metalness:0.2});
@@ -358,6 +363,13 @@ let apexSwapMesh = null;   // vertical apex ring (already transformed by SCAD)
 let apexDivMesh = null;    // apex divider paddle (translated + rotated by us)
 let centralRingMesh = null, centralDivMesh = null;   // central (2,9) ring + divider at origin
 let panMesh = null, sideWallMesh = null;              // bottom pan + enclosing side cylinder (static)
+// ---- DIVIDER GEAR TRAIN (ADR-0002 / proto_geartrain.scad): basement sun + 4 idlers + 4 pinions ----
+const gearGroup = new THREE.Group(); root.add(gearGroup); gearGroup.visible = false;
+const GT = { mG:1.2, Zsun:25, Zidl:21, Zpin:25, Ridl:27.60, GZ:-30, gh:6, bwh:20.8 };
+const gearSpinners = [];   // {mesh, base, rate} — rate × sunθ about local Z
+const gearShafts = [];      // square shafts (ride the blade in Z, slide through fixed pinions)
+function gtFmod(x,m){ return x - Math.floor(x/m)*m; }
+function gtMeshphase(phi_i, zi, zj, a){ const pi_=360/zi, pj=360/zj, aji=a+180, fi=gtFmod((a-phi_i)/pi_,1); return gtFmod(aji-(fi+0.5)*pj, pj); }
 let apexDivInner = null;                              // the apex blade MESH inside the apexDivMesh group
 const spotLights = [];                                // the 24 station spotlights (for the toggle)
 // Line P = perpendicular bisector of M(3,4)–M(7,8); passes through the origin.
@@ -482,6 +494,34 @@ function build() {
   if (geoms.sideWall) {
     sideWallMesh = new THREE.Mesh(geoms.sideWall, new THREE.MeshStandardMaterial({color:0x3a3a44, roughness:0.7, metalness:0.1, transparent:true, opacity:0.22, side:THREE.DoubleSide, depthWrite:false}));
     root.add(sideWallMesh);
+  }
+  // Divider gear train (basement) — sun at origin, 4 idlers, 4 pinions, + square shafts.
+  if (geoms.gearSun && geoms.gearIdler && geoms.gearPinion) {
+    const matSun = new THREE.MeshStandardMaterial({color:0xd9b359, roughness:0.5, metalness:0.4});
+    const matIdl = new THREE.MeshStandardMaterial({color:0x8cb3e6, roughness:0.5, metalness:0.4});
+    const matPin = new THREE.MeshStandardMaterial({color:0xe68c73, roughness:0.5, metalness:0.4});
+    const matShaft = new THREE.MeshStandardMaterial({color:0x9a9aa6, roughness:0.6, metalness:0.5});
+    const addGear = (geo, mat, x, y, baseDeg, rate) => {
+      const m = new THREE.Mesh(geo, mat);
+      m.position.set(x, y, GT.GZ); m.rotation.z = baseDeg*d2r;
+      gearGroup.add(m); gearSpinners.push({mesh:m, base:baseDeg*d2r, rate});
+      return m;
+    };
+    addGear(geoms.gearSun, matSun, 0, 0, 0, +1);   // sun: input, spins +θ
+    for (const [i,j] of IN_PLANE_PAIRS) {
+      const M = mid(i,j);
+      const az = Math.atan2(M[1], M[0]) * 180/Math.PI;
+      const ipx = GT.Ridl*Math.cos(az*d2r), ipy = GT.Ridl*Math.sin(az*d2r);
+      const phiI = gtMeshphase(0, GT.Zsun, GT.Zidl, az);
+      const phiP = gtMeshphase(phiI, GT.Zidl, GT.Zpin, az);
+      addGear(geoms.gearIdler,  matIdl, ipx, ipy, phiI, -GT.Zsun/GT.Zidl);  // idler: opposite sense, geared speed
+      addGear(geoms.gearPinion, matPin, M[0], M[1], phiP, +1);              // pinion: same sense as sun (= blade π)
+      // square shaft: connects the fixed pinion top (Z −24) to the blade bottom (variable);
+      // unit box scaled in Z each frame so it always spans the gap.
+      const shaft = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 1), matShaft);
+      shaft.position.set(M[0], M[1], -24);
+      gearGroup.add(shaft); gearShafts.push(shaft);
+    }
   }
   // Balls 0..N — neutral white material. Colour comes from the per-station spotlights below.
   const sph = new THREE.SphereGeometry(rb, 40, 28);
@@ -682,7 +722,17 @@ function renderIdle() {
     const p = stationPos(stationOf[s]);
     placeBall(s, p[0], p[1], p[2]);
   }
+  updateGears(0, -PARK_DEPTH_DIV);   // rest: no spin, blades (and shafts) parked
   frameHUDEl.textContent = 'frame —';
+}
+
+// Drive the gear train: sun angle θ (= the divider π); shafts span pinion-top (−24) → blade.
+const bwhViewer = 20.8, GEAR_PIN_TOP = -24;
+function updateGears(sunTheta, divZ) {
+  for (const g of gearSpinners) g.mesh.rotation.z = g.base + g.rate * sunTheta;
+  const bladeBottom = (eq - bwhViewer/2) + divZ;
+  const h = Math.max(0.5, bladeBottom - GEAR_PIN_TOP);
+  for (const sh of gearShafts) { sh.scale.z = h; sh.position.z = (GEAR_PIN_TOP + bladeBottom)/2; }
 }
 
 // Full swap animation: all 5 pairs move in sync. Uses SAVED state (savedStationOf)
@@ -724,6 +774,9 @@ function renderSwap(u) {
     apexDivMesh.position.set(0, APEX_RING_CY, APEX_RING_CZ_UP + ringZ);
     apexDivMesh.rotation.set(apexRotAccum(u), 0, 0);
   }
+  // Gear train: the sun angle IS the in-plane divider rotation (dRot). Pinions turn the blades
+  // (+dRot), idlers counter-rotate at the geared speed; shafts stretch to the risen blades.
+  updateGears(dRot, divZ);
   // Balls: any ball whose OLD station is in an animated pair moves along its swap trajectory.
   // Balls at non-animated stations (2, 9) stay put at their home.
   for (let s=0; s<=N; s++) {
@@ -902,6 +955,11 @@ document.getElementById('cbLid').onchange = e=>{ if (lidMesh) lidMesh.visible = 
 document.getElementById('cbPan').onchange = e=>{
   if (panMesh) panMesh.visible = e.target.checked;
   if (sideWallMesh) sideWallMesh.visible = e.target.checked;
+};
+// Divider gear train (basement, hidden by default; auto-hides the pan so you can see it).
+document.getElementById('cbGears').onchange = e=>{
+  gearGroup.visible = e.target.checked;
+  if (e.target.checked) { document.getElementById('cbPan').checked = false; document.getElementById('cbPan').dispatchEvent(new Event('change')); }
 };
 document.getElementById('cbBalls').onchange = e=>{ ballsGroup.visible = e.target.checked; };
 // Spotlights off → bump the diffuse so the scene doesn't go near-black.
