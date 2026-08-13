@@ -217,3 +217,7 @@ xcuserdata/
 #
 
 .com.apple.timemachine.supported
+
+# Claude worktrees are scratch checkouts, never content
+.claude/worktrees/
+**/.claude/worktrees/
