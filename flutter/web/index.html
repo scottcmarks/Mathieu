@@ -31,6 +31,30 @@
 
   <title>mathieu</title>
   <link rel="manifest" href="manifest.json">
+
+  <!--
+    Booklet deep links (#skin=…&lesson=…&swap=…&word=…).
+
+    Flutter web's default hash URL strategy owns the fragment: it treats it as
+    the route and clears anything it does not recognise, so by the time Dart's
+    main() runs the fragment is already gone. Move it into the query string
+    first — the router leaves the query alone, a static host ignores it (no
+    rewrite rules needed, which was the point of using the fragment), and
+    replaceState does not reload. lib/deeplink.dart reads whichever survives.
+
+    This must run before flutter_bootstrap.js.
+  -->
+  <script>
+    (function () {
+      var h = window.location.hash;
+      if (h.length > 1 && !window.location.search) {
+        try {
+          window.history.replaceState(
+            null, '', window.location.pathname + '?' + h.substring(1));
+        } catch (e) { /* deep link is a nicety; never block startup */ }
+      }
+    })();
+  </script>
 </head>
 <body>
   <!--

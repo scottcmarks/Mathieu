@@ -24,6 +24,10 @@ class Sfx {
     }
   }
 
+  /// Is this sound loaded? Used by the skin sound map to fall back silently
+  /// rather than ask for an asset that isn't in the bundle.
+  static bool has(String name) => _players.containsKey(name);
+
   static void play(String name) {
     if (!enabled) return;
     final p = _players[name];

@@ -49,12 +49,45 @@
   window.mathieuEraseAllMacros = (h) => M._mathieu_erase_all_macros(h);
   window.mathieuRunMacro = (h, c, inv) => M._mathieu_run_macro(h, c, inv);
   window.mathieuHistoryIsSingleMacro = (h, c) => M._mathieu_history_is_single_macro(h, c);
-  window.mathieuHistoryStr = (h) => {
-    const cap = 256;
-    const p = M._malloc(cap);
-    M._mathieu_history_str(h, p, cap);
+
+  // A macro-heavy session used to run past the old 256-byte cap and truncate
+  // the status line silently.
+  const STR_CAP = 1024;
+  function readStr(fill) {
+    const p = M._malloc(STR_CAP);
+    fill(p, STR_CAP);
     const s = M.UTF8ToString(p);
     M._free(p);
     return s;
+  }
+  window.mathieuHistoryStr = (h) => readStr((p, cap) => M._mathieu_history_str(h, p, cap));
+
+  // --- macro introspection (the tutorial's read-out) ---
+  // Returns null when the macro is not defined, so the Dart side can tell
+  // "undefined" from "the identity".
+  window.mathieuMacroPermutation = (h, c) => {
+    const p = M._malloc(N() * 4);
+    const ok = M._mathieu_macro_permutation(h, c, p);
+    let out = null;
+    if (ok) {
+      out = new Array(N());
+      const base = p >> 2;
+      for (let i = 0; i < N(); i++) out[i] = M.HEAP32[base + i];
+    }
+    M._free(p);
+    return out;
+  };
+  window.mathieuMacroHistoryStr = (h, c) =>
+      readStr((p, cap) => M._mathieu_macro_history_str(h, c, p, cap));
+  window.mathieuSetMacroFrom = (h, c, src) => M._mathieu_set_macro_from(h, c, src);
+  window.mathieuGetStart = (h) => readInts((p) => M._mathieu_get_start(h, p), N());
+  window.mathieuSetPosition = (h, perm) => {
+    const n = N();
+    const p = M._malloc(n * 4);
+    const base = p >> 2;
+    for (let i = 0; i < n; i++) M.HEAP32[base + i] = perm[i];
+    const ok = M._mathieu_set_position(h, p);
+    M._free(p);
+    return ok;
   };
 })();

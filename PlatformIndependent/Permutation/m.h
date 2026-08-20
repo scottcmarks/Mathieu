@@ -483,9 +483,19 @@ public:
                     else if ( History::is_swap( *p ) )    // Swap
                         result++ ;
                     else                                  // Macro moves
+                    {
                         // Can't use map::operator[ ] in a const method
-                        // because it will insert the element pair if not found
-                        result += macros.find( (HistoryElement)(abs( *p )) )->second.history.steps( );
+                        // because it will insert the element pair if not found.
+                        // Guard the lookup: erase_all_macros( ) clears the map
+                        // without expanding references to it, so a history can
+                        // outlive the definition it names. Charge such an
+                        // orphan one step rather than dereferencing end( ).
+                        macro_map::const_iterator m =
+                            macros.find( (HistoryElement)(abs( *p )) );
+                        result += ( m == macros.end( ) )
+                                    ? 1
+                                    : m->second.history.steps( );
+                    }
             return result;
         };
 

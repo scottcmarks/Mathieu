@@ -41,5 +41,60 @@ Linux tests still work?  (repaired) And need new tests for cycles( )
 * Confirm swap change.  Intelligent confirm message depending on where you are (solving, etc.)
 
 * Counters for steps and moves next to history
+  [DONE, Flutter] moves/steps sit next to the history strip; a third line shows
+  distance-from-home when the BFS table is up (hidden when it would read 0).
 
 ! Keep 341 sets of macros around for each swap?  It would be hard to remember what they are for!
+  [ANSWERED, Flutter] Not 341 sets of five keys.  Instead: an unlimited NAMED
+  library, each entry stamped with the swap index it was written under, and five
+  keys that BIND to entries.  Entries from another swap are listed after yours
+  and are never auto-bound -- so nothing has to be remembered, it is written
+  down.  lib/m12/library.dart; see flutter/MACROS.md.
+
+
+================================================================================
+Flutter app -- open items (2026-08-19)
+See flutter/SKINS.md and flutter/MACROS.md for what is already built.
+================================================================================
+
+DISCLOSURE -- needs Scott's decision, not a developer's
+* WHEN to flip a device skin's gate.  The packs (Flat-Pack, Marbles, Transfer
+  Ring) are built and gated OFF; shipping one publicly is a public disclosure,
+  so the flip should be tied to the patent filing date.  Nothing in the repo
+  decides it.  flutter/SKINS.md, "Disclosure gate".
+* WHETHER the app repo goes public again.  Its history was public before commit
+  c535fd34, so a future flip re-exposes whatever the tracked tree holds.  The
+  device mechanism documentation has been moved out of the tracked tree
+  (lib/skin/packs_private/DEVICE-PACKS.md, gitignored) rather than merely
+  marked, so that a flip is survivable -- but the question is still open.
+
+DEEP LINKS -- the booklet depends on these
+* The m12: custom scheme is parsed but not registered: no CFBundleURLTypes in
+  the iOS/macOS Info.plist, no <intent-filter> in AndroidManifest.xml, no
+  app_links dependency.  Web links work today; the mobile carrier does not.
+* No onHashChange, so scanning a booklet QR against an already-open tab needs a
+  reload.
+
+LAYOUT
+* The centre Swap/Left+Right block is still absolute pixels (controlWidth 190,
+  controlTopOffset -44) rather than piece-radius multiples.  Converting it
+  changes the layout, so it cannot ride along with a pixel-faithful refactor.
+  Under the flutter_test font that fixed row overflows by 23px (it fits on
+  device); the golden and widget tests consume the exception deliberately.
+
+FLEET CONSISTENCY
+* watch/ is a second, independent SwiftUI renderer sharing only the C ABI.  It
+  gets no skin system and its marble already diverges from Flutter's, so "the
+  default skin" is not one thing across the fleet.
+* watch/project.yml compiles flutter/native/mathieu_ffi.cpp directly, so C-side
+  changes reach the watch unannounced -- including the mathieu_set_macro
+  semantics fix (a macro now records start^-1 * current, i.e. the moves you
+  played rather than the scramble plus the moves).  That is the correct
+  behaviour, but the watch UI was never reviewed against it.
+* Apple/ (iPhone/Mac) picks up the same engine change.  GameModel.mm will not
+  syntax-check outside Xcode, so the m.h steps() orphan-macro guard is UNPROVEN
+  on those targets -- it is additive and macro_map is already used the same way
+  at m.h:276, but no build has confirmed it.  Build once in Xcode.
+
+HOUSEKEEPING
+* No LICENSE file in the repo (pre-existing).
