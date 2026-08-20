@@ -32,6 +32,11 @@ import 'dart:js_interop';
 @JS('mathieuRunMacro') external void _runMacro(int h, int c, int inv);
 @JS('mathieuHistoryIsSingleMacro') external int _histSingle(int h, int c);
 @JS('mathieuHistoryStr') external JSString _histStr(int h);
+@JS('mathieuMacroPermutation') external JSArray<JSNumber>? _macroPerm(int h, int c);
+@JS('mathieuMacroHistoryStr') external JSString _macroStr(int h, int c);
+@JS('mathieuSetMacroFrom') external void _setMacroFrom(int h, int c, int src);
+@JS('mathieuGetStart') external JSArray<JSNumber> _getStart(int h);
+@JS('mathieuSetPosition') external int _setPosition(int h, JSArray<JSNumber> perm);
 
 Future<void> initMathieu() async {
   await _jsInit().toDart;
@@ -81,4 +86,17 @@ class MathieuEngine {
   void runMacro(int c, {bool inverted = false}) => _runMacro(_h, c, inverted ? 1 : 0);
   bool historyIsSingleMacro(int c) => _histSingle(_h, c) != 0;
   String historyStr() => _histStr(_h).toDart;
+
+  // --- macro introspection: same contract as the dart:ffi path ---
+  List<int>? macroPermutation(int c) {
+    final a = _macroPerm(_h, c);
+    return a == null ? null : _toList(a);
+  }
+
+  String macroWord(int c) => _macroStr(_h, c).toDart;
+  void setMacroFrom(int c, MathieuEngine src) => _setMacroFrom(_h, c, src._h);
+  List<int> start() => _toList(_getStart(_h));
+
+  bool setPosition(List<int> perm) =>
+      _setPosition(_h, perm.map((e) => e.toJS).toList().toJS) != 0;
 }

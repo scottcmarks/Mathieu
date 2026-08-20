@@ -37,8 +37,26 @@ typedef _VoidPtrIntIntC = Void Function(Pointer<Void>, Int32, Int32);
 typedef _VoidPtrIntInt = void Function(Pointer<Void>, int, int);
 typedef _HistStrC = Void Function(Pointer<Void>, Pointer<Uint8>, Int32);
 typedef _HistStr = void Function(Pointer<Void>, Pointer<Uint8>, int);
+typedef _MacroPermC = Int32 Function(Pointer<Void>, Int32, Pointer<Int32>);
+typedef _MacroPerm = int Function(Pointer<Void>, int, Pointer<Int32>);
+typedef _MacroStrC = Void Function(Pointer<Void>, Int32, Pointer<Uint8>, Int32);
+typedef _MacroStr = void Function(Pointer<Void>, int, Pointer<Uint8>, int);
+typedef _SetPositionC = Int32 Function(Pointer<Void>, Pointer<Int32>);
+typedef _SetPosition = int Function(Pointer<Void>, Pointer<Int32>);
+typedef _SetMacroFromC = Void Function(Pointer<Void>, Int32, Pointer<Void>);
+typedef _SetMacroFrom = void Function(Pointer<Void>, int, Pointer<Void>);
 
 DynamicLibrary _open() {
+  // A standalone Dart VM (dart test / flutter test) has no engine linked in, so
+  // there is nothing for DynamicLibrary.process() to find. Naming a built
+  // library here lets these same bindings — not a copy of them — be exercised
+  // against the real C++ from a test. See tool/build_native_test_lib.sh.
+  const override = String.fromEnvironment('MATHIEU_ENGINE_LIB');
+  final path = override.isNotEmpty
+      ? override
+      : Platform.environment['MATHIEU_ENGINE_LIB'] ?? '';
+  if (path.isNotEmpty) return DynamicLibrary.open(path);
+
   // iOS/macOS: the engine is compiled into the app, so symbols are in-process.
   // Android/Linux: a shared object; Windows: a DLL.
   if (Platform.isAndroid || Platform.isLinux) {
@@ -81,6 +99,15 @@ class MathieuEngine {
   static final _runMacro = _lib.lookupFunction<_VoidPtrIntIntC, _VoidPtrIntInt>('mathieu_run_macro');
   static final _histStr = _lib.lookupFunction<_HistStrC, _HistStr>('mathieu_history_str');
   static final _histIsSingleMacro = _lib.lookupFunction<_IntPtrIntC, _IntPtrInt>('mathieu_history_is_single_macro');
+  static final _macroPerm =
+      _lib.lookupFunction<_MacroPermC, _MacroPerm>('mathieu_macro_permutation');
+  static final _macroStr =
+      _lib.lookupFunction<_MacroStrC, _MacroStr>('mathieu_macro_history_str');
+  static final _setMacroFrom =
+      _lib.lookupFunction<_SetMacroFromC, _SetMacroFrom>('mathieu_set_macro_from');
+  static final _getStart = _lib.lookupFunction<_VoidPtrArrC, _VoidPtrArr>('mathieu_get_start');
+  static final _setPosition =
+      _lib.lookupFunction<_SetPositionC, _SetPosition>('mathieu_set_position');
 
   static int get ballCount => _numBalls();
   static int get swapCount => _numSwaps();
@@ -127,11 +154,54 @@ class MathieuEngine {
   void runMacro(int c, {bool inverted = false}) => _runMacro(_h, c, inverted ? 1 : 0);
   bool historyIsSingleMacro(int c) => _histIsSingleMacro(_h, c) != 0;
 
-  /// Move-history notation for the status line, e.g. "L2 S R3 A".
-  String historyStr() {
-    final buf = calloc<Uint8>(256);
+  /// The permutation macro [c] applies, or null if [c] is not defined. The
+  /// position the macro was recorded from has been divided out, so this agrees
+  /// with [macroWord] even for a macro set part-way through a scrambled puzzle.
+  List<int>? macroPermutation(int c) {
+    final p = calloc<Int32>(n);
     try {
-      _histStr(_h, buf, 256);
+      if (_macroPerm(_h, c, p) == 0) return null;
+      return List<int>.generate(n, (i) => p[i]);
+    } finally {
+      calloc.free(p);
+    }
+  }
+
+  /// Macro [c]'s own word, in the same notation as [historyStr]. Empty if unset.
+  String macroWord(int c) => _readStr((b, cap) => _macroStr(_h, c, b, cap));
+
+  /// Define macro [c] here as the game [src] holds — how a library entry is
+  /// bound to a key: replay its word on a scratch engine, then bind that.
+  void setMacroFrom(int c, MathieuEngine src) => _setMacroFrom(_h, c, src._h);
+
+  /// The position this solve started from: identity after [reset], the scramble
+  /// after [random]. What [setMacro] divides out.
+  List<int> start() => _readArray(n, (p) => _getStart(_h, p));
+
+  /// Put the board at [perm] with an empty history, keeping macro definitions.
+  /// False if [perm] is not a permutation of 0..n-1.
+  bool setPosition(List<int> perm) {
+    final p = calloc<Int32>(n);
+    try {
+      for (var i = 0; i < n; i++) {
+        p[i] = perm[i];
+      }
+      return _setPosition(_h, p) != 0;
+    } finally {
+      calloc.free(p);
+    }
+  }
+
+  /// Move-history notation for the status line, e.g. "L2 S R3 A".
+  String historyStr() => _readStr((b, cap) => _histStr(_h, b, cap));
+
+  // A macro-heavy session ran past the old 256-byte cap and truncated silently.
+  static const _strCap = 1024;
+
+  static String _readStr(void Function(Pointer<Uint8>, int) fill) {
+    final buf = calloc<Uint8>(_strCap);
+    try {
+      fill(buf, _strCap);
       return buf.cast<Utf8>().toDartString();
     } finally {
       calloc.free(buf);
