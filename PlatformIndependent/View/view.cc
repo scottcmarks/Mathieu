@@ -86,6 +86,17 @@ static ostream_type & insert_count( ostream_type & os, char_type tag, int count 
   return os;
 }
 
+// Narrow streams get plain ASCII digits (the perms.lst format).  The
+// template above fed them wchar_t superscripts, which a narrow ostream
+// prints as the code point's NUMBER: L2 came out as L178 (U+00B2).
+static ostream & insert_count( ostream & os, char tag, int count )
+{
+  os << tag;
+  if ( 1 < count )
+    os << count;
+  return os;
+}
+
 static ostream & insert_left( ostream & os, int count ){
   return insert_count( os, left_tag, count );
 }

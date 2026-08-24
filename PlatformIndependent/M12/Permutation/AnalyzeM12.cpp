@@ -36,6 +36,7 @@ std::ostream & operator<<(std::ostream& out, const PermArray & p )
 }
 
 int n_permutations_remaining = nPermutations;
+int max_moves_recorded = 0;
 
 typedef enum { silent=0, discreet=1, chatty=2, babbling=3, MAX_VERBOSITY=babbling} verbosity_level;
 
@@ -77,6 +78,8 @@ inline perm_info possibly_record( M12PermInfoTable & table, const Perm & p, cons
       cout << "Error: strict 5-transitivity violated." << endl
            << p_info.perm << " == p_info.perm != new_p_info.perm == " << new_p_info.perm << endl;
     p_info = p;
+    if ( max_moves_recorded < (int)p_info.moves )
+      max_moves_recorded = p_info.moves;
     if ( ! ( p_info.moves == new_p_info.moves && p_info.steps_plus_one == new_p_info.steps_plus_one ) )
     {
       cerr << "Still don't have move and step counting right" << endl
@@ -167,10 +170,19 @@ void find_all_permutations( M12PermInfoTable & table )
   Perm p;
   perm_info p_info( p );
   table.clear( );
+  max_moves_recorded = 0;
   generate_leaves( table, p, p_info );
   for ( Index max_swaps = 1; max_swaps <= max_depth ; max_swaps++ )
   {
-    if ( 0 == n_permutations_remaining ) return;
+    // Coverage alone is not "done".  An s-swap word has at least 2s-1
+    // moves (the rotation between consecutive swaps is mandatory), so a
+    // deeper level can still TIE a recorded moves count and win on steps:
+    // stopping at first coverage left 292 of the moves-11 entries with
+    // solutions 1-7 steps longer than optimal.  Search on until no deeper
+    // word could match the deepest moves count recorded so far.
+    if ( 0 == n_permutations_remaining
+         && max_moves_recorded < 2 * (int)max_swaps - 1 )
+      return;
     generate_root( table, p, p_info, max_swaps );
   }
 }
