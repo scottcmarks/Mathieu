@@ -3,3 +3,9 @@ app/
 *.apk
 *.dmg
 *.ipa
+# The Temporary_Buffer demo viewer: built by
+# Mathieu_Toys/Temporary_Buffer/gen_web_bundle_v2.py (three.js, binary STLs,
+# the narration and a .htpasswd), deployed additively beside app/.  Not
+# tracked here for the same reason app/ is not, and it carries a password
+# hash besides.
+buffer/
