@@ -1,6 +1,6 @@
 #!/bin/bash
 # Disclosure belt #2: prove no device-derived skin pack made it into a build
-# artifact. The Flat-Pack / Marbles / Transfer-Ring mechanisms are patent-
+# artifact. The Flat-Pack / Marbles / Transfer-Ring mechanisms are un-
 # sensitive; the app is distributed (web, .apk, App Store), so shipping one is a
 # public disclosure. The compile-time gate should already have tree-shaken them
 # out — this checks the actual bytes rather than trusting that.
@@ -106,7 +106,7 @@ if [ "${1:-}" = "--source" ]; then
 
   if [ "$fail" != "0" ]; then
     echo "" >&2
-    echo "A patent-sensitive pack has reached the tracked source tree." >&2
+    echo "A held-back pack has reached the tracked source tree." >&2
     echo "The tracked tree must compile — and read — as if packs_private/ did" >&2
     echo "not exist. See flutter/SKINS.md, 'The registry'." >&2
     exit 1
@@ -146,7 +146,7 @@ done
 
 if [ "$fail" != "0" ]; then
   echo "" >&2
-  echo "A patent-sensitive skin pack is present in a build artifact." >&2
+  echo "A held-back skin pack is present in a build artifact." >&2
   echo "Do not publish. Rebuild without the SKIN_* dart-defines." >&2
   echo "(If the artifact is stale from an older build, delete build/ and rebuild.)" >&2
   exit 1

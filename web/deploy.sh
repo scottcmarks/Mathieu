@@ -30,7 +30,7 @@ source "$HOME/emsdk/emsdk_env.sh" >/dev/null 2>&1 || true
 # base-href MUST match the deploy subfolder or the app's assets 404.
 # --dart-define=BETA=true keeps the build tell visible even in release builds.
 # NOTE: no --dart-define=SKIN_* here, and the default entry point (lib/main.dart)
-# is used, not the private one — the device-derived skins are patent-sensitive
+# is used, not the private one — the device-derived skins are unreleased
 # and this is a public host, so a gated pack must never be built into what is
 # deployed. See flutter/SKINS.md.
 flutter build web --base-href /sporadicgames/m12/app/ --dart-define=BETA=true

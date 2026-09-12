@@ -62,7 +62,7 @@ is intended:
 
 ## Disclosure
 
-Some skin packs are derived from patent-sensitive physical toy designs. They are
+Some skin packs are derived from unreleased physical toy designs. They are
 gitignored, gated behind compile-time flags that default off, and reached only
 through a separate generated entry point that the tracked tree never references.
 
