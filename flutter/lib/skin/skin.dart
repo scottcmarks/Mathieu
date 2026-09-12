@@ -189,7 +189,7 @@ abstract class Skin {
   String get displayName;
 
   /// True for the device-derived packs (Flat-Pack, Marbles, Transfer Ring).
-  /// Those mechanisms are patent-sensitive and must never ship un-gated;
+  /// Those mechanisms are unreleased and must never ship un-gated;
   /// a debug assert enforces that no sensitive pack is registered in an
   /// un-gated build. See README.md.
   bool get sensitive;

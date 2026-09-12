@@ -60,7 +60,7 @@ See flutter/SKINS.md and flutter/MACROS.md for what is already built.
 DISCLOSURE -- needs Scott's decision, not a developer's
 * WHEN to flip a device skin's gate.  The packs (Flat-Pack, Marbles, Transfer
   Ring) are built and gated OFF; shipping one publicly is a public disclosure,
-  so the flip should be tied to the patent filing date.  Nothing in the repo
+  so the flip is Scott's call and his alone.  Nothing in the repo
   decides it.  flutter/SKINS.md, "Disclosure gate".
 * WHETHER the app repo goes public again.  Its history was public before commit
   c535fd34, so a future flip re-exposes whatever the tracked tree holds.  The

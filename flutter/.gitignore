@@ -44,7 +44,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Device-derived skin packs (Flat-Pack, Marbles, Transfer Ring) are patent-
+# Device-derived skin packs (Flat-Pack, Marbles, Transfer Ring) are un-
 # sensitive and must never be committed here. The source of truth is a
 # wapex-only repo; drop the directory in, run tool/gen_skin_registry.sh, build.
 # See lib/skin/README.md.

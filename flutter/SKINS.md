@@ -10,7 +10,7 @@ the toy, so the app can do the tutorial things a mechanical toy cannot. See
 `MACROS.md` for that half.
 
 > **Disclosure.** Some packs are derived from physical toy designs that are
-> patent-sensitive. This file is tracked and must stay free of device mechanism
+> held back. This file is tracked and must stay free of device mechanism
 > — no routing, no device dimensions, no toy-repo file paths. The mechanism half
 > of the documentation lives with the packs themselves, in the gitignored
 > `lib/skin/packs_private/DEVICE-PACKS.md`. See **Disclosure gate** below; the
@@ -119,62 +119,21 @@ that wants a private pack targets the generated private entry point instead:
 no tracked file may name, import, or otherwise reference anything under
 `packs_private/`. `tool/check_no_device_skins.sh --source` enforces it.
 
-## Disclosure gate — HOLD UNTIL FILING
+## Gated packs — HOLD
 
-The device-derived mechanisms are patent-sensitive (the application is drafted;
-the toy repos are private, and toy designs never go to a public host). This app
-is **distributed** — `web/deploy.sh` to magnolia-heights.com, the `.apk`, an App
-Store archive — so shipping a device-derived skin publicly is a public
-disclosure.
+The device-derived packs are held back and cannot ship by accident: the default
+entry point cannot reach a private pack, because the import does not exist in
+the tracked tree, and `tool/check_no_device_skins.sh` fails the build if one
+ever appears. Every public artifact contains the classic skin and nothing else.
 
-### The decision, spelled out — this is Scott's call
+Releasing a pack is a deliberate one-line action (`--dart-define=SKIN_<ID>=true`
+with the private entry point) and is **Scott's call alone**. Until then: do not
+run `web/deploy.sh` with a `SKIN_*` define, and do not commit anything under
+`packs_private/`.
 
-Nothing in this repo decides it, and nothing should be read as advice on it.
-What the code has committed to is only this: **flipping a flag is a one-line,
-one-build action whenever you decide, and until you do, the packs cannot ship
-by accident.** Concretely:
-
-- **Today, and by default:** the shipping build is the default entry point. It
-  cannot reach a private pack — the import does not exist in the tracked tree.
-  Every public artifact contains the classic skin and nothing else.
-- **What flipping the gate would mean:** building the private entry point with
-  `--dart-define=SKIN_<ID>=true` and publishing it puts that pack's appearance
-  — the look derived from the physical device — in front of the public. Treat
-  that as the disclosure event it is, and tie it to the filing date.
-- **What is safe to do now, before any filing:** print the booklet. A deep link
-  naming a gated pack degrades **silently** to the default (see below), so URLs
-  such as `…/m12/#skin=flatpack&lesson=6` are stable and printable today. The
-  print schedule does not have to wait on the filing.
-- **What nobody should do without you saying so:** run `web/deploy.sh` with a
-  `SKIN_*` define, or commit anything under `packs_private/`.
-
-**Open question for Scott, not answered here:** whether the app repo should be
-made public again at all, and if so whether that waits on the filing too. Its
-history was public before commit `c535fd34`, so a future flip re-exposes
-whatever the tracked tree holds — which is why the mechanism documentation was
-moved out of it rather than merely marked.
-
-### Four belts, each mechanical rather than a promise
-
-1. **No tracked reference.** `packs_private/` is gitignored, and no tracked file
-   imports or names anything in it. The packs live only in a wapex-only repo, so
-   even a leak of this repo does not carry them.
-2. **Default off, and tree-shaken.** Each private pack is registered behind
-   `const bool.fromEnvironment('SKIN_<ID>')`, which defaults to false. Because
-   the condition is a compile-time constant, dart2js and AOT drop the branch and
-   tree-shake the pack class and its painter out of the binary — the pack is
-   *removed*, not hidden. Verified: building the private entry point with only
-   `SKIN_FLATPACK=true`, `main.dart.js` contains `flatpack` but zero occurrences
-   of `marbles` or `transfer_ring`.
-3. **`tool/check_no_device_skins.sh`** greps built artifacts for every gated id
-   and exits non-zero on a hit; `--source` does the same for the tracked source
-   tree. `web/deploy.sh` runs both as aborting preconditions.
-4. **Debug assert.** `registerBuiltinSkins()` calls
-   `SkinRegistry.debugAssertNothingSensitive()`, which throws if any pack
-   registered by the *default* entry point is sensitive.
-
-A deep link naming a gated pack degrades **silently** to the default — a booklet
-QR must neither error nor reveal that the pack exists.
+Booklet deep links are safe to print today regardless: a link naming a pack that
+is not present degrades **silently** to the default skin (see below), so URLs
+such as `…/m12/#skin=flatpack&lesson=6` are stable now.
 
 ## Default fidelity
 
