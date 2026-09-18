@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(openscad *)",
+      "Bash(openscad:*)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(source *)",
+      "Bash(curl *)",
+      "Bash(pkill *)"
+    ]
+  }
+}
