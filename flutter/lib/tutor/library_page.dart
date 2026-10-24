@@ -68,7 +68,7 @@ class _LibraryPageState extends State<LibraryPage> {
           title: 'Saved macros',
           note: entries.isEmpty
               ? null
-              : 'Entries written under another swap are greyed out — a macro is '
+              : 'Entries written under another swap are grayed out — a macro is '
                   'a different element under a different swap.',
           child: entries.isEmpty
               ? Text(

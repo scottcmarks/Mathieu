@@ -158,7 +158,7 @@ class _WorkshopPageState extends State<WorkshopPage> {
         if (saved > 0)
           Text(
             'Writing them together saves $saved move${saved == 1 ? '' : 's'} — '
-            'the join cancelled.',
+            'the join canceled.',
             style: kSubtleStyle.copyWith(color: Colors.green.shade800),
           ),
         const SizedBox(height: 4),

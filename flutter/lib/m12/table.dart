@@ -43,7 +43,7 @@ int moveElement(int mi) => mi == 10 ? 0 : (mi < 5 ? mi + 1 : -(mi - 4));
 int inverseMove(int mi) => mi == 10 ? 10 : (mi < 5 ? mi + 5 : mi - 5);
 
 /// The eleven neighbor permutations, for a given swap.
-List<Uint8List> neighbourGenerators(List<int> swap, {List<int> right = kRight}) {
+List<Uint8List> neighborGenerators(List<int> swap, {List<int> right = kRight}) {
   final rightInv = inversePerm(right);
   final gens = <Uint8List>[];
   for (final base in [right, rightInv]) {
@@ -100,7 +100,7 @@ class M12Table {
   int distanceOf(List<int> p) => dist[m12Rank(p)];
 
   /// The eleven neighbor generators, rebuilt on demand (cheap).
-  List<Uint8List> get generators => neighbourGenerators(swap);
+  List<Uint8List> get generators => neighborGenerators(swap);
 
   /// A shortest word taking home to the element at [rank].
   Word wordTo(int rank) {
@@ -163,7 +163,7 @@ class M12Table {
   /// Synchronous build — used by tests and by the isolate entry point.
   static M12Table buildSync(int swapIndex, List<int> swap) {
     final sw = Stopwatch()..start();
-    final gens = neighbourGenerators(swap);
+    final gens = neighborGenerators(swap);
 
     final dist = Uint8List(kM12Order)..fillRange(0, kM12Order, 255);
     final prev = Int8List(kM12Order)..fillRange(0, kM12Order, -1);

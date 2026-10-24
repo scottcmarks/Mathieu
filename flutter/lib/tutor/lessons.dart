@@ -257,7 +257,7 @@ final List<Lesson> kLessons = [
             'you just invented.'),
         if (w.isEmpty)
           _fact('You have not played anything yet. Go to the board, make a few '
-              'moves, and come back — this page will analyse them.')
+              'moves, and come back — this page will analyze them.')
         else ...[
           _p('Here is what you have played so far:'),
           AnalysisCard(MacroAnalysis.of(
@@ -482,7 +482,7 @@ final List<Lesson> kLessons = [
             '${other > 0 ? ', and $other written under other swaps' : ''}.'),
         _fact('A macro belongs to a swap. The same word is a different element '
             'under a different swap permutation — so entries from elsewhere are '
-            'greyed out rather than silently wrong, and the library offers to '
+            'grayed out rather than silently wrong, and the library offers to '
             're-derive them: it searches this swap for the cheapest word of the '
             'same shape acting on the same seats.'),
         _go('Open the library', c.openLibrary),
